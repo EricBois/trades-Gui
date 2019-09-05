@@ -57,10 +57,10 @@
 
           <v-list>
             <v-list-item>
-              <v-btn color="primary" v-if="this.$auth.loggedIn" to="/profile">
+              <v-btn v-if="this.$auth.loggedIn" color="primary" to="/profile">
                 Profile
               </v-btn>
-              <v-spacer></v-spacer>
+              <v-spacer />
               <v-btn v-if="this.$auth.loggedIn" @click="logout">
                 Logout
               </v-btn>
@@ -100,7 +100,9 @@ export default {
   }),
   created () {
     this.$vuetify.theme.dark = true
-    this.picture = this.$auth.user.picture
+    if (this.$auth.user) {
+      this.picture = this.$auth.user.picture
+    }
   },
   methods: {
     login () {
