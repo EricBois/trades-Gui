@@ -4,30 +4,49 @@
       <v-flex xs12 md8>
         <v-form>
           <v-container py-0>
+            <image-input v-model="file">
+              <div slot="activator">
+                <v-avatar v-if="!avatar" v-ripple size="150px" class="grey lighten-3 mb-3">
+                  <span>Click to add avatar</span>
+                </v-avatar>
+                <v-avatar v-else v-ripple size="150px" class="mb-3">
+                  <img v-if="file.imageURL" :src="file.imageURL" alt="avatar">
+                  <img v-else :src="avatar" alt="avatar">
+                </v-avatar>
+              </div>
+            </image-input>
+            <v-slide-x-transition>
+              <div v-if="file.imageURL && saved == false">
+                <v-btn class="primary" :loading="saving" @click="uploadImage">
+                  Save Avatar
+                </v-btn>
+              </div>
+            </v-slide-x-transition>
+
             <v-layout wrap>
-              <v-flex v-if="picture" xs12 text-xs-center>
+              <!-- <v-flex v-if="info.avatar" xs12 text-xs-center>
                 <v-btn ripple icon>
                   <v-icon color="red" large>
                     mdi-delete-circle
                   </v-icon>
                 </v-btn>
                 <v-avatar tile size="150">
-                  <v-img :src="picture" />
+                  <v-img :src="info.avatar" />
                 </v-avatar>
-              </v-flex>
-              <v-flex v-else xs12 pt-5 text-xs-center />
+              </v-flex>-->
+              <!-- <v-flex v-else xs12 pt-5 text-xs-center /> -->
               <v-flex xs12 md6>
-                <v-text-field v-model="name" class="purple-input" label="Name" />
+                <v-text-field v-model="info.name" class="purple-input" label="Name" />
               </v-flex>
               <v-flex xs12 md6>
-                <v-text-field v-model="phone" class="purple-input" label="Phone #" />
+                <v-text-field v-model="info.phone" class="purple-input" label="Phone #" />
               </v-flex>
               <v-flex xs12>
-                <v-textarea v-model="description" label="Description" class="purple-input" />
+                <v-textarea v-model="info.description" label="Description" class="purple-input" />
               </v-flex>
               <v-flex xs12 md6>
                 <v-text-field
-                  v-model="hourly"
+                  v-model="info.hourly"
                   label="Hourly"
                   class="purple-input"
                   prefix="$"
@@ -63,57 +82,94 @@
 </template>
 
 <script>
+import ImageInput from '../components/ImageInput.vue'
 export default {
+  components: {
+    ImageInput
+  },
   data () {
     return {
-      name: '',
-      phone: '',
-      description: '',
-      hourly: '',
-      picture: null,
-      switch1: false
+      info: {
+        name: '',
+        phone: '',
+        description: '',
+        hourly: '',
+        available: false
+      },
+      saving: false,
+      saved: false,
+      avatar: null,
+      switch1: false,
+      file: {}
+    }
+  },
+  watch: {
+    avatar: {
+      handler () {
+        this.saved = false
+      },
+      deep: true
+    },
+    switch1 () {
+      if (this.switch1) {
+        this.info.available = true
+      } else {
+        this.info.available = false
+      }
+      this.edit()
     }
   },
   mounted () {
-    this.$axios
-      .$get('account/get')
-      .then((res) => {
-        this.name = res.account.name
-        this.phone = res.account.phone
-        this.picture = res.account.picture
-        this.description = res.account.description
-        this.hourly = res.account.hourly
-        this.available = res.account.available
-        if (this.available) {
+    this.$axios.$get('account/get').then((res) => {
+      this.info.name = res.account.name
+      this.info.phone = res.account.phone
+      this.avatar = res.account.avatar
+      this.info.description = res.account.description
+      this.info.hourly = res.account.hourly
+      this.info.available = res.account.available
+      if (this.info.available) {
+        this.switch1 = true
+      } else {
+        this.switch1 = false
+      }
+    })
+  },
+  methods: {
+    edit () {
+      this.$axios.$post('account/edit', this.info).then((res) => {
+        this.info.name = res.name
+        this.info.phone = res.phone
+        this.avatar = res.avatar
+        this.info.description = res.description
+        this.info.hourly = res.hourly
+        this.info.available = res.available
+        if (this.info.available) {
           this.switch1 = true
         } else {
           this.switch1 = false
         }
       })
-  },
-  methods: {
-    edit () {
-      this.$axios
-        .$post('account/edit', {
-          name: this.name,
-          phone: this.phone,
-          description: this.description,
-          hourly: this.hourly,
-          picture: this.picture,
-          available: this.switch1 })
-        .then((res) => {
-          this.name = res.name
-          this.phone = res.phone
-          this.picture = res.picture
-          this.description = res.description
-          this.hourly = res.hourly
-          this.available = res.available
-          if (this.available) {
-            this.switch1 = true
-          } else {
-            this.switch1 = false
-          }
-        })
+    },
+    uploadImage () {
+      this.saving = true
+      this.$axios.$post('account/edit', this.file.formData).then((res) => {
+        this.info.name = res.name
+        this.info.phone = res.phone
+        this.avatar = res.avatar
+        this.info.description = res.description
+        this.info.hourly = res.hourly
+        this.info.available = res.available
+        if (this.info.available) {
+          this.switch1 = true
+        } else {
+          this.switch1 = false
+        }
+      })
+      setTimeout(() => this.savedAvatar(), 1000)
+    },
+    savedAvatar () {
+      this.saving = false
+      this.saved = true
     }
   }
 }
