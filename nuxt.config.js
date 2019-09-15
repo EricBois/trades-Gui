@@ -31,6 +31,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    { src: '~/plugins/vue-tags-input', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -100,6 +101,7 @@ export default {
   ** Build configuration
   */
   build: {
+    vendor: ['@johmun/vue-tags-input'],
     /*
     ** You can extend webpack config here
     */

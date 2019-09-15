@@ -1,30 +1,43 @@
 <template>
-  <v-container fill-height fluid grid-list-xl>
-    <v-layout justify-center wrap>
-      <v-flex xs12 md8>
-        <v-form>
-          <v-container py-0>
-            <image-input v-model="file">
-              <div slot="activator">
-                <v-avatar v-if="!avatar" v-ripple size="150px" class="grey lighten-3 mb-3">
-                  <span>Click to add avatar</span>
-                </v-avatar>
-                <v-avatar v-else v-ripple size="150px" class="mb-3">
-                  <img v-if="file.imageURL" :src="file.imageURL" alt="avatar">
-                  <img v-else :src="avatar" alt="avatar">
-                </v-avatar>
-              </div>
-            </image-input>
-            <v-slide-x-transition>
-              <div v-if="file.imageURL && saved == false">
-                <v-btn class="primary" :loading="saving" @click="uploadImage">
-                  Save Avatar
-                </v-btn>
-              </div>
-            </v-slide-x-transition>
-
-            <v-layout wrap>
-              <!-- <v-flex v-if="info.avatar" xs12 text-xs-center>
+  <v-container fluid>
+    <v-layout column>
+      <v-card elevation="22">
+        <v-card-text>
+          <v-row
+            class="py-4 pl-4"
+          >
+            <v-form>
+              <v-flex class="mb-4">
+                <image-input v-model="file">
+                  <div slot="activator">
+                    <v-avatar v-if="!avatar" v-ripple size="200px" class="grey lighten-3 mb-3" elevation="8">
+                      <span>Click to add avatar</span>
+                    </v-avatar>
+                    <v-avatar
+                      v-else
+                      v-ripple
+                      size="200px"
+                      class="mb-3"
+                      elevation="18"
+                    >
+                      <img v-if="file.imageURL" :src="file.imageURL" alt="avatar">
+                      <img v-else :src="avatar" alt="avatar">
+                    </v-avatar>
+                  </div>
+                </image-input>
+                <v-slide-x-transition>
+                  <div v-if="file.imageURL && saved == false">
+                    <v-btn class="primary" :loading="saving" @click="uploadImage">
+                      Save Avatar
+                    </v-btn>
+                  </div>
+                </v-slide-x-transition>
+              </v-flex>
+              <v-row
+                class="py-4 pl-4"
+              >
+                <v-layout wrap>
+                  <!-- <v-flex v-if="info.avatar" xs12 text-xs-center>
                 <v-btn ripple icon>
                   <v-icon color="red" large>
                     mdi-delete-circle
@@ -33,54 +46,66 @@
                 <v-avatar tile size="150">
                   <v-img :src="info.avatar" />
                 </v-avatar>
-              </v-flex>-->
-              <!-- <v-flex v-else xs12 pt-5 text-xs-center /> -->
-              <v-flex xs12 md6>
-                <v-text-field v-model="info.name" class="purple-input" label="Name" />
-              </v-flex>
-              <v-flex xs12 md6>
-                <v-text-field v-model="info.phone" class="purple-input" label="Phone #" />
-              </v-flex>
-              <v-flex xs12>
-                <v-textarea v-model="info.description" label="Description" class="purple-input" />
-              </v-flex>
-              <v-flex xs12 md6>
-                <v-text-field
-                  v-model="info.hourly"
-                  label="Hourly"
-                  class="purple-input"
-                  prefix="$"
-                  type="number"
-                />
-              </v-flex>
-              <v-flex xs12 md6>
-                <v-switch v-model="switch1" label="Available" />
-              </v-flex>
-              <!-- <v-flex xs12 md12>
+          </v-flex>-->
+                  <!-- <v-flex v-else xs12 pt-5 text-xs-center /> -->
+                  <v-flex xs10 md5 mr-12>
+                    <v-text-field v-model="info.name" class="purple-input" label="Name" />
+                  </v-flex>
+                  <v-flex xs10 md5>
+                    <v-text-field v-model="info.phone" class="purple-input" label="Phone #" />
+                  </v-flex>
+                  <v-flex xs10>
+                    <v-textarea v-model="info.description" label="Description" solo outlined class="purple-input" />
+                  </v-flex>
+                  <v-flex xs10>
+                    <vue-tags-input
+                      v-model="tag"
+                      :tags="tags"
+                      :autocomplete-items="filteredItems"
+                      placeholder="Add a Skill"
+                      :add-only-from-autocomplete="true"
+                      @tags-changed="newTags => tags = newTags"
+                    />
+                  </v-flex>
+                  <v-flex xs10 md2 mr-12>
+                    <v-text-field
+                      v-model="info.hourly"
+                      label="Hourly"
+                      class="purple-input"
+                      prefix="$"
+                      type="number"
+                    />
+                  </v-flex>
+                  <v-flex xs12 md2>
+                    <v-switch v-model="switch1" label="Available" />
+                  </v-flex>
+                  <!-- <v-flex xs12 md12>
                   <gmap-autocomplete
                     class="v-input__slot theme--light"
                     :value="info.location.address"
                     :select-first-on-enter="true"
                     @place_changed="setPlace"
                   />
-              </v-flex>-->
-              <v-flex xs12 text-xs-right>
-                <v-btn
-                  class="mx-0 font-weight-light"
-                  ceditolor="success"
-                  @click="edit"
-                >
-                  Update Profile
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-form>
-      </v-flex>
+          </v-flex>-->
+                  <v-card-actions>
+                    <v-btn class="mx-0 font-weight-light" color="primary" @click="edit">
+                      Update Profile
+                    </v-btn>
+                  </v-card-actions>
+                </v-layout>
+              </v-row>
+            </v-form>
+          </v-row>
+        </v-card-text>
+      </v-card>
     </v-layout>
   </v-container>
 </template>
-
+<style scoped>
+  .vue-tags-input {
+    background: #CDCCCC;
+  }
+</style>
 <script>
 import ImageInput from '../components/ImageInput.vue'
 export default {
@@ -89,6 +114,19 @@ export default {
   },
   data () {
     return {
+      tag: '',
+      tags: [],
+      autocompleteItems: [{
+        text: 'Drywall'
+      }, {
+        text: 'Taping'
+      }, {
+        text: 'Framing'
+      }, {
+        text: 'Labour'
+      }, {
+        text: 'Texturing'
+      }],
       info: {
         name: '',
         phone: '',
@@ -101,6 +139,13 @@ export default {
       avatar: null,
       switch1: false,
       file: {}
+    }
+  },
+  computed: {
+    filteredItems () {
+      return this.autocompleteItems.filter((i) => {
+        return i.text.toLowerCase().includes(this.tag.toLowerCase())
+      })
     }
   },
   watch: {
@@ -136,6 +181,7 @@ export default {
   },
   methods: {
     edit () {
+      console.log(this.tags)
       this.$axios.$post('account/edit', this.info).then((res) => {
         this.info.name = res.name
         this.info.phone = res.phone
