@@ -57,17 +57,27 @@
                   <v-flex xs10>
                     <v-textarea v-model="info.description" label="Description" solo outlined class="purple-input" />
                   </v-flex>
-                  <v-flex xs10>
+                  <v-flex xs11 md6 pt-5>
                     <vue-tags-input
                       v-model="tag"
                       :tags="tags"
                       :autocomplete-items="filteredItems"
-                      placeholder="Add a Skill"
+                      placeholder="Add Skill"
                       :add-only-from-autocomplete="true"
                       @tags-changed="newTags => tags = newTags"
                     />
                   </v-flex>
-                  <v-flex xs10 md2 mr-12>
+                  <v-flex xs11 md6 pt-5>
+                    <vue-tags-input
+                      v-model="ticket"
+                      :tags="tickets"
+                      :autocomplete-items="filteredTickets"
+                      placeholder="Add Ticket"
+                      :add-only-from-autocomplete="true"
+                      @tags-changed="newTags => tickets = newTags"
+                    />
+                  </v-flex>
+                  <v-flex xs10 md2 mr-12 pt-4>
                     <v-text-field
                       v-model="info.hourly"
                       label="Hourly"
@@ -76,7 +86,7 @@
                       type="number"
                     />
                   </v-flex>
-                  <v-flex xs12 md2>
+                  <v-flex xs12 md2 pt-4>
                     <v-switch v-model="switch1" label="Available" />
                   </v-flex>
                   <!-- <v-flex xs12 md12>
@@ -104,6 +114,25 @@
 <style scoped>
   .vue-tags-input {
     background: #CDCCCC;
+    color:#283944
+  }
+  .vue-tags-input .ti-new-tag-input {
+    background: transparent;
+    color: #b7c4c9;
+  }
+  .vue-tags-input .ti-autocomplete {
+    background: #283944;
+    border: 1px solid #8b9396;
+    border-top: none;
+  }
+  .vue-tags-input .ti-tag {
+    position: relative;
+    background: #ebde6e;
+    color: #283944;
+  }
+  .vue-tags-input .ti-item.ti-selected-item {
+    background: #ebde6e;
+    color: #283944;
   }
 </style>
 <script>
@@ -116,6 +145,8 @@ export default {
     return {
       tag: '',
       tags: [],
+      ticket: '',
+      tickets: [],
       autocompleteItems: [{
         text: 'Drywall'
       }, {
@@ -126,13 +157,25 @@ export default {
         text: 'Labour'
       }, {
         text: 'Texturing'
+      }, {
+        text: 'Insulation'
+      }],
+      autocompleteTickets: [{
+        text: 'WHIMIS'
+      }, {
+        text: 'First Aid'
+      }, {
+        text: 'Scissor Lift'
+      }, {
+        text: 'Fall Arrest'
       }],
       info: {
         name: '',
         phone: '',
         description: '',
         hourly: '',
-        available: false
+        available: false,
+        skills: []
       },
       saving: false,
       saved: false,
@@ -145,6 +188,11 @@ export default {
     filteredItems () {
       return this.autocompleteItems.filter((i) => {
         return i.text.toLowerCase().includes(this.tag.toLowerCase())
+      })
+    },
+    filteredTickets () {
+      return this.autocompleteTickets.filter((i) => {
+        return i.text.toLowerCase().includes(this.ticket.toLowerCase())
       })
     }
   },
@@ -172,6 +220,8 @@ export default {
       this.info.description = res.account.description
       this.info.hourly = res.account.hourly
       this.info.available = res.account.available
+      this.tags = res.account.skills
+      this.tickets = res.account.tickets
       if (this.info.available) {
         this.switch1 = true
       } else {
@@ -181,7 +231,8 @@ export default {
   },
   methods: {
     edit () {
-      console.log(this.tags)
+      this.info.skills = this.tags
+      this.info.tickets = this.tickets
       this.$axios.$post('account/edit', this.info).then((res) => {
         this.info.name = res.name
         this.info.phone = res.phone
@@ -189,6 +240,8 @@ export default {
         this.info.description = res.description
         this.info.hourly = res.hourly
         this.info.available = res.available
+        this.tags = res.skills
+        this.tickets = res.tickets
         if (this.info.available) {
           this.switch1 = true
         } else {
@@ -205,6 +258,8 @@ export default {
         this.info.description = res.description
         this.info.hourly = res.hourly
         this.info.available = res.available
+        this.tags = res.skills
+        this.tickets = res.tickets
         if (this.info.available) {
           this.switch1 = true
         } else {
