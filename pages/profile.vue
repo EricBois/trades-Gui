@@ -57,7 +57,7 @@
                   <v-flex xs10>
                     <v-textarea v-model="info.description" label="Description" solo outlined class="purple-input" />
                   </v-flex>
-                  <v-flex xs11 md6 pt-5>
+                  <v-flex xs10 pt-5>
                     <vue-tags-input
                       v-model="tag"
                       :tags="tags"
@@ -67,7 +67,7 @@
                       @tags-changed="newTags => tags = newTags"
                     />
                   </v-flex>
-                  <v-flex xs11 md6 pt-5>
+                  <v-flex xs10 pt-5>
                     <vue-tags-input
                       v-model="ticket"
                       :tags="tickets"
