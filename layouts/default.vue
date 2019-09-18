@@ -10,6 +10,22 @@
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item to="/jobs">
+          <v-list-item-action>
+            <v-icon>mdi-post</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Jobs</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item to="/team">
+          <v-list-item-action>
+            <v-icon>mdi-account-group</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Team</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item>
           <v-list-item-action>
             <v-icon>mdi-settings</v-icon>

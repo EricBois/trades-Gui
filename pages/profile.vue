@@ -37,17 +37,6 @@
                 class="py-4 pl-4"
               >
                 <v-layout wrap>
-                  <!-- <v-flex v-if="info.avatar" xs12 text-xs-center>
-                <v-btn ripple icon>
-                  <v-icon color="red" large>
-                    mdi-delete-circle
-                  </v-icon>
-                </v-btn>
-                <v-avatar tile size="150">
-                  <v-img :src="info.avatar" />
-                </v-avatar>
-          </v-flex>-->
-                  <!-- <v-flex v-else xs12 pt-5 text-xs-center /> -->
                   <v-flex xs10 md5 mr-12>
                     <v-text-field v-model="info.name" class="purple-input" label="Name" />
                   </v-flex>
@@ -56,8 +45,13 @@
                   </v-flex>
                   <v-flex xs10>
                     <v-textarea v-model="info.description" label="Description" solo outlined class="purple-input" />
+                  </v-flex><v-flex xs10 md5 mr-12>
+                    <v-text-field v-model="info.wcb" class="purple-input" label="Wcb #" />
                   </v-flex>
-                  <v-flex xs10 pt-5>
+                  <v-flex xs10 md5 mr-12>
+                    <v-text-field v-model="info.liability" class="purple-input" label="Liability Insurance" />
+                  </v-flex>
+                  <v-flex xs10 md5 pt-5>
                     <vue-tags-input
                       v-model="tag"
                       :tags="tags"
@@ -67,7 +61,7 @@
                       @tags-changed="newTags => tags = newTags"
                     />
                   </v-flex>
-                  <v-flex xs10 pt-5>
+                  <v-flex xs10 md5 pl-md-5 pt-5>
                     <vue-tags-input
                       v-model="ticket"
                       :tags="tickets"
@@ -112,27 +106,104 @@
   </v-container>
 </template>
 <style scoped>
+  /* style the background and the text color of the input ... */
   .vue-tags-input {
-    background: #CDCCCC;
-    color:#283944
+    background: #324652;
   }
+
   .vue-tags-input .ti-new-tag-input {
     background: transparent;
     color: #b7c4c9;
   }
+
+  .vue-tags-input .ti-input {
+    padding: 4px 10px;
+    transition: border-bottom 200ms ease;
+  }
+
+  /* we cange the border color if the user focuses the input */
+  .vue-tags-input.ti-focus .ti-input {
+    border: 1px solid #ebde6e;
+  }
+
+  /* some stylings for the autocomplete layer */
   .vue-tags-input .ti-autocomplete {
     background: #283944;
     border: 1px solid #8b9396;
     border-top: none;
   }
+
+  /* the selected item in the autocomplete layer, should be highlighted */
+  .vue-tags-input .ti-item.ti-selected-item {
+    background: #ebde6e;
+    color: #283944;
+  }
+
+  /* style the placeholders color across all browser */
+  .vue-tags-input ::-webkit-input-placeholder {
+    color: #a4b1b6;
+  }
+
+  .vue-tags-input ::-moz-placeholder {
+    color: #a4b1b6;
+  }
+
+  .vue-tags-input :-ms-input-placeholder {
+    color: #a4b1b6;
+  }
+
+  .vue-tags-input :-moz-placeholder {
+    color: #a4b1b6;
+  }
+
+  /* default styles for all the tags */
   .vue-tags-input .ti-tag {
     position: relative;
     background: #ebde6e;
     color: #283944;
   }
-  .vue-tags-input .ti-item.ti-selected-item {
-    background: #ebde6e;
-    color: #283944;
+
+  /* we defined a custom css class in the data model, now we are using it to style the tag */
+  .vue-tags-input .ti-tag.custom-class {
+    background: transparent;
+    border: 1px solid #ebde6e;
+    color: #ebde6e;
+    margin-right: 4px;
+    border-radius: 0px;
+    font-size: 13px;
+  }
+
+  /* the styles if a tag is invalid */
+  .vue-tags-input .ti-tag.ti-invalid {
+    background-color: #e88a74;
+  }
+
+  /* if the user input is invalid, the input color should be red */
+  .vue-tags-input .ti-new-tag-input.ti-invalid {
+    color: #e88a74;
+  }
+
+  /* if a tag or the user input is a duplicate, it should be crossed out */
+  .vue-tags-input .ti-duplicate span,
+  .vue-tags-input .ti-new-tag-input.ti-duplicate {
+    text-decoration: line-through;
+  }
+
+  /* if the user presses backspace, the complete tag should be crossed out, to mark it for deletion */
+  .vue-tags-input .ti-tag:after {
+    transition: transform .2s;
+    position: absolute;
+    content: '';
+    height: 2px;
+    width: 108%;
+    left: -4%;
+    top: calc(50% - 1px);
+    background-color: #000;
+    transform: scaleX(0);
+  }
+
+  .vue-tags-input .ti-deletion-mark:after {
+    transform: scaleX(1);
   }
 </style>
 <script>
@@ -175,7 +246,9 @@ export default {
         description: '',
         hourly: '',
         available: false,
-        skills: []
+        skills: [],
+        wcb: '',
+        liability: ''
       },
       saving: false,
       saved: false,
@@ -220,6 +293,8 @@ export default {
       this.info.description = res.account.description
       this.info.hourly = res.account.hourly
       this.info.available = res.account.available
+      this.info.wcb = res.account.wcb
+      this.info.liability = res.account.liability
       this.tags = res.account.skills
       this.tickets = res.account.tickets
       if (this.info.available) {
@@ -240,6 +315,8 @@ export default {
         this.info.description = res.description
         this.info.hourly = res.hourly
         this.info.available = res.available
+        this.info.wcb = res.wcb
+        this.info.liability = res.liability
         this.tags = res.skills
         this.tickets = res.tickets
         if (this.info.available) {
@@ -259,6 +336,8 @@ export default {
         this.info.hourly = res.hourly
         this.info.available = res.available
         this.tags = res.skills
+        this.info.wcb = res.wcb
+        this.info.liability = res.liability
         this.tickets = res.tickets
         if (this.info.available) {
           this.switch1 = true
