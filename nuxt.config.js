@@ -31,7 +31,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~/plugins/vue-tags-input', ssr: false }
+    { src: '~/plugins/vue-tags-input', ssr: false },
+    { src: '~/plugins/googleMap'}
   ],
   /*
   ** Nuxt.js dev-modules

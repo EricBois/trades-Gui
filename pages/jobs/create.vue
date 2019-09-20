@@ -7,65 +7,43 @@
             class="py-4 pl-4"
           >
             <v-form>
-              <v-flex class="mb-4">
-                <image-input v-model="file">
-                  <div slot="activator">
-                    <v-avatar v-if="!avatar" v-ripple size="200px" class="grey lighten-3 mb-3" elevation="8">
-                      <span>Click to add avatar</span>
-                    </v-avatar>
-                    <v-avatar
-                      v-else
-                      v-ripple
-                      size="200px"
-                      class="mb-3"
-                      elevation="18"
-                    >
-                      <img v-if="file.imageURL" :src="file.imageURL" alt="avatar">
-                      <img v-else :src="avatar" alt="avatar">
-                    </v-avatar>
-                  </div>
-                </image-input>
-                <v-slide-x-transition>
-                  <div v-if="file.imageURL && saved == false">
-                    <v-btn class="primary" :loading="saving" @click="uploadImage">
-                      Save Avatar
-                    </v-btn>
-                  </div>
-                </v-slide-x-transition>
-              </v-flex>
               <v-row
                 class="py-4 pl-4"
               >
                 <v-layout wrap>
-                  <v-flex xs10 md5 mr-12>
-                    <v-text-field v-model="info.name" class="purple-input" label="Name" />
-                  </v-flex>
-                  <v-flex xs10 md5>
-                    <v-text-field v-model="info.phone" class="purple-input" label="Phone #" />
+                  <v-flex xs10>
+                    <v-text-field v-model="info.name" class="purple-input" label="Project Title" />
                   </v-flex>
                   <v-flex xs10 pb-5>
                     <gmap-autocomplete
                       class="v-input__slot gmap"
                       :value="info.location.address"
                       :select-first-on-enter="true"
-                      placeholder="Address"
                       @place_changed="setPlace"
                     />
                   </v-flex>
                   <v-flex xs10>
-                    <v-textarea v-model="info.description" label="Description" solo outlined class="purple-input" />
+                    <v-textarea v-model="info.description" label="Project Description" solo outlined class="purple-input" />
                   </v-flex><v-flex xs10 md5 mr-12>
-                    <v-text-field v-model="info.wcb" class="purple-input" label="Wcb #" />
+                    <v-checkbox
+                      v-model="checkWcb"
+                      label="Wcb Required"
+                      color="orange darken-3"
+                    />
                   </v-flex>
                   <v-flex xs10 md5 mr-12>
-                    <v-text-field v-model="info.liability" class="purple-input" label="Liability Insurance" />
+                    <v-checkbox
+                      v-model="checkLiability"
+                      color="orange darken-3"
+                      label="Liability Insurance Required"
+                    />
                   </v-flex>
                   <v-flex xs10 md5 pt-5>
                     <vue-tags-input
                       v-model="tag"
                       :tags="tags"
                       :autocomplete-items="filteredItems"
-                      placeholder="Add Skill"
+                      placeholder="Skills Required"
                       :add-only-from-autocomplete="true"
                       @tags-changed="newTags => tags = newTags"
                     />
@@ -75,26 +53,26 @@
                       v-model="ticket"
                       :tags="tickets"
                       :autocomplete-items="filteredTickets"
-                      placeholder="Add Ticket"
+                      placeholder="Tickets Required"
                       :add-only-from-autocomplete="true"
                       @tags-changed="newTags => tickets = newTags"
                     />
                   </v-flex>
                   <v-flex xs10 md2 mr-12 pt-4>
                     <v-text-field
-                      v-model="info.hourly"
-                      label="Hourly"
+                      v-model="info.budget"
+                      label="Budget"
                       class="purple-input"
                       prefix="$"
                       type="number"
                     />
                   </v-flex>
                   <v-flex xs12 md2 pt-4>
-                    <v-switch v-model="switch1" label="Available" />
+                    <v-switch v-model="switch1" label="Private" />
                   </v-flex>
                   <v-card-actions>
-                    <v-btn class="mx-0 font-weight-light" color="primary" @click="edit">
-                      Update Profile
+                    <v-btn class="mx-0 font-weight-light" color="primary" @click="create">
+                      Create Job
                     </v-btn>
                   </v-card-actions>
                 </v-layout>
@@ -213,11 +191,7 @@
   }
 </style>
 <script>
-import ImageInput from '../components/ImageInput.vue'
 export default {
-  components: {
-    ImageInput
-  },
   data () {
     return {
       tag: '',
@@ -248,24 +222,21 @@ export default {
       }],
       info: {
         name: '',
-        phone: '',
         description: '',
-        hourly: '',
-        available: false,
+        budget: '',
+        private: false,
         skills: [],
-        wcb: '',
-        liability: '',
+        wcb: false,
+        liability: false,
         location: {
           lat: '',
           lng: '',
           address: ''
         }
       },
-      saving: false,
-      saved: false,
-      avatar: null,
       switch1: false,
-      file: {}
+      checkWcb: false,
+      checkLiability: false
     }
   },
   computed: {
@@ -281,94 +252,42 @@ export default {
     }
   },
   watch: {
-    avatar: {
-      handler () {
-        this.saved = false
-      },
-      deep: true
-    },
     switch1 () {
       if (this.switch1) {
-        this.info.available = true
+        this.info.private = true
       } else {
-        this.info.available = false
+        this.info.private = false
       }
-      this.edit()
+    },
+    checkWcb () {
+      if (this.checkWcb) {
+        this.info.wcb = true
+      } else {
+        this.info.wcb = false
+      }
+    },
+    checkLiability () {
+      if (this.checkLiability) {
+        this.info.liability = true
+      } else {
+        this.info.liability = false
+      }
     }
   },
-  mounted () {
-    this.$axios.$get('account/get').then((res) => {
-      this.info.name = res.account.name
-      this.info.phone = res.account.phone
-      this.avatar = res.account.avatar
-      this.info.description = res.account.description
-      this.info.hourly = res.account.hourly
-      this.info.available = res.account.available
-      this.info.wcb = res.account.wcb
-      this.info.liability = res.account.liability
-      this.tags = res.account.skills
-      this.tickets = res.account.tickets
-      this.info.location = res.account.location
-      if (this.info.available) {
-        this.switch1 = true
-      } else {
-        this.switch1 = false
-      }
-    })
-  },
   methods: {
-    edit () {
+    create () {
       this.info.skills = this.tags
       this.info.tickets = this.tickets
-      this.$axios.$post('account/edit', this.info).then((res) => {
-        this.info.name = res.name
-        this.info.phone = res.phone
-        this.avatar = res.avatar
-        this.info.description = res.description
-        this.info.hourly = res.hourly
-        this.info.available = res.available
-        this.info.wcb = res.wcb
-        this.info.liability = res.liability
-        this.tags = res.skills
-        this.tickets = res.tickets
-        this.info.location = res.location
-        if (this.info.available) {
-          this.switch1 = true
-        } else {
-          this.switch1 = false
-        }
+      this.$axios.$post('job/create', this.info).then((res) => {
+        //  direct to jobs page
       })
-    },
-    uploadImage () {
-      this.saving = true
-      this.$axios.$post('account/edit', this.file.formData).then((res) => {
-        this.info.name = res.name
-        this.info.phone = res.phone
-        this.avatar = res.avatar
-        this.info.description = res.description
-        this.info.hourly = res.hourly
-        this.info.available = res.available
-        this.tags = res.skills
-        this.info.wcb = res.wcb
-        this.info.liability = res.liability
-        this.tickets = res.tickets
-        if (this.info.available) {
-          this.switch1 = true
-        } else {
-          this.switch1 = false
-        }
-      })
-      setTimeout(() => this.savedAvatar(), 1000)
-    },
-    savedAvatar () {
-      this.saving = false
-      this.saved = true
     },
     setPlace (place) {
       this.info.location.address = place.formatted_address
       this.info.location.lat = place.geometry.location.lat()
       this.info.location.lng = place.geometry.location.lng()
     }
+
   }
 }
 </script>

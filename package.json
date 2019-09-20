@@ -20,7 +20,8 @@
     "auth0-js": "^9.11.3",
     "firebase": "^6.5.0",
     "nuxt": "^2.0.0",
-    "nuxt-material-design-icons": "^1.0.4"
+    "nuxt-material-design-icons": "^1.0.4",
+    "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0",
