@@ -12,7 +12,7 @@
               >
                 <v-layout wrap>
                   <v-flex xs10>
-                    <v-text-field v-model="info.name" class="purple-input" label="Project Title" />
+                    <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Project Title" />
                   </v-flex>
                   <v-flex xs10 pb-5>
                     <gmap-autocomplete
@@ -194,6 +194,7 @@
 export default {
   data () {
     return {
+      nameRule: [v => !!v || 'The name is required'],
       tag: '',
       tags: [],
       ticket: '',
@@ -280,6 +281,7 @@ export default {
       this.info.tickets = this.tickets
       this.$axios.$post('job/create', this.info).then((res) => {
         //  direct to jobs page
+        this.$router.push('/jobs')
       })
     },
     setPlace (place) {
