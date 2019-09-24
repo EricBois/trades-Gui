@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-layout justify-center>
     <v-btn
       color="amber darken-4"
       dark
@@ -12,34 +12,39 @@
     >
       <v-icon>mdi-plus-box</v-icon>
     </v-btn>
-    <v-card>
-      <v-card-title>
-        Job listings
-        <div class="flex-grow-1" />
-        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details />
-      </v-card-title>
-      <v-data-table dense :headers="headers" :items="jobs" :search="search" />
-    </v-card>
-  </v-container>
+    <!-- Make Main Card Take up 1/2 the Page by Wrapping in Flex -->
+    <v-flex xs10 class="mt-3">
+      <v-card>
+        <!-- Push Contents In and Put Space Between Flex Items Using Grid List -->
+        <v-container fluid grid-list-lg>
+          <h1>Job Listings </h1>
+          <v-layout row wrap >
+            <!--  Create Cards Based on Objects in an Array -->
+            <v-flex v-for="job in jobs" :key="job._id" xs12>
+              <v-card raised>
+                <v-card-title>{{job.name}} <v-spacer></v-spacer> <v-chip small v-if="job.budget">Budget: ${{job.budget}}</v-chip> </v-card-title>
+                <v-list-item two-line>
+      <v-list-item-content>
+        <v-list-item-title class="body-2">{{job.description}}</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+                <v-card-text>
+                    <v-chip color="primary" small v-for="item in job.skills" :key="item._id"> {{item.text}}</v-chip>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 <script>
 export default {
   data () {
     return {
       search: '',
-      jobs: [],
-      headers: [
-        {
-          text: 'Project',
-          align: 'left',
-          sortable: false,
-          value: 'name'
-        },
-        { text: 'Type', value: 'type' },
-        { text: 'Skills', value: 'Skills' },
-        { text: 'Location', value: 'location' },
-        { text: 'Budget', value: 'budget' }
-      ]
+      jobs: []
     }
   },
   mounted () {
@@ -50,7 +55,6 @@ export default {
         job._id = key
         this.jobs.push(job)
       }
-      console.log(res)
     })
     console.log(this.jobs)
   }
