@@ -18,19 +18,37 @@
         <!-- Push Contents In and Put Space Between Flex Items Using Grid List -->
         <v-container fluid grid-list-lg>
           <h1>Job Listings </h1>
-          <v-layout row wrap >
+          <v-layout row wrap>
             <!--  Create Cards Based on Objects in an Array -->
-            <v-flex v-for="job in jobs" :key="job._id" xs12>
+            <v-flex v-for="job in jobs" :key="job._id" xs12 class="flexit">
               <v-card raised>
-                <v-card-title>{{job.name}} <v-spacer></v-spacer> <v-chip small v-if="job.budget">Budget: ${{job.budget}}</v-chip> </v-card-title>
-                <v-list-item two-line>
-      <v-list-item-content>
-        <v-list-item-title class="body-2">{{job.description}}</v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
-                <v-card-text>
-                    <v-chip color="primary" small v-for="item in job.skills" :key="item._id"> {{item.text}}</v-chip>
-                </v-card-text>
+                <v-list subheader>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title v-text="job.name" />
+                    </v-list-item-content>
+                    <v-list-item-content>
+                      {{ job.description }}
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+                <v-divider />
+                <v-list>
+                  <v-list>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          <v-chip v-for="item in job.skills" :key="item._id" color="primary" small>
+                            {{ item.text }}
+                          </v-chip>
+                        </v-list-item-title>
+                      </v-list-item-content>
+                      <v-chip color="green" v-if="job.budget" small >
+                        Budget: ${{ job.budget }}
+                      </v-chip>
+                    </v-list-item>
+                  </v-list>
+                </v-list>
               </v-card>
             </v-flex>
           </v-layout>
@@ -39,6 +57,15 @@
     </v-flex>
   </v-layout>
 </template>
+<style scoped>
+    .flexit {
+        background-color: rgb(192, 192, 192)
+    }
+    .v-chip {
+        margin-left: 5px;
+        color: black
+    }
+</style>
 <script>
 export default {
   data () {
