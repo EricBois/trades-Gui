@@ -25,7 +25,16 @@
                 <v-list subheader>
                   <v-list-item>
                     <v-list-item-content>
-                      <v-list-item-title v-text="job.name" />
+                      <v-list-item-title>
+                        {{ job.name }} <v-chip
+                          class="ma-2"
+                          color="orange"
+                        >
+                          {{ job.jobType }}<v-icon right>
+                            mdi-star
+                          </v-icon>
+                        </v-chip>
+                      </v-list-item-title>
                     </v-list-item-content>
                     <v-list-item-content>
                       {{ job.description }}
@@ -43,8 +52,13 @@
                           </v-chip>
                         </v-list-item-title>
                       </v-list-item-content>
-                      <v-chip v-if="job.budget" color="green" small>
-                        Budget: ${{ job.budget }}
+                      <v-btn outlined class="ma-2" dark>
+                        <v-icon dark left>
+                          mdi-city
+                        </v-icon>{{ job.location }}
+                      </v-btn>
+                      <v-chip v-if="job.budget" outlined color="green">
+                        <b>Budget: ${{ job.budget }}</b>
                       </v-chip>
                     </v-list-item>
                   </v-list>
@@ -86,7 +100,6 @@ export default {
         this.jobs.push(job)
       }
     })
-    console.log(this.jobs)
   }
 }
 </script>

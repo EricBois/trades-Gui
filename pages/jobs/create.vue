@@ -2,11 +2,14 @@
   <v-container fluid>
     <v-layout column>
       <v-card elevation="22">
-        <v-card-text>
+        <v-card raised>
           <v-row
-            class="py-4 pl-4"
+            class="mx-5"
           >
-            <v-form>
+            <v-form
+              ref="form"
+    v-model="valid"
+    lazy-validation>
               <v-row
                 class="py-4 pl-4"
               >
@@ -17,6 +20,7 @@
                   <v-flex xs10 pb-5>
                     <v-select
                       v-model="info.jobType"
+                      :rules="projectRule"
                       :items="job_type"
                       :menu-props="{ top: true, offsetY: true }"
                       label="Project Type"
@@ -25,13 +29,21 @@
                   <v-flex xs10 pb-5>
                     <v-select
                       v-model="info.location"
+                      :rules="locationRule"
                       :items="locations"
                       :menu-props="{ top: true, offsetY: true }"
                       label="Location"
                     />
                   </v-flex>
                   <v-flex xs10>
-                    <v-textarea v-model="info.description" label="Project Description" solo outlined class="purple-input" />
+                    <v-textarea
+                      v-model="info.description"
+                      :rules="descRule"
+                      label="Project Description"
+                      solo
+                      outlined
+                      class="purple-input"
+                    />
                   </v-flex><v-flex xs10 md5 mr-12>
                     <v-checkbox
                       v-model="checkWcb"
@@ -87,7 +99,7 @@
               </v-row>
             </v-form>
           </v-row>
-        </v-card-text>
+        </v-card>
       </v-card>
     </v-layout>
   </v-container>
@@ -203,6 +215,9 @@ export default {
   data () {
     return {
       nameRule: [v => !!v || 'The name is required'],
+      projectRule: [v => !!v || 'The project type is required'],
+      locationRule: [v => !!v || 'The location is required'],
+      descRule: [v => !!v || 'The description is required'],
       tag: '',
       tags: [],
       ticket: '',
@@ -287,10 +302,12 @@ export default {
     create () {
       this.info.skills = this.tags
       this.info.tickets = this.tickets
-      this.$axios.$post('job/create', this.info).then((res) => {
-        //  direct to jobs page
-        this.$router.push('/jobs')
-      })
+      if (this.$refs.form.validate()) {
+        this.$axios.$post('job/create', this.info).then((res) => {
+          //  direct to jobs page
+          this.$router.push('/jobs')
+        })
+      }
     }
 
   }
