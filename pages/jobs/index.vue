@@ -61,6 +61,9 @@
     .flexit {
         background-color: rgb(192, 192, 192)
     }
+    .v-sheet.theme--dark {
+        background-color: rgb(48, 63, 82)
+    }
     .v-chip {
         margin-left: 5px;
         color: black
