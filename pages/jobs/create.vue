@@ -15,11 +15,19 @@
                     <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Project Title" />
                   </v-flex>
                   <v-flex xs10 pb-5>
-                    <gmap-autocomplete
-                      class="v-input__slot gmap"
-                      :value="info.location.address"
-                      :select-first-on-enter="true"
-                      @place_changed="setPlace"
+                    <v-select
+                      v-model="info.jobType"
+                      :items="job_type"
+                      :menu-props="{ top: true, offsetY: true }"
+                      label="Project Type"
+                    />
+                  </v-flex>
+                  <v-flex xs10 pb-5>
+                    <v-select
+                      v-model="info.location"
+                      :items="locations"
+                      :menu-props="{ top: true, offsetY: true }"
+                      label="Location"
                     />
                   </v-flex>
                   <v-flex xs10>
@@ -221,6 +229,9 @@ export default {
       }, {
         text: 'Fall Arrest'
       }],
+      select: { city: 'Calgary', prov: 'AB' },
+      locations: ['Calgary', 'Edmonton'],
+      job_type: ['Contract', 'Hourly'],
       info: {
         name: '',
         description: '',
@@ -229,11 +240,8 @@ export default {
         skills: [],
         wcb: false,
         liability: false,
-        location: {
-          lat: '',
-          lng: '',
-          address: ''
-        }
+        location: '',
+        jobType: ''
       },
       switch1: false,
       checkWcb: false,
@@ -283,11 +291,6 @@ export default {
         //  direct to jobs page
         this.$router.push('/jobs')
       })
-    },
-    setPlace (place) {
-      this.info.location.address = place.formatted_address
-      this.info.location.lat = place.geometry.location.lat()
-      this.info.location.lng = place.geometry.location.lng()
     }
 
   }

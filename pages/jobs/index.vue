@@ -43,7 +43,7 @@
                           </v-chip>
                         </v-list-item-title>
                       </v-list-item-content>
-                      <v-chip color="green" v-if="job.budget" small >
+                      <v-chip v-if="job.budget" color="green" small>
                         Budget: ${{ job.budget }}
                       </v-chip>
                     </v-list-item>
