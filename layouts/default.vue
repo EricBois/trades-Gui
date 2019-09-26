@@ -1,6 +1,27 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app clipped>
+    <v-navigation-drawer v-if="this.$auth.loggedIn" v-model="drawer" :mini-variant.sync="mini" app clipped>
+      <v-list-item>
+        <v-list-item-avatar>
+          <v-img :src="picture"></v-img>
+        </v-list-item-avatar>
+
+        <v-list-item-title>{{this.$auth.user.name}}</v-list-item-title>
+
+        <v-btn
+          icon
+          @click.stop="mini = !mini"
+        >
+          <v-icon>mdi-chevron-left</v-icon>
+        </v-btn>
+      </v-list-item>
+      <v-list-item v-if="!mini">
+              <v-btn small v-if="this.$auth.loggedIn" @click="logout">
+                Logout
+              </v-btn>
+            </v-list-item>
+
+      <v-divider></v-divider>
       <v-list dense>
         <v-list-item to="/">
           <v-list-item-action>
@@ -37,53 +58,8 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app clipped-left>
+    <v-app-bar app clipped-left dense>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>Application</v-toolbar-title>
-      <v-spacer />
-      <v-menu
-        v-if="this.$auth.loggedIn"
-        :close-on-content-click="false"
-        :nudge-width="200"
-        offset-x
-      >
-        <template v-slot:activator="{ on }">
-          <v-avatar elevation="14" v-on="on">
-            <img :src="picture">
-          </v-avatar>
-        </template>
-
-        <v-card>
-          <nuxt-link to="/profile">
-            <v-list>
-              <v-list-item>
-                <v-list-item-avatar>
-                  <img :src="picture">
-                </v-list-item-avatar>
-
-                <v-list-item-content>
-                  <v-list-item-title>{{ this.$auth.user.name }}</v-list-item-title>
-                  <v-list-item-subtitle>is logged-in</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </nuxt-link>
-
-          <v-divider />
-
-          <v-list>
-            <v-list-item>
-              <v-btn v-if="this.$auth.loggedIn" color="primary" to="/profile">
-                Profile
-              </v-btn>
-              <v-spacer />
-              <v-btn v-if="this.$auth.loggedIn" @click="logout">
-                Logout
-              </v-btn>
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-menu>
       <v-btn v-if="!this.$auth.loggedIn" @click="login">
         Login
       </v-btn>
@@ -111,8 +87,9 @@ export default {
   },
 
   data: () => ({
-    drawer: null,
-    picture: ''
+    drawer: true,
+    picture: '',
+    mini: true
   }),
   created () {
     this.$vuetify.theme.dark = true

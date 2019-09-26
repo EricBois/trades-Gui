@@ -8,7 +8,6 @@
           >
             <v-form
               ref="form"
-    v-model="valid"
     lazy-validation>
               <v-row
                 class="py-4 pl-4"
