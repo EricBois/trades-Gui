@@ -11,8 +11,7 @@ export default {
     }
   },
   mounted () {
-    // get the job with the id as seend below
-    // console.log(this.$route.params.id)
+    // get the job with the id
     this.$axios.$get(`job/view/${this.$route.params.id}`).then((res) => {
       this.project = res
     })
