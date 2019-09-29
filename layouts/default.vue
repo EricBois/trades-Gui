@@ -28,17 +28,18 @@
         <v-list-group
         prepend-icon="mdi-square-inc-cash"
         value="true"
+        sub-group
       >
         <template v-slot:activator>
           <v-list-item-title>Project</v-list-item-title>
         </template>
           <v-list-item to="/jobs">
-          <v-list-item-action>
-            <v-icon>mdi-post</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Listings</v-list-item-title>
-          </v-list-item-content>
+            <v-list-item-action>
+              <v-icon>mdi-post</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Listings</v-list-item-title>
+            </v-list-item-content>
         </v-list-item>
         <v-list-item to="/job/create">
           <v-list-item-action>
