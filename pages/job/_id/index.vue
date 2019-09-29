@@ -7,10 +7,13 @@
     >
       <v-layout row wrap class="pa-3">
         <v-flex xs12>
+            <div>
+                <v-chip
+                class="mb-4"
+              color="grey"
+              outlined>{{project.created}}</v-chip>
+            </div>
           <div>
-            <v-chip
-              class="ma-2"
-              color="grey">{{project.created}}</v-chip>
             <v-chip
               class="ma-2"
               color="orange"
@@ -24,7 +27,7 @@
           </div>
           <div class="headline text-center">
             {{ project.name }}
-            <div v-if="project.createdBy" class="caption grey--text">
+            <div v-if="project.createdBy" class="caption grey--text mb-2">
               Project by: <u>{{ project.createdBy }}</u>
             </div>
             <div>
