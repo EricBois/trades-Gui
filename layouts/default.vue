@@ -26,7 +26,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-list-group
-        prepend-icon="account_circle"
+        prepend-icon="mdi-square-inc-cash"
         value="true"
       >
         <template v-slot:activator>
@@ -42,7 +42,7 @@
         </v-list-item>
         <v-list-item to="/job/create">
           <v-list-item-action>
-            <v-icon>mdi-post</v-icon>
+            <v-icon>mdi-plus-box</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Post</v-list-item-title>
