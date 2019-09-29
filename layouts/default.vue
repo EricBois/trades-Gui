@@ -8,14 +8,8 @@
 
         <v-list-item-title>{{this.$auth.user.name}}</v-list-item-title>
 
-        <v-btn
-          icon
-          @click.stop="mini = !mini"
-        >
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
       </v-list-item>
-      <v-list-item v-if="!mini">
+      <v-list-item>
               <v-btn small v-if="this.$auth.loggedIn" @click="logout">
                 Logout
               </v-btn>
@@ -31,14 +25,30 @@
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item to="/jobs">
+        <v-list-group
+        prepend-icon="account_circle"
+        value="true"
+      >
+        <template v-slot:activator>
+          <v-list-item-title>Project</v-list-item-title>
+        </template>
+          <v-list-item to="/jobs">
           <v-list-item-action>
             <v-icon>mdi-post</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Jobs</v-list-item-title>
+            <v-list-item-title>Listings</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item to="/job/create">
+          <v-list-item-action>
+            <v-icon>mdi-post</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Post</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-group>
         <v-list-item to="/team">
           <v-list-item-action>
             <v-icon>mdi-account-group</v-icon>
@@ -47,7 +57,7 @@
             <v-list-item-title>Team</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item>
+        <v-list-item to="/profile">
           <v-list-item-action>
             <v-icon>mdi-settings</v-icon>
           </v-list-item-action>
@@ -89,7 +99,7 @@ export default {
   data: () => ({
     drawer: true,
     picture: '',
-    mini: true
+    mini: false
   }),
   created () {
     this.$vuetify.theme.dark = true

@@ -1,92 +1,62 @@
 <template>
-  <v-layout justify-center>
-    <v-btn
-      color="amber darken-4"
-      dark
-      absolute
-      middle
-      right
-      fab
-      large
-      to="jobs/create"
-    >
-      <v-icon>mdi-plus-box</v-icon>
-    </v-btn>
-    <!-- Make Main Card Take up 1/2 the Page by Wrapping in Flex -->
-    <v-flex xs10 class="mt-3">
-      <v-card>
-        <!-- Push Contents In and Put Space Between Flex Items Using Grid List -->
-        <v-container fluid grid-list-lg>
-          <h1>Job Listings </h1>
-          <v-layout row wrap>
-            <!--  Create Cards Based on Objects in an Array -->
-            <v-flex v-for="job in jobs" :key="job._id" xs12 class="flexit">
-              <v-card raised>
-                <v-list subheader>
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        {{ job.name }} <v-chip
-                          class="ma-2"
-                          color="orange"
-                        >
-                          {{ job.jobType }}<v-icon right>
-                            mdi-star
-                          </v-icon>
-                        </v-chip>
-                      </v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-content>
-                      {{ job.description }}
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-                <v-divider />
-                <v-list>
-                  <v-list>
-                    <v-list-item>
-                      <v-list-item-content>
-                        <v-list-item-title>
-                          <v-chip v-for="item in job.skills" :key="item._id" color="primary" small>
+    <v-container class="mx-5">
+      <v-card raised v-for="project in jobs" :key="project.id" ripple :to="job+project.id">
+        <v-layout row wrap class="pa-3">
+          <v-flex xs12 md4 mx-3>
+            <div class="caption grey--text">PROJECT TITLE</div>
+            <div>{{project.name}}<v-chip
+                    class="ma-2"
+                    color="orange"
+                  >
+                    {{ project.jobType }}<v-icon right>
+                      mdi-star
+                    </v-icon>
+                  </v-chip></div>
+          </v-flex>
+          <v-flex xs8 md4>
+            <div class="caption grey--text">Description</div>
+            <div>{{project.description}}</div>
+          </v-flex>
+          <v-flex xs4 md3>
+            <div class="caption grey--text">Budget</div>
+                      <v-chip v-if="project.budget" outlined color="green">
+                        <b>${{ project.budget }}</b>
+                      </v-chip>
+          </v-flex>
+          <v-flex xs12 mt-2>
+              <v-chip v-for="item in project.skills" :key="item._id" color="primary" small>
                             {{ item.text }}
                           </v-chip>
-                        </v-list-item-title>
-                      </v-list-item-content>
-                      <v-btn outlined class="ma-2" dark>
-                        <v-icon dark left>
-                          mdi-city
-                        </v-icon>{{ job.location }}
-                      </v-btn>
-                      <v-chip v-if="job.budget" outlined color="green">
-                        <b>Budget: ${{ job.budget }}</b>
-                      </v-chip>
-                    </v-list-item>
-                  </v-list>
-                </v-list>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-container>
+          </v-flex>
+        </v-layout>
+        <v-divider dark></v-divider>
       </v-card>
-    </v-flex>
-  </v-layout>
+    </v-container>
 </template>
 <style scoped>
     .flexit {
         background-color: rgb(192, 192, 192)
     }
-    .v-sheet.theme--dark {
+    .container {
         background-color: rgb(48, 63, 82)
     }
     .v-chip {
         margin-left: 5px;
         color: black
     }
+    .v-divider {
+    display: block !important;
+    flex: 1 1 0px !important;
+    max-width: 100% !important;
+    border: solid !important;
+    border-width: thin 0 0 0 !important;
+}
 </style>
 <script>
 export default {
   data () {
     return {
+      job: 'job/',
       search: '',
       jobs: []
     }
