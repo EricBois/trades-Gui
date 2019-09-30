@@ -11,7 +11,7 @@
                 <v-chip
                 class="mb-4"
               color="grey"
-              outlined>{{project.created}}</v-chip>
+              outlined>Posted  {{$moment(project.Created).fromNow()}}</v-chip>
             </div>
           <div>
             <v-chip
@@ -74,7 +74,7 @@ export default {
     // get the job with the id
     this.$axios.$get(`job/view/${this.$route.params.id}`).then((res) => {
       this.project = res
-      this.project.created = new Date(res.created).toISOString().slice(0, 10)
+      // this.project.created = new Date(res.created).toISOString().slice(0, 10)
     })
   }
 }

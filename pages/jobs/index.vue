@@ -3,7 +3,7 @@
       <v-card raised v-for="project in jobs" :key="project.id" ripple :to="job+project.id">
         <v-layout row wrap class="pa-3">
           <v-flex xs12 md4 mx-3>
-            <div class="caption grey--text">PROJECT TITLE</div>
+            <div class="caption grey--text"> <v-chip outlined small color="grey">Posted {{$moment(project.Created).fromNow()}}</v-chip></div>
             <div>{{project.name}}<v-chip
                     class="ma-2"
                     color="orange"
