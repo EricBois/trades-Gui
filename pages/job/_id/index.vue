@@ -106,6 +106,9 @@ export default {
     // get the job with the id
     this.$axios.$get(`job/view/${this.$route.params.id}`).then((res) => {
       this.project = res
+    }).catch(() => {
+      // handle this error here
+      this.$router.push(`../jobs`)
     })
   },
   methods: {

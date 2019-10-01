@@ -1,8 +1,14 @@
 <template>
   <v-container fluid>
     <v-layout column>
-      <v-card elevation="22">
-        <v-card raised>
+      <v-card
+        elevation="22"
+        max-width="850"
+        class="mx-auto"
+      >
+        <v-card
+          raised
+        >
           <v-row
             class="mx-5"
           >
@@ -91,7 +97,9 @@
                     <v-switch v-model="switch1" label="Private" />
                   </v-flex>
                   <v-card-actions>
-                      <v-btn class="ma-1" color="black" :to="job+this.$route.params.id">Back</v-btn>
+                    <v-btn class="ma-1" color="black" :to="job+this.$route.params.id">
+                      Back
+                    </v-btn>
                     <v-btn class="ma-1 font-weight-light" color="primary" @click="edit">
                       Edit Project
                     </v-btn>

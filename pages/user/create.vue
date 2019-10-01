@@ -1,7 +1,11 @@
 <template>
   <v-container fluid>
     <v-layout column>
-      <v-card elevation="22">
+      <v-card
+        elevation="22"
+        max-width="850"
+        class="mx-auto"
+      >
         <v-card raised>
           <v-row
             class="mx-5"
