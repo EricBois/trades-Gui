@@ -91,8 +91,9 @@
                     <v-switch v-model="switch1" label="Private" />
                   </v-flex>
                   <v-card-actions>
-                    <v-btn class="mx-0 font-weight-light" color="primary" @click="create">
-                      Create Job
+                      <v-btn class="ma-1" color="black" :to="job+this.$route.params.id">Back</v-btn>
+                    <v-btn class="ma-1 font-weight-light" color="primary" @click="edit">
+                      Edit Project
                     </v-btn>
                   </v-card-actions>
                 </v-layout>
@@ -214,6 +215,7 @@
 export default {
   data () {
     return {
+      job: '../../job/',
       nameRule: [v => !!v || 'The name is required'],
       projectRule: [v => !!v || 'The project type is required'],
       locationRule: [v => !!v || 'The location is required'],
@@ -298,14 +300,22 @@ export default {
       }
     }
   },
+  mounted () {
+    // get the job with the id
+    this.$axios.$get(`job/view/${this.$route.params.id}`).then((res) => {
+      this.info = res
+      this.tags = this.info.skills
+      this.tickets = this.info.tickets
+    })
+  },
   methods: {
-    create () {
+    edit () {
       this.info.skills = this.tags
       this.info.tickets = this.tickets
       if (this.$refs.form.validate()) {
-        this.$axios.$post('job/create', this.info).then((res) => {
+        this.$axios.$post(`job/edit/${this.$route.params.id}`, this.info).then((res) => {
           //  direct to jobs page
-          this.$router.push('/jobs')
+          this.$router.push(`../../../job/${this.$route.params.id}`)
         })
       }
     }

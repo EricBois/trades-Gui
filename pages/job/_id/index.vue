@@ -7,12 +7,15 @@
     >
       <v-layout row wrap class="pa-3">
         <v-flex xs12>
-            <div>
-                <v-chip
-                class="mb-4"
+          <div>
+            <v-chip
+              class="mb-4"
               color="grey"
-              outlined>Posted  {{$moment(project.Created).fromNow()}}</v-chip>
-            </div>
+              outlined
+            >
+              Posted  {{ $moment(project.Created).fromNow() }}
+            </v-chip>
+          </div>
           <div>
             <v-chip
               class="ma-2"
@@ -47,9 +50,36 @@
         <v-flex xs12>
           <v-card-actions class="justify-center">
             <v-btn
+              v-if="project.user !== this.$auth.user.sub"
+              class="ma-1"
               color="green"
+              small
             >
               Place a Bid
+            </v-btn>
+            <v-btn
+              v-else
+              class="ma-1"
+              color="green"
+              small
+            >
+              View Bids
+            </v-btn>
+            <v-btn
+              v-if="project.user === this.$auth.user.sub"
+              class="blue-grey lighten-1 ma-1"
+              small
+              :to="job+project.id+edit"
+            >
+              Edit
+            </v-btn>
+            <v-btn
+              v-if="project.user === this.$auth.user.sub"
+              class="red darken-4 ma-1"
+              small
+              @click="deleteProject(project.id)"
+            >
+              Delete
             </v-btn>
           </v-card-actions>
         </v-flex>
@@ -67,15 +97,24 @@
 export default {
   data () {
     return {
-      project: {}
+      project: {},
+      job: '../job/',
+      edit: '/edit'
     }
   },
   mounted () {
     // get the job with the id
     this.$axios.$get(`job/view/${this.$route.params.id}`).then((res) => {
       this.project = res
-      // this.project.created = new Date(res.created).toISOString().slice(0, 10)
     })
+  },
+  methods: {
+    deleteProject (id) {
+      this.$axios.$post(`job/delete/${id}`).then((res) => {
+        //  direct to jobs page
+        this.$router.push(`../../user/projects`)
+      })
+    }
   }
 }
 </script>
