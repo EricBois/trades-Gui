@@ -113,9 +113,26 @@ export default {
   },
   methods: {
     deleteProject (id) {
-      this.$axios.$post(`job/delete/${id}`).then((res) => {
-        //  direct to jobs page
-        this.$router.push(`../../user/projects`)
+      this.$swal.fire({
+        title: 'Delete this project ?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.value) {
+          this.$axios.$post(`job/delete/${id}`).then((res) => {
+            //  direct to jobs page
+            this.$router.push(`../../user/projects`)
+            this.$swal.fire(
+              'Success!',
+              'Deleted Successfully.',
+              'success'
+            )
+          })
+        }
       })
     }
   }

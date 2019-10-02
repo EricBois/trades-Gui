@@ -32,7 +32,8 @@ export default {
   */
   plugins: [
     { src: '~/plugins/vue-tags-input', ssr: false },
-    { src: '~/plugins/googleMap'}
+    { src: '~/plugins/googleMap'},
+    { src: '~/plugins/sweetalert2'}
   ],
   /*
   ** Nuxt.js dev-modules

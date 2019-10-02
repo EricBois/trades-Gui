@@ -21,6 +21,7 @@
     "firebase": "^6.5.0",
     "nuxt": "^2.0.0",
     "nuxt-material-design-icons": "^1.0.4",
+    "vue-sweetalert2": "^2.1.1",
     "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
