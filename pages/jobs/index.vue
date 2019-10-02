@@ -23,10 +23,13 @@
                         <b>${{ project.budget }}</b>
                       </v-chip>
           </v-flex>
-          <v-flex xs12 mt-2>
+          <v-flex xs8 mt-2>
               <v-chip v-for="item in project.skills" :key="item._id" color="primary" small>
                             {{ item.text }}
                           </v-chip>
+          </v-flex>
+          <v-flex xs4>
+            <v-btn v-if="project.wcb" class="ma-1" x-small text><v-icon>mdi-check-decagram</v-icon>&nbsp; Wcb</v-btn><v-btn v-if="project.liability" class="ma-1" x-small text><v-icon>mdi-check-decagram</v-icon>&nbsp;Liability</v-btn>
           </v-flex>
         </v-layout>
         <v-divider dark></v-divider>
