@@ -61,6 +61,7 @@
               class="ma-1"
               color="green"
               small
+              @click="bid = !bid"
             >
               Place a Bid
             </v-btn>
@@ -69,6 +70,7 @@
               class="ma-1"
               color="green"
               small
+              @click="bid = !bid"
             >
               View Bids
             </v-btn>
@@ -92,6 +94,46 @@
         </v-flex>
       </v-layout>
     </v-card>
+    <v-flex class="mt-5" />
+    <v-card
+      v-show="bid"
+      max-width="844"
+      class="mx-auto"
+      raised
+    >
+      <v-flex xs12 text-center>
+        <h2 v-if="project.user !== this.$auth.user.sub">
+          Your Placed Bids
+        </h2>
+        <h2 v-if="project.user === this.$auth.user.sub">
+          Project Bids / Offers
+        </h2>
+      </v-flex>
+      <v-flex xs12>
+        <v-data-table
+          v-model="selected"
+          item-key="_id"
+          :headers="headers"
+          :items="bids"
+          :items-per-page="5"
+          show-select
+          class="elevation-1"
+        >
+        <template v-slot:item.name="{ item }">
+      <v-chip color="light-green lighten-5" ><b>{{ item.name }}</b></v-chip>
+    </template>
+    <template v-slot:item.description="{ item }">
+      <v-chip color="cyan lighten-4" >{{ item.description }}</v-chip>
+    </template>
+    <template v-slot:item.price="{ item }">
+      <v-chip color="light-green darken-2" >{{ item.price }}</v-chip>
+    </template>
+    <template v-slot:item.user="{ item }">
+      <v-chip color="orange accent-1" >{{ item.user }}</v-chip>
+    </template>
+        </v-data-table>
+      </v-flex>
+    </v-card>
   </v-container>
 </template>
 <style scoped>
@@ -104,9 +146,66 @@
 export default {
   data () {
     return {
+      selected: [],
+      bid: false,
       project: {},
       job: '../job/',
-      edit: '/edit'
+      edit: '/edit',
+      headers: [
+        {
+          text: 'Bid',
+          align: 'left',
+          sortable: false,
+          value: 'name'
+        },
+        { text: 'Description', value: 'description' },
+        { text: 'Price ( $ )', value: 'price' },
+        { text: 'Placed By', value: 'user' }
+      ],
+      bids: [
+        {
+          _id: '34432432426',
+          name: 'Framing',
+          description: 'Could start whitin two weeks!',
+          price: '$85987',
+          user: 'EB Interiors'
+        },
+        {
+          _id: '34432322424',
+          name: 'Drywall',
+          description: 'Best drywall in alberta',
+          price: '$68285',
+          user: 'EB Interiors'
+        },
+        {
+          _id: '34432432424',
+          name: 'Taping',
+          description: 'We guarantee our work 100%',
+          price: '$75383',
+          user: 'EB Interiors'
+        },
+        {
+          _id: '38732432424',
+          name: 'Framing',
+          description: 'Quick and reliable',
+          price: '$88599',
+          user: 'Catling Interiors'
+        },
+        {
+          _id: '3443262424',
+          name: 'Drywall',
+          description: 'Best rates in the city',
+          price: '$65790',
+          user: 'Catling Interiors'
+        },
+        {
+          _id: '8745262',
+          name: 'Drywall',
+          description: 'Can start ASAP',
+          price: '$70450',
+          user: 'STC Drywall'
+        }
+      ]
     }
   },
   mounted () {
