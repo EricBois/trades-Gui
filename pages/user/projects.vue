@@ -73,6 +73,8 @@ export default {
         job._id = key
         this.jobs.push(job)
       }
+    }).catch(() => {
+      this.$router.push('/')
     })
   }
 }

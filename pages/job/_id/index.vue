@@ -48,7 +48,11 @@
           </v-card-text>
         </v-flex>
         <v-flex xs4 md3 offset-xs4 offset-md9>
-            <v-btn v-if="project.wcb" class="ma-1" x-small text><v-icon>mdi-check-decagram</v-icon>&nbsp; Wcb</v-btn><v-btn v-if="project.liability" class="ma-1" x-small text><v-icon>mdi-check-decagram</v-icon>&nbsp;Liability</v-btn>
+          <v-btn v-if="project.wcb" class="ma-1" x-small text>
+            <v-icon>mdi-check-decagram</v-icon>&nbsp; Wcb
+          </v-btn><v-btn v-if="project.liability" class="ma-1" x-small text>
+            <v-icon>mdi-check-decagram</v-icon>&nbsp;Liability
+          </v-btn>
         </v-flex>
         <v-flex xs12>
           <v-card-actions class="justify-center">
