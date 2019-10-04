@@ -61,7 +61,7 @@
               class="ma-1"
               color="green"
               small
-              @click="bid = !bid"
+              @click="dialogBid = !dialogBid"
             >
               Place a Bid
             </v-btn>
@@ -134,6 +134,42 @@
         </v-data-table>
       </v-flex>
     </v-card>
+    <v-dialog v-model="dialogBid" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Place Bid</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="4">
+                <v-autocomplete
+                  v-if="!project.onePrice"
+                  v-model="infobid.trade"
+                  placeholder="Pick one or many"
+                  :items="trades"
+                  label="Trade"
+                  multiple
+                ></v-autocomplete>
+                <h2 v-if="project.onePrice" class="mt-5">Whole Project</h2>
+              </v-col>
+              <v-col cols="12" sm="4">
+                <v-text-field v-model="infobid.description" label="Description" placeholder="(Optional)"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="4">
+                <v-text-field v-model="infobid.price" prepend-inner-icon="mdi-currency-usd" label="Price"></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+          <small>*all fields required</small>
+        </v-card-text>
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn color="blue darken-1" text @click="dialogBid = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="dialogBid = false">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -146,6 +182,13 @@
 export default {
   data () {
     return {
+      infobid: {
+        trade: [],
+        description: '',
+        price: ''
+      },
+      dialogBid: false,
+      trades: ['Whole Project', 'Framing', 'Drywall', 'Taping'],
       selected: [],
       bid: false,
       project: {},
