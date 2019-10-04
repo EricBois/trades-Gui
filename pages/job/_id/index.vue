@@ -144,14 +144,14 @@
             <v-row>
               <v-col cols="12" sm="4">
                 <v-autocomplete
-                  v-if="!project.onePrice"
+                  v-if="!project.oneBid"
                   v-model="infobid.trade"
                   placeholder="Pick one or many"
                   :items="trades"
                   label="Trade"
                   multiple
                 ></v-autocomplete>
-                <h2 v-if="project.onePrice" class="mt-5">Whole Project</h2>
+                <h2 v-if="project.oneBid" class="mt-5">Whole Project</h2>
               </v-col>
               <v-col cols="12" sm="4">
                 <v-text-field v-model="infobid.description" label="Description" placeholder="(Optional)"></v-text-field>

@@ -94,6 +94,14 @@
                   <v-flex xs12 md2 pt-4>
                     <v-switch v-model="switch1" label="Private" />
                   </v-flex>
+                  <v-flex xs12 md4 pt-4>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on }">
+                        <v-switch v-on="on" v-model="switch2" label="1 bid per user" />
+                      </template>
+                      <span>Only 1 bid per user will be allowed on whole project.</span>
+                    </v-tooltip>
+                  </v-flex>
                   <v-card-actions>
                     <v-btn class="mx-0 font-weight-light" color="primary" @click="create">
                       Create Project
@@ -263,6 +271,7 @@ export default {
         jobType: ''
       },
       switch1: false,
+      switch2: false,
       checkWcb: false,
       checkLiability: false
     }
@@ -285,6 +294,13 @@ export default {
         this.info.private = true
       } else {
         this.info.private = false
+      }
+    },
+    switch2 () {
+      if (this.switch2) {
+        this.info.oneBid = true
+      } else {
+        this.info.oneBid = false
       }
     },
     checkWcb () {
