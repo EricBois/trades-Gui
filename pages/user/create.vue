@@ -91,13 +91,13 @@
                       type="number"
                     />
                   </v-flex>
-                  <v-flex xs12 md2 pt-4>
+                  <v-flex xs6 md2 pt-4>
                     <v-switch v-model="switch1" label="Private" />
                   </v-flex>
-                  <v-flex xs12 md4 pt-4>
+                  <v-flex xs6 md4 pt-4>
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on }">
-                        <v-switch v-on="on" v-model="switch2" label="1 bid per user" />
+                        <v-switch v-on="on" v-model="switch2" label="Single Bid" />
                       </template>
                       <span>Only 1 bid per user will be allowed on whole project.</span>
                     </v-tooltip>
@@ -268,7 +268,8 @@ export default {
         wcb: false,
         liability: false,
         location: '',
-        jobType: ''
+        jobType: '',
+        oneBid: false
       },
       switch1: false,
       switch2: false,
