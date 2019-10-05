@@ -138,21 +138,21 @@
               {{ item.createdBy }}
             </v-chip>
           </template>
-          <template v-slot:item.action="{ item }" v-if="ownProject">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        edit
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        delete
-      </v-icon>
-    </template>
+          <template v-if="!ownProject" v-slot:item.action="{ item }">
+            <v-icon
+              small
+              class="mr-2"
+              @click="editItem(item)"
+            >
+              edit
+            </v-icon>
+            <v-icon
+              small
+              @click="deleteBid(item.id)"
+            >
+              delete
+            </v-icon>
+          </template>
         </v-data-table>
       </v-flex>
     </v-card>
@@ -246,50 +246,6 @@ export default {
         { text: 'Placed By', value: 'createdBy' },
         { text: 'Actions', value: 'action', sortable: false }
       ],
-      // bids: [
-      //   {
-      //     _id: '34432432426',
-      //     name: 'Framing',
-      //     description: 'Could start whitin two weeks!',
-      //     price: '85987',
-      //     user: 'EB Interiors'
-      //   },
-      //   {
-      //     _id: '34432322424',
-      //     name: 'Drywall',
-      //     description: 'Best drywall in alberta',
-      //     price: '68285',
-      //     user: 'EB Interiors'
-      //   },
-      //   {
-      //     _id: '34432432424',
-      //     name: 'Taping',
-      //     description: 'We guarantee our work 100%',
-      //     price: '75383',
-      //     user: 'EB Interiors'
-      //   },
-      //   {
-      //     _id: '38732432424',
-      //     name: 'Framing',
-      //     description: 'Quick and reliable',
-      //     price: '88599',
-      //     user: 'Catling Interiors'
-      //   },
-      //   {
-      //     _id: '3443262424',
-      //     name: 'Drywall',
-      //     description: 'Best rates in the city',
-      //     price: '65790',
-      //     user: 'Catling Interiors'
-      //   },
-      //   {
-      //     _id: '8745262',
-      //     name: 'Drywall',
-      //     description: 'Can start ASAP',
-      //     price: '70450',
-      //     user: 'STC Drywall'
-      //   }
-      // ]
       bids: []
     }
   },
@@ -300,24 +256,24 @@ export default {
       if (this.project.user === this.$auth.user.sub) {
         this.ownProject = true
       }
+      this.$axios.$get(`bid/get/${this.$route.params.id}`).then((res) => {
+        const data = res
+        for (const key in data) {
+          const bid = data[key]
+          bid._id = key
+          bid.trade = bid.trade.toString().replace(/,/g, ', ')
+          if (!this.ownProject) {
+            if (bid.user === this.$auth.user.sub) {
+              this.bids.push(bid)
+            }
+          } else {
+            this.bids.push(bid)
+          }
+        }
+      })
     }).catch(() => {
       // handle this error here
       this.$router.push(`../jobs`)
-    })
-    this.$axios.$get(`bid/get/${this.$route.params.id}`).then((res) => {
-      const data = res
-      for (const key in data) {
-        const bid = data[key]
-        bid._id = key
-        bid.trade = bid.trade.toString().replace(/,/g, ', ')
-        if (!this.ownProject) {
-          if (bid.user === this.$auth.user.sub) {
-            this.bids.push(bid)
-          }
-        } else {
-          this.bids.push(bid)
-        }
-      }
     })
   },
   methods: {
@@ -350,14 +306,39 @@ export default {
           this.infobid.trade = 'Whole Project'
         }
         this.infobid.project = this.project.id
+        console.log(this.project)
         this.$axios.$post('bid/create', this.infobid).then((res) => {
           // make a sweetalert2
           res.trade = res.trade.toString().replace(/,/g, ', ')
           this.bids.push(res)
           this.dialogBid = false
-          this.infobid = []
+          this.infobid.trade = []
+          this.infobid.price = ''
+          this.infobid.description = ''
         })
       }
+    },
+    deleteBid (id) {
+      this.$axios.$post('bid/delete', { id }).then((res) => {
+        this.$axios.$get(`bid/get/${this.$route.params.id}`).then((res) => {
+          const data = res
+          this.bids = []
+          for (const key in data) {
+            const bid = data[key]
+            bid._id = key
+            bid.trade = bid.trade.toString().replace(/,/g, ', ')
+            if (!this.ownProject) {
+              if (bid.user === this.$auth.user.sub) {
+                this.bids.push(bid)
+              }
+            } else {
+              this.bids.push(bid)
+            }
+          }
+        })
+      }).catch(() => {
+        this.$router.push('/')
+      })
     }
   }
 }
