@@ -115,8 +115,8 @@
               <b>{{ item.trade }}</b>
             </v-chip>
           </template>
-          <template v-slot:item.description="{ item }" >
-            <v-chip color="cyan lighten-4" outlined small v-if="item.description">
+          <template v-slot:item.description="{ item }">
+            <v-chip v-if="item.description" color="cyan lighten-4" outlined small>
               {{ item.description }}
             </v-chip>
           </template>
@@ -154,9 +154,9 @@
       class="mx-auto"
       raised
     >
-    <v-flex xs12 text-center>
-      <h2>No Bids</h2>
-    </v-flex>
+      <v-flex xs12 text-center>
+        <h2>No Bids</h2>
+      </v-flex>
     </v-card>
     <v-dialog v-model="dialogBid" persistent max-width="600px">
       <v-card>
@@ -206,7 +206,7 @@
       </v-card>
     </v-dialog>
     <v-flex v-if="ownProject" xs12 text-center class="mt-5">
-      <v-btn color="light-green darken-3" v-if="selected.length > 0">
+      <v-btn v-if="selected.length > 0" color="light-green darken-3">
         Accept Bid(s)
       </v-btn>
     </v-flex>
@@ -258,21 +258,18 @@ export default {
       if (this.project.user === this.$auth.user.sub) {
         this.ownProject = true
       }
-      this.$axios.$get(`bid/get/${this.$route.params.id}`).then((res) => {
-        const data = res
-        for (const key in data) {
-          const bid = data[key]
-          bid._id = key
-          bid.trade = bid.trade.toString().replace(/,/g, ', ')
-          if (!this.ownProject) {
-            if (bid.user === this.$auth.user.sub) {
-              this.bids.push(bid)
-            }
-          } else {
+      for (const key in res.bids) {
+        const bid = res.bids[key]
+        bid._id = key
+        bid.trade = bid.trade.toString().replace(/,/g, ', ')
+        if (!this.ownProject) {
+          if (bid.user === this.$auth.user.sub) {
             this.bids.push(bid)
           }
+        } else {
+          this.bids.push(bid)
         }
-      })
+      }
     }).catch(() => {
       // handle this error here
       this.$router.push(`../jobs`)
