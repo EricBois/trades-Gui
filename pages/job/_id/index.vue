@@ -133,10 +133,10 @@
           <template v-if="!ownProject" v-slot:item.action="{ item }">
             <v-icon
               class="ml-2"
-              color="orange lighten-2"
+              color="red darken-3"
               @click="deleteBid(item.id)"
             >
-              mdi-delete
+              mdi-close-octagon
             </v-icon>
           </template>
         </v-data-table>
@@ -197,6 +197,7 @@
                     prepend-inner-icon="mdi-currency-usd"
                     label="Price"
                     placeholder="Hourly"
+                    append-outer-icon="mdi-clock-outline"
                   />
                 </v-col>
               </v-row>
@@ -311,6 +312,13 @@ export default {
               'Deleted Successfully.',
               'success'
             )
+          }).catch((error) => {
+            this.$swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+              footer: `${error}`
+            })
           })
         }
       })
