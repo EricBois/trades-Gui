@@ -138,6 +138,21 @@
               {{ item.createdBy }}
             </v-chip>
           </template>
+          <template v-slot:item.action="{ item }" v-if="ownProject">
+      <v-icon
+        small
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        edit
+      </v-icon>
+      <v-icon
+        small
+        @click="deleteItem(item)"
+      >
+        delete
+      </v-icon>
+    </template>
         </v-data-table>
       </v-flex>
     </v-card>
@@ -228,7 +243,8 @@ export default {
         },
         { text: 'Description', value: 'description' },
         { text: 'Price ( $ )', value: 'price' },
-        { text: 'Placed By', value: 'createdBy' }
+        { text: 'Placed By', value: 'createdBy' },
+        { text: 'Actions', value: 'action', sortable: false }
       ],
       // bids: [
       //   {
