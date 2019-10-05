@@ -132,17 +132,11 @@
           </template>
           <template v-if="!ownProject" v-slot:item.action="{ item }">
             <v-icon
-              small
-              class="mr-2"
-              @click="editItem(item)"
-            >
-              edit
-            </v-icon>
-            <v-icon
-              small
               @click="deleteBid(item.id)"
+              class="ml-2"
+              color="orange lighten-2"
             >
-              delete
+              mdi-delete
             </v-icon>
           </template>
         </v-data-table>
@@ -246,7 +240,7 @@ export default {
         { text: 'Description', value: 'description' },
         { text: 'Price ( $ )', value: 'price' },
         { text: 'Placed By', value: 'createdBy' },
-        { text: 'Actions', value: 'action', sortable: false }
+        { text: 'Action', value: 'action', sortable: false }
       ],
       bids: []
     }
