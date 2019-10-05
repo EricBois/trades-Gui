@@ -59,14 +59,13 @@
             <v-btn
               v-if="project.user !== this.$auth.user.sub"
               class="ma-1"
-              color="green"
+              color="teal lighten-1"
               small
               @click="dialogBid = !dialogBid"
             >
               Place a Bid
             </v-btn>
             <v-btn
-              v-else
               class="ma-1"
               color="green"
               small
@@ -102,16 +101,15 @@
       raised
     >
       <v-flex xs12 text-center>
-        <h2 v-if="project.user !== this.$auth.user.sub">
+        <h2 v-if="!ownProject">
           Your Placed Bids
         </h2>
-        <h2 v-if="project.user === this.$auth.user.sub">
+        <h2 v-if="ownProject">
           Project Bids / Offers
         </h2>
       </v-flex>
       <v-flex xs12>
         <v-data-table
-          dense
           v-model="selected"
           item-key="_id"
           :headers="headers"
@@ -120,18 +118,26 @@
           show-select
           class="elevation-1"
         >
-        <template v-slot:item.name="{ item }">
-      <v-chip color="light-green lighten-5" small><b>{{ item.name }}</b></v-chip>
-    </template>
-    <template v-slot:item.description="{ item }">
-      <v-chip color="cyan lighten-4" outlined small>{{ item.description }}</v-chip>
-    </template>
-    <template v-slot:item.price="{ item }">
-      <v-chip color="light-green lighten-3" small><v-icon>mdi-currency-usd</v-icon> {{ item.price }}</v-chip>
-    </template>
-    <template v-slot:item.user="{ item }">
-      <v-chip color="orange accent-1" outlined small>{{ item.user }}</v-chip>
-    </template>
+          <template v-slot:item.trade="{ item }">
+            <v-chip color="light-green lighten-5" small>
+              <b>{{ item.trade }}</b>
+            </v-chip>
+          </template>
+          <template v-slot:item.description="{ item }">
+            <v-chip color="cyan lighten-4" outlined small>
+              {{ item.description }}
+            </v-chip>
+          </template>
+          <template v-slot:item.price="{ item }">
+            <v-chip color="light-green lighten-3" small>
+              <v-icon>mdi-currency-usd</v-icon> {{ item.price }}
+            </v-chip>
+          </template>
+          <template v-slot:item.createdBy="{ item }">
+            <v-chip color="orange accent-1" outlined small>
+              {{ item.createdBy }}
+            </v-chip>
+          </template>
         </v-data-table>
       </v-flex>
     </v-card>
@@ -142,37 +148,50 @@
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-row>
-              <v-col cols="12" sm="4">
-                <v-autocomplete
-                  v-if="!project.oneBid"
-                  v-model="infobid.trade"
-                  placeholder="Pick one or many"
-                  :items="trades"
-                  label="Trade"
-                  multiple
-                ></v-autocomplete>
-                <h2 v-if="project.oneBid" class="mt-5">Whole Project</h2>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <v-text-field v-model="infobid.description" label="Description" placeholder="(Optional)"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <v-text-field v-model="infobid.price" prepend-inner-icon="mdi-currency-usd" label="Price"></v-text-field>
-              </v-col>
-            </v-row>
+            <v-form
+              ref="form"
+              lazy-validation
+            >
+              <v-row>
+                <v-col cols="12" sm="4">
+                  <v-autocomplete
+                    v-if="!project.oneBid"
+                    v-model="infobid.trade"
+                    placeholder="Pick one or many"
+                    :items="trades"
+                    label="Trade"
+                    multiple
+                  />
+                  <h2 v-if="project.oneBid" class="mt-5">
+                    Whole Project
+                  </h2>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <v-text-field v-model="infobid.description" label="Description" placeholder="(Optional)" />
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <v-text-field v-model="infobid.price" prepend-inner-icon="mdi-currency-usd" label="Price" />
+                </v-col>
+              </v-row>
+            </v-form>
           </v-container>
           <small>*all fields required</small>
         </v-card-text>
         <v-card-actions>
-          <div class="flex-grow-1"></div>
-          <v-btn color="blue darken-1" text @click="dialogBid = false">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="dialogBid = false">Save</v-btn>
+          <div class="flex-grow-1" />
+          <v-btn color="blue darken-1" text @click="dialogBid = false">
+            Close
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="postBid()">
+            Save
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-flex xs12 text-center class="mt-5" v-show="bid">
-      <v-btn color="light-green darken-3">Accept Bid(s)</v-btn>
+    <v-flex v-show="bid" xs12 text-center class="mt-5">
+      <v-btn color="light-green darken-3">
+        Accept Bid(s)
+      </v-btn>
     </v-flex>
   </v-container>
 </template>
@@ -189,8 +208,10 @@ export default {
       infobid: {
         trade: [],
         description: '',
-        price: ''
+        price: '',
+        project: ''
       },
+      ownProject: false,
       dialogBid: false,
       trades: ['Whole Project', 'Framing', 'Drywall', 'Taping'],
       selected: [],
@@ -203,65 +224,84 @@ export default {
           text: 'Bid',
           align: 'left',
           sortable: false,
-          value: 'name'
+          value: 'trade'
         },
         { text: 'Description', value: 'description' },
         { text: 'Price ( $ )', value: 'price' },
-        { text: 'Placed By', value: 'user' }
+        { text: 'Placed By', value: 'createdBy' }
       ],
-      bids: [
-        {
-          _id: '34432432426',
-          name: 'Framing',
-          description: 'Could start whitin two weeks!',
-          price: '85987',
-          user: 'EB Interiors'
-        },
-        {
-          _id: '34432322424',
-          name: 'Drywall',
-          description: 'Best drywall in alberta',
-          price: '68285',
-          user: 'EB Interiors'
-        },
-        {
-          _id: '34432432424',
-          name: 'Taping',
-          description: 'We guarantee our work 100%',
-          price: '75383',
-          user: 'EB Interiors'
-        },
-        {
-          _id: '38732432424',
-          name: 'Framing',
-          description: 'Quick and reliable',
-          price: '88599',
-          user: 'Catling Interiors'
-        },
-        {
-          _id: '3443262424',
-          name: 'Drywall',
-          description: 'Best rates in the city',
-          price: '65790',
-          user: 'Catling Interiors'
-        },
-        {
-          _id: '8745262',
-          name: 'Drywall',
-          description: 'Can start ASAP',
-          price: '70450',
-          user: 'STC Drywall'
-        }
-      ]
+      // bids: [
+      //   {
+      //     _id: '34432432426',
+      //     name: 'Framing',
+      //     description: 'Could start whitin two weeks!',
+      //     price: '85987',
+      //     user: 'EB Interiors'
+      //   },
+      //   {
+      //     _id: '34432322424',
+      //     name: 'Drywall',
+      //     description: 'Best drywall in alberta',
+      //     price: '68285',
+      //     user: 'EB Interiors'
+      //   },
+      //   {
+      //     _id: '34432432424',
+      //     name: 'Taping',
+      //     description: 'We guarantee our work 100%',
+      //     price: '75383',
+      //     user: 'EB Interiors'
+      //   },
+      //   {
+      //     _id: '38732432424',
+      //     name: 'Framing',
+      //     description: 'Quick and reliable',
+      //     price: '88599',
+      //     user: 'Catling Interiors'
+      //   },
+      //   {
+      //     _id: '3443262424',
+      //     name: 'Drywall',
+      //     description: 'Best rates in the city',
+      //     price: '65790',
+      //     user: 'Catling Interiors'
+      //   },
+      //   {
+      //     _id: '8745262',
+      //     name: 'Drywall',
+      //     description: 'Can start ASAP',
+      //     price: '70450',
+      //     user: 'STC Drywall'
+      //   }
+      // ]
+      bids: []
     }
   },
   mounted () {
     // get the job with the id
     this.$axios.$get(`job/view/${this.$route.params.id}`).then((res) => {
       this.project = res
+      if (this.project.user === this.$auth.user.sub) {
+        this.ownProject = true
+      }
     }).catch(() => {
       // handle this error here
       this.$router.push(`../jobs`)
+    })
+    this.$axios.$get(`bid/get/${this.$route.params.id}`).then((res) => {
+      const data = res
+      for (const key in data) {
+        const bid = data[key]
+        bid._id = key
+        bid.trade = bid.trade.toString().replace(/,/g, ', ')
+        if (!this.ownProject) {
+          if (bid.user === this.$auth.user.sub) {
+            this.bids.push(bid)
+          }
+        } else {
+          this.bids.push(bid)
+        }
+      }
     })
   },
   methods: {
@@ -287,6 +327,21 @@ export default {
           })
         }
       })
+    },
+    postBid () {
+      if (this.$refs.form.validate()) {
+        if (this.project.oneBid) {
+          this.infobid.trade = 'Whole Project'
+        }
+        this.infobid.project = this.project.id
+        this.$axios.$post('bid/create', this.infobid).then((res) => {
+          // make a sweetalert2
+          res.trade = res.trade.toString().replace(/,/g, ', ')
+          this.bids.push(res)
+          this.dialogBid = false
+          this.infobid = []
+        })
+      }
     }
   }
 }

@@ -97,7 +97,7 @@
                   <v-flex xs6 md4 pt-4>
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on }">
-                        <v-switch v-on="on" v-model="switch2" label="Single Bid" />
+                        <v-switch v-model="switch2" label="Single Bid" v-on="on" />
                       </template>
                       <span>Only 1 bid per user will be allowed on whole project.</span>
                     </v-tooltip>

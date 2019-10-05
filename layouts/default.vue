@@ -3,19 +3,18 @@
     <v-navigation-drawer v-if="this.$auth.loggedIn" v-model="drawer" :mini-variant.sync="mini" app clipped>
       <v-list-item>
         <v-list-item-avatar>
-          <v-img :src="picture"></v-img>
+          <v-img :src="picture" />
         </v-list-item-avatar>
 
-        <v-list-item-title>{{this.$auth.user.name}}</v-list-item-title>
-
+        <v-list-item-title>{{ this.$auth.user.name }}</v-list-item-title>
       </v-list-item>
       <v-list-item>
-              <v-btn small v-if="this.$auth.loggedIn" @click="logout">
-                Logout
-              </v-btn>
-            </v-list-item>
+        <v-btn v-if="this.$auth.loggedIn" small @click="logout">
+          Logout
+        </v-btn>
+      </v-list-item>
 
-      <v-divider></v-divider>
+      <v-divider />
       <v-list dense>
         <v-list-item to="/">
           <v-list-item-action>
@@ -26,12 +25,12 @@
           </v-list-item-content>
         </v-list-item>
         <v-list-item to="/jobs">
-            <v-list-item-action>
-              <v-icon>mdi-post</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Listings</v-list-item-title>
-            </v-list-item-content>
+          <v-list-item-action>
+            <v-icon>mdi-post</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Listings</v-list-item-title>
+          </v-list-item-content>
         </v-list-item>
         <v-list-item to="/team">
           <v-list-item-action>
@@ -42,29 +41,29 @@
           </v-list-item-content>
         </v-list-item>
         <v-list-group
-        prepend-icon="mdi-square-inc-cash"
-        sub-group
-      >
-        <template v-slot:activator>
-          <v-list-item-title>My Projects</v-list-item-title>
-        </template>
-        <v-list-item to="/user/projects">
-          <v-list-item-action>
-            <v-icon>mdi-post</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Current Listing</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item to="/user/create">
-          <v-list-item-action>
-            <v-icon>mdi-plus-box</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Post Project</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-group>
+          prepend-icon="mdi-square-inc-cash"
+          sub-group
+        >
+          <template v-slot:activator>
+            <v-list-item-title>My Projects</v-list-item-title>
+          </template>
+          <v-list-item to="/user/projects">
+            <v-list-item-action>
+              <v-icon>mdi-post</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Current Listing</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item to="/user/create">
+            <v-list-item-action>
+              <v-icon>mdi-plus-box</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Post Project</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
         <v-list-item to="/profile">
           <v-list-item-action>
             <v-icon>mdi-settings</v-icon>
