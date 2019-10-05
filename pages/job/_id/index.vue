@@ -225,7 +225,7 @@ export default {
       },
       ownProject: false,
       dialogBid: false,
-      trades: ['Whole Project', 'Framing', 'Drywall', 'Taping'],
+      trades: ['Whole Project'],
       selected: [],
       bid: false,
       project: {},
@@ -252,6 +252,11 @@ export default {
       this.project = res
       if (this.project.user === this.$auth.user.sub) {
         this.ownProject = true
+      }
+      for (const key in res.skills) {
+        const trade = res.skills[key]
+        trade._id = key
+        this.trades.push(trade)
       }
       for (const key in res.bids) {
         const bid = res.bids[key]
