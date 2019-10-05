@@ -55,7 +55,7 @@
         background-color: rgb(192, 192, 192)
     }
     .container {
-        background-color: rgb(48, 63, 82)
+        background-color: rgb(94, 104, 117)
     }
     .v-chip {
         margin-left: 5px;
