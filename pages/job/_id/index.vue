@@ -122,7 +122,7 @@
           </template>
           <template v-slot:item.price="{ item }">
             <v-chip color="light-green lighten-3" small>
-              <v-icon>mdi-currency-usd</v-icon> {{ item.price }}
+              <v-icon>mdi-currency-usd</v-icon><b>{{ item.price }}</b>
             </v-chip>
           </template>
           <template v-slot:item.createdBy="{ item }">
@@ -181,7 +181,23 @@
                   <v-text-field v-model="infobid.description" label="Description" placeholder="(Optional)" />
                 </v-col>
                 <v-col cols="12" sm="4">
-                  <v-text-field :rules="priceRule" type="number" v-model="infobid.price" prepend-inner-icon="mdi-currency-usd" label="Price" />
+                  <v-text-field
+                    v-if="project.jobType === 'Contract'"
+                    v-model="infobid.price"
+                    :rules="priceRule"
+                    type="number"
+                    prepend-inner-icon="mdi-currency-usd"
+                    label="Price"
+                  />
+                  <v-text-field
+                    v-else
+                    v-model="infobid.price"
+                    :rules="priceRule"
+                    type="number"
+                    prepend-inner-icon="mdi-currency-usd"
+                    label="Price"
+                    placeholder="Hourly"
+                  />
                 </v-col>
               </v-row>
             </v-form>
