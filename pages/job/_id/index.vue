@@ -132,9 +132,9 @@
           </template>
           <template v-if="!ownProject" v-slot:item.action="{ item }">
             <v-icon
-              @click="deleteBid(item.id)"
               class="ml-2"
               color="orange lighten-2"
+              @click="deleteBid(item.id)"
             >
               mdi-delete
             </v-icon>
@@ -181,7 +181,7 @@
                   <v-text-field v-model="infobid.description" label="Description" placeholder="(Optional)" />
                 </v-col>
                 <v-col cols="12" sm="4">
-                  <v-text-field v-model="infobid.price" prepend-inner-icon="mdi-currency-usd" label="Price" />
+                  <v-text-field :rules="priceRule" type="number" v-model="infobid.price" prepend-inner-icon="mdi-currency-usd" label="Price" />
                 </v-col>
               </v-row>
             </v-form>
@@ -216,6 +216,8 @@
 export default {
   data () {
     return {
+      tradeRule: [v => !!v || 'The trade is required'],
+      priceRule: [v => !!v || 'The price is required'],
       infobid: {
         trade: [],
         description: '',
@@ -298,6 +300,9 @@ export default {
         if (this.project.oneBid) {
           this.infobid.trade = 'Whole Project'
         }
+        if (!this.infobid.trade.length > 0) {
+          this.infobid.trade = 'Whole Project'
+        }
         this.infobid.project = this.project.id
         this.$axios.$post('bid/create', this.infobid).then((res) => {
           // make a sweetalert2
@@ -307,6 +312,13 @@ export default {
           this.infobid.trade = []
           this.infobid.price = ''
           this.infobid.description = ''
+        }).catch((error) => {
+          this.$swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: `${error}`
+          })
         })
       }
     },
