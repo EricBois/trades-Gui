@@ -66,14 +66,6 @@
               Place a Bid
             </v-btn>
             <v-btn
-              class="ma-1"
-              color="green"
-              small
-              @click="bid = !bid"
-            >
-              View Bids
-            </v-btn>
-            <v-btn
               v-if="project.user === this.$auth.user.sub"
               class="blue-grey lighten-1 ma-1"
               small
@@ -95,7 +87,7 @@
     </v-card>
     <v-flex class="mt-5" />
     <v-card
-      v-show="bid"
+      v-if="bids.length > 0"
       max-width="844"
       class="mx-auto"
       raised
@@ -123,8 +115,8 @@
               <b>{{ item.trade }}</b>
             </v-chip>
           </template>
-          <template v-slot:item.description="{ item }">
-            <v-chip color="cyan lighten-4" outlined small>
+          <template v-slot:item.description="{ item }" >
+            <v-chip color="cyan lighten-4" outlined small v-if="item.description">
               {{ item.description }}
             </v-chip>
           </template>
@@ -155,6 +147,16 @@
           </template>
         </v-data-table>
       </v-flex>
+    </v-card>
+    <v-card
+      v-else
+      max-width="844"
+      class="mx-auto"
+      raised
+    >
+    <v-flex xs12 text-center>
+      <h2>No Bids</h2>
+    </v-flex>
     </v-card>
     <v-dialog v-model="dialogBid" persistent max-width="600px">
       <v-card>
