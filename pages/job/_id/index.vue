@@ -205,8 +205,8 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-flex v-show="bid" xs12 text-center class="mt-5">
-      <v-btn color="light-green darken-3">
+    <v-flex v-if="ownProject" xs12 text-center class="mt-5">
+      <v-btn color="light-green darken-3" v-if="selected.length > 0">
         Accept Bid(s)
       </v-btn>
     </v-flex>
@@ -308,7 +308,6 @@ export default {
           this.infobid.trade = 'Whole Project'
         }
         this.infobid.project = this.project.id
-        console.log(this.project)
         this.$axios.$post('bid/create', this.infobid).then((res) => {
           // make a sweetalert2
           res.trade = res.trade.toString().replace(/,/g, ', ')
