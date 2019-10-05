@@ -344,22 +344,12 @@ export default {
     },
     deleteBid (id) {
       this.$axios.$post('bid/delete', { id }).then((res) => {
-        this.$axios.$get(`bid/get/${this.$route.params.id}`).then((res) => {
-          const data = res
-          this.bids = []
-          for (const key in data) {
-            const bid = data[key]
-            bid._id = key
-            bid.trade = bid.trade.toString().replace(/,/g, ', ')
-            if (!this.ownProject) {
-              if (bid.user === this.$auth.user.sub) {
-                this.bids.push(bid)
-              }
-            } else {
-              this.bids.push(bid)
-            }
+        for (const key in this.bids) {
+          const bid = this.bids[key]
+          if (id === bid.id) {
+            this.bids.splice(key, 1)
           }
-        })
+        }
       }).catch(() => {
         this.$router.push('/')
       })
