@@ -216,7 +216,6 @@
 export default {
   data () {
     return {
-      tradeRule: [v => !!v || 'The trade is required'],
       priceRule: [v => !!v || 'The price is required'],
       infobid: {
         trade: [],
