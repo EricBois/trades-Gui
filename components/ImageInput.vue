@@ -35,7 +35,10 @@ export default {
   name: 'ImageInput',
   props: {
     // Use "value" to enable using v-model
-    value: Object
+    value: {
+      type: Object,
+      required: true
+    }
   },
   data: () => ({
     errorDialog: null,
