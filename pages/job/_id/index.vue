@@ -350,8 +350,13 @@ export default {
             this.bids.splice(key, 1)
           }
         }
-      }).catch(() => {
-        this.$router.push('/')
+      }).catch((error) => {
+        this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          footer: `${error}`
+        })
       })
     }
   }
