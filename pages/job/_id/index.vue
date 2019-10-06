@@ -49,7 +49,11 @@
         </v-flex>
         <v-flex xs12 md4 offset-md4 text-center>
           <div v-if="!pdf && ownProject">
-            <v-file-input v-model="doc" :loading="loading" show-size label="Document Upload" /><v-btn v-if="doc && !loading" small @click="upload()">
+            <v-file-input v-if="!project.file" v-model="doc" :loading="loading" show-size label="Document Upload" />
+            <v-btn v-if="!loading && project.file" color="red darken-3" class="mr-1" small @click="deleteFile()">
+              <v-icon>mdi-delete</v-icon>&nbsp; Delete Current File
+            </v-btn>
+            <v-btn v-if="doc && !loading && !project.file" small @click="upload()">
               Upload
             </v-btn>
           </div>
@@ -98,7 +102,7 @@
               small
               @click="deleteProject(project.id)"
             >
-              Delete
+              Delete Project
             </v-btn>
           </v-card-actions>
         </v-flex>
@@ -312,9 +316,14 @@ export default {
           this.bids.push(bid)
         }
       }
-    }).catch(() => {
+    }).catch((error) => {
       // handle this error here
-      this.$router.push(`../jobs`)
+      this.$swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+        footer: `${error}`
+      })
     })
   },
   methods: {
@@ -392,11 +401,13 @@ export default {
         })
       })
     },
-    upload () {
+    deleteFile () {
       this.loading = true
       if (this.project.file) {
         const name = this.project.file.split('/').pop()
         this.$axios.$post(`job/deleteFile/${name}/${this.$route.params.id}`).then((res) => {
+          this.loading = false
+          this.project.file = ''
         }).catch((error) => {
           this.$swal.fire({
             type: 'error',
@@ -406,6 +417,10 @@ export default {
           })
         })
       }
+    },
+    upload () {
+      this.deleteFile()
+      this.loading = true
       const formData = new FormData()
       formData.append('file', this.doc)
       this.$axios.$post(`job/edit/${this.$route.params.id}`, formData).then((res) => {
