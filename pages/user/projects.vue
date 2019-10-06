@@ -28,7 +28,9 @@
           <div class="caption grey--text ml-1">
             Description
           </div>
-          <div class="ml-1">{{ project.description }}</div>
+          <div class="ml-1">
+            {{ project.description }}
+          </div>
         </v-flex>
         <v-flex xs4 md3>
           <div class="caption grey--text">
