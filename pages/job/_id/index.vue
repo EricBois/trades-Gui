@@ -59,13 +59,14 @@
           </div>
           <div v-if="pdf">
             <v-btn
+              class="mb-2"
               color="blue-grey darken-2"
               :href="project.file"
               small
             >
               <v-icon>mdi-link-box-outline</v-icon> &nbsp;{{ project.file.split("/").pop() }}
             </v-btn>
-            <v-icon v-if="ownProject" color="red" @click="pdf = !pdf">
+            <v-icon v-if="ownProject" class="mb-2" color="red" @click="pdf = !pdf">
               mdi-close-box
             </v-icon>
           </div>
@@ -78,7 +79,7 @@
           </v-btn>
         </v-flex>
         <v-flex xs12>
-          <v-card-actions class="justify-center">
+          <v-card-actions class="justify-center justify-sm-start">
             <v-btn
               v-if="project.user !== this.$auth.user.sub"
               class="ma-1"
