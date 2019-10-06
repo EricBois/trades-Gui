@@ -120,7 +120,7 @@ export default {
     },
     logout () {
       this.$auth.logout()
-      localStorage.removeItem('auth')
+      localStorage.clear()
       this.$router.push('/home')
     }
   }

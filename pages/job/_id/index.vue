@@ -54,8 +54,13 @@
             </v-btn>
           </div>
           <div v-if="pdf">
-            <v-icon>mdi-link-box-outline</v-icon>
-            <a :href="project.file">{{ project.file.split("/").pop() }}</a>
+            <v-btn
+              color="blue-grey darken-2"
+              :href="project.file"
+              small
+            >
+              <v-icon>mdi-link-box-outline</v-icon> &nbsp;{{ project.file.split("/").pop() }}
+            </v-btn>
             <v-icon v-if="ownProject" color="red" @click="pdf = !pdf">
               mdi-close-box
             </v-icon>
