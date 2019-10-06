@@ -79,7 +79,7 @@
           </v-btn>
         </v-flex>
         <v-flex xs12>
-          <v-card-actions class="justify-center justify-sm-start">
+          <v-card-actions class="justify-center">
             <v-btn
               v-if="project.user !== this.$auth.user.sub"
               class="ma-1"
