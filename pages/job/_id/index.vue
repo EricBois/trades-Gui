@@ -47,6 +47,15 @@
             {{ project.description }}
           </v-card-text>
         </v-flex>
+        <v-flex xs4 offset-xs4 text-center>
+          <div v-if="!pdf && ownProject">
+            <v-file-input v-model="file" show-size label="Document Upload"></v-file-input><v-btn @click="upload()" v-if="file" small>Upload</v-btn>
+          </div>
+          <div v-if="pdf">
+            <a :href="project.pdf">Linked document</a>
+            <v-btn v-if="ownProject" @click="pdf = !pdf" color="red" small>X</v-btn>
+          </div>
+        </v-flex>
         <v-flex xs4 md3 offset-xs4 offset-md9>
           <v-btn v-if="project.wcb" class="ma-1" x-small text>
             <v-icon>mdi-check-decagram</v-icon>&nbsp; Wcb
@@ -233,6 +242,8 @@
 export default {
   data () {
     return {
+      pdf: false,
+      file: null,
       priceRule: [v => !!v || 'The price is required'],
       infobid: {
         trade: [],
@@ -269,6 +280,9 @@ export default {
       this.project = res
       if (this.project.user === this.$auth.user.sub) {
         this.ownProject = true
+      }
+      if (this.project.pdf) {
+        this.pdf = true
       }
       for (const key in res.skills) {
         const trade = res.skills[key]
@@ -365,6 +379,15 @@ export default {
           text: 'Something went wrong!',
           footer: `${error}`
         })
+      })
+    },
+    upload () {
+      const formData = new FormData()
+      formData.append('file', this.file)
+      this.$axios.$post(`job/edit/${this.$route.params.id}`, formData).then((res) => {
+        //  direct to jobs page
+        this.project = res
+        this.pdf = true
       })
     }
   }

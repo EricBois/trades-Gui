@@ -48,7 +48,8 @@
                       outlined
                       class="purple-input"
                     />
-                  </v-flex><v-flex xs10 md5 mr-12>
+                  </v-flex>
+                  <v-flex xs10 md5 mr-12>
                     <v-checkbox
                       v-model="checkWcb"
                       label="Wcb Required"
@@ -326,11 +327,10 @@ export default {
       if (this.$refs.form.validate()) {
         this.$axios.$post('job/create', this.info).then((res) => {
           //  direct to jobs page
-          this.$router.push('/jobs')
+          this.$router.push(`../../job/${res._id}`)
         })
       }
     }
-
   }
 }
 </script>
