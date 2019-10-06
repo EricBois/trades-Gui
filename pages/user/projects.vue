@@ -25,10 +25,10 @@
           </div>
         </v-flex>
         <v-flex xs8 md4>
-          <div class="caption grey--text">
+          <div class="caption grey--text ml-1">
             Description
           </div>
-          <div>{{ project.description }}</div>
+          <div class="ml-1">{{ project.description }}</div>
         </v-flex>
         <v-flex xs4 md3>
           <div class="caption grey--text">
@@ -39,7 +39,7 @@
           </v-chip>
         </v-flex>
         <v-flex xs8 mt-2>
-          <v-chip v-for="item in project.skills" :key="item._id" color="primary" small>
+          <v-chip v-for="item in project.skills" :key="item._id" color="primary" small class="mt-1">
             {{ item.text }}
           </v-chip>
         </v-flex>
@@ -51,7 +51,7 @@
           </v-btn>
         </v-flex>
       </v-layout>
-      <v-divider dark />
+      <v-flex mb-3 />
     </v-card>
   </v-container>
 </template>
