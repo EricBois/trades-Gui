@@ -47,13 +47,18 @@
             {{ project.description }}
           </v-card-text>
         </v-flex>
-        <v-flex xs4 offset-xs4 text-center>
+        <v-flex xs12 md4 offset-md4 text-center>
           <div v-if="!pdf && ownProject">
-            <v-file-input v-model="file" show-size label="Document Upload"></v-file-input><v-btn @click="upload()" v-if="file" small>Upload</v-btn>
+            <v-file-input v-model="doc" :loading="loading" show-size label="Document Upload" /><v-btn v-if="doc && !loading" small @click="upload()">
+              Upload
+            </v-btn>
           </div>
           <div v-if="pdf">
-            <a :href="project.pdf">Linked document</a>
-            <v-btn v-if="ownProject" @click="pdf = !pdf" color="red" small>X</v-btn>
+            <v-icon>mdi-link-box-outline</v-icon>
+            <a :href="project.file">{{ project.file.split("/").pop() }}</a>
+            <v-icon v-if="ownProject" color="red" @click="pdf = !pdf">
+              mdi-close-box
+            </v-icon>
           </div>
         </v-flex>
         <v-flex xs4 md3 offset-xs4 offset-md9>
@@ -242,8 +247,9 @@
 export default {
   data () {
     return {
+      loading: false,
       pdf: false,
-      file: null,
+      doc: null,
       priceRule: [v => !!v || 'The price is required'],
       infobid: {
         trade: [],
@@ -281,7 +287,7 @@ export default {
       if (this.project.user === this.$auth.user.sub) {
         this.ownProject = true
       }
-      if (this.project.pdf) {
+      if (res.file) {
         this.pdf = true
       }
       for (const key in res.skills) {
@@ -382,12 +388,34 @@ export default {
       })
     },
     upload () {
+      this.loading = true
+      if (this.project.file) {
+        const name = this.project.file.split('/').pop()
+        this.$axios.$post(`job/deleteFile/${name}/${this.$route.params.id}`).then((res) => {
+        }).catch((error) => {
+          this.$swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: `${error}`
+          })
+        })
+      }
       const formData = new FormData()
-      formData.append('file', this.file)
+      formData.append('file', this.doc)
       this.$axios.$post(`job/edit/${this.$route.params.id}`, formData).then((res) => {
         //  direct to jobs page
         this.project = res
+        this.loading = false
         this.pdf = true
+      }).catch((error) => {
+        this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          footer: `${error}`
+        })
+        this.loading = false
       })
     }
   }
