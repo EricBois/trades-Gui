@@ -48,25 +48,26 @@
           </v-card-text>
         </v-flex>
         <v-flex xs12 md4 offset-md4 text-center>
-          <div v-if="!pdf && ownProject">
-            <v-file-input v-if="!project.file" v-model="doc" :loading="loading" show-size label="Document Upload" />
-            <v-btn v-if="!loading && project.file" color="red darken-3" class="mr-1" small @click="deleteFile()">
-              <v-icon>mdi-delete</v-icon>&nbsp; Delete Current File
-            </v-btn>
-            <v-btn v-if="doc && !loading && !project.file" small @click="upload()">
-              Upload
-            </v-btn>
+          <div v-if="ownProject" class="mb-4">
+            <v-chip
+              color="green"
+              ripple
+              small
+              @click="dialogFile = !dialogFile"
+            >
+            <v-icon>mdi-file-document-box-plus-outline</v-icon>&nbsp;Document
+            </v-chip>
           </div>
-          <div v-if="pdf">
+          <div v-for="file in project.files" :key="file">
             <v-btn
               class="mb-2"
               color="blue-grey darken-2"
-              :href="project.file"
+              :href="file"
               small
             >
-              <v-icon>mdi-link-box-outline</v-icon> &nbsp;{{ project.file.split("/").pop() }}
+              <v-icon>mdi-link-box-outline</v-icon> &nbsp;{{ file.split("/").pop() }}
             </v-btn>
-            <v-icon v-if="ownProject" class="mb-2" color="red" @click="pdf = !pdf">
+            <v-icon v-if="ownProject" class="mb-2" color="red" @click="deleteFile(file)">
               mdi-close-box
             </v-icon>
           </div>
@@ -240,6 +241,32 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogFile" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Add File</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-file-input v-model="doc" :loading="loading" show-size label="Document Upload" />
+                <v-btn v-if="doc && !loading" small @click="upload()">
+                  Upload
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+          <small>*indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <div class="flex-grow-1" />
+          <v-btn color="blue darken-1" text @click="dialogFile = false">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-flex v-if="ownProject" xs12 text-center class="mt-5">
       <v-btn v-if="selected.length > 0" color="light-green darken-3">
         Accept Bid(s)
@@ -257,6 +284,7 @@
 export default {
   data () {
     return {
+      dialogFile: false,
       loading: false,
       pdf: false,
       doc: null,
@@ -296,9 +324,6 @@ export default {
       this.project = res
       if (this.project.user === this.$auth.user.sub) {
         this.ownProject = true
-      }
-      if (res.file) {
-        this.pdf = true
       }
       for (const key in res.skills) {
         const trade = res.skills[key]
@@ -402,13 +427,18 @@ export default {
         })
       })
     },
-    deleteFile () {
+    deleteFile (file) {
       this.loading = true
-      if (this.project.file) {
-        const name = this.project.file.split('/').pop()
-        this.$axios.$post(`job/deleteFile/${name}/${this.$route.params.id}`).then((res) => {
+      if (file) {
+        const name = file.split('/').pop()
+        this.$axios.$post(`job/deleteFile/${name}/${this.$route.params.id}`, { file }).then((res) => {
           this.loading = false
-          this.project.file = ''
+          for (const key in this.project.files) {
+            const file1 = this.project.files[key]
+            if (file1 === file) {
+              this.project.files.splice(key, 1)
+            }
+          }
         }).catch((error) => {
           this.$swal.fire({
             type: 'error',
@@ -420,15 +450,15 @@ export default {
       }
     },
     upload () {
-      this.deleteFile()
       this.loading = true
       const formData = new FormData()
       formData.append('file', this.doc)
-      this.$axios.$post(`job/edit/${this.$route.params.id}`, formData).then((res) => {
+      this.$axios.$post(`job/upload/${this.$route.params.id}`, formData).then((res) => {
         //  direct to jobs page
         this.project = res
         this.loading = false
         this.pdf = true
+        this.dialogFile = false
       }).catch((error) => {
         this.$swal.fire({
           type: 'error',
