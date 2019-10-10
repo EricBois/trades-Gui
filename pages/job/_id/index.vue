@@ -433,12 +433,7 @@ export default {
         const name = file.split('/').pop()
         this.$axios.$post(`job/deleteFile/${name}/${this.$route.params.id}`, { file }).then((res) => {
           this.loading = false
-          for (const key in this.project.files) {
-            const file1 = this.project.files[key]
-            if (file1 === file) {
-              this.project.files.splice(key, 1)
-            }
-          }
+          this.project = res
         }).catch((error) => {
           this.$swal.fire({
             type: 'error',
