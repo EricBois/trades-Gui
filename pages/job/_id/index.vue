@@ -55,7 +55,7 @@
               small
               @click="dialogFile = !dialogFile"
             >
-            <v-icon>mdi-file-document-box-plus-outline</v-icon>&nbsp;Document
+              <v-icon>mdi-file-document-box-plus-outline</v-icon>&nbsp;Document
             </v-chip>
           </div>
           <div v-for="file in project.files" :key="file">
