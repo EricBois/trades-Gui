@@ -1,10 +1,16 @@
 <template>
-  <h2>
-    Not Logged in ! Try Loggin in:
-    <v-btn @click="login">
-      Login
-    </v-btn>
-  </h2>
+  <v-container>
+    <v-card
+      elevation="22"
+      max-width="844"
+      class="mx-auto"
+    >
+      Not Logged in ! Try Loggin in:
+      <v-btn @click="login">
+        Login
+      </v-btn>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
