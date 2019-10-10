@@ -1,111 +1,111 @@
 <template>
   <v-container fluid>
-      <v-card
-        elevation="22"
-        max-width="844"
-        class="mx-auto"
-      >
-        <v-card-text>
-          <v-row
-            class="py-4 pl-4"
-          >
-            <v-form>
-              <v-flex class="mb-4">
-                <image-input v-model="file">
-                  <div slot="activator">
-                    <v-avatar v-if="!avatar" v-ripple size="200px" class="grey lighten-3 mb-3" elevation="8">
-                      <span>Click to add avatar</span>
-                    </v-avatar>
-                    <v-avatar
-                      v-else
-                      v-ripple
-                      size="200px"
-                      class="mb-3"
-                      elevation="18"
-                    >
-                      <img v-if="file.imageURL" :src="file.imageURL" alt="avatar">
-                      <img v-else :src="avatar" alt="avatar">
-                    </v-avatar>
-                  </div>
-                </image-input>
-                <v-slide-x-transition>
-                  <div v-if="file.imageURL && saved == false">
-                    <v-btn class="primary" :loading="saving" @click="uploadImage">
-                      Save Avatar
-                    </v-btn>
-                  </div>
-                </v-slide-x-transition>
-              </v-flex>
-              <v-row
-                class="py-4 pl-4"
-              >
-                <v-layout wrap>
-                  <v-flex xs10 md5 mr-12>
-                    <v-text-field v-model="info.name" class="purple-input" label="Name" />
-                  </v-flex>
-                  <v-flex xs10 md5>
-                    <v-text-field v-model="info.phone" class="purple-input" label="Phone #" />
-                  </v-flex>
-                  <v-flex xs10 pb-5>
-                    <gmap-autocomplete
-                      class="v-input__slot gmap"
-                      :value="info.location.address"
-                      :select-first-on-enter="true"
-                      placeholder="Address"
-                      @place_changed="setPlace"
-                    />
-                  </v-flex>
-                  <v-flex xs10>
-                    <v-textarea v-model="info.description" label="Description" solo outlined class="purple-input" />
-                  </v-flex><v-flex xs10 md5 mr-12>
-                    <v-text-field v-model="info.wcb" class="purple-input" label="Wcb #" />
-                  </v-flex>
-                  <v-flex xs10 md5 mr-12>
-                    <v-text-field v-model="info.liability" class="purple-input" label="Liability Insurance" />
-                  </v-flex>
-                  <v-flex xs10 md5 pt-5>
-                    <vue-tags-input
-                      v-model="tag"
-                      :tags="tags"
-                      :autocomplete-items="filteredItems"
-                      placeholder="Add Skill"
-                      :add-only-from-autocomplete="true"
-                      @tags-changed="newTags => tags = newTags"
-                    />
-                  </v-flex>
-                  <v-flex xs10 md5 pl-md-5 pt-5>
-                    <vue-tags-input
-                      v-model="ticket"
-                      :tags="tickets"
-                      :autocomplete-items="filteredTickets"
-                      placeholder="Add Ticket"
-                      :add-only-from-autocomplete="true"
-                      @tags-changed="newTags => tickets = newTags"
-                    />
-                  </v-flex>
-                  <v-flex xs10 md2 mr-12 pt-4>
-                    <v-text-field
-                      v-model="info.hourly"
-                      label="Hourly"
-                      class="purple-input"
-                      prefix="$"
-                      type="number"
-                    />
-                  </v-flex>
-                  <v-flex xs12 md2 pt-4>
-                    <v-switch v-model="switch1" label="Available" />
-                  </v-flex>
-                  <v-card-actions>
-                    <v-btn class="mx-0 font-weight-light" color="primary" @click="edit">
-                      Update Profile
-                    </v-btn>
-                  </v-card-actions>
-                </v-layout>
-              </v-row>
-            </v-form>
-          </v-row>
-        </v-card-text>
-      </v-card>
+    <v-card
+      elevation="22"
+      max-width="844"
+      class="mx-auto"
+    >
+      <v-card-text>
+        <v-row
+          class="py-4 pl-4"
+        >
+          <v-form>
+            <v-flex class="mb-4">
+              <image-input v-model="file">
+                <div slot="activator">
+                  <v-avatar v-if="!avatar" v-ripple size="200px" class="grey lighten-3 mb-3" elevation="8">
+                    <span>Click to add avatar</span>
+                  </v-avatar>
+                  <v-avatar
+                    v-else
+                    v-ripple
+                    size="200px"
+                    class="mb-3"
+                    elevation="18"
+                  >
+                    <img v-if="file.imageURL" :src="file.imageURL" alt="avatar">
+                    <img v-else :src="avatar" alt="avatar">
+                  </v-avatar>
+                </div>
+              </image-input>
+              <v-slide-x-transition>
+                <div v-if="file.imageURL && saved == false">
+                  <v-btn class="primary" :loading="saving" @click="uploadImage">
+                    Save Avatar
+                  </v-btn>
+                </div>
+              </v-slide-x-transition>
+            </v-flex>
+            <v-row
+              class="py-4 pl-4"
+            >
+              <v-layout wrap>
+                <v-flex xs10 md5 mr-12>
+                  <v-text-field v-model="info.name" class="purple-input" label="Name" />
+                </v-flex>
+                <v-flex xs10 md5>
+                  <v-text-field v-model="info.phone" class="purple-input" label="Phone #" />
+                </v-flex>
+                <v-flex xs10 pb-5>
+                  <gmap-autocomplete
+                    class="v-input__slot gmap"
+                    :value="info.location.address"
+                    :select-first-on-enter="true"
+                    placeholder="Address"
+                    @place_changed="setPlace"
+                  />
+                </v-flex>
+                <v-flex xs10>
+                  <v-textarea v-model="info.description" label="Description" solo outlined class="purple-input" />
+                </v-flex><v-flex xs10 md5 mr-12>
+                  <v-text-field v-model="info.wcb" class="purple-input" label="Wcb #" />
+                </v-flex>
+                <v-flex xs10 md5 mr-12>
+                  <v-text-field v-model="info.liability" class="purple-input" label="Liability Insurance" />
+                </v-flex>
+                <v-flex xs10 md5 pt-5>
+                  <vue-tags-input
+                    v-model="tag"
+                    :tags="tags"
+                    :autocomplete-items="filteredItems"
+                    placeholder="Add Skill"
+                    :add-only-from-autocomplete="true"
+                    @tags-changed="newTags => tags = newTags"
+                  />
+                </v-flex>
+                <v-flex xs10 md5 pl-md-5 pt-5>
+                  <vue-tags-input
+                    v-model="ticket"
+                    :tags="tickets"
+                    :autocomplete-items="filteredTickets"
+                    placeholder="Add Ticket"
+                    :add-only-from-autocomplete="true"
+                    @tags-changed="newTags => tickets = newTags"
+                  />
+                </v-flex>
+                <v-flex xs10 md2 mr-12 pt-4>
+                  <v-text-field
+                    v-model="info.hourly"
+                    label="Hourly"
+                    class="purple-input"
+                    prefix="$"
+                    type="number"
+                  />
+                </v-flex>
+                <v-flex xs12 md2 pt-4>
+                  <v-switch v-model="switch1" label="Available" />
+                </v-flex>
+                <v-card-actions>
+                  <v-btn class="mx-0 font-weight-light" color="primary" @click="edit">
+                    Update Profile
+                  </v-btn>
+                </v-card-actions>
+              </v-layout>
+            </v-row>
+          </v-form>
+        </v-row>
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 <style scoped>
