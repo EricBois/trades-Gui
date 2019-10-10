@@ -1,7 +1,10 @@
 <template>
   <v-container fluid>
-    <v-layout column>
-      <v-card elevation="22">
+      <v-card
+        elevation="22"
+        max-width="844"
+        class="mx-auto"
+      >
         <v-card-text>
           <v-row
             class="py-4 pl-4"
@@ -103,7 +106,6 @@
           </v-row>
         </v-card-text>
       </v-card>
-    </v-layout>
   </v-container>
 </template>
 <style scoped>
