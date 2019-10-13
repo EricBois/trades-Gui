@@ -18,9 +18,11 @@
     "@nuxtjs/auth": "^4.8.1",
     "@nuxtjs/axios": "^5.3.6",
     "auth0-js": "^9.11.3",
+    "blueimp-canvas-to-blob": "^3.16.0",
     "firebase": "^6.5.0",
     "nuxt": "^2.0.0",
     "nuxt-material-design-icons": "^1.0.4",
+    "vue-image-upload-resize": "^2.1.1",
     "vue-sweetalert2": "^2.1.1",
     "vue2-google-maps": "^0.10.7"
   },

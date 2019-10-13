@@ -33,7 +33,8 @@ export default {
   plugins: [
     { src: '~/plugins/vue-tags-input', ssr: false },
     { src: '~/plugins/googleMap'},
-    { src: '~/plugins/sweetalert2'}
+    { src: '~/plugins/sweetalert2'},
+    { src: '~/plugins/vue-image-resize'}
   ],
   /*
   ** Nuxt.js dev-modules

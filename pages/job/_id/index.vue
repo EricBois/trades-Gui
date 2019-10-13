@@ -1,10 +1,6 @@
 <template>
   <v-container>
-    <v-card
-      max-width="844"
-      class="mx-auto"
-      raised
-    >
+    <v-card max-width="844" class="mx-auto" raised>
       <v-layout row wrap class="pa-3">
         <v-flex xs12>
           <div>
@@ -13,30 +9,41 @@
               color="grey"
               outlined
             >
-              Posted  {{ $moment(project.Created).fromNow() }}
+              Posted {{ $moment(project.Created).fromNow() }}
             </v-chip>
           </div>
           <div>
-            <v-chip
-              class="ma-2"
-              color="orange"
-            >
-              {{ project.jobType }}<v-icon right>
+            <v-chip class="ma-2" color="orange">
+              {{ project.jobType }}
+              <v-icon right>
                 mdi-star
               </v-icon>
-            </v-chip><v-chip v-if="project.budget" outlined color="green">
+            </v-chip>
+            <v-chip v-if="project.budget" outlined color="green">
               <b>Budget: ${{ project.budget }}</b>
             </v-chip>
           </div>
           <div class="headline text-center">
             {{ project.name }}
             <div v-if="project.createdBy" class="caption grey--text mb-2">
-              Project by: <u>{{ project.createdBy }}</u>
+              Project by:
+              <u>{{ project.createdBy }}</u>
             </div>
             <div>
-              <v-chip v-for="item in project.skills" :key="item._id" color="primary" small>
+              <v-chip
+                v-for="item in project.skills"
+                :key="item._id"
+                color="primary"
+                small
+              >
                 {{ item.text }}
-              </v-chip><v-chip v-for="item in project.tickets" :key="item._id" color="yellow" small>
+              </v-chip>
+              <v-chip
+                v-for="item in project.tickets"
+                :key="item._id"
+                color="yellow"
+                small
+              >
                 {{ item.text }}
               </v-chip>
             </div>
@@ -49,25 +56,24 @@
         </v-flex>
         <v-flex xs12 md4 offset-md4 text-center>
           <div v-if="ownProject" class="mb-4">
-            <v-chip
-              color="green"
-              ripple
-              small
-              @click="dialogFile = !dialogFile"
-            >
+            <v-chip color="green" ripple small @click="dialogFile = !dialogFile">
               <v-icon>mdi-file-document-box-plus-outline</v-icon>&nbsp;Document
+            </v-chip>
+            <v-chip color="blue-grey lighten-4" small ripple @click="dialogPhoto = !dialogPhoto">
+              <v-icon>mdi-camera-plus</v-icon>&nbsp;Photos
             </v-chip>
           </div>
           <div v-for="file in project.files" :key="file">
-            <v-btn
-              class="mb-2"
-              color="blue-grey darken-2"
-              :href="file"
-              small
-            >
-              <v-icon>mdi-link-box-outline</v-icon> &nbsp;{{ file.split("/").pop() }}
+            <v-btn class="mb-2" color="blue-grey darken-2" :href="file" small>
+              <v-icon>mdi-link-box-outline</v-icon>
+              &nbsp;{{ file.split("/").pop() }}
             </v-btn>
-            <v-icon v-if="ownProject" class="mb-2" color="red" @click="deleteFile(file)">
+            <v-icon
+              v-if="ownProject"
+              class="mb-2"
+              color="red"
+              @click="deleteFile(file, 'file')"
+            >
               mdi-close-box
             </v-icon>
           </div>
@@ -75,7 +81,8 @@
         <v-flex xs4 md3 offset-xs4 offset-md9>
           <v-btn v-if="project.wcb" class="ma-1" x-small text>
             <v-icon>mdi-check-decagram</v-icon>&nbsp; Wcb
-          </v-btn><v-btn v-if="project.liability" class="ma-1" x-small text>
+          </v-btn>
+          <v-btn v-if="project.liability" class="ma-1" x-small text>
             <v-icon>mdi-check-decagram</v-icon>&nbsp;Liability
           </v-btn>
         </v-flex>
@@ -111,12 +118,7 @@
       </v-layout>
     </v-card>
     <v-flex class="mt-5" />
-    <v-card
-      v-if="bids.length > 0"
-      max-width="844"
-      class="mx-auto"
-      raised
-    >
+    <v-card v-if="bids.length > 0" max-width="844" class="mx-auto" raised>
       <v-flex xs12 text-center>
         <h2 v-if="!ownProject">
           Your Placed Bids
@@ -141,13 +143,19 @@
             </v-chip>
           </template>
           <template v-slot:item.description="{ item }">
-            <v-chip v-if="item.description" color="cyan lighten-4" outlined small>
+            <v-chip
+              v-if="item.description"
+              color="cyan lighten-4"
+              outlined
+              small
+            >
               {{ item.description }}
             </v-chip>
           </template>
           <template v-slot:item.price="{ item }">
             <v-chip color="light-green lighten-3" small>
-              <v-icon>mdi-currency-usd</v-icon><b>{{ item.price }}</b>
+              <v-icon>mdi-currency-usd</v-icon>
+              <b>{{ item.price }}</b>
             </v-chip>
           </template>
           <template v-slot:item.createdBy="{ item }">
@@ -156,23 +164,14 @@
             </v-chip>
           </template>
           <template v-if="!ownProject" v-slot:item.action="{ item }">
-            <v-icon
-              class="ml-2"
-              color="red darken-3"
-              @click="deleteBid(item.id)"
-            >
+            <v-icon class="ml-2" color="red darken-3" @click="deleteBid(item.id)">
               mdi-close-octagon
             </v-icon>
           </template>
         </v-data-table>
       </v-flex>
     </v-card>
-    <v-card
-      v-else
-      max-width="844"
-      class="mx-auto"
-      raised
-    >
+    <v-card v-else max-width="844" class="mx-auto" raised>
       <v-flex xs12 text-center>
         <h2>No Bids</h2>
       </v-flex>
@@ -184,10 +183,7 @@
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-form
-              ref="form"
-              lazy-validation
-            >
+            <v-form ref="form" lazy-validation>
               <v-row>
                 <v-col cols="12" sm="4">
                   <v-autocomplete
@@ -203,7 +199,11 @@
                   </h2>
                 </v-col>
                 <v-col cols="12" sm="4">
-                  <v-text-field v-model="infobid.description" label="Description" placeholder="(Optional)" />
+                  <v-text-field
+                    v-model="infobid.description"
+                    label="Description"
+                    placeholder="(Optional)"
+                  />
                 </v-col>
                 <v-col cols="12" sm="4">
                   <v-text-field
@@ -267,6 +267,43 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogPhoto" fullscreen hide-overlay transition="dialog-bottom-transition">
+      <v-card class="px-3">
+        <v-toolbar dark color="primary">
+          <v-btn icon dark @click="dialogPhoto = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Photos</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <photoUpload :project.sync="project" />
+        <v-divider />
+        <v-container class="mx-5">
+          <v-layout row wrap class="pa-3">
+            <v-flex
+              v-for="img in project.photos"
+              :key="img"
+              xs12
+              sm4
+              md3
+              class="pa-4"
+            >
+              <v-card tile>
+                <v-btn
+                  color="orange darken-2
+"
+                  text
+                  @click="deleteFile(img,'image')"
+                >
+                  <v-icon>mdi-delete-outline</v-icon>
+                </v-btn>
+                <v-img :src="img" max-height="500" max-width="400" contain />
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-card>
+    </v-dialog>
     <v-flex v-if="ownProject" xs12 text-center class="mt-5">
       <v-btn v-if="selected.length > 0" color="light-green darken-3">
         Accept Bid(s)
@@ -275,15 +312,20 @@
   </v-container>
 </template>
 <style scoped>
-    .v-chip {
-        margin-left: 5px;
-        color: black
-    }
+.v-chip {
+  margin-left: 5px;
+  color: black;
+}
 </style>
 <script>
+import photoUpload from '../../../components/PhotoUpload.vue'
 export default {
+  components: {
+    photoUpload
+  },
   data () {
     return {
+      dialogPhoto: false,
       dialogFile: false,
       loading: false,
       pdf: false,
@@ -320,68 +362,72 @@ export default {
   },
   mounted () {
     // get the job with the id
-    this.$axios.$get(`job/view/${this.$route.params.id}`).then((res) => {
-      this.project = res
-      if (this.project.user === this.$auth.user.sub) {
-        this.ownProject = true
-      }
-      for (const key in res.skills) {
-        const trade = res.skills[key]
-        trade._id = key
-        this.trades.push(trade)
-      }
-      for (const key in res.bids) {
-        const bid = res.bids[key]
-        bid._id = key
-        bid.trade = bid.trade.toString().replace(/,/g, ', ')
-        if (!this.ownProject) {
-          if (bid.user === this.$auth.user.sub) {
+    this.$axios
+      .$get(`job/view/${this.$route.params.id}`)
+      .then((res) => {
+        this.project = res
+        if (this.project.user === this.$auth.user.sub) {
+          this.ownProject = true
+        }
+        for (const key in res.skills) {
+          const trade = res.skills[key]
+          trade._id = key
+          this.trades.push(trade)
+        }
+        for (const key in res.bids) {
+          const bid = res.bids[key]
+          bid._id = key
+          bid.trade = bid.trade.toString().replace(/,/g, ', ')
+          if (!this.ownProject) {
+            if (bid.user === this.$auth.user.sub) {
+              this.bids.push(bid)
+            }
+          } else {
             this.bids.push(bid)
           }
-        } else {
-          this.bids.push(bid)
         }
-      }
-    }).catch((error) => {
-      // handle this error here
-      this.$swal.fire({
-        type: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong!',
-        footer: `${error}`
       })
-    })
+      .catch((error) => {
+        // handle this error here
+        this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          footer: `${error}`
+        })
+      })
   },
   methods: {
     deleteProject (id) {
-      this.$swal.fire({
-        title: 'Delete this project ?',
-        text: "You won't be able to revert this!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.value) {
-          this.$axios.$post(`job/delete/${id}`).then((res) => {
-            //  direct to jobs page
-            this.$router.push(`../../user/projects`)
-            this.$swal.fire(
-              'Success!',
-              'Deleted Successfully.',
-              'success'
-            )
-          }).catch((error) => {
-            this.$swal.fire({
-              type: 'error',
-              title: 'Oops...',
-              text: 'Something went wrong!',
-              footer: `${error}`
-            })
-          })
-        }
-      })
+      this.$swal
+        .fire({
+          title: 'Delete this project ?',
+          text: "You won't be able to revert this!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        })
+        .then((result) => {
+          if (result.value) {
+            this.$axios
+              .$post(`job/delete/${id}`)
+              .then((res) => {
+                //  direct to jobs page
+                this.$router.push(`../../user/projects`)
+                this.$swal.fire('Success!', 'Deleted Successfully.', 'success')
+              })
+              .catch((error) => {
+                this.$swal.fire({
+                  type: 'error',
+                  title: 'Oops...',
+                  text: 'Something went wrong!',
+                  footer: `${error}`
+                })
+              })
+          }
+        })
     },
     postBid () {
       if (this.$refs.form.validate()) {
@@ -392,49 +438,39 @@ export default {
           this.infobid.trade = 'Whole Project'
         }
         this.infobid.project = this.project.id
-        this.$axios.$post('bid/create', this.infobid).then((res) => {
-          // make a sweetalert2
-          res.trade = res.trade.toString().replace(/,/g, ', ')
-          this.bids.push(res)
-          this.dialogBid = false
-          this.infobid.trade = []
-          this.infobid.price = ''
-          this.infobid.description = ''
-        }).catch((error) => {
-          this.$swal.fire({
-            type: 'error',
-            title: 'Oops...',
-            text: 'Something went wrong!',
-            footer: `${error}`
+        this.$axios
+          .$post('bid/create', this.infobid)
+          .then((res) => {
+            // make a sweetalert2
+            res.trade = res.trade.toString().replace(/,/g, ', ')
+            this.bids.push(res)
+            this.dialogBid = false
+            this.infobid.trade = []
+            this.infobid.price = ''
+            this.infobid.description = ''
           })
-        })
+          .catch((error) => {
+            this.$swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+              footer: `${error}`
+            })
+          })
       }
     },
     deleteBid (id) {
-      this.$axios.$post('bid/delete', { id }).then((res) => {
-        for (const key in this.bids) {
-          const bid = this.bids[key]
-          if (id === bid.id) {
-            this.bids.splice(key, 1)
+      this.$axios
+        .$post('bid/delete', { id })
+        .then((res) => {
+          for (const key in this.bids) {
+            const bid = this.bids[key]
+            if (id === bid.id) {
+              this.bids.splice(key, 1)
+            }
           }
-        }
-      }).catch((error) => {
-        this.$swal.fire({
-          type: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!',
-          footer: `${error}`
         })
-      })
-    },
-    deleteFile (file) {
-      this.loading = true
-      if (file) {
-        const name = file.split('/').pop()
-        this.$axios.$post(`job/deleteFile/${name}/${this.$route.params.id}`, { file }).then((res) => {
-          this.loading = false
-          this.project = res
-        }).catch((error) => {
+        .catch((error) => {
           this.$swal.fire({
             type: 'error',
             title: 'Oops...',
@@ -442,27 +478,51 @@ export default {
             footer: `${error}`
           })
         })
+    },
+    deleteFile (file, type) {
+      this.loading = true
+      if (file) {
+        const name = file.split('/').pop()
+        this.$axios
+          .$post(`job/deleteFile/${name}/${this.$route.params.id}/${type}`, {
+            file
+          })
+          .then((res) => {
+            this.loading = false
+            this.project = res
+          })
+          .catch((error) => {
+            this.$swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+              footer: `${error}`
+            })
+          })
       }
     },
     upload () {
       this.loading = true
       const formData = new FormData()
       formData.append('file', this.doc)
-      this.$axios.$post(`job/upload/${this.$route.params.id}`, formData).then((res) => {
-        //  direct to jobs page
-        this.project = res
-        this.loading = false
-        this.pdf = true
-        this.dialogFile = false
-      }).catch((error) => {
-        this.$swal.fire({
-          type: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!',
-          footer: `${error}`
+      this.$axios
+        .$post(`job/upload/${this.$route.params.id}`, formData)
+        .then((res) => {
+          //  direct to jobs page
+          this.project = res
+          this.loading = false
+          this.pdf = true
+          this.dialogFile = false
         })
-        this.loading = false
-      })
+        .catch((error) => {
+          this.$swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: `${error}`
+          })
+          this.loading = false
+        })
     }
   }
 }
