@@ -299,7 +299,13 @@
                 >
                   <v-icon>mdi-delete-outline</v-icon>
                 </v-btn>
-                <v-img :src="img" max-height="300" max-width="400" contain />
+                <expandable-image
+                  class="image"
+                  :src="img"
+                  max-height="300"
+                  max-width="400"
+                  contain
+                />
               </v-card>
             </v-flex>
           </v-layout>
@@ -320,10 +326,12 @@
 }
 </style>
 <script>
+import ExpandableImage from '../../../components/ExpandableImage'
 import photoUpload from '../../../components/PhotoUpload.vue'
 export default {
   components: {
-    photoUpload
+    photoUpload,
+    ExpandableImage
   },
   data () {
     return {
