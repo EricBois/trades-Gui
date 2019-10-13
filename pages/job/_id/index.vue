@@ -276,7 +276,9 @@
           <v-toolbar-title>Photos</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
-        <photoUpload :project.sync="project" />
+        <v-flex xs12 text-center>
+          <photoUpload :project.sync="project" />
+        </v-flex>
         <v-divider />
         <v-container class="mx-5">
           <v-layout row wrap class="pa-3">
@@ -297,7 +299,7 @@
                 >
                   <v-icon>mdi-delete-outline</v-icon>
                 </v-btn>
-                <v-img :src="img" max-height="500" max-width="400" contain />
+                <v-img :src="img" max-height="300" max-width="400" contain />
               </v-card>
             </v-flex>
           </v-layout>
