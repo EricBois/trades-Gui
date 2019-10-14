@@ -316,8 +316,21 @@
         </v-container>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogBidApproval" persistent max-width="600">
+      <v-card class="px-3">
+        <v-toolbar dark color="green">
+          <v-btn icon dark @click="dialogBidApproval = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Bids Approval</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <BidsApproval />
+        <v-divider></v-divider>
+      </v-card>
+    </v-dialog>
     <v-flex v-if="ownProject" xs12 text-center class="mt-5">
-      <v-btn v-if="selected.length > 0" color="light-green darken-3">
+      <v-btn v-if="selected.length > 0" color="light-green darken-3" @click="dialogBidApproval = !dialogBidApproval">
         Accept Bid(s)
       </v-btn>
     </v-flex>
@@ -333,15 +346,18 @@
     }
 </style>
 <script>
+import BidsApproval from '../../../components/BidsApproval'
 import ExpandableImage from '../../../components/ExpandableImage'
 import photoUpload from '../../../components/PhotoUpload.vue'
 export default {
   components: {
     photoUpload,
-    ExpandableImage
+    ExpandableImage,
+    BidsApproval
   },
   data () {
     return {
+      dialogBidApproval: false,
       dialogPhoto: false,
       dialogFile: false,
       loading: false,
