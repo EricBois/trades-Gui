@@ -325,7 +325,7 @@
           <v-toolbar-title>Bids Approval</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
-        <BidsApproval />
+        <BidsApproval :bids.sync="selected"/>
         <v-divider></v-divider>
       </v-card>
     </v-dialog>
