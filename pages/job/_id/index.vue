@@ -55,27 +55,13 @@
           </v-card-text>
         </v-flex>
         <v-flex xs12 md4 offset-md4 text-center>
-          <div v-if="ownProject" class="mb-4">
-            <v-chip color="green" ripple small @click="dialogFile = !dialogFile">
-              <v-icon>mdi-file-document-box-plus-outline</v-icon>&nbsp;Document
+          <div class="mb-4">
+            <v-chip v-if="project.files && project.files.length > 0 || ownProject" color="green" ripple small @click="dialogFile = !dialogFile">
+              <v-icon>mdi-file-document-box-outline</v-icon>&nbsp;Documents
             </v-chip>
-            <v-chip color="blue-grey lighten-4" small ripple @click="dialogPhoto = !dialogPhoto">
-              <v-icon>mdi-camera-plus</v-icon>&nbsp;Photos
+            <v-chip v-if="project.photos && project.photos.length > 0 || ownProject" color="blue-grey lighten-4" small ripple @click="dialogPhoto = !dialogPhoto">
+              <v-icon>mdi-camera</v-icon>&nbsp;Photos
             </v-chip>
-          </div>
-          <div v-for="file in project.files" :key="file">
-            <v-btn class="mb-2" color="blue-grey darken-2" :href="file" small>
-              <v-icon>mdi-link-box-outline</v-icon>
-              &nbsp;{{ file.split("/").pop() }}
-            </v-btn>
-            <v-icon
-              v-if="ownProject"
-              class="mb-2"
-              color="red"
-              @click="deleteFile(file, 'file')"
-            >
-              mdi-close-box
-            </v-icon>
           </div>
         </v-flex>
         <v-flex xs4 md3 offset-xs4 offset-md9>
@@ -241,14 +227,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogFile" persistent max-width="600px">
+    <v-dialog v-model="dialogFile" persistent max-width="600px" transition="dialog-bottom-transition">
       <v-card>
         <v-card-title>
-          <span class="headline">Add File</span>
+          <span class="headline">Files</span>
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-row>
+            <v-row v-if="ownProject">
               <v-col cols="12">
                 <v-file-input v-model="doc" :loading="loading" show-size label="Document Upload" />
                 <v-btn v-if="doc && !loading" small @click="upload()">
@@ -256,8 +242,26 @@
                 </v-btn>
               </v-col>
             </v-row>
+            <v-divider />
+            <v-row>
+              <v-col>
+                <div v-for="file in project.files" :key="file">
+                  <v-btn class="mb-2" color="blue-grey darken-2" :href="file" small>
+                    <v-icon>mdi-link-box-outline</v-icon>
+              &nbsp;{{ file.split("/").pop() }}
+                  </v-btn>
+                  <v-icon
+                    v-if="ownProject"
+                    class="mb-2"
+                    color="red"
+                    @click="deleteFile(file, 'file')"
+                  >
+                    mdi-close-box
+                  </v-icon>
+                </div>
+              </v-col>
+            </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <div class="flex-grow-1" />
@@ -267,7 +271,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogPhoto" fullscreen hide-overlay transition="dialog-bottom-transition">
+    <v-dialog v-model="dialogPhoto" transition="dialog-bottom-transition" max-width="900">
       <v-card class="px-3">
         <v-toolbar dark color="primary">
           <v-btn icon dark @click="dialogPhoto = false">
@@ -276,11 +280,11 @@
           <v-toolbar-title>Photos</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
-        <v-flex xs12 text-center>
+        <v-flex v-if="ownProject" xs12 text-center>
           <photoUpload :project.sync="project" />
         </v-flex>
         <v-divider />
-        <v-container class="mx-5">
+        <v-container class="mx-5 photo">
           <v-layout row wrap class="pa-3">
             <v-flex
               v-for="img in project.photos"
@@ -290,8 +294,9 @@
               md3
               class="pa-4"
             >
-              <v-card tile>
+              <v-card>
                 <v-btn
+                  v-if="ownProject"
                   color="orange darken-2
 "
                   text
@@ -302,7 +307,6 @@
                 <expandable-image
                   class="image"
                   :src="img"
-                  max-height="300"
                   max-width="400"
                   contain
                 />
@@ -324,6 +328,9 @@
   margin-left: 5px;
   color: black;
 }
+.container.photo {
+        background-color: rgb(70, 81, 95)
+    }
 </style>
 <script>
 import ExpandableImage from '../../../components/ExpandableImage'
@@ -338,7 +345,6 @@ export default {
       dialogPhoto: false,
       dialogFile: false,
       loading: false,
-      pdf: false,
       doc: null,
       priceRule: [v => !!v || 'The price is required'],
       infobid: {
@@ -521,8 +527,6 @@ export default {
           //  direct to jobs page
           this.project = res
           this.loading = false
-          this.pdf = true
-          this.dialogFile = false
         })
         .catch((error) => {
           this.$swal.fire({

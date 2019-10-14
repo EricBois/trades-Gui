@@ -2,7 +2,7 @@
   <v-container>
     <image-uploader
       :preview="false"
-      :max-width="512"
+      :max-width="700"
       :class-name="['fileinput', { 'fileinput--loaded': hasImage }]"
       capture="environment"
       :debug="1"
