@@ -236,7 +236,7 @@
           <v-container>
             <v-row v-if="ownProject">
               <v-col cols="12">
-                <v-file-input v-model="doc" :loading="loading" show-size label="Document Upload" />
+                <v-file-input v-model="doc" accept="application/pdf" :loading="loading" show-size label="Document Upload" />
                 <v-btn v-if="doc && !loading" small @click="upload()">
                   Upload
                 </v-btn>
