@@ -36,8 +36,8 @@
           </v-chip>
         </v-flex>
         <v-flex xs8 mt-2>
-          <v-chip v-for="item in project.skills" :key="item._id" color="primary" small class="mt-1">
-            {{ item.text }}
+          <v-chip v-for="item in project.skills" :key="item" color="primary" small class="mt-1">
+            {{ item }}
           </v-chip>
         </v-flex>
         <v-flex xs4>

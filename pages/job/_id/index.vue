@@ -32,19 +32,19 @@
             <div>
               <v-chip
                 v-for="item in project.skills"
-                :key="item._id"
+                :key="item"
                 color="primary"
                 small
               >
-                {{ item.text }}
+                {{ item }}
               </v-chip>
               <v-chip
                 v-for="item in project.tickets"
-                :key="item._id"
+                :key="item"
                 color="yellow"
                 small
               >
-                {{ item.text }}
+                {{ item }}
               </v-chip>
             </div>
           </div>
@@ -367,7 +367,8 @@ export default {
         trade: [],
         description: '',
         price: '',
-        project: ''
+        project: '',
+        createdBy: ''
       },
       ownProject: false,
       dialogBid: false,
@@ -401,11 +402,11 @@ export default {
         if (this.project.user === this.$auth.user.sub) {
           this.ownProject = true
         }
-        for (const key in res.skills) {
-          const trade = res.skills[key]
-          trade._id = key
-          this.trades.push(trade)
-        }
+        // for (const key in res.skills) {
+        //   const trade = res.skills[key]
+        //   trade = key
+        //   this.trades.push(trade)
+        // }
         for (const key in res.bids) {
           const bid = res.bids[key]
           bid._id = key
@@ -463,6 +464,7 @@ export default {
     },
     postBid () {
       if (this.$refs.form.validate()) {
+        this.infobid.createdBy = this.$auth.user.name
         if (this.project.oneBid) {
           this.infobid.trade = 'Whole Project'
         }
