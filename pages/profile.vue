@@ -159,6 +159,8 @@ export default {
       } else {
         this.switch1 = false
       }
+    }).catch(() => {
+      this.$router.push('/')
     })
   },
   methods: {
