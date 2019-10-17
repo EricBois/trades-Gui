@@ -31,7 +31,6 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~/plugins/vue-tags-input', ssr: false },
     { src: '~/plugins/googleMap'},
     { src: '~/plugins/sweetalert2'},
     { src: '~/plugins/vue-image-resize'}
@@ -59,8 +58,8 @@ export default {
       auth0: {
         domain: 'dev-2upadx1s.auth0.com',
         client_id: 'EAOoS6JqaznqTqMk7dDUtdQBydcRellw',
-        //audience: 'https://dev-2upadx1s.auth0.com/api/v2/'
-        audience: 'https://tradster.com'
+        audience: 'https://dev-2upadx1s.auth0.com/api/v2/'
+        //audience: 'https://subhub.ca'
       }
     },
     redirect: {
