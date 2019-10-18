@@ -154,6 +154,15 @@ export default {
       this.info.name = res.name
       this.info.user_metadata = res.user_metadata
       this.picture = res.picture
+      this.info.user_metadata.phone = res.user_metadata.phone
+      this.info.user_metadata.description = res.user_metadata.description
+      this.info.user_metadata.hourly = res.user_metadata.hourly
+      this.info.user_metadata.available = res.user_metadata.available
+      this.info.user_metadata.wcb = res.user_metadata.wcb
+      this.info.user_metadata.liability = res.user_metadata.liability
+      this.info.user_metadata.skills = res.user_metadata.skills
+      this.info.user_metadata.tickets = res.user_metadata.tickets
+      this.info.user_metadata.location = res.user_metadata.location
       if (this.info.user_metadata.available) {
         this.switch1 = true
       } else {
@@ -182,6 +191,7 @@ export default {
         } else {
           this.switch1 = false
         }
+        this.$auth.fetchUser()
       })
     },
     uploadImage () {
@@ -207,6 +217,7 @@ export default {
         } else {
           this.switch1 = false
         }
+        this.$auth.fetchUser()
       })
     },
     setImage (file) {

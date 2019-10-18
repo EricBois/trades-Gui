@@ -194,8 +194,6 @@ export default {
     // get the job with the id
     this.$axios.$get(`job/view/${this.$route.params.id}`).then((res) => {
       this.info = res
-      this.tags = this.info.skills
-      this.tickets = this.info.tickets
     })
   },
   methods: {

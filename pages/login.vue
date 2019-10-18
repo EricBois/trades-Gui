@@ -15,6 +15,9 @@
 
 <script>
 export default {
+  mounted () {
+    console.log(this.$route)
+  },
   methods: {
     login () {
       this.$auth.loginWith('auth0')

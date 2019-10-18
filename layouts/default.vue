@@ -120,8 +120,7 @@ export default {
     },
     logout () {
       this.$auth.logout()
-      localStorage.clear()
-      this.$router.push('/home')
+      window.location.replace('https://dev-2upadx1s.auth0.com/v2/logout?returnTo=http%3A%2F%2Flocalhost:3333/')
     }
   }
 }
