@@ -65,21 +65,21 @@
                   </v-flex>
                   <v-flex xs10 md5 pt-5>
                     <v-select
-                    v-model="info.skills"
-                    :items="itemSkills"
-                    chips
-                    label="Skills"
-                    multiple
-                  />
+                      v-model="info.skills"
+                      :items="itemSkills"
+                      chips
+                      label="Skills"
+                      multiple
+                    />
                   </v-flex>
                   <v-flex xs10 md5 pl-md-5 pt-5>
                     <v-select
-                    v-model="info.tickets"
-                    :items="itemTickets"
-                    chips
-                    label="Tickets"
-                    multiple
-                  />
+                      v-model="info.tickets"
+                      :items="itemTickets"
+                      chips
+                      label="Tickets"
+                      multiple
+                    />
                   </v-flex>
                   <v-flex xs10 md2 mr-12 pt-4>
                     <v-text-field

@@ -49,7 +49,7 @@
                 <v-flex xs10 md5>
                   <v-text-field v-model="info.user_metadata.phone" class="purple-input" label="Phone #" />
                 </v-flex>
-                <v-flex xs10 pb-5 >
+                <v-flex xs10 pb-5>
                   <v-text-field v-model="info.user_metadata.address" class="purple-input" label="Address" />
                 </v-flex>
                 <v-flex xs10>

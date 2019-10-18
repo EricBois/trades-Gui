@@ -176,7 +176,7 @@
                     v-if="!project.oneBid"
                     v-model="infobid.trade"
                     placeholder="Pick one or many"
-                    :items="trades"
+                    :items="merged"
                     label="Trade"
                     multiple
                   />
@@ -325,8 +325,8 @@
           <v-toolbar-title>Bids Approval</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
-        <BidsApproval :bids.sync="selected"/>
-        <v-divider></v-divider>
+        <BidsApproval :bids.sync="selected" />
+        <v-divider />
       </v-card>
     </v-dialog>
     <v-flex v-if="ownProject" xs12 text-center class="mt-5">
@@ -372,6 +372,7 @@ export default {
       },
       ownProject: false,
       dialogBid: false,
+      merged: [],
       trades: ['Whole Project'],
       selected: [],
       bid: false,
@@ -402,11 +403,7 @@ export default {
         if (this.project.user === this.$auth.user.sub) {
           this.ownProject = true
         }
-        // for (const key in res.skills) {
-        //   const trade = res.skills[key]
-        //   trade = key
-        //   this.trades.push(trade)
-        // }
+        this.merged = this.trades.concat(res.skills)
         for (const key in res.bids) {
           const bid = res.bids[key]
           bid._id = key
