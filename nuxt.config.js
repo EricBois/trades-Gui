@@ -55,7 +55,6 @@ export default {
   ],
   auth: {
     resetOnError: true,
-    plugins: [ '~/plugins/auth.js' ],
     strategies: {
       auth0: {
         domain: 'dev-2upadx1s.auth0.com',
