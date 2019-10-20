@@ -170,8 +170,8 @@
         <v-card-text>
           <v-container>
             <v-form ref="form" lazy-validation>
-              <v-row>
-                <v-col cols="12" sm="4">
+              <v-layout wrap>
+                <v-flex xs12 sm4 class="pr-5">
                   <v-autocomplete
                     v-if="!project.oneBid"
                     v-model="infobid.trade"
@@ -183,15 +183,15 @@
                   <h2 v-if="project.oneBid" class="mt-5">
                     Whole Project
                   </h2>
-                </v-col>
-                <v-col cols="12" sm="4">
+                </v-flex>
+                <v-flex xs12 sm4 class="pr-5 pt-2">
                   <v-text-field
                     v-model="infobid.description"
                     label="Description"
                     placeholder="(Optional)"
                   />
-                </v-col>
-                <v-col cols="12" sm="4">
+                </v-flex>
+                <v-flex xs12 sm4 class="pr-5 pt-2">
                   <v-text-field
                     v-if="project.jobType === 'Contract'"
                     v-model="infobid.price"
@@ -210,11 +210,20 @@
                     placeholder="Hourly"
                     append-outer-icon="mdi-clock-outline"
                   />
-                </v-col>
-              </v-row>
+                </v-flex>
+                <v-flex xs12 sm6 class="pr-5 pt-2">
+                  <v-text-field
+                    v-model="phone"
+                    type="text"
+                    clearable
+                    prepend-inner-icon="mdi-phone"
+                    label="Phone  *Optional*"
+                    placeholder="Phone ( Optional )"
+                  />
+                </v-flex>
+              </v-layout>
             </v-form>
           </v-container>
-          <small>*all fields required</small>
         </v-card-text>
         <v-card-actions>
           <div class="flex-grow-1" />
@@ -357,6 +366,7 @@ export default {
   },
   data () {
     return {
+      phone: '',
       metdata: 'https://subhub.com/user_metadata',
       dialogBidApproval: false,
       dialogPhoto: false,
@@ -403,6 +413,7 @@ export default {
       .$get(`job/view/${this.$route.params.id}`)
       .then((res) => {
         this.project = res
+        this.phone = this.$auth.user['https://subhub.com/user_metadata'].phone
         if (this.project.user === this.$auth.user.sub) {
           this.ownProject = true
         }
@@ -465,8 +476,8 @@ export default {
     postBid () {
       if (this.$refs.form.validate()) {
         this.infobid.createdBy = this.$auth.user.name
-        if (this.$auth.user['https://subhub.com/user_metadata'].phone) {
-          this.infobid.phone = this.$auth.user['https://subhub.com/user_metadata'].phone
+        if (this.phone) {
+          this.infobid.phone = this.phone
         }
         if (this.$auth.user.email) {
           this.infobid.email = this.$auth.user.email
