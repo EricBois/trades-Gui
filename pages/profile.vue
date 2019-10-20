@@ -168,6 +168,7 @@ export default {
       } else {
         this.switch1 = false
       }
+      console.log(this.$auth.user)
     }).catch(() => {
       this.$router.push('/')
     })

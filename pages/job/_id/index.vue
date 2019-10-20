@@ -357,6 +357,7 @@ export default {
   },
   data () {
     return {
+      metdata: 'https://subhub.com/user_metadata',
       dialogBidApproval: false,
       dialogPhoto: false,
       dialogFile: false,
@@ -364,6 +365,8 @@ export default {
       doc: null,
       priceRule: [v => !!v || 'The price is required'],
       infobid: {
+        phone: '',
+        email: '',
         trade: [],
         description: '',
         price: '',
@@ -462,6 +465,12 @@ export default {
     postBid () {
       if (this.$refs.form.validate()) {
         this.infobid.createdBy = this.$auth.user.name
+        if (this.$auth.user['https://subhub.com/user_metadata'].phone) {
+          this.infobid.phone = this.$auth.user['https://subhub.com/user_metadata'].phone
+        }
+        if (this.$auth.user.email) {
+          this.infobid.email = this.$auth.user.email
+        }
         if (this.project.oneBid) {
           this.infobid.trade = 'Whole Project'
         }
