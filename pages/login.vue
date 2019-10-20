@@ -33,6 +33,12 @@ export default {
       )
     ) {
       this.error = 'Please verify your email before logging in'
+      this.$swal.fire({
+        type: 'info',
+        title: 'Verify Your Email',
+        text: 'Please verify your email address.',
+        footer: 'Look in your email'
+      })
     }
   },
   methods: {
