@@ -36,7 +36,7 @@
         </v-list-item>
         <v-divider class="my-5"></v-divider>
         <v-list-group
-          prepend-icon="mdi-square-inc-cash"
+          prepend-icon="mdi-alpha-p-box"
           no-action
         >
           <template v-slot:activator>
@@ -46,12 +46,12 @@
           </template>
           <v-list-item to="/user/projects">
             <v-list-item-content>
-              <v-list-item-title>Your Listing</v-list-item-title>
+              <v-list-item-title><v-icon>mdi-view-list</v-icon> &nbsp; Your Listing</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item to="/user/create">
             <v-list-item-content>
-              <v-list-item-title>Post Project</v-list-item-title>
+              <v-list-item-title><v-icon>mdi-post</v-icon>&nbsp; Post Project</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
