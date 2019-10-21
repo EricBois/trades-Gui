@@ -21,7 +21,7 @@
                   <v-flex xs10>
                     <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Project Title" />
                   </v-flex>
-                  <v-flex xs10 pb-5>
+                  <v-flex xs10 sm5 pb-5>
                     <v-select
                       v-model="info.jobType"
                       :rules="projectRule"
@@ -30,7 +30,7 @@
                       label="Project Type"
                     />
                   </v-flex>
-                  <v-flex xs10 pb-5>
+                  <v-flex xs10 sm5 pb-5 pl-sm-5>
                     <v-select
                       v-model="info.location"
                       :rules="locationRule"
@@ -81,6 +81,9 @@
                       multiple
                     />
                   </v-flex>
+                  <v-flex xs10 md3 pt-4 pr-5>
+                    <v-text-field v-model="info.phone" class="purple-input" label="Contact Phone Number" />
+                  </v-flex>
                   <v-flex xs10 md2 mr-12 pt-4>
                     <v-text-field
                       v-model="info.budget"
@@ -93,7 +96,7 @@
                   <v-flex xs6 md2 pt-4>
                     <v-switch v-model="switch1" label="Private" />
                   </v-flex>
-                  <v-flex xs6 md4 pt-4>
+                  <v-flex xs6 md2 pt-4>
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on }">
                         <v-switch v-model="switch2" label="Single Bid" v-on="on" />
@@ -130,6 +133,7 @@ export default {
       job_type: ['Contract', 'Hourly'],
       info: {
         name: '',
+        phone: '',
         description: '',
         budget: '',
         private: false,
@@ -176,6 +180,11 @@ export default {
       } else {
         this.info.liability = false
       }
+    }
+  },
+  created () {
+    if (this.$auth.user['https://subhub.com/user_metadata'].phone) {
+      this.info.phone = this.$auth.user['https://subhub.com/user_metadata'].phone
     }
   },
   methods: {
