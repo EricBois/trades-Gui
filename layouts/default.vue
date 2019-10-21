@@ -1,19 +1,13 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-if="this.$auth.loggedIn" v-model="drawer" :mini-variant.sync="mini" app clipped>
-      <v-list-item>
+      <v-list-item to="/profile">
         <v-list-item-avatar>
           <v-img :src="picture" />
         </v-list-item-avatar>
 
         <v-list-item-title>{{ this.$auth.user.name }} <v-chip color="green" small class="ml-4" /></v-list-item-title>
       </v-list-item>
-      <v-list-item>
-        <v-btn v-if="this.$auth.loggedIn" small @click="logout">
-          Logout
-        </v-btn>
-      </v-list-item>
-
       <v-divider />
       <v-list dense>
         <v-list-item to="/">
@@ -40,6 +34,7 @@
             <v-list-item-title>Team</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-divider class="my-5"></v-divider>
         <v-list-group
           prepend-icon="mdi-square-inc-cash"
           no-action
@@ -68,6 +63,11 @@
             <v-list-item-title>Settings</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item class="mt-5">
+        <v-btn v-if="this.$auth.loggedIn" small @click="logout">
+          Logout
+        </v-btn>
+      </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
