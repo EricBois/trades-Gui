@@ -6,7 +6,7 @@
           <v-img :src="picture" />
         </v-list-item-avatar>
 
-        <v-list-item-title>{{ this.$auth.user.name }}</v-list-item-title>
+        <v-list-item-title>{{ this.$auth.user.name }} <v-chip color="green" small class="ml-4" /></v-list-item-title>
       </v-list-item>
       <v-list-item>
         <v-btn v-if="this.$auth.loggedIn" small @click="logout">
@@ -42,23 +42,19 @@
         </v-list-item>
         <v-list-group
           prepend-icon="mdi-square-inc-cash"
-          sub-group
+          no-action
         >
           <template v-slot:activator>
-            <v-list-item-title>My Projects</v-list-item-title>
+            <v-list-item-content>
+              <v-list-item-title>My Projects</v-list-item-title>
+            </v-list-item-content>
           </template>
           <v-list-item to="/user/projects">
-            <v-list-item-action>
-              <v-icon>mdi-post</v-icon>
-            </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>Current Listing</v-list-item-title>
+              <v-list-item-title>Your Listing</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item to="/user/create">
-            <v-list-item-action>
-              <v-icon>mdi-plus-box</v-icon>
-            </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>Post Project</v-list-item-title>
             </v-list-item-content>
