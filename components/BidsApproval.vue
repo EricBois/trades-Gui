@@ -30,22 +30,22 @@
           </template>
         </v-data-table>
       </v-flex>
-      <v-flex xs12 sm6 pt-3>
-        <v-btn color="blue darken-2" small>
+      <v-flex v-if="emails.length > 0" xs12 sm6 pt-3>
+        <v-btn color="blue darken-2" small @click="email">
           <v-icon>mdi-email</v-icon>&nbsp; Notify by email
         </v-btn>
       </v-flex>
-      <v-flex xs12 sm6 pt-3>
+      <v-flex v-if="phones.length > 0" xs12 sm6 pt-3>
         <v-btn color="blue darken-2" small>
           <v-icon>mdi-message-text</v-icon>&nbsp; Notify by text message
         </v-btn>
       </v-flex>
-      <v-flex xs12 sm6 pt-3>
+      <v-flex v-if="emails.length > 0 || phones.length > 0" xs12 sm6 pt-3>
         <v-btn color="blue darken-2" small>
           <v-icon>mdi-phone</v-icon>&nbsp; Request Call back
         </v-btn>
       </v-flex>
-      <v-flex xs12 sm6 pt-3>
+      <v-flex v-if="emails.length > 0 || phones.length > 0" xs12 sm6 pt-3>
         <v-btn color="blue darken-2" small>
           <v-icon>mdi-account-group</v-icon>&nbsp; Request Onsite meeting
         </v-btn>
@@ -63,6 +63,8 @@ export default {
   },
   data () {
     return {
+      phones: [],
+      emails: [],
       selectedBids: [],
       headers: [
         {
@@ -73,6 +75,29 @@ export default {
         { text: 'Trade', sortable: false, value: 'trade' },
         { text: 'Price', sortable: false, value: 'price' }
       ]
+    }
+  },
+  watch: {
+    selectedBids () {
+      this.emails = []
+      this.phones = []
+      for (const key in this.selectedBids) {
+        const bid = this.selectedBids[key]
+        if (!this.emails.includes(bid.email)) {
+          this.emails.push(bid.email)
+        }
+        if (bid.phone) {
+          if (!this.phones.includes(bid.phone)) {
+            this.phones.push(bid.phone)
+          }
+        }
+      }
+    }
+  },
+  methods: {
+    email () {
+      console.log(this.emails)
+      console.log(this.phones)
     }
   }
 }
