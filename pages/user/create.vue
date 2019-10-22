@@ -81,9 +81,6 @@
                       multiple
                     />
                   </v-flex>
-                  <v-flex xs10 md3 pt-4 pr-5>
-                    <v-text-field v-model="info.phone" class="purple-input" label="Contact Phone Number" />
-                  </v-flex>
                   <v-flex xs10 md2 mr-12 pt-4>
                     <v-text-field
                       v-model="info.budget"
@@ -93,7 +90,7 @@
                       type="number"
                     />
                   </v-flex>
-                  <v-flex xs6 md2 pt-4>
+                  <v-flex xs6 md3 pt-4>
                     <v-switch v-model="switch1" label="Private" />
                   </v-flex>
                   <v-flex xs6 md2 pt-4>
@@ -103,6 +100,12 @@
                       </template>
                       <span>Only 1 bid per user will be allowed on whole project.</span>
                     </v-tooltip>
+                  </v-flex>
+                  <v-flex xs10 md5 pt-4 pr-5>
+                    <v-text-field v-model="info.phone" class="purple-input" label="Contact Phone Number" />
+                  </v-flex>
+                  <v-flex xs10 md5 pt-4>
+                    <v-text-field v-model="info.email" class="purple-input" label="Contact Email" />
                   </v-flex>
                   <v-card-actions>
                     <v-btn class="mx-0 font-weight-light" color="primary" @click="create">
@@ -134,6 +137,7 @@ export default {
       info: {
         name: '',
         phone: '',
+        email: '',
         description: '',
         budget: '',
         private: false,
@@ -186,6 +190,7 @@ export default {
     if (this.$auth.user['https://subhub.com/user_metadata'].phone) {
       this.info.phone = this.$auth.user['https://subhub.com/user_metadata'].phone
     }
+    this.info.email = this.$auth.user.email
   },
   methods: {
     create () {

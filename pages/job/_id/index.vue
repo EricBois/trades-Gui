@@ -84,6 +84,16 @@
               Place a Bid
             </v-btn>
             <v-btn
+              v-if="project.user !== this.$auth.user.sub"
+              class="ma-1"
+              color="blue darken-1"
+              @click="dialogMessage = !dialogMessage"
+              icon
+              ripple
+            >
+              <v-icon large>mdi-forum</v-icon>
+            </v-btn>
+            <v-btn
               v-if="project.user === this.$auth.user.sub"
               class="blue-grey lighten-1 ma-1"
               small
@@ -338,6 +348,19 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogMessage" persistent max-width="600">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogMessage = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Send a message</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <Message :dialogMessage.sync="dialogMessage" :project="project" />
+        <v-divider />
+      </v-card>
+    </v-dialog>
     <v-flex v-if="ownProject" xs12 text-center class="mt-5">
       <v-btn v-if="selected.length > 0" color="light-green darken-3" @click="dialogBidApproval = !dialogBidApproval">
         Accept Bid(s)
@@ -358,16 +381,19 @@
 import BidsApproval from '../../../components/BidsApproval'
 import ExpandableImage from '../../../components/ExpandableImage'
 import photoUpload from '../../../components/PhotoUpload.vue'
+import Message from '../../../components/Message.vue'
 export default {
   components: {
     photoUpload,
     ExpandableImage,
-    BidsApproval
+    BidsApproval,
+    Message
   },
   data () {
     return {
       phone: '',
       metdata: 'https://subhub.com/user_metadata',
+      dialogMessage: false,
       dialogBidApproval: false,
       dialogPhoto: false,
       dialogFile: false,
