@@ -15,7 +15,7 @@
             <v-icon>mdi-view-dashboard</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Dashboard</v-list-item-title>
+            <v-list-item-title><v-chip outlined>Dashboard</v-chip></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item to="/jobs">
@@ -23,7 +23,7 @@
             <v-icon>mdi-post</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Listings</v-list-item-title>
+            <v-list-item-title><v-chip outlined>Listings</v-chip></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item to="/team">
@@ -31,27 +31,27 @@
             <v-icon>mdi-account-group</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Team</v-list-item-title>
+            <v-list-item-title><v-chip outlined>Team</v-chip></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-divider class="my-5"></v-divider>
+        <v-divider class="my-5" />
         <v-list-group
           prepend-icon="mdi-alpha-p-box"
           no-action
         >
           <template v-slot:activator>
             <v-list-item-content>
-              <v-list-item-title>My Projects</v-list-item-title>
+              <v-list-item-title><v-chip outlined>My Projects</v-chip></v-list-item-title>
             </v-list-item-content>
           </template>
           <v-list-item to="/user/projects">
             <v-list-item-content>
-              <v-list-item-title><v-icon>mdi-view-list</v-icon> &nbsp; Your Listing</v-list-item-title>
+              <v-list-item-title><v-chip outlined><v-icon>mdi-view-list</v-icon> &nbsp; Your Listing</v-chip></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item to="/user/create">
             <v-list-item-content>
-              <v-list-item-title><v-icon>mdi-post</v-icon>&nbsp; Post Project</v-list-item-title>
+              <v-list-item-title><v-chip outlined><v-icon>mdi-post</v-icon>&nbsp; Post Project</v-chip></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
@@ -60,7 +60,10 @@
             <v-icon>mdi-message</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Messages</v-list-item-title>
+            <v-list-item-title>
+              <v-chip v-if="unread" color="green"><v-icon>mdi-star</v-icon>&nbsp;New Message(s) </v-chip>
+              <v-chip v-else outlined>Messages</v-chip>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item to="/profile">
@@ -68,14 +71,14 @@
             <v-icon>mdi-settings</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Settings</v-list-item-title>
+            <v-list-item-title><v-chip outlined>Settings</v-chip></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item class="mt-5">
-        <v-btn v-if="this.$auth.loggedIn" small @click="logout">
-          Logout
-        </v-btn>
-      </v-list-item>
+          <v-btn v-if="this.$auth.loggedIn" small @click="logout">
+            Logout
+          </v-btn>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -110,8 +113,27 @@ export default {
   data: () => ({
     drawer: true,
     picture: '',
-    mini: false
+    mini: false,
+    unread: false
   }),
+  watch: {
+    $route () {
+      this.$axios
+        .$get(`message/get`)
+        .then((res) => {
+          for (const key in res) {
+            const message = res[key]
+            message._id = key
+            if (!message.read.includes(this.$auth.user.sub)) {
+              this.unread = true
+              break
+            } else {
+              this.unread = false
+            }
+          }
+        })
+    }
+  },
   created () {
     this.$vuetify.theme.dark = true
     if (this.$auth.user) {

@@ -1,13 +1,17 @@
 <template>
   <v-container>
-    <v-form ref="form" lazy-validation>
+    <!-- <v-flex v-for="message in messages" :key="message._id">
+      <v-chip color="orange light-1" outlined class="mb-2 mr-5">{{message.name}}</v-chip> {{message.text}}
+    </v-flex> -->
+    <v-form ref="form" lazy-validation class="mt-5">
       <v-textarea
         v-model="message.messages.text"
         label="Message"
         solo
         outlined
+        clearable
         class="purple-input"
-        :rules="messageRule"
+        auto-grow
       />
     </v-form>
     <v-btn @click="send">
@@ -28,9 +32,10 @@ export default {
   },
   data () {
     return {
-      messageRule: [v => !!v || 'Message is required'],
+      messages: [],
       message: {
         project: '',
+        project_name: '',
         to: '',
         messages: {
           name: '',
@@ -42,18 +47,17 @@ export default {
   },
   methods: {
     send () {
-      if (this.$refs.form.validate()) {
+      if (this.message.messages.text) {
+        this.message.project_name = this.project.name
         this.message.project = this.project.id
         this.message.to = this.project.user
         this.message.messages.name = this.$auth.user.name
         this.$axios.$post('message/send', this.message).then((res) => {
           this.$emit('update:dialogMessage', false)
-          this.message.messages.text = ''
           this.$swal.fire({
             type: 'success',
             title: 'Success',
-            text: 'Message Sent!',
-            timer: 1500
+            text: 'Message Sent!'
           })
         })
       }

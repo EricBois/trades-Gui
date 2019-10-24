@@ -84,14 +84,15 @@
               Place a Bid
             </v-btn>
             <v-btn
-              v-if="project.user !== this.$auth.user.sub"
               class="ma-1"
               color="blue darken-1"
-              @click="dialogMessage = !dialogMessage"
               icon
               ripple
+              @click="dialogMessage = !dialogMessage"
             >
-              <v-icon large>mdi-forum</v-icon>
+              <v-icon large>
+                mdi-forum
+              </v-icon>
             </v-btn>
             <v-btn
               v-if="project.user === this.$auth.user.sub"
@@ -354,10 +355,10 @@
           <v-btn icon dark @click="dialogMessage = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Send a message</v-toolbar-title>
+          <v-toolbar-title>Messages</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
-        <Message :dialogMessage.sync="dialogMessage" :project="project" />
+        <Message :dialog-message.sync="dialogMessage" :project="project" />
         <v-divider />
       </v-card>
     </v-dialog>
