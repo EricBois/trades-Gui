@@ -15,7 +15,11 @@
             <v-icon>mdi-view-dashboard</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title><v-chip outlined>Dashboard</v-chip></v-list-item-title>
+            <v-list-item-title>
+              <v-chip outlined>
+                Dashboard
+              </v-chip>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item to="/jobs">
@@ -23,7 +27,11 @@
             <v-icon>mdi-post</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title><v-chip outlined>Listings</v-chip></v-list-item-title>
+            <v-list-item-title>
+              <v-chip outlined>
+                Listings
+              </v-chip>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item to="/team">
@@ -31,7 +39,11 @@
             <v-icon>mdi-account-group</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title><v-chip outlined>Team</v-chip></v-list-item-title>
+            <v-list-item-title>
+              <v-chip outlined>
+                Team
+              </v-chip>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-divider class="my-5" />
@@ -41,17 +53,29 @@
         >
           <template v-slot:activator>
             <v-list-item-content>
-              <v-list-item-title><v-chip outlined>My Projects</v-chip></v-list-item-title>
+              <v-list-item-title>
+                <v-chip outlined>
+                  My Projects
+                </v-chip>
+              </v-list-item-title>
             </v-list-item-content>
           </template>
           <v-list-item to="/user/projects">
             <v-list-item-content>
-              <v-list-item-title><v-chip outlined><v-icon>mdi-view-list</v-icon> &nbsp; Your Listing</v-chip></v-list-item-title>
+              <v-list-item-title>
+                <v-chip outlined>
+                  <v-icon>mdi-view-list</v-icon> &nbsp; Your Listing
+                </v-chip>
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item to="/user/create">
             <v-list-item-content>
-              <v-list-item-title><v-chip outlined><v-icon>mdi-post</v-icon>&nbsp; Post Project</v-chip></v-list-item-title>
+              <v-list-item-title>
+                <v-chip outlined>
+                  <v-icon>mdi-post</v-icon>&nbsp; Post Project
+                </v-chip>
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
@@ -61,8 +85,12 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              <v-chip v-if="!read" color="green"><v-icon>mdi-star</v-icon>&nbsp;New Message(s) </v-chip>
-              <v-chip v-else outlined>Messages</v-chip>
+              <v-chip v-if="!read" color="green">
+                <v-icon>mdi-star</v-icon>&nbsp;New Message(s)
+              </v-chip>
+              <v-chip v-else outlined>
+                Messages
+              </v-chip>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -71,7 +99,11 @@
             <v-icon>mdi-settings</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title><v-chip outlined>Settings</v-chip></v-list-item-title>
+            <v-list-item-title>
+              <v-chip outlined>
+                Settings
+              </v-chip>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item class="mt-5">
@@ -110,14 +142,14 @@ export default {
       default: ''
     }
   },
-  computed: mapGetters({
-    read: 'read/get'
-  }),
   data: () => ({
     drawer: true,
     picture: '',
     mini: false,
     unread: false
+  }),
+  computed: mapGetters({
+    read: 'read/get'
   }),
   watch: {
     $route () {

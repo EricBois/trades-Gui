@@ -11,20 +11,20 @@
             v-if="!item.read.includes($auth.user.sub)"
           >
             <v-list-item-icon v-if="!item.read.includes($auth.user.sub)">
-              <v-icon @click="deleteMessage(item.id)" color="red">
+              <v-icon color="red" @click="deleteMessage(item.id)">
                 mdi-close-box
               </v-icon>
             </v-list-item-icon>
-            <v-list-item-content  @click="dialog(item)">
+            <v-list-item-content @click="dialog(item)">
               <v-list-item-title>
                 <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined>
                   {{ item.project_name }}
                 </v-chip>
               </v-list-item-title>
               <v-list-item-subtitle class="pl-3">
-                <small><b> From: <u>{{item.messages[item.messages.length - 1].name}} </u></b></small></br>
-                <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{item.messages[item.messages.length - 1].text}}</small>
-                <small v-else>{{item.messages[item.messages.length - 1].text.substring(0,60)+"..."}}</small>
+                <small><b> From: <u>{{ item.messages[item.messages.length - 1].name }} </u></b></small></br>
+                <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{ item.messages[item.messages.length - 1].text }}</small>
+                <small v-else>{{ item.messages[item.messages.length - 1].text.substring(0,60)+"..." }}</small>
               </v-list-item-subtitle>
             </v-list-item-content>
 
@@ -36,7 +36,7 @@
           </v-list-item>
         </v-flex>
       </v-list>
-      <v-divider class="my-5"></v-divider>
+      <v-divider class="my-5" />
       <v-list subheader dense color="grey darken-3">
         <v-subheader>Read & Sent</v-subheader>
         <v-flex
@@ -46,33 +46,33 @@
           <v-list-item
             v-if="item.read.includes($auth.user.sub)"
           >
-          <v-list-item-icon v-if="item.read.includes($auth.user.sub)">
-              <v-icon @click="deleteMessage(item.id)" color="red">
+            <v-list-item-icon v-if="item.read.includes($auth.user.sub)">
+              <v-icon color="red" @click="deleteMessage(item.id)">
                 mdi-close-box
               </v-icon>
-          </v-list-item-icon>
-          <v-list-item-content @click="dialog(item)">
-            <v-list-item-title>
-              <v-chip v-if="!read" color="green lighten-1"  outlined>
-                {{ item.project_name }}
-              </v-chip>
-              <v-chip v-else color="grey blue lighten-1" outlined>
-                {{ item.project_name }}
-              </v-chip>
-            </v-list-item-title>
-            <v-list-item-subtitle class="pl-3">
-              <small><b>From: <u>{{item.messages[item.messages.length - 1].name}} </u></b></small></br>
-              <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{item.messages[item.messages.length - 1].text}}</small>
-              <small v-else>{{item.messages[item.messages.length - 1].text.substring(0,60)+"..."}}</small>
-            </v-list-item-subtitle>
-          </v-list-item-content>
+            </v-list-item-icon>
+            <v-list-item-content @click="dialog(item)">
+              <v-list-item-title>
+                <v-chip v-if="!read" color="green lighten-1" outlined>
+                  {{ item.project_name }}
+                </v-chip>
+                <v-chip v-else color="grey blue lighten-1" outlined>
+                  {{ item.project_name }}
+                </v-chip>
+              </v-list-item-title>
+              <v-list-item-subtitle class="pl-3">
+                <small><b>From: <u>{{ item.messages[item.messages.length - 1].name }} </u></b></small></br>
+                <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{ item.messages[item.messages.length - 1].text }}</small>
+                <small v-else>{{ item.messages[item.messages.length - 1].text.substring(0,60)+"..." }}</small>
+              </v-list-item-subtitle>
+            </v-list-item-content>
 
-          <v-list-item-icon>
-            <v-icon color="blue">
-              chat_bubble
-            </v-icon>
-          </v-list-item-icon>
-        </v-list-item>
+            <v-list-item-icon>
+              <v-icon color="blue">
+                chat_bubble
+              </v-icon>
+            </v-list-item-icon>
+          </v-list-item>
         </v-flex>
       </v-list>
     </v-flex>
@@ -129,9 +129,6 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  computed: mapGetters({
-    read: 'read/get'
-  }),
   data () {
     return {
       userColor: 'amber lighten-4',
@@ -144,6 +141,9 @@ export default {
       }
     }
   },
+  computed: mapGetters({
+    read: 'read/get'
+  }),
   created () {
     this.$axios
       .$get(`message/get`)

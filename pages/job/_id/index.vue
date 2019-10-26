@@ -3,7 +3,6 @@
     <v-card max-width="844" class="mx-auto" raised>
       <v-btn
         v-if="!ownProject"
-        @click="dialogMessage = !dialogMessage"
         color="blue darken-1"
         style="opacity: 0.7;"
         dark
@@ -13,8 +12,11 @@
         fab
         large
         elevation="24"
+        @click="dialogMessage = !dialogMessage"
       >
-          <v-icon large>mdi-message-text</v-icon>
+        <v-icon large>
+          mdi-message-text
+        </v-icon>
       </v-btn>
       <v-layout row wrap class="pa-3">
         <v-flex xs12>

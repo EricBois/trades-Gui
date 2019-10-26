@@ -96,8 +96,6 @@ export default {
   },
   methods: {
     email () {
-      console.log(this.emails)
-      console.log(this.phones)
     }
   }
 }
