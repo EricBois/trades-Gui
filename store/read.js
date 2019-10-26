@@ -1,5 +1,5 @@
 export const state = () => ({
-  read: false
+  read: true
 })
 
 export const mutations = {

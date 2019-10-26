@@ -147,8 +147,6 @@ export default {
             message._id = key
             if (!message.read.includes(this.$auth.user.sub)) {
               this.$store.commit('read/add', false)
-            } else {
-              this.$store.commit('read/add', true)
             }
           }
         })

@@ -11,6 +11,11 @@
             v-if="!item.read.includes($auth.user.sub)"
             @click="dialog(item)"
           >
+            <v-list-item-icon v-if="!item.read.includes($auth.user.sub)">
+              <v-icon @click="deleteMessage(item.id)" color="red">
+                mdi-close-box
+              </v-icon>
+            </v-list-item-icon>
             <v-list-item-content >
               <v-list-item-title>
                 <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined>
@@ -18,12 +23,14 @@
                 </v-chip>
               </v-list-item-title>
               <v-list-item-subtitle class="pl-8">
-                <small> From: {{item.sender}} </small>
+                <small><b> From: <u>{{item.messages[item.messages.length - 1].name}} </u></b></small></br>
+                <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{item.messages[item.messages.length - 1].text}}</small>
+                <small v-else>{{item.messages[item.messages.length - 1].text.substring(0,60)+"..."}}</small>
               </v-list-item-subtitle>
             </v-list-item-content>
 
             <v-list-item-icon v-if="!item.read.includes($auth.user.sub)">
-              <v-icon :color="item.active ? 'deep-purple accent-4' : 'grey'">
+              <v-icon color="blue">
                 chat_bubble
               </v-icon>
             </v-list-item-icon>
@@ -39,9 +46,13 @@
         >
           <v-list-item
             v-if="item.read.includes($auth.user.sub)"
-            @click="dialog(item)"
           >
-          <v-list-item-content>
+          <v-list-item-icon v-if="item.read.includes($auth.user.sub)">
+              <v-icon @click="deleteMessage(item.id)" color="red">
+                mdi-close-box
+              </v-icon>
+          </v-list-item-icon>
+          <v-list-item-content @click="dialog(item)">
             <v-list-item-title>
               <v-chip v-if="!read" color="green lighten-1"  outlined>
                 {{ item.project_name }}
@@ -51,12 +62,14 @@
               </v-chip>
             </v-list-item-title>
             <v-list-item-subtitle class="pl-8">
-              <small> From: {{item.sender}} </small>
+              <small><b>From: <u>{{item.messages[item.messages.length - 1].name}} </u></b></small></br>
+              <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{item.messages[item.messages.length - 1].text}}</small>
+              <small v-else>{{item.messages[item.messages.length - 1].text.substring(0,60)+"..."}}</small>
             </v-list-item-subtitle>
           </v-list-item-content>
 
           <v-list-item-icon>
-            <v-icon :color="item.active ? 'deep-purple accent-4' : 'grey'">
+            <v-icon color="blue">
               chat_bubble
             </v-icon>
           </v-list-item-icon>
@@ -139,7 +152,9 @@ export default {
         for (const key in res) {
           const message = res[key]
           message._id = key
-          this.messages.push(message)
+          if (!message.delete.includes(this.$auth.user.sub)) {
+            this.messages.push(message)
+          }
           if (message.read.includes(this.$auth.user.sub)) {
             this.$store.commit('read/add', true)
           }
@@ -147,6 +162,16 @@ export default {
       })
   },
   methods: {
+    deleteMessage (id) {
+      this.$axios.$post(`message/delete/${id}`).then((res) => {
+        for (const key in this.messages) {
+          const message = this.messages[key]
+          if (res._id === message.id) {
+            this.messages.splice(key, 1)
+          }
+        }
+      })
+    },
     dialog (item) {
       this.selectedMessage = item
       this.dialogMessage = !this.dialogMessage
