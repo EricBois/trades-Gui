@@ -9,14 +9,13 @@
         >
           <v-list-item
             v-if="!item.read.includes($auth.user.sub)"
-            @click="dialog(item)"
           >
             <v-list-item-icon v-if="!item.read.includes($auth.user.sub)">
               <v-icon @click="deleteMessage(item.id)" color="red">
                 mdi-close-box
               </v-icon>
             </v-list-item-icon>
-            <v-list-item-content >
+            <v-list-item-content  @click="dialog(item)">
               <v-list-item-title>
                 <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined>
                   {{ item.project_name }}
@@ -154,9 +153,9 @@ export default {
           message._id = key
           if (!message.delete.includes(this.$auth.user.sub)) {
             this.messages.push(message)
-          }
-          if (message.read.includes(this.$auth.user.sub)) {
-            this.$store.commit('read/add', true)
+            if (message.read.includes(this.$auth.user.sub)) {
+              this.$store.commit('read/add', true)
+            }
           }
         }
       })
@@ -166,7 +165,7 @@ export default {
       this.$axios.$post(`message/delete/${id}`).then((res) => {
         for (const key in this.messages) {
           const message = this.messages[key]
-          if (res._id === message.id) {
+          if (id === message.id) {
             this.messages.splice(key, 1)
           }
         }
