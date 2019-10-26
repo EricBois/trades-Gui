@@ -1,8 +1,5 @@
 <template>
   <v-container>
-    <!-- <v-flex v-for="message in messages" :key="message._id">
-      <v-chip color="orange light-1" outlined class="mb-2 mr-5">{{message.name}}</v-chip> {{message.text}}
-    </v-flex> -->
     <v-form ref="form" lazy-validation class="mt-5">
       <v-textarea
         v-model="message.messages.text"
@@ -37,6 +34,7 @@ export default {
         project: '',
         project_name: '',
         to: '',
+        senders: [],
         messages: {
           name: '',
           text: ''
@@ -48,6 +46,7 @@ export default {
   methods: {
     send () {
       if (this.message.messages.text) {
+        this.message.senders = [this.$auth.user.name]
         this.message.project_name = this.project.name
         this.message.project = this.project.id
         this.message.to = this.project.user
@@ -57,7 +56,8 @@ export default {
           this.$swal.fire({
             type: 'success',
             title: 'Success',
-            text: 'Message Sent!'
+            text: 'Message Sent!',
+            timer: 1500
           })
         })
       }

@@ -61,7 +61,7 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              <v-chip v-if="unread" color="green"><v-icon>mdi-star</v-icon>&nbsp;New Message(s) </v-chip>
+              <v-chip v-if="!read" color="green"><v-icon>mdi-star</v-icon>&nbsp;New Message(s) </v-chip>
               <v-chip v-else outlined>Messages</v-chip>
             </v-list-item-title>
           </v-list-item-content>
@@ -102,6 +102,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   props: {
     source: {
@@ -109,7 +110,9 @@ export default {
       default: ''
     }
   },
-
+  computed: mapGetters({
+    read: 'read/get'
+  }),
   data: () => ({
     drawer: true,
     picture: '',
@@ -118,20 +121,7 @@ export default {
   }),
   watch: {
     $route () {
-      this.$axios
-        .$get(`message/get`)
-        .then((res) => {
-          for (const key in res) {
-            const message = res[key]
-            message._id = key
-            if (!message.read.includes(this.$auth.user.sub)) {
-              this.unread = true
-              break
-            } else {
-              this.unread = false
-            }
-          }
-        })
+      this.getMsg()
     }
   },
   created () {
@@ -147,6 +137,21 @@ export default {
     logout () {
       this.$auth.logout()
       window.location.replace('https://dev-2upadx1s.auth0.com/v2/logout?returnTo=http%3A%2F%2Flocalhost:3333/')
+    },
+    getMsg () {
+      this.$axios
+        .$get(`message/get`)
+        .then((res) => {
+          for (const key in res) {
+            const message = res[key]
+            message._id = key
+            if (!message.read.includes(this.$auth.user.sub)) {
+              this.$store.commit('read/add', false)
+            } else {
+              this.$store.commit('read/add', true)
+            }
+          }
+        })
     }
   }
 }

@@ -1,6 +1,20 @@
 <template>
   <v-container>
     <v-card max-width="844" class="mx-auto" raised>
+      <v-btn
+          @click="dialogMessage = !dialogMessage"
+          color="blue darken-1"
+          style="opacity: 0.7;"
+          dark
+          absolute
+          middle
+          right
+          fab
+          large
+          elevation="24"
+        >
+          <v-icon large>mdi-message-text</v-icon>
+      </v-btn>
       <v-layout row wrap class="pa-3">
         <v-flex xs12>
           <div>
@@ -82,17 +96,6 @@
               @click="dialogBid = !dialogBid"
             >
               Place a Bid
-            </v-btn>
-            <v-btn
-              class="ma-1"
-              color="blue darken-1"
-              icon
-              ripple
-              @click="dialogMessage = !dialogMessage"
-            >
-              <v-icon large>
-                mdi-forum
-              </v-icon>
             </v-btn>
             <v-btn
               v-if="project.user === this.$auth.user.sub"

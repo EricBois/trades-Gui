@@ -43,10 +43,10 @@
           >
           <v-list-item-content>
             <v-list-item-title>
-              <v-chip v-if="item.read.includes($auth.user.sub)"  color="grey blue lighten-1" outlined>
+              <v-chip v-if="!read" color="green lighten-1"  outlined>
                 {{ item.project_name }}
               </v-chip>
-              <v-chip v-else color="green lighten-1" outlined>
+              <v-chip v-else color="grey blue lighten-1" outlined>
                 {{ item.project_name }}
               </v-chip>
             </v-list-item-title>
@@ -73,13 +73,22 @@
           <v-toolbar-title>Messages</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
-        <v-container>
-          <v-flex v-for="message in selectedMessage.messages" :key="message.id">
-            <v-chip color="blue-grey lighten-4" outlined class="mb-2 mr-5">
-              {{ message.name }}
-            </v-chip> {{ message.text }}
-            <v-divider class="pt-3" />
-          </v-flex>
+        <v-container fluid>
+          <v-layout>
+            <v-flex xs12>
+              <v-card class="scroll" height="400">
+                <v-flex v-for="message in selectedMessage.messages" :key="message.id" px-3>
+                  <v-chip v-if="message.name === $auth.user.name" color="teal lighten-4" outlined class="mb-2 mr-5">
+                    {{ message.name }}
+                  </v-chip>
+                  <v-chip v-else color="orange accent-1" outlined class="mb-2 mr-5">
+                    {{ message.name }}
+                  </v-chip> {{ message.text }}
+                  <v-divider class="pt-3" />
+                </v-flex>
+              </v-card>
+            </v-flex>
+          </v-layout>
           <v-form ref="form" lazy-validation class="mt-5">
             <v-textarea
               v-model="newMessage.text"
@@ -100,8 +109,17 @@
     </v-dialog>
   </v-container>
 </template>
+<style scoped>
+.scroll {
+      overflow-y: auto;
+    }
+</style>
 <script>
+import { mapGetters } from 'vuex'
 export default {
+  computed: mapGetters({
+    read: 'read/get'
+  }),
   data () {
     return {
       userColor: 'amber lighten-4',
@@ -122,6 +140,9 @@ export default {
           const message = res[key]
           message._id = key
           this.messages.push(message)
+          if (message.read.includes(this.$auth.user.sub)) {
+            this.$store.commit('read/add', true)
+          }
         }
       })
   },
@@ -133,6 +154,7 @@ export default {
         if (!this.dialogMessage.read) {
           if (!item.read.includes(this.$auth.user.sub)) {
             this.$axios.$get(`message/read/${this.selectedMessage.id}`).then((res) => {
+              this.$store.commit('read/add', true)
               for (const key in this.messages) {
                 const message = this.messages[key]
                 if (res._id === message.id) {
