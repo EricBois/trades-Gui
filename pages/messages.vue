@@ -22,7 +22,7 @@
                   {{ item.project_name }}
                 </v-chip>
               </v-list-item-title>
-              <v-list-item-subtitle class="pl-8">
+              <v-list-item-subtitle class="pl-3">
                 <small><b> From: <u>{{item.messages[item.messages.length - 1].name}} </u></b></small></br>
                 <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{item.messages[item.messages.length - 1].text}}</small>
                 <small v-else>{{item.messages[item.messages.length - 1].text.substring(0,60)+"..."}}</small>
@@ -61,7 +61,7 @@
                 {{ item.project_name }}
               </v-chip>
             </v-list-item-title>
-            <v-list-item-subtitle class="pl-8">
+            <v-list-item-subtitle class="pl-3">
               <small><b>From: <u>{{item.messages[item.messages.length - 1].name}} </u></b></small></br>
               <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{item.messages[item.messages.length - 1].text}}</small>
               <small v-else>{{item.messages[item.messages.length - 1].text.substring(0,60)+"..."}}</small>
