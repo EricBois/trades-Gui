@@ -33,7 +33,8 @@ export default {
   plugins: [
     { src: '~/plugins/googleMap'},
     { src: '~/plugins/sweetalert2'},
-    { src: '~/plugins/vue-image-resize'}
+    { src: '~/plugins/vue-image-resize'},
+    { src: '~/plugins/axios'}
   ],
   /*
   ** Nuxt.js dev-modules

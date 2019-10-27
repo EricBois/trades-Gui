@@ -168,6 +168,8 @@ export default {
               }
             }
           }
+        }).catch(() => {
+          this.$router.push('/')
         })
     },
     deleteMessage (id) {
