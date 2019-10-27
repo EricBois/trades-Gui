@@ -135,6 +135,7 @@ export default {
       selectedMessage: {},
       messages: [],
       dialogMessage: false,
+      intervalMsg: null,
       newMessage: {
         name: '',
         text: ''
@@ -145,22 +146,30 @@ export default {
     read: 'read/get'
   }),
   created () {
-    this.$axios
-      .$get(`message/get`)
-      .then((res) => {
-        for (const key in res) {
-          const message = res[key]
-          message._id = key
-          if (!message.delete.includes(this.$auth.user.sub)) {
-            this.messages.push(message)
-            if (message.read.includes(this.$auth.user.sub)) {
-              this.$store.commit('read/add', true)
-            }
-          }
-        }
-      })
+    this.getMessages()
+    this.intervalMsg = setInterval(() => { this.getMessages() }, 80000)
+  },
+  beforeDestroy () {
+    clearInterval(this.intervalMsg)
   },
   methods: {
+    getMessages () {
+      this.$axios
+        .$get(`message/get`)
+        .then((res) => {
+          this.messages = []
+          for (const key in res) {
+            const message = res[key]
+            message._id = key
+            if (!message.delete.includes(this.$auth.user.sub)) {
+              this.messages.push(message)
+              if (message.read.includes(this.$auth.user.sub)) {
+                this.$store.commit('read/add', true)
+              }
+            }
+          }
+        })
+    },
     deleteMessage (id) {
       this.$axios.$post(`message/delete/${id}`).then((res) => {
         for (const key in this.messages) {

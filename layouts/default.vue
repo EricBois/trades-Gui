@@ -146,21 +146,21 @@ export default {
     drawer: true,
     picture: '',
     mini: false,
-    unread: false
+    unread: false,
+    intervalMsg: null
   }),
   computed: mapGetters({
     read: 'read/get'
   }),
-  watch: {
-    $route () {
-      this.getMsg()
-    }
-  },
   created () {
     this.$vuetify.theme.dark = true
     if (this.$auth.user) {
       this.picture = this.$auth.user.picture
+      this.getMsg()
     }
+  },
+  beforeDestroy () {
+    clearInterval(this.intervalMsg)
   },
   methods: {
     login () {
@@ -171,17 +171,19 @@ export default {
       window.location.replace('https://dev-2upadx1s.auth0.com/v2/logout?returnTo=http%3A%2F%2Flocalhost:3333/')
     },
     getMsg () {
-      this.$axios
-        .$get(`message/get`)
-        .then((res) => {
-          for (const key in res) {
-            const message = res[key]
-            message._id = key
-            if (!message.read.includes(this.$auth.user.sub)) {
-              this.$store.commit('read/add', false)
+      this.intervalMsg = setInterval(() => {
+        this.$axios
+          .$get(`message/get`)
+          .then((res) => {
+            for (const key in res) {
+              const message = res[key]
+              message._id = key
+              if (!message.read.includes(this.$auth.user.sub)) {
+                this.$store.commit('read/add', false)
+              }
             }
-          }
-        })
+          })
+      }, 300000)
     }
   }
 }
