@@ -162,7 +162,7 @@
             </v-chip>
           </template>
           <template v-slot:item.createdBy="{ item }">
-            <v-chip color="orange accent-1" outlined small>
+            <v-chip @click="profile(item.user)" color="orange accent-1" outlined small>
               {{ item.createdBy }}
             </v-chip>
           </template>
@@ -368,6 +368,19 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogProfile" persistent max-width="800">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogProfile = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Profile</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <Profile :user="user" />
+        <v-divider />
+      </v-card>
+    </v-dialog>
     <v-flex v-if="ownProject" xs12 text-center class="mt-5">
       <v-btn v-if="selected.length > 0" color="light-green darken-3" @click="dialogBidApproval = !dialogBidApproval">
         Accept Bid(s)
@@ -389,15 +402,19 @@ import BidsApproval from '../../../components/BidsApproval'
 import ExpandableImage from '../../../components/ExpandableImage'
 import photoUpload from '../../../components/PhotoUpload.vue'
 import Message from '../../../components/Message.vue'
+import Profile from '../../../components/Profile.vue'
 export default {
   components: {
     photoUpload,
     ExpandableImage,
     BidsApproval,
-    Message
+    Message,
+    Profile
   },
   data () {
     return {
+      dialogProfile: false,
+      user: {},
       phone: '',
       metdata: 'https://subhub.com/user_metadata',
       dialogMessage: false,
@@ -475,6 +492,13 @@ export default {
       })
   },
   methods: {
+    profile (id) {
+      this.$axios.$get(`account/getProfile/${id}`).then((res) => {
+        this.user = res
+      }).then(() => {
+        this.dialogProfile = !this.dialogProfile
+      })
+    },
     deleteProject (id) {
       this.$swal
         .fire({
