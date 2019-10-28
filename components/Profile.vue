@@ -31,6 +31,8 @@
         </v-avatar>
         <div class="name mt-4">
           {{ user.name }}
+          <a v-if="user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon color="orange lighten-4">mdi-web</v-icon></a>
+          <a v-if="user.metadata.phone" :href="phone" target="_blank"><v-icon color="orange lighten-4">mdi-phone</v-icon></a>
         </div>
         <div>
           <v-chip v-for="item in user.metadata.skills" :key="item" color="primary" small>
@@ -99,6 +101,16 @@ export default {
     user: {
       type: Object,
       required: true
+    }
+  },
+  data () {
+    return {
+      phone: ''
+    }
+  },
+  created () {
+    if (this.user.metadata.phone) {
+      this.phone = `tel:${this.user.metadata.phone}`
     }
   }
 }

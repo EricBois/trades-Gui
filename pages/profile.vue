@@ -50,6 +50,13 @@
                     label="Address"
                   />
                 </v-flex>
+                <v-flex xs10 pb-5>
+                  <v-text-field
+                    v-model="info.user_metadata.web"
+                    class="purple-input"
+                    label="Website"
+                  />
+                </v-flex>
                 <v-flex xs10>
                   <v-textarea
                     v-model="info.user_metadata.description"
@@ -213,7 +220,8 @@ export default {
           tickets: [],
           wcb: '',
           liability: '',
-          address: ''
+          address: '',
+          web: ''
         }
       },
       picture: null,
@@ -247,6 +255,7 @@ export default {
         this.info.user_metadata.skills = res.user.user_metadata.skills
         this.info.user_metadata.tickets = res.user.user_metadata.tickets
         this.info.user_metadata.location = res.user.user_metadata.location
+        this.info.user_metadata.web = res.user.user_metadata.web
         if (res.photos) {
           this.photos = res.photos.photos
         }
@@ -274,6 +283,7 @@ export default {
         this.info.user_metadata.skills = res.user_metadata.skills
         this.info.user_metadata.tickets = res.user_metadata.tickets
         this.info.user_metadata.location = res.user_metadata.location
+        this.info.user_metadata.web = res.user_metadata.web
         if (this.info.user_metadata.available) {
           this.switch1 = true
         } else {
@@ -297,6 +307,7 @@ export default {
         this.info.user_metadata.skills = res.user_metadata.skills
         this.info.user_metadata.tickets = res.user_metadata.tickets
         this.info.user_metadata.location = res.user_metadata.location
+        this.info.user_metadata.web = res.user_metadata.web
         this.photo = null
         this.hasImage = false
         this.filename = ''
