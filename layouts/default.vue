@@ -154,7 +154,7 @@ export default {
   }),
   created () {
     this.$vuetify.theme.dark = true
-    if (this.$auth.user) {
+    if (this.$auth.loggedIn) {
       this.picture = this.$auth.user.picture
       this.getMsg()
     }

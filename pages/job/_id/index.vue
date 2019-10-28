@@ -163,6 +163,7 @@
           </template>
           <template v-slot:item.createdBy="{ item }">
             <v-chip @click="profile(item.user)" color="orange accent-1" outlined small>
+              <v-icon color="green" small>mdi-information-variant</v-icon>&nbsp;
               {{ item.createdBy }}
             </v-chip>
           </template>
@@ -495,6 +496,9 @@ export default {
     profile (id) {
       this.$axios.$get(`account/getProfile/${id}`).then((res) => {
         this.user = res
+        if (!this.user.photos) {
+          this.user.photos = []
+        }
       }).then(() => {
         this.dialogProfile = !this.dialogProfile
       })

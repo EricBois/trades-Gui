@@ -39,16 +39,22 @@
       <v-flex xs12 description text-center>
         <p class="mt-2 pa-3 elevation-4">{{user.metadata.description}}</p>
       </v-flex>
-      <!-- <v-flex xs12 v-if="photos && photos.length > 0">
-        <v-carousel>
-          <v-carousel-item
-            @click="zoom(photo.link)"
-            v-for="photo in photos"
-            :key="photo._id"
-            :src="photo.link"
-          ></v-carousel-item>
-        </v-carousel>
-      </v-flex>-->
+      <v-container class="mx-5 photo">
+        <v-layout row wrap class="pa-3">
+          <v-flex
+            v-for="img in user.photos.photos"
+            :key="img.id"
+            xs12
+            sm4
+            md3
+            class="pa-4"
+          >
+            <v-card>
+              <ExpandableImage class="image" :src="img" max-width="400" contain />
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
     </v-layout>
   </v-container>
 </template>
@@ -76,12 +82,16 @@
 </style>
 
 <script>
+import ExpandableImage from '../components/ExpandableImage'
 export default {
   props: {
     user: {
       type: Object,
       required: true
     }
+  },
+  components: {
+    ExpandableImage
   }
 }
 </script>
