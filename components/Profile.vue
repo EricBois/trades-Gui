@@ -26,18 +26,26 @@
         <v-icon>mdi-check-decagram</v-icon>&nbsp; Liability
       </v-btn>
       <v-flex xs12 text-center>
-        <v-avatar size="170" v-if="user.picture" class="mt-10">
-          <v-img class="img-circle elevation-6" aspect-ratio="1.4" :src="user.picture"></v-img>
+        <v-avatar v-if="user.picture" size="170" class="mt-10">
+          <v-img class="img-circle elevation-6" aspect-ratio="1.4" :src="user.picture" />
         </v-avatar>
-        <div class="name mt-4">{{user.name}}</div>
+        <div class="name mt-4">
+          {{ user.name }}
+        </div>
         <div>
-          <v-chip v-for="item in user.metadata.skills" :key="item" color="primary" small>{{ item }}</v-chip>
-          <br />
-          <v-chip v-for="item in user.metadata.tickets" :key="item" color="green" small>{{ item }}</v-chip>
+          <v-chip v-for="item in user.metadata.skills" :key="item" color="primary" small>
+            {{ item }}
+          </v-chip>
+          <br>
+          <v-chip v-for="item in user.metadata.tickets" :key="item" color="green" small>
+            {{ item }}
+          </v-chip>
         </div>
       </v-flex>
       <v-flex xs12 description text-center>
-        <p class="mt-2 pa-3 elevation-4">{{user.metadata.description}}</p>
+        <p class="mt-2 pa-3 elevation-4">
+          {{ user.metadata.description }}
+        </p>
       </v-flex>
       <v-container class="mx-5 photo">
         <v-layout row wrap class="pa-3">
@@ -84,14 +92,14 @@
 <script>
 import ExpandableImage from '../components/ExpandableImage'
 export default {
+  components: {
+    ExpandableImage
+  },
   props: {
     user: {
       type: Object,
       required: true
     }
-  },
-  components: {
-    ExpandableImage
   }
 }
 </script>

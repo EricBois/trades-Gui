@@ -162,8 +162,10 @@
             </v-chip>
           </template>
           <template v-slot:item.createdBy="{ item }">
-            <v-chip @click="profile(item.user)" color="orange accent-1" outlined small>
-              <v-icon color="green" small>mdi-information-variant</v-icon>&nbsp;
+            <v-chip color="orange accent-1" outlined small @click="profile(item.user)">
+              <v-icon color="green" small>
+                mdi-information-variant
+              </v-icon>&nbsp;
               {{ item.createdBy }}
             </v-chip>
           </template>

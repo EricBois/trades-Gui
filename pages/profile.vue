@@ -104,7 +104,9 @@
                   <v-switch v-model="switch1" label="Available" />
                 </v-flex>
                 <v-card-actions>
-                  <v-btn @click="dialogPhoto = !dialogPhoto">Photos</v-btn>
+                  <v-btn @click="dialogPhoto = !dialogPhoto">
+                    Photos
+                  </v-btn>
                   <v-btn class="mx-3 font-weight-light" color="primary" @click="edit">
                     Update Profile
                   </v-btn>
@@ -126,9 +128,9 @@
         </v-toolbar>
         <v-flex xs12 text-center>
           <image-uploader
+            id="photos"
             :preview="false"
             :max-width="700"
-            id="photos"
             :class-name="['photos', { 'fileinput--loaded': hasImage }]"
             capture="environment"
             :debug="1"
@@ -143,26 +145,26 @@
             </label>
           </image-uploader>
         </v-flex>
-    <v-divider />
-    <v-container class="mx-5 photo">
-      <v-layout row wrap class="pa-3">
-        <v-flex
-          v-for="img in photos"
-          :key="img"
-          xs12
-          sm4
-          md3
-          class="pa-4"
-        >
-          <v-card>
-            <v-btn color="orange darken-2" text @click="deleteFile(img)">
-              <v-icon>mdi-delete-outline</v-icon>
-            </v-btn>
-            <ExpandableImage class="image" :src="img" max-width="400" contain />
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-container>
+        <v-divider />
+        <v-container class="mx-5 photo">
+          <v-layout row wrap class="pa-3">
+            <v-flex
+              v-for="img in photos"
+              :key="img"
+              xs12
+              sm4
+              md3
+              class="pa-4"
+            >
+              <v-card>
+                <v-btn color="orange darken-2" text @click="deleteFile(img)">
+                  <v-icon>mdi-delete-outline</v-icon>
+                </v-btn>
+                <ExpandableImage class="image" :src="img" max-width="400" contain />
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
       </v-card>
     </v-dialog>
   </v-container>
@@ -182,6 +184,9 @@
 <script>
 import ExpandableImage from '../components/ExpandableImage'
 export default {
+  components: {
+    ExpandableImage
+  },
   data () {
     return {
       dialogPhoto: false,
@@ -215,9 +220,6 @@ export default {
       switch1: false,
       photos: []
     }
-  },
-  components: {
-    ExpandableImage
   },
   watch: {
     switch1 () {
@@ -254,8 +256,7 @@ export default {
           this.switch1 = false
         }
       })
-      .catch((e) => {
-        console.log(e)
+      .catch(() => {
         this.$router.push('/')
       })
   },
