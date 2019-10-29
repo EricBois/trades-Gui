@@ -313,7 +313,7 @@
           <photoUpload :project.sync="project" />
         </v-flex>
         <v-divider />
-        <v-container class="mx-5 photo">
+        <v-container class="mx-5" >
           <v-layout row wrap class="pa-3">
             <v-flex
               v-for="img in project.photos"
@@ -396,9 +396,6 @@
   margin-left: 5px;
   color: black;
 }
-.container.photo {
-        background-color: rgb(70, 81, 95)
-    }
 </style>
 <script>
 import BidsApproval from '../../../components/BidsApproval'
