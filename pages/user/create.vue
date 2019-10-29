@@ -154,7 +154,11 @@ export default {
         location: {
           lat: '',
           lng: '',
-          address: ''
+          address: '',
+          country: '',
+          city: '',
+          province: '',
+          url: ''
         },
         jobType: '',
         oneBid: false,
@@ -216,6 +220,20 @@ export default {
       this.info.location.address = place.formatted_address
       this.info.location.lat = place.geometry.location.lat()
       this.info.location.lng = place.geometry.location.lng()
+      this.info.location.url = place.url
+      const address = place.address_components.map(address => ({ type: address.types, name: address.long_name }))
+      for (const key in address) {
+        const info = address[key]
+        if (info.type.includes('administrative_area_level_1')) {
+          this.info.location.province = info.name
+        }
+        if (info.type.includes('locality')) {
+          this.info.location.city = info.name
+        }
+        if (info.type.includes('country')) {
+          this.info.location.country = info.name
+        }
+      }
     }
   }
 }
