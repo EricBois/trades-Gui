@@ -42,8 +42,8 @@
                       class="gmap v-input__slot v-text-field"
                       :value="info.location.address"
                       :select-first-on-enter="true"
-                      @place_changed="setPlace"
                       placeholder="Project Location"
+                      @place_changed="setPlace"
                     />
                   </v-flex>
                   <v-flex xs10>

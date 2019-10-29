@@ -41,7 +41,7 @@
             </v-chip>
           </div>
           <div class="headline text-center">
-            {{ project.name }} &nbsp; <a :href="url" target="_blank"><v-icon v-if="url !== ''" >mdi-google-maps</v-icon></a>
+            {{ project.name }} &nbsp; <a :href="url" target="_blank"><v-icon v-if="url !== ''">mdi-google-maps</v-icon></a>
             <div v-if="project.createdBy" class="caption grey--text mb-2">
               Project by:
               <u>{{ project.createdBy }}</u>
@@ -313,7 +313,7 @@
           <photoUpload :project.sync="project" />
         </v-flex>
         <v-divider />
-        <v-container class="mx-5" >
+        <v-container class="mx-5">
           <v-layout row wrap class="pa-3">
             <v-flex
               v-for="img in project.photos"
