@@ -34,10 +34,11 @@
                   </v-flex>
                   <v-flex xs10 pb-5>
                     <gmap-autocomplete
-                      class="v-input__slot theme--light"
+                      class="gmap v-input__slot v-text-field"
                       :value="info.location.address"
                       :select-first-on-enter="true"
                       @place_changed="setPlace"
+                      placeholder="Project Location"
                     />
                   </v-flex>
                   <v-flex xs10>
@@ -110,6 +111,14 @@
     </v-layout>
   </v-container>
 </template>
+<style>
+.gmap {
+  color: white !important;
+  padding-top: 16px;
+  border-bottom: 2px solid grey
+}
+
+</style>
 <script>
 export default {
   data () {
