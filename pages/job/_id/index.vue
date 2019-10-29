@@ -380,7 +380,7 @@
           <v-toolbar-title>Profile</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
-        <Profile :user="user" />
+        <PublicProfile :user="user" />
         <v-divider />
       </v-card>
     </v-dialog>
@@ -405,14 +405,14 @@ import BidsApproval from '../../../components/BidsApproval'
 import ExpandableImage from '../../../components/ExpandableImage'
 import photoUpload from '../../../components/PhotoUpload.vue'
 import Message from '../../../components/Message.vue'
-import Profile from '../../../components/Profile.vue'
+import PublicProfile from '../../../components/PublicProfile.vue'
 export default {
   components: {
     photoUpload,
     ExpandableImage,
     BidsApproval,
     Message,
-    Profile
+    PublicProfile
   },
   data () {
     return {
