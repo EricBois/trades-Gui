@@ -41,7 +41,7 @@
             </v-chip>
           </div>
           <div class="headline text-center">
-            {{ project.name }}
+            {{ project.name }} &nbsp; <a :href="url" target="_blank"><v-icon v-if="url !== ''" >mdi-google-maps</v-icon></a>
             <div v-if="project.createdBy" class="caption grey--text mb-2">
               Project by:
               <u>{{ project.createdBy }}</u>
@@ -416,6 +416,7 @@ export default {
   },
   data () {
     return {
+      url: '',
       dialogProfile: false,
       user: {},
       phone: '',
@@ -467,6 +468,9 @@ export default {
       .then((res) => {
         this.project = res
         this.phone = this.$auth.user['https://subhub.com/user_metadata'].phone
+        if (this.project.location.url) {
+          this.url = this.project.location.url
+        }
         if (this.project.user === this.$auth.user.sub) {
           this.ownProject = true
         }

@@ -115,7 +115,8 @@
 .gmap {
   color: white !important;
   padding-top: 16px;
-  border-bottom: 2px solid grey
+  border-bottom: 2px solid grey;
+  background-color: transparent;
 }
 
 </style>
