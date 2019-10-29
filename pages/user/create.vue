@@ -31,12 +31,18 @@
                     />
                   </v-flex>
                   <v-flex xs10 sm5 pb-5 pl-sm-5>
-                    <v-select
+                    <!-- <v-select
                       v-model="info.location"
                       :rules="locationRule"
                       :items="locations"
                       :menu-props="{ top: true, offsetY: true }"
                       label="Location"
+                    /> -->
+                    <gmap-autocomplete
+                      class="v-input__slot theme--light"
+                      :value="info.location.address"
+                      :select-first-on-enter="true"
+                      @place_changed="setPlace"
                     />
                   </v-flex>
                   <v-flex xs10>
@@ -145,7 +151,11 @@ export default {
         tickets: [],
         wcb: false,
         liability: false,
-        location: '',
+        location: {
+          lat: '',
+          lng: '',
+          address: ''
+        },
         jobType: '',
         oneBid: false,
         createdBy: ''
@@ -201,6 +211,11 @@ export default {
           this.$router.push(`../../job/${res._id}`)
         })
       }
+    },
+    setPlace (place) {
+      this.info.location.address = place.formatted_address
+      this.info.location.lat = place.geometry.location.lat()
+      this.info.location.lng = place.geometry.location.lng()
     }
   }
 }
