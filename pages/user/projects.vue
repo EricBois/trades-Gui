@@ -1,11 +1,17 @@
 <template>
-  <v-container class="mx-5">
+  <v-container class="my-5">
     <v-card v-if="!jobs.length > 0" raised ripple>
       <v-flex xs12 text-center>
         <h1>No Posted Projects</h1>
       </v-flex>
     </v-card>
-    <v-card v-for="project in jobs" :key="project.id" raised ripple :to="job+project.id">
+    <v-card
+    v-for="project in jobs"
+    :key="project.id"
+    raised
+    ripple
+    :to="job+project.id"
+    >
       <v-layout row wrap class="pa-3">
         <v-flex xs12 md4 mx-3>
           <div class="caption grey--text">
