@@ -128,7 +128,6 @@ export default {
       job: '../../job/',
       nameRule: [v => !!v || 'The name is required'],
       projectRule: [v => !!v || 'The project type is required'],
-      locationRule: [v => !!v || 'The location is required'],
       descRule: [v => !!v || 'The description is required'],
       tag: '',
       tags: [],
@@ -157,7 +156,6 @@ export default {
         text: 'Fall Arrest'
       }],
       select: { city: 'Calgary', prov: 'AB' },
-      locations: ['Calgary', 'Edmonton'],
       job_type: ['Contract', 'Hourly'],
       info: {
         name: '',

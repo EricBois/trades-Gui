@@ -130,7 +130,6 @@
 </template>
 <style>
 .gmap {
-  color: white !important;
   padding-top: 16px;
   border-bottom: 2px solid grey
 }
@@ -143,10 +142,8 @@ export default {
       itemTickets: ['WHIMIS', 'First Aid', 'Scissor Lift', 'Fall Arrest'],
       nameRule: [v => !!v || 'The name is required'],
       projectRule: [v => !!v || 'The project type is required'],
-      locationRule: [v => !!v || 'The location is required'],
       descRule: [v => !!v || 'The description is required'],
       select: { city: 'Calgary', prov: 'AB' },
-      locations: ['Calgary', 'Edmonton'],
       job_type: ['Contract', 'Hourly'],
       info: {
         name: '',
