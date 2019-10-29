@@ -1,32 +1,8 @@
 <template>
   <v-container fill-height fluid grid-list-xl>
     <v-layout justify-center wrap elevation-6>
-      <v-btn
-        v-if="user.metadata.wcb"
-        class="ma-1 pr-5"
-        text
-        absolute
-        middle
-        right
-        fab
-        large
-      >
-        <v-icon>mdi-check-decagram</v-icon>&nbsp; Wcb
-      </v-btn>
-      <v-btn
-        v-if="user.metadata.liability"
-        class="ma-1 pl-10"
-        text
-        absolute
-        middle
-        left
-        fab
-        large
-      >
-        <v-icon>mdi-check-decagram</v-icon>&nbsp; Liability
-      </v-btn>
       <v-flex xs12 text-center>
-        <v-avatar v-if="user.picture" size="170" class="mt-10">
+        <v-avatar v-if="user.picture" size="170">
           <v-img class="img-circle elevation-6" aspect-ratio="1.4" :src="user.picture" />
         </v-avatar>
         <div class="name mt-4">
@@ -34,13 +10,24 @@
           <a v-if="user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon color="orange lighten-4">mdi-web</v-icon></a>
           <a v-if="user.metadata.phone" :href="phone" target="_blank"><v-icon color="orange lighten-4">mdi-phone</v-icon></a>
         </div>
-        <div>
+        <div class="mt-2">
           <v-chip v-for="item in user.metadata.skills" :key="item" color="primary" small>
             {{ item }}
           </v-chip>
           <br>
-          <v-chip v-for="item in user.metadata.tickets" :key="item" color="green" small>
+          <v-chip v-for="item in user.metadata.tickets" :key="item" color="teal" small>
             {{ item }}
+          </v-chip>
+          <br>
+          <v-chip v-if="user.metadata.wcb">
+            <v-icon color="green">
+              mdi-check-decagram
+            </v-icon>&nbsp; Wcb Coverage
+          </v-chip>
+          <v-chip v-if="user.metadata.liability">
+            <v-icon color="green">
+              mdi-check-decagram
+            </v-icon>&nbsp; Liability Insurance
           </v-chip>
         </div>
       </v-flex>
@@ -80,7 +67,8 @@
   font-family: "Righteous", cursive;
   font-size: 2.3em;
   transform: rotate(358deg);
-  background-color: rgb(124, 128, 133);
+  background-color: rgb(87, 88, 88);
+  box-shadow: -1px 5px 14px 5px rgba(0,0,0,0.36);
 }
 .description {
   color: white;
