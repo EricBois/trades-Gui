@@ -45,11 +45,13 @@
                   />
                 </v-flex>
                 <v-flex xs10 pb-5>
-                  <v-text-field
-                    v-model="info.user_metadata.address"
-                    class="purple-input"
-                    label="Address"
-                    prepend-inner-icon="mdi-map-marker"
+                  <label for="gmap">Address</label>
+                  <gmap-autocomplete
+                    class="gmap v-input__slot v-text-field"
+                    :value="info.user_metadata.address"
+                    :select-first-on-enter="true"
+                    placeholder="Project Location"
+                    @place_changed="setPlace"
                   />
                 </v-flex>
                 <v-flex xs10 pb-5>
@@ -197,8 +199,10 @@
 </template>
 <style>
 .gmap {
-  color: black;
-  background-color: rgb(206, 227, 245);
+  color: white !important;
+  padding-top: 16px;
+  border-bottom: 2px solid grey;
+  background-color: transparent;
 }
 #fileInput {
   display: none;
@@ -241,7 +245,12 @@ export default {
           tickets: [],
           wcb: '',
           liability: '',
+          lat: '',
+          lng: '',
           address: '',
+          country: '',
+          city: '',
+          province: '',
           web: ''
         }
       },
@@ -257,7 +266,6 @@ export default {
       } else {
         this.info.user_metadata.available = false
       }
-      this.edit()
     }
   },
   mounted () {
@@ -277,7 +285,6 @@ export default {
         this.info.user_metadata.liability = res.user.user_metadata.liability
         this.info.user_metadata.skills = res.user.user_metadata.skills
         this.info.user_metadata.tickets = res.user.user_metadata.tickets
-        this.info.user_metadata.location = res.user.user_metadata.location
         this.info.user_metadata.web = res.user.user_metadata.web
         if (res.photos) {
           this.photos = res.photos.photos
@@ -307,7 +314,6 @@ export default {
         this.info.user_metadata.liability = res.user_metadata.liability
         this.info.user_metadata.skills = res.user_metadata.skills
         this.info.user_metadata.tickets = res.user_metadata.tickets
-        this.info.user_metadata.location = res.user_metadata.location
         this.info.user_metadata.web = res.user_metadata.web
         if (this.info.user_metadata.available) {
           this.switch1 = true
@@ -315,6 +321,12 @@ export default {
           this.switch1 = false
         }
         this.$auth.fetchUser()
+        this.$swal.fire({
+          type: 'success',
+          title: 'Success',
+          text: 'Successfully Updated!',
+          timer: 1000
+        })
       })
     },
     uploadImage () {
@@ -333,7 +345,6 @@ export default {
         this.info.user_metadata.liability = res.user_metadata.liability
         this.info.user_metadata.skills = res.user_metadata.skills
         this.info.user_metadata.tickets = res.user_metadata.tickets
-        this.info.user_metadata.location = res.user_metadata.location
         this.info.user_metadata.web = res.user_metadata.web
         this.photo = null
         this.hasImage = false
@@ -382,6 +393,24 @@ export default {
         .then((res) => {
           this.photos = res.photos
         })
+    },
+    setPlace (place) {
+      this.info.user_metadata.address = place.formatted_address
+      this.info.user_metadata.lat = place.geometry.location.lat()
+      this.info.user_metadata.lng = place.geometry.location.lng()
+      const address = place.address_components.map(address => ({ type: address.types, name: address.long_name }))
+      for (const key in address) {
+        const info = address[key]
+        if (info.type.includes('administrative_area_level_1')) {
+          this.info.user_metadata.province = info.name
+        }
+        if (info.type.includes('locality')) {
+          this.info.user_metadata.city = info.name
+        }
+        if (info.type.includes('country')) {
+          this.info.user_metadata.country = info.name
+        }
+      }
     }
   }
 }
