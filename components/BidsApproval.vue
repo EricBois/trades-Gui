@@ -46,13 +46,45 @@
         </v-btn>
       </v-flex>
       <v-flex v-if="emails.length > 0 || phones.length > 0" xs12 sm6 pt-3>
-        <v-btn color="blue darken-2" small>
+        <v-btn color="blue darken-2" small @click="dialogMeeting = !dialogMeeting">
           <v-icon>mdi-account-group</v-icon>&nbsp; Request Onsite meeting
         </v-btn>
       </v-flex>
     </v-layout>
+    <v-dialog v-model="dialogMeeting" persistent max-width="400">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogMeeting = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Schedule a Meeting</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <v-flex xs12 text-center class="desc">
+          <h1><b>Your Availability</b></h1>
+          <v-date-picker light full-width v-model="dates" multiple />
+        </v-flex>
+        <v-flex xs12 text-center>
+          <v-textarea
+            v-model="description"
+            label="Additional Details"
+            class="desc"
+          />
+        </v-flex>
+        <v-divider />
+        <v-flex xs12 text-center>
+          <v-btn color="orange" large class="my-5">Clear</v-btn>
+          <v-btn color="green" large class="my-5">Submit</v-btn>
+        </v-flex>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
+<style scoped>
+.desc {
+  background-color: #01579B
+}
+</style>
 <script>
 export default {
   props: {
@@ -63,6 +95,9 @@ export default {
   },
   data () {
     return {
+      description: '',
+      dates: [],
+      dialogMeeting: false,
       phones: [],
       emails: [],
       selectedBids: [],
@@ -95,8 +130,7 @@ export default {
     }
   },
   methods: {
-    email () {
-    }
+    email () {}
   }
 }
 </script>
