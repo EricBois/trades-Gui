@@ -33,7 +33,7 @@
             </v-flex>
             <v-row class="py-4 pl-4">
               <v-layout wrap>
-                <v-flex xs10 md5 mr-12>
+                <v-flex xs10 md5 pr-12>
                   <v-text-field v-model="info.name" class="purple-input" label="Name" />
                 </v-flex>
                 <v-flex xs10 md5>
@@ -41,6 +41,7 @@
                     v-model="info.user_metadata.phone"
                     class="purple-input"
                     label="Phone #"
+                    prepend-inner-icon="mdi-phone"
                   />
                 </v-flex>
                 <v-flex xs10 pb-5>
@@ -48,6 +49,7 @@
                     v-model="info.user_metadata.address"
                     class="purple-input"
                     label="Address"
+                    prepend-inner-icon="mdi-map-marker"
                   />
                 </v-flex>
                 <v-flex xs10 pb-5>
@@ -55,6 +57,23 @@
                     v-model="info.user_metadata.web"
                     class="purple-input"
                     label="Website"
+                    prepend-inner-icon="mdi-web"
+                  />
+                </v-flex>
+                <v-flex xs10 md5 pb-5 pr-12>
+                  <v-text-field
+                    v-model="info.user_metadata.facebook"
+                    class="purple-input"
+                    label="Facebook"
+                    prepend-inner-icon="mdi-facebook-box"
+                  />
+                </v-flex>
+                <v-flex xs10 md5 pb-5>
+                  <v-text-field
+                    v-model="info.user_metadata.instagram"
+                    class="purple-input"
+                    label="Instagram"
+                    prepend-inner-icon="mdi-instagram"
                   />
                 </v-flex>
                 <v-flex xs10>
@@ -66,14 +85,14 @@
                     class="purple-input"
                   />
                 </v-flex>
-                <v-flex xs10 md5 mr-12>
+                <v-flex xs10 md5 pr-12>
                   <v-text-field
                     v-model="info.user_metadata.wcb"
                     class="purple-input"
                     label="Wcb #"
                   />
                 </v-flex>
-                <v-flex xs10 md5 mr-12>
+                <v-flex xs10 md5 pr-12>
                   <v-text-field
                     v-model="info.user_metadata.liability"
                     class="purple-input"
@@ -98,7 +117,7 @@
                     multiple
                   />
                 </v-flex>
-                <v-flex xs10 md2 mr-12 pt-4>
+                <v-flex xs10 md3 pr-12 pt-4>
                   <v-text-field
                     v-model="info.user_metadata.hourly"
                     label="Hourly"
@@ -212,6 +231,8 @@ export default {
       info: {
         name: '',
         user_metadata: {
+          instagram: '',
+          facebook: '',
           phone: '',
           description: '',
           hourly: '',
@@ -246,6 +267,8 @@ export default {
         this.info.name = res.user.name
         this.info.user_metadata = res.user.user_metadata
         this.picture = res.user.picture
+        this.info.user_metadata.facebook = res.user.user_metadata.facebook
+        this.info.user_metadata.instagram = res.user.user_metadata.instagram
         this.info.user_metadata.phone = res.user.user_metadata.phone
         this.info.user_metadata.description = res.user.user_metadata.description
         this.info.user_metadata.hourly = res.user.user_metadata.hourly
@@ -275,6 +298,8 @@ export default {
         this.info.name = res.name
         this.info.user_metadata.phone = res.user_metadata.phone
         this.picture = res.picture
+        this.info.user_metadata.facebook = res.user_metadata.facebook
+        this.info.user_metadata.instagram = res.user_metadata.instagram
         this.info.user_metadata.description = res.user_metadata.description
         this.info.user_metadata.hourly = res.user_metadata.hourly
         this.info.user_metadata.available = res.user_metadata.available
@@ -299,6 +324,8 @@ export default {
         this.info.name = res.name
         this.info.user_metadata.phone = res.user_metadata.phone
         this.picture = res.picture
+        this.info.user_metadata.facebook = res.user_metadata.facebook
+        this.info.user_metadata.instagram = res.user_metadata.instagram
         this.info.user_metadata.description = res.user_metadata.description
         this.info.user_metadata.hourly = res.user_metadata.hourly
         this.info.user_metadata.available = res.user_metadata.available

@@ -7,8 +7,12 @@
         </v-avatar>
         <div class="name mt-4">
           {{ user.name }}
-          <a v-if="user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon color="orange lighten-4">mdi-web</v-icon></a>
-          <a v-if="user.metadata.phone" :href="phone" target="_blank"><v-icon color="orange lighten-4">mdi-phone</v-icon></a>
+          <div class="bottomDiv">
+            <a v-if="user.metadata.facebook" :href="user.metadata.facebook" target="_blank"><v-icon color="blue darken-1">mdi-facebook-box mdi-36px</v-icon></a>
+            <a v-if="user.metadata.instagram" :href="user.metadata.instagram" target="_blank"><v-icon class="insta">mdi-instagram mdi-36px</v-icon></a>
+            <a v-if="user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon color="green">mdi-web mdi-36px</v-icon></a>
+            <a v-if="user.metadata.phone" :href="phone" target="_blank"><v-icon color="teal">mdi-phone-classic mdi-36px</v-icon></a>
+          </div>
         </div>
         <div class="mt-2">
           <v-chip v-for="item in user.metadata.skills" :key="item" color="primary" small>
@@ -57,6 +61,21 @@
 </template>
 
 <style scoped>
+.bottomDiv{
+  position:relative;
+  bottom:15px;
+}
+a:link {
+  text-decoration: none;
+}
+.insta {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+  -webkit-background-clip: text;
+          /* Also define standard property for compatibility */
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 200px; /* change this to change the size*/
+}
 .img-circle {
   border-radius: 20%;
 }
