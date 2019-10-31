@@ -62,19 +62,19 @@
         </v-toolbar>
         <v-flex xs12 text-center class="desc">
           <h1><b>Your Availability</b></h1>
-          <v-date-picker light full-width v-model="dates" multiple />
+          <v-date-picker light full-width v-model="meeting.dates" multiple />
         </v-flex>
         <v-flex xs12 text-center>
           <v-textarea
-            v-model="description"
+            v-model="meeting.description"
             label="Additional Details"
             class="desc"
           />
         </v-flex>
         <v-divider />
         <v-flex xs12 text-center>
-          <v-btn color="orange" large class="my-5">Clear</v-btn>
-          <v-btn color="green" large class="my-5">Submit</v-btn>
+          <v-btn @click="dates = []" color="orange" large class="my-5">Clear</v-btn>
+          <v-btn @click="setMeeting" color="green" large class="my-5">Submit</v-btn>
         </v-flex>
       </v-card>
     </v-dialog>
@@ -95,12 +95,16 @@ export default {
   },
   data () {
     return {
-      description: '',
-      dates: [],
       dialogMeeting: false,
       phones: [],
       emails: [],
       selectedBids: [],
+      meeting: {
+        request: false,
+        dates: [],
+        host: '',
+        description: ''
+      },
       headers: [
         {
           text: 'Bidder',
@@ -130,7 +134,17 @@ export default {
     }
   },
   methods: {
-    email () {}
+    email () {
+      this.$axios.$post('bid/email', { emails: this.emails, bid: this.selectedBids }).then((res) => {})
+    },
+    setMeeting () {
+      this.meeting.request = true
+      this.meeting.host = this.$auth.user.sub
+      this.$axios.$post('bid/setMeeting', { meeting: this.meeting, bid: this.selectedBids }).then((res) => {
+        this.meeting.dates = []
+        this.dialogMeeting = false
+      })
+    }
   }
 }
 </script>

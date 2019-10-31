@@ -76,6 +76,12 @@
         </v-flex>
       </v-list>
     </v-flex>
+    <v-flex xs12 sm8 offset-sm-2>
+      <v-divider class="my-5" />
+      <v-list subheader dense color="grey darken-3">
+        <v-subheader>Meetings</v-subheader>
+      </v-list>
+    </v-flex>
     <v-dialog v-model="dialogMessage" persistent max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
