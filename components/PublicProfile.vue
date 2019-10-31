@@ -7,13 +7,13 @@
         </v-avatar>
         <div class="name mt-4">
           {{ user.name }}
-          <div class="bottomDiv">
-            <a v-if="user.metadata.facebook" :href="user.metadata.facebook" target="_blank"><v-icon color="blue darken-1">mdi-facebook-box mdi-36px</v-icon></a>
-            <a v-if="user.metadata.instagram" :href="user.metadata.instagram" target="_blank"><v-icon class="insta">mdi-instagram mdi-36px</v-icon></a>
-            <a v-if="user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon color="green">mdi-web mdi-36px</v-icon></a>
-            <a v-if="user.metadata.phone" :href="phone" target="_blank"><v-icon color="teal">mdi-phone-classic mdi-36px</v-icon></a>
-          </div>
         </div>
+        <div class="mt-2">
+            <a v-if="user.metadata.facebook" :href="user.metadata.facebook" target="_blank"><v-icon class="circle-icon" color="blue darken-1">mdi-facebook-box mdi-36px</v-icon></a>
+            <a v-if="user.metadata.instagram" :href="user.metadata.instagram" target="_blank"><v-icon class="instagram">mdi-instagram mdi-36px</v-icon></a>
+            <a v-if="user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon class="circle-icon" color="green">mdi-web mdi-36px</v-icon></a>
+            <a v-if="user.metadata.phone" :href="phone" target="_blank"><v-icon class="circle-icon" color="teal">mdi-phone-classic mdi-36px</v-icon></a>
+          </div>
         <div class="mt-2">
           <v-chip v-for="item in user.metadata.skills" :key="item" color="primary" small>
             {{ item }}
@@ -61,12 +61,30 @@
 </template>
 
 <style scoped>
-.bottomDiv{
-  position:relative;
-  bottom:15px;
+.circle-icon {
+    background: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 100px;
+    vertical-align: middle;
+    padding: 25px;
 }
 a:link {
   text-decoration: none;
+}
+.instagram{ width:25px; height:25px;
+  border-radius: 50%;
+    text-align: center;
+    line-height: 100px;
+    vertical-align: middle;
+    padding: 25px;
+  background: #f09433;
+  background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+  background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
 }
 .insta {
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
@@ -88,6 +106,8 @@ a:link {
   transform: rotate(358deg);
   background-color: rgb(87, 88, 88);
   box-shadow: -1px 5px 14px 5px rgba(0,0,0,0.36);
+  max-width: 400px;
+  margin: 0 auto;
 }
 .description {
   color: white;
