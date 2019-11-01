@@ -433,7 +433,9 @@ export default {
         price: '',
         project: '',
         createdBy: '',
-        projectName: ''
+        projectName: '',
+        address: '',
+        addressUrl: ''
       },
       ownProject: false,
       dialogBid: false,
@@ -555,6 +557,10 @@ export default {
         }
         this.infobid.project = this.project.id
         this.infobid.projectName = this.project.name
+        if (this.project.location.address) {
+          this.infobid.address = this.project.location.address
+          this.infobid.addressUrl = this.project.location.url
+        }
         this.$axios
           .$post('bid/create', this.infobid)
           .then((res) => {
