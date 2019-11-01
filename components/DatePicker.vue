@@ -18,6 +18,7 @@
       <div>
         <h3 class="mb-5"><b><u>Details</u></b></h3>
         {{selectedMeeting.meeting.description}}
+        <v-divider class="my-4"></v-divider>
         <v-textarea
           v-model="description"
           label="Confirm Additional Details"
@@ -42,7 +43,8 @@ export default {
   data () {
     return {
       date: '',
-      dates: []
+      dates: [],
+      description: ''
     }
   },
   methods: {
