@@ -79,7 +79,31 @@
     <v-flex xs12 sm8 offset-sm-2>
       <v-divider class="my-5" />
       <v-list subheader dense color="grey darken-3">
-        <v-subheader>Meetings</v-subheader>
+        <v-subheader>Meeting Requests</v-subheader>
+        <v-flex
+          v-for="item in meetings"
+          :key="item._id"
+        >
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon color="red">
+                mdi-close-box
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content @click="meetingPicker(item)">
+              <v-list-item-title>
+                <v-chip color="grey blue lighten-1" outlined>
+                  {{ item.projectName }}
+                </v-chip>
+              </v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-icon>
+              <v-icon color="blue">
+                mdi-calendar-alert
+              </v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+        </v-flex>
       </v-list>
     </v-flex>
     <v-dialog v-model="dialogMessage" persistent max-width="600">
@@ -125,6 +149,19 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogMeeting" persistent max-width="800">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogMeeting = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Meeting</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <DatePicker :selectedMeeting="selectedMeeting" />
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -134,9 +171,15 @@
 </style>
 <script>
 import { mapGetters } from 'vuex'
+import DatePicker from '../components/DatePicker.vue'
 export default {
+  components: {
+    DatePicker
+  },
   data () {
     return {
+      selectedMeeting: {},
+      dialogMeeting: false,
       userColor: 'amber lighten-4',
       selectedMessage: {},
       messages: [],
@@ -145,13 +188,22 @@ export default {
       newMessage: {
         name: '',
         text: ''
-      }
+      },
+      meetings: []
     }
   },
   computed: mapGetters({
     read: 'read/get'
   }),
   created () {
+    this.$axios.$get(`bid/getMeetings`).then((res) => {
+      res.forEach((element) => {
+        if (element.meeting.request) {
+          this.meetings.push(element)
+        }
+      })
+      console.log(this.meetings)
+    })
     this.getMessages()
     this.intervalMsg = setInterval(() => { this.getMessages() }, 80000)
   },
@@ -207,6 +259,10 @@ export default {
           }
         }
       }
+    },
+    meetingPicker (item) {
+      this.selectedMeeting = item
+      this.dialogMeeting = !this.dialogMeeting
     },
     send () {
       if (this.newMessage.text) {

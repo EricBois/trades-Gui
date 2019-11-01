@@ -432,7 +432,8 @@ export default {
         description: '',
         price: '',
         project: '',
-        createdBy: ''
+        createdBy: '',
+        projectName: ''
       },
       ownProject: false,
       dialogBid: false,
@@ -553,6 +554,7 @@ export default {
           this.infobid.trade = 'Whole Project'
         }
         this.infobid.project = this.project.id
+        this.infobid.projectName = this.project.name
         this.$axios
           .$post('bid/create', this.infobid)
           .then((res) => {

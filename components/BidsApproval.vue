@@ -142,6 +142,7 @@ export default {
       this.meeting.host = this.$auth.user.sub
       this.$axios.$post('bid/setMeeting', { meeting: this.meeting, bid: this.selectedBids }).then((res) => {
         this.meeting.dates = []
+        this.meeting.description = ''
         this.dialogMeeting = false
       })
     }
