@@ -76,10 +76,10 @@
         </v-flex>
       </v-list>
     </v-flex>
-    <v-flex xs12 sm8 offset-sm-2>
+    <v-flex v-if="meetings.length > 0" xs12 sm8 offset-sm-2>
       <v-divider class="my-5" />
       <v-list subheader dense color="grey darken-3">
-        <v-subheader>Received Meeting Requests</v-subheader>
+        <v-subheader>Meeting Invites</v-subheader>
         <v-flex
           v-for="item in meetings"
           :key="item._id"
@@ -112,7 +112,7 @@
         </v-flex>
       </v-list>
     </v-flex>
-    <v-flex xs12 sm8 offset-sm-2>
+    <v-flex v-if="meetingSent.length > 0" xs12 sm8 offset-sm-2>
       <v-divider class="my-5" />
       <v-list subheader dense color="grey darken-3">
         <v-subheader>Sent Meeting Request</v-subheader>
@@ -131,9 +131,8 @@
                 <v-chip color="grey blue lighten-1" outlined>
                   {{ item.projectName }}
                 </v-chip>
-                &nbsp;
-                <small v-if="item.confirm.status"><i class="confirmed">Confirmed</i></small>
-                <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response</i></small>
+                <small v-if="item.confirm.status"><i class="confirmed">Confirmed by <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+                <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
               </v-list-item-title>
             </v-list-item-content>
             <v-list-item-icon>
@@ -200,7 +199,7 @@
           <v-toolbar-title>Meeting</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
-        <DatePicker :dialogMeeting.sync="dialogMeeting" :selectedMeeting.sync="selectedMeeting" />
+        <DatePicker :dialog-meeting.sync="dialogMeeting" :selected-meeting.sync="selectedMeeting" />
         <v-divider />
       </v-card>
     </v-dialog>
@@ -247,12 +246,10 @@ export default {
   created () {
     this.$axios.$get(`bid/getMeetings`).then((res) => {
       res.forEach((element) => {
-        if (element.meeting.request) {
-          if (element.meeting.host === this.$auth.user.sub) {
-            this.meetingSent.push(element)
-          } else {
-            this.meetings.push(element)
-          }
+        if (element.meeting.host === this.$auth.user.sub) {
+          this.meetingSent.push(element)
+        } else {
+          this.meetings.push(element)
         }
       })
     })
