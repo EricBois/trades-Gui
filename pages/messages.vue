@@ -79,7 +79,7 @@
     <v-flex xs12 sm8 offset-sm-2>
       <v-divider class="my-5" />
       <v-list subheader dense color="grey darken-3">
-        <v-subheader>Meeting Requests</v-subheader>
+        <v-subheader>Received Meeting Requests</v-subheader>
         <v-flex
           v-for="item in meetings"
           :key="item._id"
@@ -95,10 +95,52 @@
                 <v-chip color="grey blue lighten-1" outlined>
                   {{ item.projectName }}
                 </v-chip>
+                &nbsp;
+                <small v-if="item.confirm.status"><i class="confirmed">Confirmed</i></small>
+                <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response</i></small>
               </v-list-item-title>
             </v-list-item-content>
             <v-list-item-icon>
-              <v-icon color="blue">
+              <v-icon v-if="item.confirm.status" color="green">
+                mdi-calendar-check
+              </v-icon>
+              <v-icon v-else color="red">
+                mdi-calendar-alert
+              </v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+        </v-flex>
+      </v-list>
+    </v-flex>
+    <v-flex xs12 sm8 offset-sm-2>
+      <v-divider class="my-5" />
+      <v-list subheader dense color="grey darken-3">
+        <v-subheader>Sent Meeting Request</v-subheader>
+        <v-flex
+          v-for="item in meetingSent"
+          :key="item._id"
+        >
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon color="red">
+                mdi-close-box
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content @click="meetingPicker(item)">
+              <v-list-item-title>
+                <v-chip color="grey blue lighten-1" outlined>
+                  {{ item.projectName }}
+                </v-chip>
+                &nbsp;
+                <small v-if="item.confirm.status"><i class="confirmed">Confirmed</i></small>
+                <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response</i></small>
+              </v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-icon>
+              <v-icon v-if="item.confirm.status" color="green">
+                mdi-calendar-check
+              </v-icon>
+              <v-icon v-else color="red">
                 mdi-calendar-alert
               </v-icon>
             </v-list-item-icon>
@@ -158,7 +200,7 @@
           <v-toolbar-title>Meeting</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
-        <DatePicker :selectedMeeting="selectedMeeting" />
+        <DatePicker :dialogMeeting.sync="dialogMeeting" :selectedMeeting.sync="selectedMeeting" />
         <v-divider />
       </v-card>
     </v-dialog>
@@ -166,8 +208,14 @@
 </template>
 <style scoped>
 .scroll {
-      overflow-y: auto;
-    }
+  overflow-y: auto;
+}
+.confirmed {
+  color:rgb(21, 170, 21);
+}
+.awaiting {
+  color: #F44336;
+}
 </style>
 <script>
 import { mapGetters } from 'vuex'
@@ -189,7 +237,8 @@ export default {
         name: '',
         text: ''
       },
-      meetings: []
+      meetings: [],
+      meetingSent: []
     }
   },
   computed: mapGetters({
@@ -199,10 +248,13 @@ export default {
     this.$axios.$get(`bid/getMeetings`).then((res) => {
       res.forEach((element) => {
         if (element.meeting.request) {
-          this.meetings.push(element)
+          if (element.meeting.host === this.$auth.user.sub) {
+            this.meetingSent.push(element)
+          } else {
+            this.meetings.push(element)
+          }
         }
       })
-      console.log(this.meetings)
     })
     this.getMessages()
     this.intervalMsg = setInterval(() => { this.getMessages() }, 80000)

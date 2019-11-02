@@ -144,6 +144,12 @@ export default {
         this.meeting.dates = []
         this.meeting.description = ''
         this.dialogMeeting = false
+        this.$swal.fire({
+          type: 'success',
+          title: 'Success!',
+          text: 'Meeting request has been sent!',
+          timer: 2000
+        })
       })
     }
   }
