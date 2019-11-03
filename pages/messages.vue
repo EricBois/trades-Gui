@@ -8,6 +8,15 @@
           :key="item._id"
         >
           <v-list-item
+            v-if="item.read.includes($auth.user.sub)"
+          >
+            <v-list-item-content @click="dialog(item)">
+              <v-list-item-title>
+                No new messages!
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item
             v-if="!item.read.includes($auth.user.sub)"
           >
             <v-list-item-icon v-if="!item.read.includes($auth.user.sub)">
@@ -36,13 +45,22 @@
           </v-list-item>
         </v-flex>
       </v-list>
-      <v-divider class="my-5" />
+      <v-divider />
       <v-list subheader dense color="grey darken-3">
         <v-subheader>Read & Sent</v-subheader>
         <v-flex
           v-for="item in messages"
           :key="item._id"
         >
+          <v-list-item
+            v-if="!item.read.includes($auth.user.sub)"
+          >
+            <v-list-item-content @click="dialog(item)">
+              <v-list-item-title>
+                All Clear!
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item
             v-if="item.read.includes($auth.user.sub)"
           >
@@ -76,33 +94,36 @@
         </v-flex>
       </v-list>
     </v-flex>
-    <v-flex v-if="meetings.length > 0" xs12 sm8 offset-sm-2>
+    <!-- meetings -->
+    <v-flex xs12 sm8 offset-sm-2>
       <v-divider class="my-5" />
-      <v-list subheader dense color="grey darken-3">
+      <v-list subheader dense color="blue-grey darken-3">
         <v-subheader>Meeting Invites</v-subheader>
         <v-flex
           v-for="item in meetings"
-          :key="item._id"
+          :key="item.id"
         >
           <v-list-item>
-            <v-list-item-icon>
-              <v-icon color="red">
-                mdi-close-box
-              </v-icon>
-            </v-list-item-icon>
             <v-list-item-content @click="meetingPicker(item)">
               <v-list-item-title>
                 <v-chip color="grey blue lighten-1" outlined>
                   {{ item.projectName }}
                 </v-chip>
-                &nbsp;
-                <small v-if="item.confirm.status"><i class="confirmed">Confirmed</i></small>
-                <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response</i></small>
+                  &nbsp;
               </v-list-item-title>
             </v-list-item-content>
             <v-list-item-icon>
-              <v-icon v-if="item.confirm.status" color="green">
+              <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed by <br> <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+              <small v-if="item.change.status && $auth.user.sub !== item.change.uid"><i class="change">Please review the changes</i></small>
+              <small v-if="item.change.status && $auth.user.sub === item.change.uid"><i class="change">Awaiting Confirmation</i></small>
+              <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response</i></small>
+            </v-list-item-icon>
+            <v-list-item-icon>
+              <v-icon v-if="item.confirm.status && !item.change.status" color="green">
                 mdi-calendar-check
+              </v-icon>
+              <v-icon v-else-if="item.change.status" color="orange">
+                mdi-calendar-edit
               </v-icon>
               <v-icon v-else color="red">
                 mdi-calendar-alert
@@ -110,34 +131,31 @@
             </v-list-item-icon>
           </v-list-item>
         </v-flex>
-      </v-list>
-    </v-flex>
-    <v-flex v-if="meetingSent.length > 0" xs12 sm8 offset-sm-2>
-      <v-divider class="my-5" />
-      <v-list subheader dense color="grey darken-3">
+        <v-divider class="my-3" />
         <v-subheader>Sent Meeting Request</v-subheader>
         <v-flex
           v-for="item in meetingSent"
-          :key="item._id"
+          :key="item.id"
         >
           <v-list-item>
-            <v-list-item-icon>
-              <v-icon color="red">
-                mdi-close-box
-              </v-icon>
-            </v-list-item-icon>
             <v-list-item-content @click="meetingPicker(item)">
               <v-list-item-title>
                 <v-chip color="grey blue lighten-1" outlined>
                   {{ item.projectName }}
                 </v-chip>
-                <small v-if="item.confirm.status"><i class="confirmed">Confirmed by <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
-                <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
               </v-list-item-title>
             </v-list-item-content>
             <v-list-item-icon>
-              <v-icon v-if="item.confirm.status" color="green">
+              <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed by <br> <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+              <small v-if="item.change.status"><i class="change">Meeting has been modified</i></small>
+              <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+            </v-list-item-icon>
+            <v-list-item-icon>
+              <v-icon v-if="item.confirm.status && !item.change.status" color="green">
                 mdi-calendar-check
+              </v-icon>
+              <v-icon v-else-if="item.change.status" color="orange">
+                mdi-calendar-edit
               </v-icon>
               <v-icon v-else color="red">
                 mdi-calendar-alert
@@ -215,6 +233,9 @@
 .awaiting {
   color: #F44336;
 }
+.change {
+  color: rgb(238, 121, 25);
+}
 </style>
 <script>
 import { mapGetters } from 'vuex'
@@ -270,8 +291,8 @@ export default {
             message._id = key
             if (!message.delete.includes(this.$auth.user.sub)) {
               this.messages.push(message)
-              if (message.read.includes(this.$auth.user.sub)) {
-                this.$store.commit('read/add', true)
+              if (!message.read.includes(this.$auth.user.sub)) {
+                this.$store.commit('read/add', false)
               }
             }
           }

@@ -142,7 +142,17 @@ export default {
     },
     setMeeting () {
       this.meeting.host = this.$auth.user.sub
-      this.$axios.$post('bid/setMeeting', { contractor: this.$auth.user.name, meeting: this.meeting, bid: this.selectedBids }).then((res) => {
+      this.$axios.$post('bid/setMeeting', {
+        bid: this.selectedBids,
+        meeting: {
+          request: true,
+          contractor: this.$auth.user.name,
+          meeting: this.meeting,
+          bid: this.selectedBids,
+          host: this.$auth.user.sub,
+          confirm: { status: false }
+        }
+      }).then((res) => {
         this.meeting.dates = []
         this.meeting.description = ''
         this.dialogMeeting = false
