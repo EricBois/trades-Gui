@@ -2,7 +2,9 @@
   <v-container>
     <v-flex v-if="messages.length >= 1" xs12 sm8 offset-sm-2>
       <v-list subheader dense color="grey darken-3">
-        <v-subheader class="justify-center sub"><b>New Messages</b></v-subheader>
+        <v-subheader class="justify-center sub">
+          <b>New Messages</b>
+        </v-subheader>
         <v-flex
           v-for="item in messages"
           :key="item._id"
@@ -12,7 +14,9 @@
           >
             <v-list-item-content @click="dialog(item)">
               <v-list-item-title text-center>
-                No new messages&nbsp;<v-icon small>mdi-thumb-up-outline</v-icon>
+                No new messages&nbsp;<v-icon small>
+                  mdi-thumb-up-outline
+                </v-icon>
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -47,7 +51,9 @@
       </v-list>
       <v-divider />
       <v-list subheader dense color="grey darken-3">
-        <v-subheader class="justify-center sub"><b>Read & Sent</b></v-subheader>
+        <v-subheader class="justify-center sub">
+          <b>Read & Sent</b>
+        </v-subheader>
         <v-flex
           v-for="item in messages"
           :key="item._id"
@@ -96,15 +102,25 @@
     </v-flex>
     <v-flex v-else xs12 sm8 offset-sm-2 text-center>
       <v-list subheader dense color="grey darken-3">
-        <v-subheader class="justify-center"><b>No Messages Yet!</b>&nbsp;<v-icon small>mdi-emoticon-sad-outline</v-icon></v-subheader>
+        <v-subheader class="justify-center">
+          <b>No Messages Yet!</b>&nbsp;<v-icon small>
+            mdi-emoticon-sad-outline
+          </v-icon>
+        </v-subheader>
       </v-list>
     </v-flex>
     <!-- meetings -->
     <v-flex xs12 sm8 offset-sm-2>
       <v-divider class="my-5" />
       <v-list subheader dense color="blue-grey darken-3">
-        <v-subheader v-if="meetings.length >= 1" class="justify-center sub"><b>Meeting Invites</b></v-subheader>
-        <v-subheader v-else class="justify-center sub"><b>No Meeting Yet!</b>&nbsp;<v-icon small>mdi-emoticon-sad-outline</v-icon></v-subheader>
+        <v-subheader v-if="meetings.length >= 1" class="justify-center sub">
+          <b>Meeting Invites</b>
+        </v-subheader>
+        <v-subheader v-else class="justify-center sub">
+          <b>No Meeting Yet!</b>&nbsp;<v-icon small>
+            mdi-emoticon-sad-outline
+          </v-icon>
+        </v-subheader>
         <v-flex
           v-for="item in meetings"
           :key="item.id"
@@ -137,14 +153,16 @@
               </v-icon>
             </v-list-item-icon>
           </v-list-item>
-          <v-divider class="my-1"/>
+          <v-divider class="my-1" />
         </v-flex>
-        <v-subheader v-if="meetingSent.length >= 1" class="justify-center sub"><b>Meeting Request</b></v-subheader>
+        <v-subheader v-if="meetingSent.length >= 1" class="justify-center sub">
+          <b>Meeting Request</b>
+        </v-subheader>
         <v-flex
           v-for="item in meetingSent"
           :key="item.id"
         >
-          <v-list-item >
+          <v-list-item>
             <v-list-item-content @click="meetingPicker(item)">
               <v-list-item-title>
                 <v-chip color="grey blue lighten-1" outlined>
@@ -170,7 +188,7 @@
               </v-icon>
             </v-list-item-icon>
           </v-list-item>
-          <v-divider class="my-1"/>
+          <v-divider class="my-1" />
         </v-flex>
       </v-list>
     </v-flex>
