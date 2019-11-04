@@ -32,7 +32,7 @@ export const getters = {
 }
 
 export const actions = {
-  getMessages ({ commit, state }) {
+  getMessages ({ commit }) {
     commit('resetState')
     this.$axios
       .$get(`message/get`)
@@ -48,8 +48,6 @@ export const actions = {
             }
           }
         }
-      }).catch((e) => {
-        console.log(e) // TODO Error
       })
   }
 }
