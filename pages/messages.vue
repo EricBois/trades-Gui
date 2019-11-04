@@ -134,11 +134,11 @@
                   &nbsp;
               </v-list-item-title>
               <v-list-item-subtitle>
-                <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed by <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
-                <small v-if="!item.confirm.status && !item.change.status"><i class="awaiting">New Meeting request from<v-chip small outlined>{{ item.contractor }}</v-chip></i></small>
+                <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed by <br v-if="$vuetify.breakpoint.xsOnly"><v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+                <small v-if="!item.confirm.status && !item.change.status"><i class="awaiting">New Meeting request from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip small outlined>{{ item.contractor }}</v-chip></i></small>
                 <small v-if="item.change.status && $auth.user.sub !== item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Please review the changes</i></small>
                 <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Awaiting Confirmation</i></small>
-                <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+                <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-icon>
@@ -170,10 +170,10 @@
                 </v-chip>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed by <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+                <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed by <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
                 <small v-if="item.change.status && $auth.user.sub !== item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Please review the changes</i></small>
                 <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Awaiting Confirmation</i></small>
-                <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+                <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-icon>
@@ -305,7 +305,7 @@ export default {
       })
     })
     this.getMessages()
-    this.intervalMsg = setInterval(() => { this.getMessages() }, 80000)
+    this.intervalMsg = setInterval(() => { this.getMessages() }, 150000)
   },
   beforeDestroy () {
     clearInterval(this.intervalMsg)
