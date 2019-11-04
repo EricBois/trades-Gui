@@ -280,7 +280,6 @@ export default {
       dialogMeeting: false,
       userColor: 'amber lighten-4',
       selectedMessage: {},
-      messages: [],
       dialogMessage: false,
       intervalMsg: null,
       newMessage: {
@@ -292,7 +291,8 @@ export default {
     }
   },
   computed: mapGetters({
-    read: 'read/get'
+    read: 'messages/Read',
+    messages: 'messages/getMessages'
   }),
   created () {
     this.$axios.$get(`bid/getMeetings`).then((res) => {
@@ -304,40 +304,11 @@ export default {
         }
       })
     })
-    this.getMessages()
-    this.intervalMsg = setInterval(() => { this.getMessages() }, 150000)
-  },
-  beforeDestroy () {
-    clearInterval(this.intervalMsg)
   },
   methods: {
-    getMessages () {
-      this.$axios
-        .$get(`message/get`)
-        .then((res) => {
-          this.messages = []
-          for (const key in res) {
-            const message = res[key]
-            message._id = key
-            if (!message.delete.includes(this.$auth.user.sub)) {
-              this.messages.push(message)
-              if (!message.read.includes(this.$auth.user.sub)) {
-                this.$store.commit('read/add', false)
-              }
-            }
-          }
-        }).catch(() => {
-          this.$router.push('/')
-        })
-    },
     deleteMessage (id) {
       this.$axios.$post(`message/delete/${id}`).then((res) => {
-        for (const key in this.messages) {
-          const message = this.messages[key]
-          if (id === message.id) {
-            this.messages.splice(key, 1)
-          }
-        }
+        this.$store.dispatch('messages/getMessages')
       })
     },
     dialog (item) {
@@ -347,14 +318,8 @@ export default {
         if (!this.dialogMessage.read) {
           if (!item.read.includes(this.$auth.user.sub)) {
             this.$axios.$get(`message/read/${this.selectedMessage.id}`).then((res) => {
-              this.$store.commit('read/add', true)
-              for (const key in this.messages) {
-                const message = this.messages[key]
-                if (res._id === message.id) {
-                  this.messages.splice(key, 1)
-                  this.messages.push(res)
-                }
-              }
+              this.$store.commit('messages/Read', true)
+              this.$store.dispatch('messages/getMessages')
             })
           }
         }
@@ -370,16 +335,7 @@ export default {
         this.$axios.$post(`message/send/${this.selectedMessage.id}`, { name: this.$auth.user.name, message: this.newMessage }).then((res) => {
           this.selectedMessage = res
           this.newMessage.text = ''
-          this.messages = []
-          this.$axios
-            .$get(`message/get`)
-            .then((res) => {
-              for (const key in res) {
-                const message = res[key]
-                message._id = key
-                this.messages.push(message)
-              }
-            })
+          this.$store.dispatch('messages/getMessages')
         })
       }
     }
