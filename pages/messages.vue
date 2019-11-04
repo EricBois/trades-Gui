@@ -41,7 +41,7 @@
               </v-list-item-subtitle>
             </v-list-item-content>
 
-            <v-list-item-icon v-if="!item.read.includes($auth.user.sub)">
+            <v-list-item-icon v-if="!item.read.includes($auth.user.sub) && !$vuetify.breakpoint.xsOnly">
               <v-icon color="blue">
                 chat_bubble
               </v-icon>
@@ -91,7 +91,7 @@
               </v-list-item-subtitle>
             </v-list-item-content>
 
-            <v-list-item-icon>
+            <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
               <v-icon color="blue">
                 chat_bubble
               </v-icon>
@@ -126,6 +126,11 @@
           :key="item.id"
         >
           <v-list-item>
+            <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
+              <v-icon>
+                mdi-account-multiple
+              </v-icon>
+            </v-list-item-icon>
             <v-list-item-content @click="meetingPicker(item)">
               <v-list-item-title>
                 <v-chip color="grey blue lighten-1" outlined>
@@ -163,6 +168,11 @@
           :key="item.id"
         >
           <v-list-item>
+            <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
+              <v-icon>
+                mdi-account-multiple
+              </v-icon>
+            </v-list-item-icon>
             <v-list-item-content @click="meetingPicker(item)">
               <v-list-item-title>
                 <v-chip color="grey blue lighten-1" outlined>
