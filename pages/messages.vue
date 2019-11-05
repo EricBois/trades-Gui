@@ -1,36 +1,23 @@
 <template>
   <v-container>
-    <v-flex v-if="messages.length >= 1" xs12 sm8 offset-sm-2>
+    <v-flex v-if="newMessages.length >= 1" xs12 sm8 offset-sm-2>
       <v-list subheader dense color="grey darken-3">
         <v-subheader class="justify-center sub">
           <b>New Messages</b>
         </v-subheader>
         <v-flex
-          v-for="item in messages"
+          v-for="item in newMessages"
           :key="item._id"
         >
-          <v-list-item
-            v-if="item.read.includes($auth.user.sub)"
-          >
-            <v-list-item-content @click="dialog(item)">
-              <v-list-item-title text-center>
-                No new messages&nbsp;<v-icon small>
-                  mdi-thumb-up-outline
-                </v-icon>
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item
-            v-if="!item.read.includes($auth.user.sub)"
-          >
-            <v-list-item-icon v-if="!item.read.includes($auth.user.sub)">
+          <v-list-item>
+            <v-list-item-icon>
               <v-icon color="red" @click="deleteMessage(item.id)">
                 mdi-close-box
               </v-icon>
             </v-list-item-icon>
             <v-list-item-content @click="dialog(item)">
               <v-list-item-title>
-                <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined>
+                <v-chip color="green lighten-1" outlined>
                   {{ item.project_name }}
                 </v-chip>
               </v-list-item-title>
@@ -41,7 +28,7 @@
               </v-list-item-subtitle>
             </v-list-item-content>
 
-            <v-list-item-icon v-if="!item.read.includes($auth.user.sub) && !$vuetify.breakpoint.xsOnly">
+            <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
               <v-icon color="blue">
                 chat_bubble
               </v-icon>
@@ -50,34 +37,25 @@
         </v-flex>
       </v-list>
       <v-divider />
+    </v-flex>
+    <v-flex v-if="readMessages.length >= 1" xs12 sm8 offset-sm-2>
       <v-list subheader dense color="grey darken-3">
         <v-subheader class="justify-center sub">
-          <b>Read & Sent</b>
+          <b>Read & Sent </b>
         </v-subheader>
         <v-flex
-          v-for="item in messages"
+          v-for="item in readMessages"
           :key="item._id"
         >
-          <v-list-item
-            v-if="!item.read.includes($auth.user.sub)"
-          >
-            <v-list-item-content @click="dialog(item)">
-              <v-list-item-title>
-                All Clear!
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item
-            v-if="item.read.includes($auth.user.sub)"
-          >
-            <v-list-item-icon v-if="item.read.includes($auth.user.sub)">
+          <v-list-item>
+            <v-list-item-icon>
               <v-icon color="red" @click="deleteMessage(item.id)">
                 mdi-close-box
               </v-icon>
             </v-list-item-icon>
             <v-list-item-content @click="dialog(item)">
               <v-list-item-title>
-                <v-chip v-if="!read" color="green lighten-1" outlined>
+                <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined>
                   {{ item.project_name }}
                 </v-chip>
                 <v-chip v-else color="grey blue lighten-1" outlined>
@@ -100,7 +78,7 @@
         </v-flex>
       </v-list>
     </v-flex>
-    <v-flex v-else xs12 sm8 offset-sm-2 text-center>
+    <v-flex v-if="readMessages.length < 1" xs12 sm8 offset-sm-2 text-center>
       <v-list subheader dense color="grey darken-3">
         <v-subheader class="justify-center">
           <b>No Messages Yet!</b>&nbsp;<v-icon small>
@@ -302,7 +280,8 @@ export default {
   },
   computed: mapGetters({
     read: 'messages/Read',
-    messages: 'messages/getMessages'
+    newMessages: 'messages/getNewMessages',
+    readMessages: 'messages/getReadMessages'
   }),
   created () {
     this.$axios.$get(`bid/getMeetings`).then((res) => {
