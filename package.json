@@ -24,7 +24,8 @@
     "nuxt-material-design-icons": "^1.0.4",
     "vue-image-upload-resize": "^2.1.1",
     "vue-sweetalert2": "^2.1.1",
-    "vue2-google-maps": "^0.10.7"
+    "vue2-google-maps": "^0.10.7",
+    "vuedraggable": "^2.23.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",

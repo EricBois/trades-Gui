@@ -34,6 +34,7 @@
               </v-icon>
             </v-list-item-icon>
           </v-list-item>
+          <v-divider class="my-1" />
         </v-flex>
       </v-list>
       <v-divider />
@@ -75,6 +76,7 @@
               </v-icon>
             </v-list-item-icon>
           </v-list-item>
+          <v-divider class="my-1" />
         </v-flex>
       </v-list>
     </v-flex>
