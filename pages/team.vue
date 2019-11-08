@@ -1,64 +1,146 @@
 <template>
   <v-container>
     <v-layout>
-      <v-flex xs12 sm4 offset-1 text-center>
-        <h3>Available users</h3>
-        <v-card class="mt-1">
-          <draggable class="list-group" :list="users" group="people">
-            <v-card v-for="user in users" :key="user.id" class="pt-1">
+      <v-flex xs12 sm4 offset-sm-1 text-center>
+        <v-card class="pb-3">
+          <h3>Available users</h3>
+          <v-divider class="mt-2" />
+          <v-text-field
+            v-model="name"
+            placeholder="Search Name"
+            class="purple-input center"
+            solo
+            clearable
+            dense
+          />
+          <draggable class="list-group" :list="users" group="team">
+            <v-card
+            v-for="user in users"
+            :key="user.id"
+            flat
+            outlined
+            class="bg ma-2"
+          >
               {{ user.name }} <v-divider />
             </v-card>
           </draggable>
         </v-card>
       </v-flex>
-      <v-flex xs12 sm4 offset-2 text-center>
-        <h3>My Team</h3>
+      <v-flex xs12 sm4 offset-sm-2 class="pl-2" text-center>
         <v-card>
-          <draggable class="list-group" :list="team" group="people">
-            <v-card v-for="user in team" :key="user.id" pl-2>
+          <h3>My Team</h3>
+          <v-divider class="mt-2" />
+          <draggable class="list-group" :list="team" group="team">
+            <v-card v-for="user in team" :key="user.id" class="bg ma-2">
               {{ user.name }} <v-divider />
             </v-card>
           </draggable>
-          <v-btn color="green" class="mt-3" small @click="save">
-            Save
-          </v-btn>
+          <v-card-actions>
+            <v-btn color="green" class="mt-3" small @click="save">
+              Save
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-flex>
     </v-layout>
+    <v-layout row wrap class="pt-5">
+      <v-flex
+        v-for="project in jobs"
+        :key="project.id"
+        xs12
+        sm6
+        md2
+        class="pr-3"
+        @click="dialog(project)"
+      >
+        <v-card
+          raised
+          ripple
+        >
+          <v-layout row wrap >
+            <v-flex xs12 text-center class="pa-3">
+              <v-chip
+                color="blue-grey lighten-5"
+                label
+                class="mx-2"
+                large
+                outlined
+              >{{ project.name }}</v-chip>
+            </v-flex>
+            <v-flex xs12 class="pa-3" text-center>
+              <span class="caption"><u>Team</u></span>
+              <v-card v-for="user in project.team" :key="user.id" class=" bg text-center ma-2">
+                {{ user.name }} <v-divider />
+              </v-card>
+            </v-flex>
+          </v-layout>
+          <v-flex mb-3 />
+        </v-card>
+      </v-flex>
+    </v-layout>
+    <v-dialog v-model="dialogTeam" persistent max-width="800">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogTeam = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Project Team</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <project-team :selectedJob.sync="selectedJob" :team="team"/>
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
+<style scoped>
+.bg {
+  background-color: #455A64;
+}
+</style>
 <script>
 import draggable from 'vuedraggable'
+import ProjectTeam from '../components/ProjectTeam.vue'
 export default {
   components: {
-    draggable
+    draggable,
+    ProjectTeam
   },
   data () {
     return {
+      dialogTeam: false,
+      name: '',
       team: [],
-      users: []
+      users: [],
+      jobs: [],
+      selectedJob: {}
     }
   },
   created () {
     this.$axios.$get('team/fetch').then((res) => {
       this.team = res.team
+      this.$axios
+        .$get('account/public').then((res) => {
+          const arr = res
+          // filter users and team for duplicates and remove ourself
+          this.users = arr.filter(val => !this.team.find(({ id }) => val.id === id) && val.id !== this.$auth.user.sub)
+        })
     })
-    this.$axios
-      .$get('account/public').then((res) => {
-        this.users = res
-      })
+    this.$axios.$get('job/private').then((res) => {
+      const data = res
+      for (const key in data) {
+        const job = data[key]
+        job._id = key
+        this.jobs.push(job)
+      }
+    }).catch((error) => {
+      console.log(error)
+    })
   },
   methods: {
-    add () {
-      this.list.push({ name: 'Juan' })
-    },
-    replace () {
-      this.list = [{ name: 'Edgard' }]
-    },
-    clone (el) {
-      return {
-        name: el.name + ' cloned'
-      }
+    dialog (item) {
+      this.selectedJob = item
+      this.dialogTeam = !this.dialogTeam
     },
     save () {
       this.$axios.$post('team/edit', { team: this.team }).then((res) => {

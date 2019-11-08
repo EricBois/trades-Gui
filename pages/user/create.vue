@@ -94,6 +94,7 @@
                       label="Budget"
                       class="purple-input"
                       prefix="$"
+                      :rules="budgetRule"
                       type="number"
                     />
                   </v-flex>
@@ -144,6 +145,7 @@ export default {
       itemSkills: ['Drywall', 'Taping', 'Framing', 'Labour', 'Texturing', 'Insulation'],
       itemTickets: ['WHIMIS', 'First Aid', 'Scissor Lift', 'Fall Arrest'],
       nameRule: [v => !!v || 'The name is required'],
+      budgetRule: [v => !!v || 'Please enter a budget'],
       projectRule: [v => !!v || 'The project type is required'],
       descRule: [v => !!v || 'The description is required'],
       select: { city: 'Calgary', prov: 'AB' },
@@ -220,7 +222,11 @@ export default {
         this.info.createdBy = this.$auth.user.name
         this.$axios.$post('job/create', this.info).then((res) => {
           //  direct to jobs page
-          this.$router.push(`../../job/${res._id}`)
+          if (res.private) {
+            this.$router.push(`../../team`)
+          } else {
+            this.$router.push(`../../job/${res._id}`)
+          }
         })
       }
     },
