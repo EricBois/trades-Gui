@@ -88,12 +88,9 @@ export default {
   },
   mounted () {
     this.$axios.$get('job/get').then((res) => {
-      const data = res
-      for (const key in data) {
-        const job = data[key]
-        job._id = key
-        this.jobs.push(job)
-      }
+      res.forEach((obj, i) => {
+        this.jobs.push(obj)
+      })
     }).catch(() => {
       this.$router.push('/')
     })
