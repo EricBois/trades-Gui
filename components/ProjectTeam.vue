@@ -1,8 +1,10 @@
 <template>
   <v-container>
     <v-layout row wrap>
-      <v-flex xs12 text-center class="pb-5">
-        <v-chip outlined x-large>{{selectedJob.name}}</v-chip>
+      <v-flex xs12 text-center>
+        <v-divider class="my-5" />
+        <h1>{{selectedJob.name}}</h1>
+        <v-divider class="my-5" />
       </v-flex>
       <v-flex xs12 sm4 offset-sm-2 class="pl-2" text-center>
         <v-card class="main scroll" height="200px">
@@ -31,7 +33,7 @@
             </v-card>
           </draggable>
         </v-card>
-        <v-btn color="green" class="mt-3" large @click="save">
+        <v-btn color="green" large @click="save">
           Save
         </v-btn>
       </v-flex>
@@ -76,13 +78,13 @@ export default {
     selectedJob () {
       this.list = this.team
       this.projectTeam = this.selectedJob.team
-      this.list = this.list.filter(val => !this.projectTeam.find(({ id }) => val.id === id) && val.id !== this.$auth.user.sub)
+      this.list = this.list.filter(val => !this.projectTeam.find(({ uid }) => val.uid === uid) && val.uid !== this.$auth.user.sub)
     }
   },
   created () {
     this.list = this.team
     this.projectTeam = this.selectedJob.team
-    this.list = this.list.filter(val => !this.projectTeam.find(({ id }) => val.id === id) && val.id !== this.$auth.user.sub)
+    this.list = this.list.filter(val => !this.projectTeam.find(({ uid }) => val.uid === uid) && val.uid !== this.$auth.user.sub)
   },
   methods: {
     save () {
