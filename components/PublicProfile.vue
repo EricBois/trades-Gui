@@ -40,7 +40,7 @@
           {{ user.metadata.description }}
         </p>
       </v-flex>
-      <v-container class="mx-5 photo">
+      <v-container v-if="user.photos" class="mx-5 photo">
         <v-layout row wrap class="pa-3">
           <v-flex
             v-for="img in user.photos.photos"
@@ -136,6 +136,7 @@ export default {
     }
   },
   created () {
+    console.log(this.user)
     if (this.user.metadata.phone) {
       this.phone = `tel:${this.user.metadata.phone}`
     }

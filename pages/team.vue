@@ -29,6 +29,7 @@
             flat
             outlined
             class="bg ma-2"
+            @click="dialog2(user)"
           >
               {{ user.name }} <v-divider />
             </v-card>
@@ -48,7 +49,7 @@
         </v-card>
         <v-card class="scroll" height="300px">
           <draggable class="list-group" :list="team" group="team">
-            <v-card v-for="user in team" :key="user.id" class="bg ma-2">
+            <v-card v-for="user in team" :key="user.id" @click="dialog2(user)" class="bg ma-2">
               {{ user.name }} <v-divider />
             </v-card>
           </draggable>
@@ -116,6 +117,19 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogProfile" persistent max-width="800">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogProfile = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Profile</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <PublicProfile :user="currentUser" />
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -137,17 +151,21 @@
 <script>
 import draggable from 'vuedraggable'
 import ProjectTeam from '../components/ProjectTeam.vue'
+import PublicProfile from '../components/PublicProfile.vue'
 export default {
   components: {
     draggable,
-    ProjectTeam
+    ProjectTeam,
+    PublicProfile
   },
   data () {
     return {
+      dialogProfile: false,
       dialogTeam: false,
       name: '',
       team: [],
       users: [],
+      currentUser: '',
       jobs: [],
       selectedJob: {}
     }
@@ -174,6 +192,10 @@ export default {
     dialog (item) {
       this.selectedJob = item
       this.dialogTeam = !this.dialogTeam
+    },
+    dialog2 (item) {
+      this.currentUser = item
+      this.dialogProfile = !this.dialogProfile
     },
     save () {
       this.$axios.$post('team/edit', { team: this.team }).then((res) => {
