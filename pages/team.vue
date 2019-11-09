@@ -161,6 +161,8 @@ export default {
           // filter users and team for duplicates and remove ourself
           this.users = arr.filter(val => !this.team.find(({ uid }) => val.uid === uid) && val.uid !== this.$auth.user.sub)
         })
+    }).catch(() => {
+      this.$router.push('/')
     })
     this.$axios.$get('job/private').then((res) => {
       res.forEach((obj, i) => {
