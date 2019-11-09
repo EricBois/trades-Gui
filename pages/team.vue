@@ -140,14 +140,9 @@ export default {
         })
     })
     this.$axios.$get('job/private').then((res) => {
-      const data = res
-      for (const key in data) {
-        const job = data[key]
-        job._id = key
-        this.jobs.push(job)
-      }
-    }).catch((error) => {
-      console.log(error)
+      res.forEach((obj, i) => {
+        this.jobs.push(obj)
+      })
     })
   },
   methods: {
