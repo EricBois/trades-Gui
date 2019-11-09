@@ -14,16 +14,27 @@
           <a v-if="user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon class="circle-icon" color="green">mdi-web mdi-36px</v-icon></a>
           <a v-if="user.metadata.phone" :href="phone" target="_blank"><v-icon class="circle-icon" color="teal">mdi-phone-classic mdi-36px</v-icon></a>
         </div>
-        <div class="mt-2">
-          <v-chip v-for="item in user.metadata.skills" :key="item" color="primary" small>
+      </v-flex>
+      <v-flex v-if="user.metadata.skills" xs12 sm6 text-center>
+        <div class="sub">
+            Skills
+          <v-divider class="mx-10 pt-1"/>
+        </div>
+         <v-chip v-for="item in user.metadata.skills" :key="item" color="primary" small>
             {{ item }}
           </v-chip>
-          <br>
-          <v-chip v-for="item in user.metadata.tickets" :key="item" color="teal" small>
+      </v-flex>
+      <v-flex v-if="user.metadata.tickets" xs12 sm6 text-center>
+        <div class="sub">
+          Tickets
+          <v-divider class="mx-10 pt-1"/>
+        </div>
+        <v-chip v-for="item in user.metadata.tickets" :key="item" color="teal" small>
             {{ item }}
           </v-chip>
-          <br>
-          <v-chip v-if="user.metadata.wcb">
+      </v-flex>
+      <v-flex xs12 text-center>
+        <v-chip v-if="user.metadata.wcb">
             <v-icon color="green">
               mdi-check-decagram
             </v-icon>&nbsp; Wcb Coverage
@@ -33,7 +44,6 @@
               mdi-check-decagram
             </v-icon>&nbsp; Liability Insurance
           </v-chip>
-        </div>
       </v-flex>
       <v-flex xs12 description text-center>
         <p class="mt-2 pa-3 elevation-4">
@@ -108,6 +118,12 @@ a:link {
   box-shadow: -1px 5px 14px 5px rgba(0,0,0,0.36);
   max-width: 400px;
   margin: 0 auto;
+}
+.sub {
+  transform: rotate(359deg);
+  margin: 0 auto;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: bold;
 }
 .description {
   color: white;
