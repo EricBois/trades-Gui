@@ -3,13 +3,14 @@
     <v-layout row wrap>
       <v-flex xs12 text-center>
         <v-divider class="my-5" />
-        <h1>{{selectedJob.name}}</h1>
+        <span class="mainTitle">{{selectedJob.name}}</span>
         <v-divider class="my-5" />
       </v-flex>
       <v-flex xs12 sm4 offset-sm-2 class="pl-2" text-center>
         <v-card class="main scroll" height="200px">
-          <h3>My Team</h3>
-          <v-divider class="mt-2" />
+          <v-divider />
+          <h3 class="ibm">My Team</h3>
+          <v-divider />
           <draggable class="list-group" v-model="list" group="project">
             <v-card v-for="user in list" :key="user.id" class="bg ma-2">
               {{ user.name }} <v-divider />
@@ -19,8 +20,9 @@
       </v-flex>
       <v-flex xs12 sm4 offset-sm-1 text-center>
         <v-card class="pb-3 main scroll" height="200px">
-          <h3>Project Team</h3>
-          <v-divider class="mt-2" />
+          <v-divider />
+          <h3 class="ibm">Project Team</h3>
+          <v-divider />
           <draggable class="list-group" :list="projectTeam" group="project">
             <v-card
             v-for="user in projectTeam"
@@ -33,9 +35,11 @@
             </v-card>
           </draggable>
         </v-card>
-        <v-btn color="green" large @click="save">
-          Save
-        </v-btn>
+        <v-card class="main">
+          <v-btn color="green" @click="save" rounded>
+            Save
+          </v-btn>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
@@ -49,6 +53,13 @@
 }
 .main {
   background-color: #37474F;
+}
+.mainTitle {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 2em;
+}
+.ibm {
+  font-family: 'IBM Plex Sans', sans-serif;
 }
 </style>
 <script>

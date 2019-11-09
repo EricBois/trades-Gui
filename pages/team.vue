@@ -3,12 +3,14 @@
     <v-layout row wrap>
       <v-flex xs12 text-center>
         <v-divider class="mb-5" />
-        <h1>Your Team</h1>
+        <span class="mainTitle">Your Team</span>
         <v-divider class="my-5" />
       </v-flex>
-      <v-flex xs12 sm4 offset-sm-1 text-center>
-        <v-card class="pb-3 scroll" height="300px">
+      <v-flex xs12 sm3 offset-sm-2 text-center>
+        <v-card tile>
+          <v-divider />
           <h3>Available users</h3>
+          <v-divider />
           <v-text-field
             v-model="name"
             placeholder="Search Name"
@@ -17,6 +19,9 @@
             clearable
             dense
           />
+          <v-divider />
+        </v-card>
+        <v-card v-if="users.length > 0" class="pb-3 scroll mb-5" height="270px">
           <draggable class="list-group" :list="users" group="team">
             <v-card
             v-for="user in users"
@@ -29,26 +34,36 @@
             </v-card>
           </draggable>
         </v-card>
+        <v-card v-else class="mb-5" height="270px">
+          <draggable class="list-group" :list="users" group="team">
+          </draggable>
+          No users available
+        </v-card>
       </v-flex>
-      <v-flex xs12 sm4 offset-sm-2 class="pl-2" text-center>
+      <v-flex xs12 sm3 offset-sm-2 text-center>
+        <v-card tile>
+          <v-divider />
+           <h3>My Team</h3>
+          <v-divider />
+        </v-card>
         <v-card class="scroll" height="300px">
-          <h3>My Team</h3>
-          <v-divider class="mt-2" />
           <draggable class="list-group" :list="team" group="team">
             <v-card v-for="user in team" :key="user.id" class="bg ma-2">
               {{ user.name }} <v-divider />
             </v-card>
           </draggable>
         </v-card>
-        <v-btn color="green darken-3" large @click="save">
-          Save
-        </v-btn>
+        <v-card tile>
+          <v-btn color="green darken-3" large @click="save" rounded>
+            Save
+          </v-btn>
+        </v-card>
       </v-flex>
     </v-layout>
     <v-layout row wrap class="pt-5">
       <v-flex xs12 text-center>
         <v-divider class="my-5" />
-        <h1>Your Projects</h1>
+        <span class="mainTitle">Your Projects</span>
         <v-divider class="my-5" />
       </v-flex>
       <v-flex
@@ -72,7 +87,7 @@
                 class="mx-2"
                 large
                 outlined
-              >{{ project.name }}</v-chip>
+              ><span class="ibm">{{ project.name }}</span></v-chip>
             </v-flex>
             <v-flex xs12 class="pa-3" text-center>
               <v-card raised>
@@ -94,7 +109,7 @@
           <v-btn icon dark @click="dialogTeam = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Project Team</v-toolbar-title>
+          <v-toolbar-title class="ibm">Project Team</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
         <project-team :selectedJob.sync="selectedJob" :team="team"/>
@@ -109,6 +124,14 @@
 }
 .scroll {
   overflow-y: auto;
+}
+.mainTitle {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 2em;
+  font-weight: bold;
+}
+.ibm {
+  font-family: 'IBM Plex Sans', sans-serif;
 }
 </style>
 <script>
