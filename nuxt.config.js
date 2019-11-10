@@ -101,16 +101,5 @@ export default {
         }
       }
     }
-  },
-  /*
-  ** Build configuration
-  */
-  build: {
-    vendor: ['@johmun/vue-tags-input'],
-    /*
-    ** You can extend webpack config here
-    */
-    extend(config, ctx) {
-    }
   }
 }
