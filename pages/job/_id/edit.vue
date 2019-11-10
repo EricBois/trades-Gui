@@ -6,9 +6,7 @@
         max-width="850"
         class="mx-auto"
       >
-        <v-card
-          raised
-        >
+        <v-card raised>
           <v-row
             class="mx-5"
           >
@@ -23,7 +21,7 @@
                   <v-flex xs10>
                     <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Project Title" />
                   </v-flex>
-                  <v-flex xs10 pb-5>
+                  <v-flex xs10 sm5 pb-5>
                     <v-select
                       v-model="info.jobType"
                       :rules="projectRule"
@@ -32,7 +30,14 @@
                       label="Project Type"
                     />
                   </v-flex>
-                  <v-flex xs10 pb-5>
+                  <v-flex xs10 sm5 pb-5 pl-sm-5>
+                    <!-- <v-select
+                      v-model="info.location"
+                      :rules="locationRule"
+                      :items="locations"
+                      :menu-props="{ top: true, offsetY: true }"
+                      label="Location"
+                    /> -->
                     <gmap-autocomplete
                       class="gmap v-input__slot v-text-field"
                       :value="info.location.address"
@@ -50,7 +55,8 @@
                       outlined
                       class="purple-input"
                     />
-                  </v-flex><v-flex xs10 md5 mr-12>
+                  </v-flex>
+                  <v-flex xs10 md5 mr-12>
                     <v-checkbox
                       v-model="checkWcb"
                       label="Wcb Required"
@@ -88,11 +94,26 @@
                       label="Budget"
                       class="purple-input"
                       prefix="$"
+                      :rules="budgetRule"
                       type="number"
                     />
                   </v-flex>
-                  <v-flex xs12 md2 pt-4>
+                  <v-flex xs6 md3 pt-4>
                     <v-switch v-model="switch1" label="Private" />
+                  </v-flex>
+                  <v-flex xs6 md2 pt-4>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on }">
+                        <v-switch v-model="switch2" label="Single Bid" v-on="on" />
+                      </template>
+                      <span>Only 1 bid per user will be allowed on whole project.</span>
+                    </v-tooltip>
+                  </v-flex>
+                  <v-flex xs10 md5 pt-4 pr-5>
+                    <v-text-field v-model="info.phone" class="purple-input" label="Contact Phone Number" />
+                  </v-flex>
+                  <v-flex xs10 md5 pt-4>
+                    <v-text-field v-model="info.email" class="purple-input" label="Contact Email" />
                   </v-flex>
                   <v-card-actions>
                     <v-btn class="ma-1" color="black" :to="job+this.$route.params.id">
@@ -124,46 +145,24 @@
 export default {
   data () {
     return {
+      job: '../../job/',
       itemSkills: ['Drywall', 'Taping', 'Framing', 'Labour', 'Texturing', 'Insulation'],
       itemTickets: ['WHIMIS', 'First Aid', 'Scissor Lift', 'Fall Arrest'],
-      job: '../../job/',
       nameRule: [v => !!v || 'The name is required'],
+      budgetRule: [v => !!v || 'Please enter a budget'],
       projectRule: [v => !!v || 'The project type is required'],
       descRule: [v => !!v || 'The description is required'],
-      tag: '',
-      tags: [],
-      ticket: '',
-      tickets: [],
-      autocompleteItems: [{
-        text: 'Drywall'
-      }, {
-        text: 'Taping'
-      }, {
-        text: 'Framing'
-      }, {
-        text: 'Labour'
-      }, {
-        text: 'Texturing'
-      }, {
-        text: 'Insulation'
-      }],
-      autocompleteTickets: [{
-        text: 'WHIMIS'
-      }, {
-        text: 'First Aid'
-      }, {
-        text: 'Scissor Lift'
-      }, {
-        text: 'Fall Arrest'
-      }],
       select: { city: 'Calgary', prov: 'AB' },
       job_type: ['Contract', 'Hourly'],
       info: {
         name: '',
+        phone: '',
+        email: '',
         description: '',
         budget: '',
         private: false,
         skills: [],
+        tickets: [],
         wcb: false,
         liability: false,
         location: {
@@ -175,9 +174,12 @@ export default {
           province: '',
           url: ''
         },
-        jobType: ''
+        jobType: '',
+        oneBid: false,
+        createdBy: ''
       },
       switch1: false,
+      switch2: false,
       checkWcb: false,
       checkLiability: false
     }
@@ -188,6 +190,13 @@ export default {
         this.info.private = true
       } else {
         this.info.private = false
+      }
+    },
+    switch2 () {
+      if (this.switch2) {
+        this.info.oneBid = true
+      } else {
+        this.info.oneBid = false
       }
     },
     checkWcb () {
@@ -209,6 +218,18 @@ export default {
     // get the job with the id
     this.$axios.$get(`job/view/${this.$route.params.id}`).then((res) => {
       this.info = res
+      if (res.liability) {
+        this.checkLiability = true
+      }
+      if (res.wcb) {
+        this.checkWcb = true
+      }
+      if (res.private) {
+        this.switch1 = true
+      }
+      if (res.oneBid) {
+        this.switch2 = true
+      }
     })
   },
   methods: {
