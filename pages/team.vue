@@ -64,7 +64,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-layout row wrap>
+    <v-layout v-if="jobs.length > 0" row wrap>
       <v-flex xs12 text-center>
         <v-divider class="my-5" />
         <span class="mainTitle">Your Projects</span>
@@ -83,8 +83,7 @@
         <v-card
           raised
           ripple
-          max-height="300"
-          class="scroll"
+          min-height="200"
         >
           <v-layout row wrap>
             <v-flex xs12 text-center class="pa-3">

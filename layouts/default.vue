@@ -69,6 +69,15 @@
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item to="/user/private">
+            <v-list-item-content>
+              <v-list-item-title>
+                <v-chip outlined>
+                  <v-icon>mdi-book-lock</v-icon> &nbsp; Private Listing
+                </v-chip>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item to="/user/create">
             <v-list-item-content>
               <v-list-item-title>
