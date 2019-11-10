@@ -21,43 +21,38 @@
           />
           <v-divider />
         </v-card>
-        <v-card v-if="users.length > 0" class="pb-3 scroll mb-5" height="270px">
-          <draggable class="list-group" :list="users" group="team">
+        <v-card v-if="users.length > 0" class="pb-3 scroll mb-5" height="270">
+          <draggable class="list-group" :list="users" group="team" @change="save">
             <v-card
-            v-for="user in users"
-            :key="user.id"
-            flat
-            outlined
-            class="bg ma-2"
-            @click="dialog2(user)"
-          >
+              v-for="user in users"
+              :key="user.id"
+              flat
+              outlined
+              shaped
+              class="bg ma-2"
+              @click="dialog2(user)"
+            >
               {{ user.name }} <v-divider />
             </v-card>
           </draggable>
         </v-card>
-        <v-card v-else class="mb-5" height="270px">
-          <draggable class="list-group" :list="users" group="team">
-          </draggable>
+        <v-card v-else class="mb-5" height="270">
+          <draggable class="list-group" :list="users" group="team" @change="save" />
           No users available
         </v-card>
       </v-flex>
       <v-flex xs12 sm3 offset-sm-2 text-center>
         <v-card tile>
           <v-divider />
-           <h3>My Team</h3>
+          <h3>My Team</h3>
           <v-divider />
         </v-card>
-        <v-card class="scroll" height="300px">
+        <v-card class="scroll" height="350px">
           <draggable class="list-group" :list="team" group="team">
-            <v-card v-for="user in team" :key="user.id" @click="dialog2(user)" class="bg ma-2">
+            <v-card v-for="user in team" :key="user.id" shaped class="bg ma-2" @click="dialog2(user)">
               {{ user.name }} <v-divider />
             </v-card>
           </draggable>
-        </v-card>
-        <v-card tile>
-          <v-btn color="green darken-3" large @click="save" rounded>
-            Save
-          </v-btn>
         </v-card>
       </v-flex>
     </v-layout>
@@ -80,7 +75,7 @@
           raised
           ripple
         >
-          <v-layout row wrap >
+          <v-layout row wrap>
             <v-flex xs12 text-center class="pa-3">
               <v-chip
                 color="blue-grey lighten-4"
@@ -88,12 +83,14 @@
                 class="mx-2"
                 large
                 outlined
-              ><span class="ibm">{{ project.name }}</span></v-chip>
+              >
+                <span class="ibm">{{ project.name }}</span>
+              </v-chip>
             </v-flex>
             <v-flex xs12 class="pa-3" text-center>
               <v-card raised>
                 <span class="caption">Team</span>
-                <v-divider></v-divider>
+                <v-divider />
                 <v-card v-for="user in project.team" :key="user.id" class=" bg text-center ma-2">
                   {{ user.name }} <v-divider />
                 </v-card>
@@ -110,10 +107,12 @@
           <v-btn icon dark @click="dialogTeam = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title class="ibm">Project Team</v-toolbar-title>
+          <v-toolbar-title class="ibm">
+            Project Team
+          </v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
-        <project-team :selectedJob.sync="selectedJob" :team="team"/>
+        <project-team :selected-job.sync="selectedJob" :team="team" />
         <v-divider />
       </v-card>
     </v-dialog>
@@ -198,9 +197,19 @@ export default {
       this.dialogProfile = !this.dialogProfile
     },
     save () {
-      this.$axios.$post('team/edit', { team: this.team }).then((res) => {
-        // this.team = res.team
-      })
+      setTimeout(() => {
+        this.$axios.$post('team/edit', { team: this.team }).then((res) => {
+          this.$swal
+            .fire({
+              text: 'Successfully Updated!',
+              type: 'success',
+              toast: true,
+              showConfirmButton: false,
+              position: 'top-end',
+              timer: 1500
+            })
+        })
+      }, 1000)
     }
   }
 }
