@@ -56,7 +56,11 @@
           </draggable>
         </v-card>
       </v-flex>
-      <v-layout column justify-center><v-icon x-large>mdi-swap-horizontal-bold</v-icon></v-layout>
+      <v-layout column justify-center>
+        <v-icon x-large>
+          mdi-swap-horizontal-bold
+        </v-icon>
+      </v-layout>
       <v-flex xs5 sm4 text-center mr-sm-12>
         <v-card class="pb-3 main scroll" min-height="200px" max-height="400">
           <v-divider />
@@ -81,9 +85,15 @@
         <v-divider class="my-1" />
         <span class="controls">Controls</span>
         <v-divider class="my-1" />
-        <v-btn color="orange" @click="reset" small>Reset Team</v-btn>
-        <v-btn color="blue" small>Message Team</v-btn>
-        <v-btn color="green" small>Request bids</v-btn>
+        <v-btn color="orange" small @click="reset">
+          Reset Team
+        </v-btn>
+        <v-btn color="blue" small>
+          Message Team
+        </v-btn>
+        <v-btn color="green" small>
+          Request bids
+        </v-btn>
       </v-flex>
     </v-layout>
   </v-container>

@@ -26,9 +26,9 @@
           </v-chip>
         </v-flex>
         <v-flex xs12 class="pt-4">
-          <div class="headline text-center">
+          <div class="main text-center">
             {{ project.name }} &nbsp; <a :href="url" target="_blank"><v-icon v-if="url !== ''">mdi-google-maps</v-icon></a>
-            <div v-if="project.createdBy" class="caption grey--text mb-2">
+            <div v-if="project.createdBy" class="caption grey--text">
               Project by:
               <u>{{ project.createdBy }}</u>
             </div>
@@ -37,7 +37,7 @@
         <v-flex v-if="project.skills && project.skills.length > 0" xs6 text-center>
           <div class="sub">
             Skills
-            <v-divider class="mx-10 pt-1" />
+            <v-divider class="mx-12 pt-1" />
           </div>
           <v-chip
             v-for="item in project.skills"
@@ -51,7 +51,7 @@
         <v-flex v-if="project.tickets && project.tickets.length > 0" xs6 text-center>
           <div class="sub">
             Tickets
-            <v-divider class="mx-10 pt-1" />
+            <v-divider class="mx-12 pt-1" />
           </div>
           <v-chip
             v-for="item in project.tickets"
@@ -403,6 +403,12 @@
 .v-chip {
   margin-left: 5px;
   color: black;
+}
+.main {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 2.1em;
 }
 .sub {
   transform: rotate(359deg);

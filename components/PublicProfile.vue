@@ -11,7 +11,9 @@
         <div class="mt-2">
           <a v-if="user.metadata.facebook" :href="user.metadata.facebook" target="_blank"><v-icon class="circle-icon" color="blue darken-1">mdi-facebook-box mdi-36px</v-icon></a>
           <a v-if="user.metadata.instagram" :href="user.metadata.instagram" target="_blank"><v-icon class="instagram">mdi-instagram mdi-36px</v-icon></a>
-          <v-icon @click="dialogMessage = !dialogMessage" class="circle-icon" color="blue darken-1">mdi-message-text mdi-36px</v-icon>
+          <v-icon class="circle-icon" color="blue darken-1" @click="dialogMessage = !dialogMessage">
+            mdi-message-text mdi-36px
+          </v-icon>
           <a v-if="user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon class="circle-icon" color="green">mdi-web mdi-36px</v-icon></a>
           <a v-if="user.metadata.phone" :href="phone" target="_blank"><v-icon class="circle-icon" color="teal">mdi-phone-classic mdi-36px</v-icon></a>
         </div>
@@ -169,7 +171,6 @@ export default {
     }
   },
   created () {
-    console.log(this.user)
     if (this.user.metadata.phone) {
       this.phone = `tel:${this.user.metadata.phone}`
     }
