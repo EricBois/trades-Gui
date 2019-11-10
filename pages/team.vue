@@ -6,7 +6,15 @@
         <span class="mainTitle">Your Team</span>
         <v-divider class="my-5" />
       </v-flex>
-      <v-flex xs12 sm3 offset-sm-2 text-center>
+      <v-flex
+        xs6
+        sm3
+        offset-sm-2
+        offset-xl-3
+        xl2
+        class="pr-3"
+        text-center
+      >
         <v-card tile>
           <v-divider />
           <h3>Available users</h3>
@@ -41,7 +49,7 @@
           No users available
         </v-card>
       </v-flex>
-      <v-flex xs12 sm3 offset-sm-2 text-center>
+      <v-flex xs6 sm3 offset-sm-2 xl2 text-center>
         <v-card tile>
           <v-divider />
           <h3>My Team</h3>
@@ -56,7 +64,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-layout row wrap class="pt-5">
+    <v-layout row wrap>
       <v-flex xs12 text-center>
         <v-divider class="my-5" />
         <span class="mainTitle">Your Projects</span>
@@ -65,15 +73,18 @@
       <v-flex
         v-for="project in jobs"
         :key="project.id"
-        xs12
+        xs6
         sm6
-        md2
+        md3
+        xl2
         class="pr-3"
         @click="dialog(project)"
       >
         <v-card
           raised
           ripple
+          max-height="300"
+          class="scroll"
         >
           <v-layout row wrap>
             <v-flex xs12 text-center class="pa-3">
