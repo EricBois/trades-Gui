@@ -63,7 +63,7 @@
             Project Team
           </h3>
           <v-divider />
-          <draggable class="list-group" :list="projectTeam" group="project" @change="save">
+          <draggable class="list-group" :list="projectTeam" group="project">
             <v-card
               v-for="user in projectTeam"
               :key="user.id"
@@ -75,6 +75,12 @@
             </v-card>
           </draggable>
         </v-card>
+      </v-flex>
+      <v-flex xs12 text-center mt-2>
+        <v-divider class="my-1" />
+        <span class="controls">Controls</span>
+        <v-divider class="my-1" />
+        <v-btn>Request bids</v-btn><v-btn @click="reset">Reset Team</v-btn>
       </v-flex>
     </v-layout>
   </v-container>
@@ -92,6 +98,11 @@
 .mainTitle {
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 2em;
+  font-weight: bold;
+}
+.controls {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 1.3em;
   font-weight: bold;
 }
 .sub {
@@ -140,6 +151,11 @@ export default {
     this.list = this.list.filter(val => !this.projectTeam.find(({ uid }) => val.uid === uid) && val.uid !== this.$auth.user.sub)
   },
   methods: {
+    reset () {
+      this.projectTeam = []
+      this.save()
+      this.list = this.team
+    },
     save () {
       setTimeout(() => {
         this.$axios.$post(`job/edit/${this.selectedJob.id}`, { team: this.projectTeam }).then((res) => {
