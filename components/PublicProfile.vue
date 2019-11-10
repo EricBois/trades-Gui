@@ -11,6 +11,7 @@
         <div class="mt-2">
           <a v-if="user.metadata.facebook" :href="user.metadata.facebook" target="_blank"><v-icon class="circle-icon" color="blue darken-1">mdi-facebook-box mdi-36px</v-icon></a>
           <a v-if="user.metadata.instagram" :href="user.metadata.instagram" target="_blank"><v-icon class="instagram">mdi-instagram mdi-36px</v-icon></a>
+          <v-icon @click="dialogMessage = !dialogMessage" class="circle-icon" color="blue darken-1">mdi-android-messages mdi-36px</v-icon>
           <a v-if="user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon class="circle-icon" color="green">mdi-web mdi-36px</v-icon></a>
           <a v-if="user.metadata.phone" :href="phone" target="_blank"><v-icon class="circle-icon" color="teal">mdi-phone-classic mdi-36px</v-icon></a>
         </div>
@@ -67,6 +68,19 @@
         </v-layout>
       </v-container>
     </v-layout>
+    <v-dialog v-model="dialogMessage" persistent max-width="600">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogMessage = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Messages</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <Message :dialog-message.sync="dialogMessage" :user="user" />
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -136,9 +150,11 @@ a:link {
 
 <script>
 import ExpandableImage from '../components/ExpandableImage'
+import Message from '../components/Message.vue'
 export default {
   components: {
-    ExpandableImage
+    ExpandableImage,
+    Message
   },
   props: {
     user: {
@@ -148,10 +164,12 @@ export default {
   },
   data () {
     return {
+      dialogMessage: false,
       phone: ''
     }
   },
   created () {
+    console.log(this.user)
     if (this.user.metadata.phone) {
       this.phone = `tel:${this.user.metadata.phone}`
     }

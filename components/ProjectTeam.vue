@@ -81,7 +81,9 @@
         <v-divider class="my-1" />
         <span class="controls">Controls</span>
         <v-divider class="my-1" />
-        <v-btn color="orange" @click="reset">Reset Team</v-btn><v-btn color="green" class="ml-5">Request bids</v-btn>
+        <v-btn color="orange" @click="reset" small>Reset Team</v-btn>
+        <v-btn color="blue" small>Message Team</v-btn>
+        <v-btn color="green" small>Request bids</v-btn>
       </v-flex>
     </v-layout>
   </v-container>

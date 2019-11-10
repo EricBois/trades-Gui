@@ -21,7 +21,11 @@ export default {
   props: {
     project: {
       type: Object,
-      required: true
+      default: null
+    },
+    user: {
+      type: Object,
+      default: null
     },
     dialogMessage: {
       type: Boolean
@@ -47,9 +51,13 @@ export default {
     send () {
       if (this.message.messages.text) {
         this.message.senders = [this.$auth.user.name]
-        this.message.project_name = this.project.name
-        this.message.project = this.project.id
-        this.message.to = this.project.user
+        if (this.project) {
+          this.message.project_name = this.project.name
+          this.message.to = this.project.user
+        } else {
+          this.message.project_name = `DM from ${this.$auth.user.name}`
+          this.message.to = this.user.uid
+        }
         this.message.messages.name = this.$auth.user.name
         this.$axios.$post('message/send', this.message).then((res) => {
           this.$emit('update:dialogMessage', false)
