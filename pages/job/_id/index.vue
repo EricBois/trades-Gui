@@ -46,25 +46,35 @@
               Project by:
               <u>{{ project.createdBy }}</u>
             </div>
-            <div>
-              <v-chip
-                v-for="item in project.skills"
-                :key="item"
-                color="primary"
-                small
-              >
-                {{ item }}
-              </v-chip>
-              <v-chip
-                v-for="item in project.tickets"
-                :key="item"
-                color="yellow"
-                small
-              >
-                {{ item }}
-              </v-chip>
-            </div>
           </div>
+        </v-flex>
+        <v-flex v-if="project.skills && project.skills.length > 0" xs6 text-center>
+          <div class="sub">
+            Skills
+            <v-divider class="mx-10 pt-1" />
+          </div>
+          <v-chip
+            v-for="item in project.skills"
+            :key="item"
+            color="primary"
+            small
+          >
+            {{ item }}
+          </v-chip>
+        </v-flex>
+        <v-flex v-if="project.tickets && project.tickets.length > 0" xs6 text-center>
+          <div class="sub">
+            Tickets
+            <v-divider class="mx-10 pt-1" />
+          </div>
+          <v-chip
+            v-for="item in project.tickets"
+            :key="item"
+            color="yellow"
+            small
+          >
+            {{ item }}
+          </v-chip>
         </v-flex>
         <v-flex xs12>
           <v-card-text class="text-center">
@@ -395,6 +405,12 @@
 .v-chip {
   margin-left: 5px;
   color: black;
+}
+.sub {
+  transform: rotate(359deg);
+  margin: 0 auto;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: bold;
 }
 </style>
 <script>
