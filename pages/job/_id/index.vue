@@ -1,23 +1,6 @@
 <template>
   <v-container>
     <v-card max-width="844" class="mx-auto" raised>
-      <v-btn
-        v-if="!ownProject"
-        color="blue darken-1"
-        style="opacity: 0.7;"
-        dark
-        absolute
-        middle
-        right
-        fab
-        large
-        elevation="24"
-        @click="dialogMessage = !dialogMessage"
-      >
-        <v-icon large>
-          mdi-message-text
-        </v-icon>
-      </v-btn>
       <v-layout row wrap class="pa-3">
         <v-flex xs6 sm4 text-center>
           <div>
@@ -104,6 +87,18 @@
         </v-flex>
         <v-flex xs12>
           <v-card-actions class="justify-center">
+            <v-btn
+              v-if="project.user !== this.$auth.user.sub"
+              class="ma-1"
+              color="blue darken-1"
+              small
+              @click="dialogMessage = !dialogMessage"
+            >
+              <v-icon>
+                mdi-android-messages
+              </v-icon>
+              &nbsp;Message
+            </v-btn>
             <v-btn
               v-if="project.user !== this.$auth.user.sub"
               class="ma-1"

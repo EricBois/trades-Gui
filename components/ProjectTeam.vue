@@ -42,8 +42,8 @@
         </v-card-text>
       </v-flex>
       <v-flex xs12 class="pt-5" />
-      <v-flex xs12 sm4 offset-sm-2 text-center>
-        <v-card class="main scroll" height="200px">
+      <v-flex xs5 sm4 text-center ml-sm-12>
+        <v-card class="main scroll" min-height="200px" max-height="400">
           <v-divider />
           <h3 class="ibm">
             My Team
@@ -56,8 +56,9 @@
           </draggable>
         </v-card>
       </v-flex>
-      <v-flex xs12 sm4 offset-sm-1 text-center>
-        <v-card class="pb-3 main scroll" height="200px">
+      <v-layout column justify-center><v-icon x-large>mdi-swap-horizontal-bold</v-icon></v-layout>
+      <v-flex xs5 sm4 text-center mr-sm-12>
+        <v-card class="pb-3 main scroll" min-height="200px" max-height="400">
           <v-divider />
           <h3 class="ibm">
             Project Team
@@ -80,7 +81,7 @@
         <v-divider class="my-1" />
         <span class="controls">Controls</span>
         <v-divider class="my-1" />
-        <v-btn>Request bids</v-btn><v-btn @click="reset">Reset Team</v-btn>
+        <v-btn color="orange" @click="reset">Reset Team</v-btn><v-btn color="green">Request bids</v-btn>
       </v-flex>
     </v-layout>
   </v-container>

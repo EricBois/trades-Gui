@@ -3,7 +3,9 @@
     <v-layout row wrap>
       <v-flex xs12 text-center>
         <v-divider class="mb-5" />
+        <v-icon>mdi-axis-x-arrow</v-icon>
         <span class="mainTitle">Your Team</span>
+        <v-icon>mdi-axis-y-arrow</v-icon>
         <v-divider class="my-5" />
       </v-flex>
       <v-flex
