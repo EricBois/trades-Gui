@@ -17,33 +17,33 @@
       </v-flex>
       <v-flex v-if="user.metadata.skills" xs12 sm6 text-center>
         <div class="sub">
-            Skills
-          <v-divider class="mx-10 pt-1"/>
+          Skills
+          <v-divider class="mx-10 pt-1" />
         </div>
-         <v-chip v-for="item in user.metadata.skills" :key="item" color="primary" small>
-            {{ item }}
-          </v-chip>
+        <v-chip v-for="item in user.metadata.skills" :key="item" color="primary" small>
+          {{ item }}
+        </v-chip>
       </v-flex>
       <v-flex v-if="user.metadata.tickets" xs12 sm6 text-center>
         <div class="sub">
           Tickets
-          <v-divider class="mx-10 pt-1"/>
+          <v-divider class="mx-10 pt-1" />
         </div>
         <v-chip v-for="item in user.metadata.tickets" :key="item" color="teal" small>
-            {{ item }}
-          </v-chip>
+          {{ item }}
+        </v-chip>
       </v-flex>
       <v-flex xs12 text-center>
         <v-chip v-if="user.metadata.wcb">
-            <v-icon color="green">
-              mdi-check-decagram
-            </v-icon>&nbsp; Wcb Coverage
-          </v-chip>
-          <v-chip v-if="user.metadata.liability">
-            <v-icon color="green">
-              mdi-check-decagram
-            </v-icon>&nbsp; Liability Insurance
-          </v-chip>
+          <v-icon color="green">
+            mdi-check-decagram
+          </v-icon>&nbsp; Wcb Coverage
+        </v-chip>
+        <v-chip v-if="user.metadata.liability">
+          <v-icon color="green">
+            mdi-check-decagram
+          </v-icon>&nbsp; Liability Insurance
+        </v-chip>
       </v-flex>
       <v-flex xs12 description text-center>
         <p class="mt-2 pa-3 elevation-4">
@@ -152,7 +152,6 @@ export default {
     }
   },
   created () {
-    console.log(this.user)
     if (this.user.metadata.phone) {
       this.phone = `tel:${this.user.metadata.phone}`
     }
