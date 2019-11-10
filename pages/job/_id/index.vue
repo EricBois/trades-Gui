@@ -19,27 +19,30 @@
         </v-icon>
       </v-btn>
       <v-layout row wrap class="pa-3">
-        <v-flex xs12>
+        <v-flex xs6 sm4 text-center>
           <div>
             <v-chip
-              class="mb-4"
               color="grey"
               outlined
             >
-              Posted {{ $moment(project.Created).fromNow() }}
+              {{ $moment(project.Created).fromNow() }}
             </v-chip>
           </div>
-          <div>
-            <v-chip class="ma-2" color="orange">
-              {{ project.jobType }}
-              <v-icon right>
-                mdi-star
-              </v-icon>
-            </v-chip>
-            <v-chip v-if="project.budget" outlined color="green">
-              <b>Budget: ${{ project.budget }}</b>
-            </v-chip>
-          </div>
+        </v-flex>
+        <v-flex xs6 sm4 text-center>
+          <v-chip v-if="project.budget" outlined color="green">
+            <b>Budget: ${{ project.budget }}</b>
+          </v-chip>
+        </v-flex>
+        <v-flex xs12 sm4 text-sm-right text-center class="pr-5 pt-1 pt-sm-0">
+          <v-chip color="orange">
+            {{ project.jobType }}
+            <v-icon right>
+              mdi-star
+            </v-icon>
+          </v-chip>
+        </v-flex>
+        <v-flex xs12 class="pt-4">
           <div class="headline text-center">
             {{ project.name }} &nbsp; <a :href="url" target="_blank"><v-icon v-if="url !== ''">mdi-google-maps</v-icon></a>
             <div v-if="project.createdBy" class="caption grey--text mb-2">
