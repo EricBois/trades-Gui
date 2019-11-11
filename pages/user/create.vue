@@ -54,6 +54,7 @@
                       solo
                       outlined
                       class="purple-input"
+                      counter="400"
                     />
                   </v-flex>
                   <v-flex xs10 md5 mr-12>
@@ -144,11 +145,16 @@ export default {
     return {
       itemSkills: ['Drywall', 'Taping', 'Framing', 'Labour', 'Texturing', 'Insulation'],
       itemTickets: ['WHIMIS', 'First Aid', 'Scissor Lift', 'Fall Arrest'],
-      nameRule: [v => (v || '').length <= 40 || 'Name is required & should be 40 characters or less '],
+      nameRule: [
+        v => !!v || 'The name is required',
+        v => (v || '').length <= 40 || 'Name should be 40 characters or less '
+      ],
       budgetRule: [v => !!v || 'Please enter a budget'],
       projectRule: [v => !!v || 'The project type is required'],
-      descRule: [v => !!v || 'The description is required'],
-      select: { city: 'Calgary', prov: 'AB' },
+      descRule: [
+        v => !!v || 'The description is required',
+        v => (v || '').length <= 400 || 'Description should be 400 characters or less '
+      ],
       job_type: ['Contract', 'Hourly'],
       info: {
         name: '',
