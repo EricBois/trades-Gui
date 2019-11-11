@@ -19,7 +19,7 @@
               >
                 <v-layout wrap>
                   <v-flex xs10>
-                    <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Project Title" />
+                    <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Project Title" counter="40" />
                   </v-flex>
                   <v-flex xs10 sm5 pb-5>
                     <v-select
@@ -144,7 +144,7 @@ export default {
     return {
       itemSkills: ['Drywall', 'Taping', 'Framing', 'Labour', 'Texturing', 'Insulation'],
       itemTickets: ['WHIMIS', 'First Aid', 'Scissor Lift', 'Fall Arrest'],
-      nameRule: [v => !!v || 'The name is required'],
+      nameRule: [v => (v || '').length <= 40 || 'Name is required & should be 40 characters or less '],
       budgetRule: [v => !!v || 'Please enter a budget'],
       projectRule: [v => !!v || 'The project type is required'],
       descRule: [v => !!v || 'The description is required'],
