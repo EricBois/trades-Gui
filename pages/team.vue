@@ -17,7 +17,7 @@
         class="pr-3"
         text-center
       >
-        <v-card tile>
+        <v-card color="blue-grey darken-1">
           <v-divider />
           <h3>Available users</h3>
           <v-divider />
@@ -31,7 +31,7 @@
           />
           <v-divider />
         </v-card>
-        <v-card v-if="users.length > 0" class="pb-3 scroll mb-5" height="270">
+        <v-card v-if="users.length > 0" class="pb-3 scroll mb-5 mt-n12" height="320">
           <draggable class="list-group" :list="users" group="team" @change="save">
             <v-card
               v-for="user in users"
@@ -52,7 +52,7 @@
         </v-card>
       </v-flex>
       <v-flex xs6 sm3 offset-sm-2 xl2 text-center>
-        <v-card tile>
+        <v-card color="blue-grey darken-1">
           <v-divider />
           <h3>My Team</h3>
           <v-divider />
@@ -69,7 +69,9 @@
     <v-layout v-if="jobs.length > 0" row wrap>
       <v-flex xs12 text-center>
         <v-divider class="my-5" />
+        <v-icon>mdi-axis-x-arrow</v-icon>
         <span class="mainTitle">Your Projects</span>
+        <v-icon>mdi-axis-y-arrow</v-icon>
         <v-divider class="my-5" />
       </v-flex>
       <v-flex
@@ -90,7 +92,7 @@
           <v-layout row wrap>
             <v-flex xs12 text-center class="pa-3">
               <v-chip
-                color="blue-grey lighten-4"
+                color="teal lighten-4"
                 label
                 class="mx-2"
                 large
@@ -145,7 +147,7 @@
 </template>
 <style scoped>
 .bg {
-  background-color: #455A64;
+  background-color: #00897B;
 }
 .scroll {
   overflow-y: auto;
