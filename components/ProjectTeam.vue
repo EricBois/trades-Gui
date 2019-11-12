@@ -81,18 +81,47 @@
           </draggable>
         </v-card>
       </v-flex>
-      <v-flex xs12 text-center mt-2>
+      <v-flex v-if="projectTeam.length > 0" xs12 text-center mt-2>
         <v-divider class="my-1" />
         <span class="controls">Controls</span>
         <v-divider class="my-1" />
         <v-btn color="orange" small @click="reset">
           Reset Team
         </v-btn>
+        <v-btn color="primary" small @click="dialogMessage = !dialogMessage">
+          <v-icon>mdi-message-text</v-icon>&nbsp; Project Team
+        </v-btn>
         <v-btn color="green" small>
-          Send request for bids
+          Request for bids
         </v-btn>
       </v-flex>
     </v-layout>
+    <v-dialog v-model="dialogMessage" persistent max-width="600">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogMessage = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Message Project Team</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <v-form ref="form" lazy-validation class="mt-5">
+          <v-textarea
+            v-model="message.messages.text"
+            label="Message"
+            solo
+            outlined
+            clearable
+            class="purple-input"
+            auto-grow
+          />
+        </v-form>
+        <v-btn @click="send">
+          Send
+        </v-btn>
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -143,9 +172,19 @@ export default {
   },
   data () {
     return {
+      dialogMessage: false,
       dialog: false,
       projectTeam: [],
-      list: []
+      list: [],
+      message: {
+        to: '',
+        senders: [],
+        project_name: '',
+        messages: {
+          text: '',
+          name: ''
+        }
+      }
     }
   },
   watch: {
@@ -189,6 +228,29 @@ export default {
             })
         })
       }, 1000)
+    },
+    async send () {
+      if (this.message.messages.text) {
+        this.message.senders = [this.$auth.user.name]
+        this.message.project_name = `${this.selectedJob.name} Project Team`
+        this.message.messages.name = this.$auth.user.name
+        for (const key in this.projectTeam) {
+          const user = this.projectTeam[key]
+          this.message.to = user.uid
+          await this.$axios.$post('message/send', this.message).then((res) => {
+            this.$swal
+              .fire({
+                text: 'Successfully sent!',
+                type: 'success',
+                toast: true,
+                showConfirmButton: false,
+                position: 'top-end'
+              })
+          })
+        }
+        this.dialogMessage = false
+        this.message.messages.text = ''
+      }
     }
   }
 }
