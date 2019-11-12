@@ -57,7 +57,7 @@
         </v-card>
       </v-flex>
       <v-layout column justify-center>
-        <v-icon x-large>
+        <v-icon x-large @click="addWhole">
           mdi-swap-horizontal-bold
         </v-icon>
       </v-layout>
@@ -88,11 +88,8 @@
         <v-btn color="orange" small @click="reset">
           Reset Team
         </v-btn>
-        <v-btn color="blue" small>
-          Message Team
-        </v-btn>
         <v-btn color="green" small>
-          Request bids
+          Send request for bids
         </v-btn>
       </v-flex>
     </v-layout>
@@ -165,9 +162,18 @@ export default {
   },
   methods: {
     reset () {
+      if (this.projectTeam.length <= 0) { return }
       this.projectTeam = []
       this.save()
       this.list = this.team
+    },
+    addWhole () {
+      if (this.list.length <= 0) { return }
+      this.list.forEach((obj, i) => {
+        this.projectTeam.push(obj)
+      })
+      this.save()
+      this.list = []
     },
     save () {
       setTimeout(() => {
