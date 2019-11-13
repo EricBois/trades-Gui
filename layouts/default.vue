@@ -1,12 +1,21 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-if="this.$auth.loggedIn" v-model="drawer" :mini-variant.sync="mini" app clipped>
+    <v-navigation-drawer
+      v-if="this.$auth.loggedIn"
+      v-model="drawer"
+      :mini-variant.sync="mini"
+      app
+      clipped
+    >
       <v-list-item to="/profile">
         <v-list-item-avatar>
           <v-img :src="picture" />
         </v-list-item-avatar>
 
-        <v-list-item-title>{{ this.$auth.user.name }} <v-chip color="green" small class="ml-4" /></v-list-item-title>
+        <v-list-item-title>
+          {{ this.$auth.user.name }}
+          <v-chip color="green" small class="ml-4" />
+        </v-list-item-title>
       </v-list-item>
       <v-divider />
       <v-list dense>
@@ -47,10 +56,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider class="my-5" />
-        <v-list-group
-          prepend-icon="mdi-alpha-p-box"
-          no-action
-        >
+        <v-list-group prepend-icon="mdi-alpha-p-box" no-action>
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title>
@@ -64,7 +70,7 @@
             <v-list-item-content>
               <v-list-item-title>
                 <v-chip outlined>
-                  <v-icon>mdi-view-list</v-icon> &nbsp; Your Listing
+                  <v-icon>mdi-view-list</v-icon>&nbsp; Your Listing
                 </v-chip>
               </v-list-item-title>
             </v-list-item-content>
@@ -73,7 +79,7 @@
             <v-list-item-content>
               <v-list-item-title>
                 <v-chip outlined>
-                  <v-icon>mdi-book-lock</v-icon> &nbsp; Private Listing
+                  <v-icon>mdi-book-lock</v-icon>&nbsp; Private Listing
                 </v-chip>
               </v-list-item-title>
             </v-list-item-content>
@@ -165,10 +171,22 @@ export default {
     if (this.$auth.loggedIn) {
       this.picture = this.$auth.user.picture
       this.$store.dispatch('messages/getMessages')
-      this.interval = setInterval(function () {
-        this.$store.dispatch('messages/getMessages')
-      }.bind(this), 150000)
+      this.interval = setInterval(
+        function () {
+          this.$store.dispatch('messages/getMessages')
+        }.bind(this),
+        150000
+      )
     }
+    this.$OneSignal.push(() => {
+      this.$OneSignal.isPushNotificationsEnabled((isEnabled) => {
+        if (isEnabled) {
+          console.log('Push notifications are enabled!')
+        } else {
+          console.log('Push notifications are not enabled yet.')
+        }
+      })
+    })
   },
   beforeDestroy () {
     clearInterval(this.interval)
@@ -179,7 +197,9 @@ export default {
     },
     logout () {
       this.$auth.logout()
-      window.location.replace('https://dev-2upadx1s.auth0.com/v2/logout?returnTo=http%3A%2F%2Flocalhost:3333/')
+      window.location.replace(
+        'https://dev-2upadx1s.auth0.com/v2/logout?returnTo=http%3A%2F%2Flocalhost:3333/'
+      )
     }
   }
 }

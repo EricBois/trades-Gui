@@ -37,23 +37,31 @@ export default {
     { src: '~/plugins/axios'}
   ],
   /*
-  ** Nuxt.js dev-modules
-  */
-  buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
-    '@nuxtjs/vuetify',
-    '@nuxtjs/moment'
-  ],
-  /*
   ** Nuxt.js modules
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
+    '@nuxtjs/eslint-module',
+    '@nuxtjs/vuetify',
+    '@nuxtjs/moment',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
+    '@nuxtjs/onesignal',
+    '@nuxtjs/pwa',
     'nuxt-material-design-icons'
   ],
+  oneSignal: {
+    init: {
+      appId: '1cd2a39c-cc2f-4d4e-9677-8035dc40db92',
+      allowLocalhostAsSecureOrigin: true,
+      welcomeNotification: {
+          disable: false
+      },
+      notifyButton: {
+        enable: true,
+      },
+    }
+  },
   auth: {
     resetOnError: true,
     strategies: {
