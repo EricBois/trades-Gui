@@ -179,6 +179,8 @@ export default {
       )
     }
     this.$OneSignal.push(() => {
+      // this.$OneSignal.log.setLevel('trace')
+      // this.$OneSignal.sendSelfNotification()
       this.$OneSignal.isPushNotificationsEnabled((isEnabled) => {
         if (isEnabled) {
           console.log('Push notifications are enabled!')

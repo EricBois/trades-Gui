@@ -57,9 +57,11 @@ export default {
       welcomeNotification: {
           disable: false
       },
+      autoResubscribe: true,
+      cdn: true,
       notifyButton: {
         enable: true,
-      },
+      }
     }
   },
   auth: {
