@@ -17,7 +17,7 @@
     "@johmun/vue-tags-input": "^2.1.0",
     "@nuxtjs/auth": "^4.8.1",
     "@nuxtjs/axios": "^5.3.6",
-    "@nuxtjs/onesignal": "^3.0.0-beta.15",
+    "@nuxtjs/onesignal": "^3.0.0-beta.16",
     "@nuxtjs/pwa": "^3.0.0-beta.19",
     "auth0-js": "^9.11.3",
     "blueimp-canvas-to-blob": "^3.16.0",
