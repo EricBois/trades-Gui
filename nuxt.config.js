@@ -61,6 +61,7 @@ export default {
       cdn: true,
       notifyButton: {
         enable: true,
+        size: 'small'
       }
     }
   },

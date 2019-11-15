@@ -178,17 +178,6 @@ export default {
         150000
       )
     }
-    this.$OneSignal.push(() => {
-      // this.$OneSignal.log.setLevel('trace')
-      // this.$OneSignal.sendSelfNotification()
-      this.$OneSignal.isPushNotificationsEnabled((isEnabled) => {
-        if (isEnabled) {
-          console.log('Push notifications are enabled!')
-        } else {
-          console.log('Push notifications are not enabled yet.')
-        }
-      })
-    })
   },
   beforeDestroy () {
     clearInterval(this.interval)

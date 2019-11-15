@@ -52,6 +52,13 @@ export const actions = {
             if (!message.read.includes(this.$auth.user.sub)) {
               commit('Read', false)
               commit('addNewMessage', message)
+              // this.$OneSignal.push(() => {
+              //   // this.$OneSignal.log.setLevel('trace')
+              //   this.$OneSignal.sendSelfNotification(
+              //     'New message!',
+              //     'You have a new message'
+              //   )
+              // })
             } else {
               commit('addReadMessage', message)
             }
