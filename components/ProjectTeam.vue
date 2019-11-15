@@ -43,7 +43,7 @@
       </v-flex>
       <v-flex xs12 class="pt-5" />
       <v-flex xs5 sm4 text-center ml-sm-12>
-        <v-card class="main scroll" min-height="200px" max-height="400">
+        <v-card class="main scroll" min-height="200px" max-height="400" :img="dragImg">
           <v-divider />
           <h3 class="ibm">
             My Team
@@ -55,14 +55,13 @@
             </v-card>
           </draggable>
         </v-card>
+        <v-btn color="blue darken-3" fab small @click="addWhole" class="mt-n5">
+          <v-icon large>mdi-arrow-right-circle</v-icon>
+        </v-btn>
       </v-flex>
-      <v-layout column justify-center>
-        <v-icon x-large @click="addWhole">
-          mdi-swap-horizontal-bold
-        </v-icon>
-      </v-layout>
+      <v-flex xs2 />
       <v-flex xs5 sm4 text-center mr-sm-12>
-        <v-card class="pb-3 main scroll" min-height="200px" max-height="400">
+        <v-card class="pb-3 main scroll" min-height="200px" max-height="400" :img="dragImg">
           <v-divider />
           <h3 class="ibm">
             Project Team
@@ -80,7 +79,7 @@
             </v-card>
           </draggable>
         </v-card>
-        <v-btn color="amber darken-3" width="35" small @click="reset" class="mt-n5">
+        <v-btn color="red darken-3" small width="35" @click="reset" class="mt-n5">
           Reset
         </v-btn>
         <v-btn color="primary" class="mt-n5" small fab @click="dialogMessage = !dialogMessage">
@@ -172,6 +171,7 @@ export default {
   },
   data () {
     return {
+      dragImg: 'https://subhub01.s3.amazonaws.com/app/bg.png',
       dialogMessage: false,
       dialog: false,
       projectTeam: [],
