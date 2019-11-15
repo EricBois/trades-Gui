@@ -90,7 +90,7 @@
         <v-divider class="my-1" />
         <span class="controls">Controls</span>
         <v-divider class="my-1" />
-        <v-btn color="green" small>
+        <v-btn small>
           Request for bids
         </v-btn>
       </v-flex>
