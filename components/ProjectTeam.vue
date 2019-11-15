@@ -80,17 +80,17 @@
             </v-card>
           </draggable>
         </v-card>
+        <v-btn color="amber darken-3" width="35" small @click="reset" class="mt-n5">
+          Reset
+        </v-btn>
+        <v-btn color="primary" class="mt-n5" small fab @click="dialogMessage = !dialogMessage">
+          <v-icon>mdi-message-text</v-icon>
+        </v-btn>
       </v-flex>
       <v-flex v-if="projectTeam.length > 0" xs12 text-center mt-2>
         <v-divider class="my-1" />
         <span class="controls">Controls</span>
         <v-divider class="my-1" />
-        <v-btn color="orange" small @click="reset">
-          Reset Team
-        </v-btn>
-        <v-btn color="primary" small @click="dialogMessage = !dialogMessage">
-          <v-icon>mdi-message-text</v-icon>&nbsp; Project Team
-        </v-btn>
         <v-btn color="green" small>
           Request for bids
         </v-btn>
