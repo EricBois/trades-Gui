@@ -61,7 +61,11 @@ export default {
       cdn: true,
       notifyButton: {
         enable: true,
-        size: 'small'
+        size: 'small',
+        offset: {
+          bottom: '25px',
+          right: '5px' /* Only applied if bottom-right */
+        }
       }
     }
   },

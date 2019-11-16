@@ -3,7 +3,6 @@
     <v-navigation-drawer
       v-if="this.$auth.loggedIn"
       v-model="drawer"
-      :mini-variant.sync="mini"
       app
       clipped
     >
@@ -141,10 +140,32 @@
         <nuxt />
       </v-container>
     </v-content>
+    <v-bottom-navigation
+      v-if="this.$auth.loggedIn && !drawer"
+      dark
+      shift
+      app
+    >
+      <v-btn to="/jobs">
+        <span>Listings</span>
+        <v-icon>mdi-post</v-icon>
+      </v-btn>
 
-    <v-footer app>
-      <span>&copy; 2019</span>
-    </v-footer>
+      <v-btn to="/team">
+        <span>Team</span>
+        <v-icon>mdi-account-group</v-icon>
+      </v-btn>
+
+      <v-btn to="/user/create">
+        <span>Post</span>
+        <v-icon>mdi-clipboard-plus</v-icon>
+      </v-btn>
+
+      <v-btn to="/messages">
+        <span>Messages</span>
+        <v-icon>mdi-message</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
   </v-app>
 </template>
 
