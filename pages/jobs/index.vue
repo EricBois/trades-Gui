@@ -11,12 +11,12 @@
     >
       <v-layout row wrap class="pa-3">
         <v-flex xs6 sm4 text-center text-sm-left>
-          <v-chip outlined small color="grey">
+          <v-chip outlined small color="teal lighten-4">
             {{ $moment(project.Created).fromNow() }}
           </v-chip>
         </v-flex>
         <v-flex xs6 sm4 text-center>
-          <v-chip v-if="project.budget" outlined color="green" small>
+          <v-chip v-if="project.budget" outlined color="green" small label>
             <b>Budget ${{ project.budget }}</b>
           </v-chip>
         </v-flex>
@@ -25,6 +25,7 @@
             color="orange"
             class="mr-2 mt-2 mt-sm-0 jobtype"
             small
+            label
           >
             {{ project.jobType }}<v-icon v-if="project.jobType === 'Hourly'" right>
                 mdi-clock-outline
