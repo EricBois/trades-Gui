@@ -2,31 +2,34 @@
   <v-container fluid>
     <v-card
       max-width="800"
-      class="mx-auto">
+      class="mx-auto"
+    >
       <v-layout row wrap class="mx-4 mb-5">
         <v-flex xs12 text-center class="my-n6">
           <span class="mainTitle2 grey--text"><u>Filter by</u></span>
         </v-flex>
         <v-flex xs4>
-          <v-text-field placeholder="name.." v-model="search" class="mt-3">Search</v-text-field>
+          <v-text-field v-model="search" placeholder="name.." class="mt-3">
+            Search
+          </v-text-field>
         </v-flex>
         <v-flex xs4 class="px-3">
           <v-select
-          v-model="city"
-          :items="cities"
-          label="City"
-          multiple
-          chips
-        ></v-select>
+            v-model="city"
+            :items="cities"
+            label="City"
+            multiple
+            chips
+          />
         </v-flex>
         <v-flex xs4>
           <v-select
-          v-model="trade"
-          :items="trades"
-          label="Skills"
-          multiple
-          chips
-        ></v-select>
+            v-model="trade"
+            :items="trades"
+            label="Skills"
+            multiple
+            chips
+          />
         </v-flex>
       </v-layout>
     </v-card>
@@ -58,15 +61,15 @@
             label
           >
             {{ project.jobType }}<v-icon v-if="project.jobType === 'Hourly'" right>
-                mdi-clock-outline
-              </v-icon>
-              <v-icon v-else right>
-                mdi-file-document-outline
-              </v-icon>
+              mdi-clock-outline
+            </v-icon>
+            <v-icon v-else right>
+              mdi-file-document-outline
+            </v-icon>
           </v-chip>
         </v-flex>
         <v-flex xs12 text-center class="mt-2">
-          <span class="mainTitle"><u>{{project.name}}</u></span>
+          <span class="mainTitle"><u>{{ project.name }}</u></span>
         </v-flex>
         <v-flex xs12 text-center>
           <div class="ml-1 ibm">
@@ -80,7 +83,8 @@
             color="blue accent-1"
             small
             class="mt-1"
-            outlined>
+            outlined
+          >
             {{ item }}
           </v-chip>
         </v-flex>
@@ -100,6 +104,15 @@
         </v-flex>
       </v-layout>
       <v-flex mb-2 />
+    </v-card>
+    <v-card
+      v-if="pages > 1"
+      max-width="600"
+      class="mx-auto">
+      <v-pagination
+      v-model="page"
+      :length="pages"
+    ></v-pagination>
     </v-card>
   </v-container>
 </template>
@@ -160,7 +173,10 @@ export default {
       search: '',
       city: [],
       trades: ['Drywall', 'Taping', 'Framing', 'Labour', 'Texturing', 'Insulation'],
-      trade: []
+      trade: [],
+      page: 1,
+      perPage: 10,
+      pages: []
     }
   },
   computed: {
@@ -176,7 +192,24 @@ export default {
         // filtered = filtered.filter(job => new RegExp(job.skills.join('|')).test(this.trade))
         filtered = filtered.filter(job => this.trade.some(el => job.skills.includes(el)))
       }
-      return filtered
+      return this.paginate(filtered)
+    }
+  },
+  watch: {
+    filteredList () {
+      this.setPages()
+    }
+  },
+  methods: {
+    setPages () {
+      this.pages = Math.ceil(this.jobs.length / this.perPage)
+    },
+    paginate (jobs) {
+      const page = this.page
+      const perPage = this.perPage
+      const from = (page * perPage) - perPage
+      const to = (page * perPage)
+      return jobs.slice(from, to)
     }
   }
 }

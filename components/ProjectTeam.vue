@@ -55,8 +55,10 @@
             </v-card>
           </draggable>
         </v-card>
-        <v-btn color="blue darken-3" fab small @click="addWhole" class="mt-n5">
-          <v-icon large>mdi-arrow-right-circle</v-icon>
+        <v-btn color="blue darken-3" fab small class="mt-n5" @click="addWhole">
+          <v-icon large>
+            mdi-arrow-right-circle
+          </v-icon>
         </v-btn>
       </v-flex>
       <v-flex xs2 />
@@ -79,7 +81,7 @@
             </v-card>
           </draggable>
         </v-card>
-        <v-btn color="red darken-3" small width="35" @click="reset" class="mt-n5">
+        <v-btn color="red darken-3" small width="35" class="mt-n5" @click="reset">
           Reset
         </v-btn>
         <v-btn color="primary" class="mt-n5" small fab @click="dialogMessage = !dialogMessage">
