@@ -1,7 +1,37 @@
 <template>
-  <v-container class="ma-0 pa-0" fluid>
+  <v-container fluid>
     <v-card
-      v-for="project in jobs"
+      max-width="800"
+      class="mx-auto">
+      <v-layout row wrap class="mx-4 mb-5">
+        <v-flex xs12 text-center>
+          <span class="mainTitle2 grey--text"><u>Filter by</u></span>
+        </v-flex>
+        <v-flex xs4>
+          <v-text-field placeholder="name.." v-model="search" class="mt-3">Search</v-text-field>
+        </v-flex>
+        <v-flex xs4 class="px-3">
+          <v-select
+          v-model="city"
+          :items="cities"
+          label="City"
+          multiple
+          chips
+        ></v-select>
+        </v-flex>
+        <v-flex xs4>
+          <v-select
+          v-model="trade"
+          :items="trades"
+          label="Skills"
+          multiple
+          chips
+        ></v-select>
+        </v-flex>
+      </v-layout>
+    </v-card>
+    <v-card
+      v-for="project in filteredList"
       :key="project.id"
       raised
       ripple
@@ -83,6 +113,12 @@
       font-weight: bold;
       font-style: italic;
     }
+    .mainTitle2 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1.7em;
+      font-weight: bold;
+      font-style: italic;
+    }
     .ibm {
       font-family: 'IBM Plex Sans', sans-serif;
     }
@@ -111,17 +147,40 @@ export default {
     return {
       job: 'job/',
       search: '',
-      jobs: []
+      jobs: [],
+      cities: [],
+      city: [],
+      trades: ['Drywall', 'Taping', 'Framing', 'Labour', 'Texturing', 'Insulation'],
+      trade: []
     }
   },
   mounted () {
     this.$axios.$get('job/get').then((res) => {
       res.forEach((obj, i) => {
         this.jobs.push(obj)
+        if (obj.location.city.length > 0) {
+          this.cities.push(obj.location.city)
+        }
       })
     }).catch(() => {
       this.$router.push('/')
     })
+  },
+  computed: {
+    filteredList () {
+      let filtered = this.jobs
+      if (this.search.length > 0) {
+        filtered = this.jobs.filter(job => job.name.toLowerCase().includes(this.search))
+      }
+      if (this.city.length > 0) {
+        filtered = filtered.filter(job => this.city.includes(job.location.city))
+      }
+      if (this.trade.length > 0) {
+        // filtered = filtered.filter(job => new RegExp(job.skills.join('|')).test(this.trade))
+        filtered = filtered.filter(job => this.trade.some(el => job.skills.includes(el)))
+      }
+      return filtered
+    }
   }
 }
 </script>
