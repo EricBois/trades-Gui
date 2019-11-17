@@ -4,7 +4,7 @@
       max-width="800"
       class="mx-auto">
       <v-layout row wrap class="mx-4 mb-5">
-        <v-flex xs12 text-center>
+        <v-flex xs12 text-center class="my-n6">
           <span class="mainTitle2 grey--text"><u>Filter by</u></span>
         </v-flex>
         <v-flex xs4>
