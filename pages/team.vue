@@ -22,19 +22,19 @@
           <h3>Available users</h3>
           <v-divider />
           <v-text-field
-            v-model="name"
-            placeholder="Search Name"
+            v-model="search"
+            placeholder="Search Name.."
             class="purple-input center"
             solo
             clearable
             dense
           />
-          <v-divider />
+          <v-btn text @click="searchDialog = !searchDialog" small class="mt-n12">Advanced search</v-btn>
         </v-card>
-        <v-card v-if="users.length > 0" class="pb-3 scroll mb-5 mt-n12" height="320" :img="dragImg">
+        <v-card v-if="users.length > 0" class="pb-3 scroll mb-5 mt-n4" height="320" :img="dragImg">
           <draggable class="list-group" :list="users" group="team" @change="save">
             <v-card
-              v-for="user in users"
+              v-for="user in filteredList"
               :key="user.id"
               flat
               outlined
@@ -57,7 +57,7 @@
           <h3>My Team</h3>
           <v-divider />
         </v-card>
-        <v-card class="scroll" height="350px" :img="dragImg">
+        <v-card class="scroll" height="405px" :img="dragImg">
           <draggable class="list-group" :list="team" group="team">
             <v-card v-for="user in team" :key="user.id" shaped class="bg ma-2" @click="dialog2(user)">
               {{ user.name }} <v-divider />
@@ -143,6 +143,36 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-dialog v-model="searchDialog" persistent max-width="600">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="searchDialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Search By</v-toolbar-title>
+        </v-toolbar>
+        <v-layout row wrap class="mx-4 mb-5">
+        <v-flex xs6 class="pr-3">
+          <v-select
+            v-model="city"
+            :items="cities"
+            label="City"
+            multiple
+            chips
+          />
+        </v-flex>
+        <v-flex xs6>
+          <v-select
+            v-model="trade"
+            :items="trades"
+            label="Skills"
+            multiple
+            chips
+          />
+        </v-flex>
+      </v-layout>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -173,10 +203,15 @@ export default {
   },
   data () {
     return {
+      searchDialog: false,
+      search: '',
+      trades: ['Drywall', 'Taping', 'Framing', 'Labour', 'Texturing', 'Insulation'],
+      cities: [],
+      city: [],
+      trade: [],
       dragImg: 'https://subhub01.s3.amazonaws.com/app/bg.png',
       dialogProfile: false,
       dialogTeam: false,
-      name: '',
       team: [],
       users: [],
       currentUser: '',
@@ -192,6 +227,11 @@ export default {
           const arr = res
           // filter users and team for duplicates and remove ourself
           this.users = arr.filter(val => !this.team.find(({ uid }) => val.uid === uid) && val.uid !== this.$auth.user.sub)
+          arr.forEach((obj, i) => {
+            if (obj.metadata.city && obj.metadata.city.length > 0) {
+              this.cities.push(obj.metadata.city)
+            }
+          })
         })
     }).catch(() => {
       this.$router.push('/')
@@ -201,6 +241,21 @@ export default {
         this.jobs.push(obj)
       })
     })
+  },
+  computed: {
+    filteredList () {
+      let filtered = this.users
+      if (this.search.length > 0) {
+        filtered = this.users.filter(user => user.name.toLowerCase().includes(this.search))
+      }
+      if (this.city.length > 0) {
+        filtered = filtered.filter(user => this.city.includes(user.metadata.city))
+      }
+      if (this.trade.length > 0) {
+        filtered = filtered.filter(user => this.trade.some(el => user.metadata.skills.includes(el)))
+      }
+      return filtered
+    }
   },
   methods: {
     dialog (item) {
