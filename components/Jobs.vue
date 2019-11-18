@@ -175,7 +175,7 @@ export default {
       trades: ['Drywall', 'Taping', 'Framing', 'Labour', 'Texturing', 'Insulation'],
       trade: [],
       page: 1,
-      perPage: 10,
+      perPage: 5,
       pages: []
     }
   },
