@@ -108,11 +108,12 @@
     <v-card
       v-if="pages > 1"
       max-width="600"
-      class="mx-auto">
+      class="mx-auto"
+    >
       <v-pagination
-      v-model="page"
-      :length="pages"
-    ></v-pagination>
+        v-model="page"
+        :length="pages"
+      />
     </v-card>
   </v-container>
 </template>

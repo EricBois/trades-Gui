@@ -29,7 +29,9 @@
             clearable
             dense
           />
-          <v-btn text @click="searchDialog = !searchDialog" small class="mt-n12">Advanced search</v-btn>
+          <v-btn text small class="mt-n12" @click="searchDialog = !searchDialog">
+            Advanced search
+          </v-btn>
         </v-card>
         <v-card v-if="users.length > 0" class="pb-3 scroll mb-5 mt-n4" height="320" :img="dragImg">
           <draggable class="list-group" :list="users" group="team" @change="save">
@@ -152,25 +154,25 @@
           <v-toolbar-title>Search By</v-toolbar-title>
         </v-toolbar>
         <v-layout row wrap class="mx-4 mb-5">
-        <v-flex xs6 class="pr-3">
-          <v-select
-            v-model="city"
-            :items="cities"
-            label="City"
-            multiple
-            chips
-          />
-        </v-flex>
-        <v-flex xs6>
-          <v-select
-            v-model="trade"
-            :items="trades"
-            label="Skills"
-            multiple
-            chips
-          />
-        </v-flex>
-      </v-layout>
+          <v-flex xs6 class="pr-3">
+            <v-select
+              v-model="city"
+              :items="cities"
+              label="City"
+              multiple
+              chips
+            />
+          </v-flex>
+          <v-flex xs6>
+            <v-select
+              v-model="trade"
+              :items="trades"
+              label="Skills"
+              multiple
+              chips
+            />
+          </v-flex>
+        </v-layout>
       </v-card>
     </v-dialog>
   </v-container>
@@ -219,6 +221,21 @@ export default {
       selectedJob: {}
     }
   },
+  computed: {
+    filteredList () {
+      let filtered = this.users
+      if (this.search.length > 0) {
+        filtered = this.users.filter(user => user.name.toLowerCase().includes(this.search))
+      }
+      if (this.city.length > 0) {
+        filtered = filtered.filter(user => this.city.includes(user.metadata.city))
+      }
+      if (this.trade.length > 0) {
+        filtered = filtered.filter(user => this.trade.some(el => user.metadata.skills.includes(el)))
+      }
+      return filtered
+    }
+  },
   created () {
     this.$axios.$get('team/fetch').then((res) => {
       this.team = res.team
@@ -241,21 +258,6 @@ export default {
         this.jobs.push(obj)
       })
     })
-  },
-  computed: {
-    filteredList () {
-      let filtered = this.users
-      if (this.search.length > 0) {
-        filtered = this.users.filter(user => user.name.toLowerCase().includes(this.search))
-      }
-      if (this.city.length > 0) {
-        filtered = filtered.filter(user => this.city.includes(user.metadata.city))
-      }
-      if (this.trade.length > 0) {
-        filtered = filtered.filter(user => this.trade.some(el => user.metadata.skills.includes(el)))
-      }
-      return filtered
-    }
   },
   methods: {
     dialog (item) {
