@@ -18,7 +18,7 @@
           <a v-if="user.metadata.phone" :href="phone" target="_blank"><v-icon class="circle-icon" color="teal">mdi-phone-classic mdi-36px</v-icon></a>
         </div>
       </v-flex>
-      <v-flex v-if="user.metadata.skills" xs12 sm6 text-center>
+      <v-flex v-if="user.metadata.skills && user.metadata.skills.length > 0" xs12 sm6 text-center>
         <div class="sub">
           Skills
           <v-divider class="mx-10 pt-1" />
