@@ -130,6 +130,7 @@
     </v-card>
     <v-flex class="mt-5" />
     <v-card v-if="bids.length > 0" max-width="844" class="mx-auto" raised>
+      <v-flex xs12 text-right><v-chip color="blue-grey lighten-5" class="subBid mr-2 mt-2" outlined label small>Bidders: {{bidsTotal}}</v-chip><br></v-flex>
       <v-flex xs12 text-center>
         <h2 v-if="!ownProject">
           Your Placed Bids
@@ -416,6 +417,12 @@
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: bold;
 }
+.subBid {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 0.7em;
+}
 </style>
 <script>
 import BidsApproval from '../../../components/BidsApproval'
@@ -478,7 +485,8 @@ export default {
         { text: 'Placed By', value: 'createdBy' },
         { text: 'Action', value: 'action', sortable: false }
       ],
-      bids: []
+      bids: [],
+      bidsTotal: 0
     }
   },
   mounted () {
@@ -494,7 +502,8 @@ export default {
         if (this.project.user === this.$auth.user.sub) {
           this.ownProject = true
         }
-        this.merged = this.trades.concat(res.skills)
+        this.merged = this.trades.concat(res.skills) // merge project required for trade with whole project
+        this.bidsTotal = res.bids.length // return total of bids on project
         for (const key in res.bids) {
           const bid = res.bids[key]
           bid._id = key
