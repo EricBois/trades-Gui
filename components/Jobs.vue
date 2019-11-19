@@ -44,7 +44,7 @@
     >
       <v-layout row wrap class="pa-3">
         <v-flex xs6 sm4 text-center text-sm-left>
-          <v-chip outlined small color="teal lighten-4">
+          <v-chip outlined small color="teal lighten-4" label>
             {{ $moment(project.Created).fromNow() }}
           </v-chip>
         </v-flex>
@@ -67,6 +67,14 @@
               mdi-file-document-outline
             </v-icon>
           </v-chip>
+          <v-chip
+            v-if="project.location.city"
+            color="grey lighten-1"
+            class="mt-2 mr-2"
+            small
+            label
+            outlined
+          ><v-icon>mdi-city</v-icon>&nbsp;{{project.location.city}}</v-chip>
         </v-flex>
         <v-flex xs12 text-center class="mt-2">
           <span class="mainTitle"><u>{{ project.name }}</u></span>
