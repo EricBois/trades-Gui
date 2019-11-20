@@ -121,11 +121,20 @@
               &nbsp;Message
             </v-btn>
             <v-btn
-              v-if="project.user !== this.$auth.user.sub"
+              v-if="project.user !== this.$auth.user.sub && bidding"
               class="ma-1"
               color="teal lighten-1"
               small
               @click="dialogBid = !dialogBid"
+            >
+              Place a Bid
+            </v-btn>
+            <v-btn
+              v-else-if="project.user !== this.$auth.user.sub && !bidding"
+              class="ma-1"
+              color="teal lighten-1"
+              small
+              disabled
             >
               Place a Bid
             </v-btn>
@@ -146,6 +155,7 @@
               Delete Project
             </v-btn>
           </v-card-actions>
+          <v-flex v-if="project.user !== this.$auth.user.sub && !bidding" xs12 text-center><small class="red--text">*Bids have been disabled</small></v-flex>
         </v-flex>
       </v-layout>
     </v-card>
@@ -209,6 +219,10 @@
             </v-icon>
           </template>
         </v-data-table>
+        <div v-if="ownProject">
+          <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">Turn Bidding off</v-btn>
+          <v-btn v-else color="light-green darken-4" small @click="bidsToggle">Turn Bidding on</v-btn>
+        </div>
       </v-flex>
     </v-card>
     <v-card v-else max-width="844" class="mx-auto" raised>
@@ -465,6 +479,7 @@ export default {
   },
   data () {
     return {
+      bidding: true,
       url: '',
       dialogProfile: false,
       user: {},
@@ -519,10 +534,16 @@ export default {
     this.$axios
       .$get(`job/view/${this.$route.params.id}`)
       .then((res) => {
+        console.log(res)
         this.project = res
         this.phone = this.$auth.user['https://subhub.com/user_metadata'].phone
         if (this.project.location.url) {
           this.url = this.project.location.url
+        }
+        if (this.project.bidding) {
+          this.bidding = true
+        } else {
+          this.bidding = false
         }
         if (this.project.user === this.$auth.user.sub) {
           this.ownProject = true
@@ -698,6 +719,15 @@ export default {
           })
           this.loading = false
         })
+    },
+    bidsToggle () {
+      if (this.bidding) {
+        this.bidding = false
+      } else {
+        this.bidding = true
+      }
+      this.$axios.$post(`job/edit/${this.$route.params.id}`, { bidding: this.bidding }).then((res) => {
+      })
     }
   }
 }
