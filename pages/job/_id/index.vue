@@ -2,28 +2,49 @@
   <v-container>
     <v-card max-width="844" class="mx-auto" raised>
       <v-layout row wrap class="pa-3">
-        <v-flex xs6 sm4 text-center>
+        <v-flex xs6 sm4 text-center text-sm-left>
           <div>
             <v-chip
               color="grey"
               outlined
+              small
+              label
             >
               {{ $moment(project.Created).fromNow() }}
             </v-chip>
           </div>
         </v-flex>
-        <v-flex xs6 sm4 text-center>
-          <v-chip v-if="project.budget" outlined color="green">
+        <v-flex xs6 sm4 text-sm-center text-left>
+          <v-chip v-if="project.budget" outlined small color="green" label>
             <b>Budget: ${{ project.budget }}</b>
           </v-chip>
         </v-flex>
-        <v-flex xs12 sm4 text-sm-right text-center class="pr-5 pt-1 pt-sm-0">
-          <v-chip color="orange">
+        <v-flex
+          xs12
+          sm4
+          text-sm-right
+          text-center
+          class="pr-5 pt-1 pt-sm-0"
+          label
+        >
+          <v-chip color="orange" small label>
             {{ project.jobType }}
             <v-icon right>
               mdi-star
             </v-icon>
           </v-chip>
+          <v-chip
+            v-if="project.location && project.location.city"
+            color="grey lighten-1"
+            small
+            outlined
+            label
+          >
+            <v-icon>mdi-city</v-icon>&nbsp;{{ project.location.city }}
+          </v-chip>
+        </v-flex>
+        <v-flex xs12>
+          <v-divider class="mt-3" />
         </v-flex>
         <v-flex xs12 class="pt-4">
           <div class="main text-center">
@@ -130,7 +151,11 @@
     </v-card>
     <v-flex class="mt-5" />
     <v-card v-if="bids.length > 0" max-width="844" class="mx-auto" raised>
-      <v-flex xs12 text-right><v-chip color="blue-grey lighten-5" class="subBid mr-2 mt-2" outlined label small>Bids: {{bidsTotal}}</v-chip><br></v-flex>
+      <v-flex xs12 text-right>
+        <v-chip color="blue-grey lighten-5" class="subBid mr-2 mt-2" outlined label small>
+          Bids: {{ bidsTotal }}
+        </v-chip><br>
+      </v-flex>
       <v-flex xs12 text-center>
         <h2 v-if="!ownProject">
           Your Placed Bids
