@@ -295,9 +295,6 @@ export default {
           this.switch1 = false
         }
       })
-      .catch(() => {
-        this.$router.push('/')
-      })
   },
   methods: {
     edit () {

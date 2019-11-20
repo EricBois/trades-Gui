@@ -22,8 +22,6 @@ export default {
           this.cities.push(obj.location.city)
         }
       })
-    }).catch(() => {
-      this.$router.push('/')
     })
   }
 }
