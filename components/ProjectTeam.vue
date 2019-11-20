@@ -43,7 +43,7 @@
       </v-flex>
       <v-flex xs12 class="pt-5" />
       <v-flex xs5 sm4 text-center ml-sm-12>
-        <v-card class="main scroll" min-height="200px" max-height="400" :img="dragImg">
+        <v-card class="main scroll" min-height="200px" max-height="400" >
           <v-divider />
           <h3 class="ibm">
             My Team
@@ -63,7 +63,7 @@
       </v-flex>
       <v-flex xs2 />
       <v-flex xs5 sm4 text-center mr-sm-12>
-        <v-card class="pb-3 main scroll" min-height="200px" max-height="400" :img="dragImg">
+        <v-card class="pb-3 main scroll" min-height="200px" max-height="400" >
           <v-divider />
           <h3 class="ibm">
             Project Team
@@ -173,7 +173,6 @@ export default {
   },
   data () {
     return {
-      dragImg: 'https://subhub01.s3.amazonaws.com/app/bg.png',
       dialogMessage: false,
       dialog: false,
       projectTeam: [],
