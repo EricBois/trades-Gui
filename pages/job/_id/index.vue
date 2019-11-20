@@ -130,7 +130,7 @@
     </v-card>
     <v-flex class="mt-5" />
     <v-card v-if="bids.length > 0" max-width="844" class="mx-auto" raised>
-      <v-flex xs12 text-right><v-chip color="blue-grey lighten-5" class="subBid mr-2 mt-2" outlined label small>Bidders: {{bidsTotal}}</v-chip><br></v-flex>
+      <v-flex xs12 text-right><v-chip color="blue-grey lighten-5" class="subBid mr-2 mt-2" outlined label small>Bids: {{bidsTotal}}</v-chip><br></v-flex>
       <v-flex xs12 text-center>
         <h2 v-if="!ownProject">
           Your Placed Bids
