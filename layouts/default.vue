@@ -120,8 +120,8 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item class="mt-5">
-          <v-btn v-if="this.$auth.loggedIn" small @click="logout">
+        <v-list-item class="mt-12 justify-center">
+          <v-btn v-if="this.$auth.loggedIn" color="amber darken-4" small @click="logout">
             Logout
           </v-btn>
         </v-list-item>
