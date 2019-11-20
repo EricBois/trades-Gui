@@ -92,6 +92,7 @@
         <v-divider class="my-1" />
         <span class="controls">Controls</span>
         <v-divider class="my-1" />
+        <v-btn color="primary" :href="job" target="_blank" small>Go to Project</v-btn>
         <v-btn small>
           Request for bids
         </v-btn>
@@ -173,6 +174,7 @@ export default {
   },
   data () {
     return {
+      job: '',
       dialogMessage: false,
       dialog: false,
       projectTeam: [],
@@ -190,12 +192,14 @@ export default {
   },
   watch: {
     selectedJob () {
+      this.job = `/job/${this.selectedJob.id}`
       this.list = this.team
       this.projectTeam = this.selectedJob.team
       this.list = this.list.filter(val => !this.projectTeam.find(({ uid }) => val.uid === uid) && val.uid !== this.$auth.user.sub)
     }
   },
   created () {
+    this.job = `/job/${this.selectedJob.id}`
     this.list = this.team
     this.projectTeam = this.selectedJob.team
     this.list = this.list.filter(val => !this.projectTeam.find(({ uid }) => val.uid === uid) && val.uid !== this.$auth.user.sub)
