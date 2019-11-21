@@ -155,7 +155,9 @@
               Delete Project
             </v-btn>
           </v-card-actions>
-          <v-flex v-if="project.user !== this.$auth.user.sub && !bidding" xs12 text-center><small class="red--text">*Bids have been disabled</small></v-flex>
+          <v-flex v-if="project.user !== this.$auth.user.sub && !bidding" xs12 text-center>
+            <small class="red--text">*Bids have been disabled</small>
+          </v-flex>
         </v-flex>
       </v-layout>
     </v-card>
@@ -220,8 +222,12 @@
           </template>
         </v-data-table>
         <div v-if="ownProject">
-          <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">Turn Bidding off</v-btn>
-          <v-btn v-else color="light-green darken-4" small @click="bidsToggle">Turn Bidding on</v-btn>
+          <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">
+            Turn Bidding off
+          </v-btn>
+          <v-btn v-else color="light-green darken-4" small @click="bidsToggle">
+            Turn Bidding on
+          </v-btn>
         </div>
       </v-flex>
     </v-card>
@@ -229,6 +235,14 @@
       <v-flex xs12 text-center>
         <h2>No Bids</h2>
       </v-flex>
+      <div v-if="ownProject">
+        <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">
+          Turn Bidding off
+        </v-btn>
+        <v-btn v-else color="light-green darken-4" small @click="bidsToggle">
+          Turn Bidding on
+        </v-btn>
+      </div>
     </v-card>
     <v-dialog v-model="dialogBid" persistent max-width="600px">
       <v-card>
@@ -534,7 +548,6 @@ export default {
     this.$axios
       .$get(`job/view/${this.$route.params.id}`)
       .then((res) => {
-        console.log(res)
         this.project = res
         this.phone = this.$auth.user['https://subhub.com/user_metadata'].phone
         if (this.project.location.url) {

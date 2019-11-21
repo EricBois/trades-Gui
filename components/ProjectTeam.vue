@@ -43,7 +43,7 @@
       </v-flex>
       <v-flex xs12 class="pt-5" />
       <v-flex xs5 sm4 text-center ml-sm-12>
-        <v-card class="main scroll" min-height="200px" max-height="400" >
+        <v-card class="main scroll" min-height="200px" max-height="400">
           <v-divider />
           <h3 class="ibm">
             My Team
@@ -63,7 +63,7 @@
       </v-flex>
       <v-flex xs2 />
       <v-flex xs5 sm4 text-center mr-sm-12>
-        <v-card class="pb-3 main scroll" min-height="200px" max-height="400" >
+        <v-card class="pb-3 main scroll" min-height="200px" max-height="400">
           <v-divider />
           <h3 class="ibm">
             Project Team
@@ -92,7 +92,9 @@
         <v-divider class="my-1" />
         <span class="controls">Controls</span>
         <v-divider class="my-1" />
-        <v-btn color="primary" :href="job" target="_blank" small>Go to Project</v-btn>
+        <v-btn color="primary" :href="job" target="_blank" small>
+          Go to Project
+        </v-btn>
         <v-btn small>
           Request for bids
         </v-btn>

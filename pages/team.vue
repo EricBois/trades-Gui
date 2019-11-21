@@ -33,7 +33,7 @@
             Advanced search
           </v-btn>
         </v-card>
-        <v-card v-if="users.length > 0" class="pb-3 scroll mb-5 mt-n4" height="320" >
+        <v-card v-if="users.length > 0" class="pb-3 scroll mb-5 mt-n4" height="320">
           <draggable class="list-group" :list="users" group="team" @change="save">
             <v-card
               v-for="user in filteredList"
@@ -48,7 +48,7 @@
             </v-card>
           </draggable>
         </v-card>
-        <v-card v-else class="mb-5" height="270" >
+        <v-card v-else class="mb-5" height="270">
           <draggable class="list-group" :list="users" group="team" @change="save" />
           No users available
         </v-card>
@@ -59,7 +59,7 @@
           <h3>My Team</h3>
           <v-divider />
         </v-card>
-        <v-card class="scroll" height="405px" >
+        <v-card class="scroll" height="405px">
           <draggable class="list-group" :list="team" group="team">
             <v-card v-for="user in team" :key="user.id" shaped class="bg ma-2" @click="dialog2(user)">
               {{ user.name }} <v-divider />

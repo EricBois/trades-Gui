@@ -74,7 +74,9 @@
             small
             label
             outlined
-          ><v-icon>mdi-city</v-icon>&nbsp;{{project.location.city}}</v-chip>
+          >
+            <v-icon>mdi-city</v-icon>&nbsp;{{ project.location.city }}
+          </v-chip>
         </v-flex>
         <v-flex xs12 text-center class="mt-2">
           <span class="mainTitle"><u>{{ project.name }}</u></span>

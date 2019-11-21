@@ -2,19 +2,31 @@
   <v-app dark>
     <v-layout align-center justify-center row fill-height>
       <v-flex v-if="error.statusCode === 404" xs12 text-center>
-        <v-card raised class="mainTitle px-8 mx-3" height="400px" >
+        <v-card raised class="mainTitle px-8 mx-3" height="400px">
           <v-layout align-center justify-center row fill-height>
-            <v-icon color="error">mdi-alert-circle-outline mdi-48px</v-icon> Oops! Page not found ...&nbsp; <v-icon color="error">mdi-emoticon-sad-outline mdi-48px</v-icon>
+            <v-icon color="error">
+              mdi-alert-circle-outline mdi-48px
+            </v-icon> Oops! Page not found ...&nbsp; <v-icon color="error">
+              mdi-emoticon-sad-outline mdi-48px
+            </v-icon>
           </v-layout>
-           <v-btn to="/" color="cyan darken-3">Go back home</v-btn>
+          <v-btn to="/" color="cyan darken-3">
+            Go back home
+          </v-btn>
         </v-card>
       </v-flex>
       <v-flex v-else xs12 text-center>
-        <v-card raised class="mainTitle px-8" height="400px" >
+        <v-card raised class="mainTitle px-8" height="400px">
           <v-layout align-center justify-center row fill-height>
-            <v-icon color="error">mdi-alert-circle-outline mdi-48px</v-icon> Oops! Something went wrong..&nbsp; <v-icon color="error">mdi-emoticon-sad-outline mdi-48px</v-icon>
+            <v-icon color="error">
+              mdi-alert-circle-outline mdi-48px
+            </v-icon> Oops! Something went wrong..&nbsp; <v-icon color="error">
+              mdi-emoticon-sad-outline mdi-48px
+            </v-icon>
           </v-layout>
-           <v-btn to="/" color="cyan darken-3">Go back home</v-btn>
+          <v-btn to="/" color="cyan darken-3">
+            Go back home
+          </v-btn>
         </v-card>
       </v-flex>
     </v-layout>
