@@ -308,7 +308,7 @@ export default {
       if (this.dialogMessage) {
         if (!this.dialogMessage.read) {
           if (!item.read.includes(this.$auth.user.sub)) {
-            this.$axios.$get(`message/read/${this.selectedMessage.id}`).then((res) => {
+            this.$axios.$get(`message/read/${this.selectedMessage.id}`).then((res) => { // set message to read
               this.$store.commit('messages/Read', true)
               this.$store.dispatch('messages/getMessages')
             })
