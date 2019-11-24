@@ -196,7 +196,7 @@
             <v-flex xs12>
               <v-card class="scroll" height="400">
                 <v-flex v-for="message in selectedMessage.messages" :key="message.id" px-3>
-                  <v-chip v-if="message.name === $auth.user.name" color="teal lighten-4" outlined class="mb-2 mr-5">
+                  <v-chip v-if="message.uid === $auth.user.sub" color="teal lighten-4" outlined class="mb-2 mr-5">
                     {{ message.name }}
                   </v-chip>
                   <v-chip v-else color="orange accent-1" outlined class="mb-2 mr-5">
@@ -274,7 +274,8 @@ export default {
       intervalMsg: null,
       newMessage: {
         name: '',
-        text: ''
+        text: '',
+        uid: ''
       },
       meetings: [],
       meetingSent: []
@@ -322,6 +323,7 @@ export default {
     },
     send () {
       if (this.newMessage.text) {
+        this.newMessage.uid = this.$auth.user.sub
         this.newMessage.name = this.$auth.user.name
         this.$axios.$post(`message/send/${this.selectedMessage.id}`, { name: this.$auth.user.name, message: this.newMessage }).then((res) => {
           this.selectedMessage = res
