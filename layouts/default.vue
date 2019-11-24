@@ -37,7 +37,7 @@
           <v-list-item-content>
             <v-list-item-title>
               <v-chip outlined>
-                Listings
+                Projects
               </v-chip>
             </v-list-item-title>
           </v-list-item-content>
@@ -188,6 +188,11 @@ export default {
     read: 'messages/Read',
     profile: 'profile/getProfile'
   }),
+  watch: {
+    profile () {
+      // TODO make tutorial
+    }
+  },
   created () {
     this.$vuetify.theme.dark = true
     if (this.$auth.loggedIn) {
