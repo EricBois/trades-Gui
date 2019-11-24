@@ -212,6 +212,7 @@
 }
 </style>
 <script>
+import { mapGetters } from 'vuex'
 import ExpandableImage from '../components/ExpandableImage'
 export default {
   components: {
@@ -259,6 +260,10 @@ export default {
       photos: []
     }
   },
+  computed: mapGetters({
+    profile: 'profile/getProfile',
+    profilePhotos: 'profile/getPhotos'
+  }),
   watch: {
     switch1 () {
       if (this.switch1) {
@@ -266,58 +271,78 @@ export default {
       } else {
         this.info.user_metadata.available = false
       }
-    }
-  },
-  mounted () {
-    this.$axios
-      .$get('account/get')
-      .then((res) => {
-        this.info.name = res.user.name
-        this.info.user_metadata = res.user.user_metadata
-        this.picture = res.user.picture
-        this.info.user_metadata.facebook = res.user.user_metadata.facebook
-        this.info.user_metadata.instagram = res.user.user_metadata.instagram
-        this.info.user_metadata.phone = res.user.user_metadata.phone
-        this.info.user_metadata.description = res.user.user_metadata.description
-        this.info.user_metadata.hourly = res.user.user_metadata.hourly
-        this.info.user_metadata.available = res.user.user_metadata.available
-        this.info.user_metadata.wcb = res.user.user_metadata.wcb
-        this.info.user_metadata.liability = res.user.user_metadata.liability
-        this.info.user_metadata.skills = res.user.user_metadata.skills
-        this.info.user_metadata.tickets = res.user.user_metadata.tickets
-        this.info.user_metadata.web = res.user.user_metadata.web
-        if (res.photos) {
-          this.photos = res.photos.photos
-        }
+    },
+    profile () {
+      if (this.profile) {
+        this.info.name = this.profile.name
+        this.picture = this.profile.picture
+        this.info.user_metadata.facebook = this.profile.user_metadata.facebook
+        this.info.user_metadata.instagram = this.profile.user_metadata.instagram
+        this.info.user_metadata.phone = this.profile.user_metadata.phone
+        this.info.user_metadata.description = this.profile.user_metadata.description
+        this.info.user_metadata.hourly = this.profile.user_metadata.hourly
+        this.info.user_metadata.address = this.profile.user_metadata.address
+        this.info.user_metadata.available = this.profile.user_metadata.available
+        this.info.user_metadata.wcb = this.profile.user_metadata.wcb
+        this.info.user_metadata.liability = this.profile.user_metadata.liability
+        this.info.user_metadata.skills = this.profile.user_metadata.skills
+        this.info.user_metadata.tickets = this.profile.user_metadata.tickets
+        this.info.user_metadata.web = this.profile.user_metadata.web
         if (this.info.user_metadata.available) {
           this.switch1 = true
         } else {
           this.switch1 = false
         }
-      })
+      }
+    },
+    profilePhotos () {
+      this.photos = this.profilePhotos
+    }
+  },
+  created () {
+    if (this.profile && this.profile.user_metadata) {
+      this.info.name = this.profile.name
+      this.picture = this.profile.picture
+      this.info.user_metadata.facebook = this.profile.user_metadata.facebook
+      this.info.user_metadata.instagram = this.profile.user_metadata.instagram
+      this.info.user_metadata.phone = this.profile.user_metadata.phone
+      this.info.user_metadata.description = this.profile.user_metadata.description
+      this.info.user_metadata.hourly = this.profile.user_metadata.hourly
+      this.info.user_metadata.available = this.profile.user_metadata.available
+      this.info.user_metadata.wcb = this.profile.user_metadata.wcb
+      this.info.user_metadata.address = this.profile.user_metadata.address
+      this.info.user_metadata.liability = this.profile.user_metadata.liability
+      this.info.user_metadata.skills = this.profile.user_metadata.skills
+      this.info.user_metadata.tickets = this.profile.user_metadata.tickets
+      this.info.user_metadata.web = this.profile.user_metadata.web
+      if (this.profilePhotos.length > 0) {
+        this.photos = this.profilePhotos
+      }
+      if (this.info.user_metadata.available) {
+        this.switch1 = true
+      } else {
+        this.switch1 = false
+      }
+    }
   },
   methods: {
     edit () {
       this.$axios.$post('account/edit', this.info).then((res) => {
-        this.info.name = res.name
-        this.info.user_metadata.phone = res.user_metadata.phone
-        this.picture = res.picture
-        this.info.user_metadata.facebook = res.user_metadata.facebook
-        this.info.user_metadata.instagram = res.user_metadata.instagram
-        this.info.user_metadata.description = res.user_metadata.description
-        this.info.user_metadata.hourly = res.user_metadata.hourly
-        this.info.user_metadata.available = res.user_metadata.available
-        this.info.user_metadata.wcb = res.user_metadata.wcb
-        this.info.user_metadata.liability = res.user_metadata.liability
-        this.info.user_metadata.skills = res.user_metadata.skills
-        this.info.user_metadata.tickets = res.user_metadata.tickets
-        this.info.user_metadata.web = res.user_metadata.web
-        if (this.info.user_metadata.available) {
-          this.switch1 = true
-        } else {
-          this.switch1 = false
-        }
-        this.$store.commit('profile/updateProfile', res.user) // for the profile store
+        this.$store.commit('profile/updateProfile', res) // for the profile store
+        this.info.name = this.profile.name
+        this.picture = this.profile.picture
+        this.info.user_metadata.facebook = this.profile.user_metadata.facebook
+        this.info.user_metadata.instagram = this.profile.user_metadata.instagram
+        this.info.user_metadata.phone = this.profile.user_metadata.phone
+        this.info.user_metadata.description = this.profile.user_metadata.description
+        this.info.user_metadata.hourly = this.profile.user_metadata.hourly
+        this.info.user_metadata.available = this.profile.user_metadata.available
+        this.info.user_metadata.wcb = this.profile.user_metadata.wcb
+        this.info.user_metadata.address = res.user_metadata.address
+        this.info.user_metadata.liability = this.profile.user_metadata.liability
+        this.info.user_metadata.skills = this.profile.user_metadata.skills
+        this.info.user_metadata.tickets = this.profile.user_metadata.tickets
+        this.info.user_metadata.web = this.profile.user_metadata.web
         this.$auth.fetchUser() // fetch tokenID
         this.$swal.fire({
           type: 'success',
@@ -338,6 +363,7 @@ export default {
         this.info.user_metadata.instagram = res.user_metadata.instagram
         this.info.user_metadata.description = res.user_metadata.description
         this.info.user_metadata.hourly = res.user_metadata.hourly
+        this.info.user_metadata.address = res.user_metadata.address
         this.info.user_metadata.available = res.user_metadata.available
         this.info.user_metadata.wcb = res.user_metadata.wcb
         this.info.user_metadata.liability = res.user_metadata.liability
