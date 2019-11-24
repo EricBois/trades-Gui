@@ -185,11 +185,13 @@ export default {
     interval: null
   }),
   computed: mapGetters({
-    read: 'messages/Read'
+    read: 'messages/Read',
+    profile: 'profile/getProfile'
   }),
   created () {
     this.$vuetify.theme.dark = true
     if (this.$auth.loggedIn) {
+      this.$store.dispatch('profile/getProfile')
       this.picture = this.$auth.user.picture
       this.$store.dispatch('messages/getMessages')
       this.interval = setInterval(

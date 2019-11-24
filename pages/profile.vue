@@ -317,7 +317,8 @@ export default {
         } else {
           this.switch1 = false
         }
-        this.$auth.fetchUser()
+        this.$store.commit('profile/updateProfile', res.user) // for the profile store
+        this.$auth.fetchUser() // fetch tokenID
         this.$swal.fire({
           type: 'success',
           title: 'Success',
