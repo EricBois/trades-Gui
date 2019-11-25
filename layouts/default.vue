@@ -172,6 +172,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
+  middleware: 'profile',
   props: {
     source: {
       type: String,
@@ -196,7 +197,7 @@ export default {
   created () {
     this.$vuetify.theme.dark = true
     if (this.$auth.loggedIn) {
-      this.$store.dispatch('profile/getProfile')
+      // this.$store.dispatch('profile/getProfile')
       this.picture = this.$auth.user.picture
       this.$store.dispatch('messages/getMessages')
       this.interval = setInterval(

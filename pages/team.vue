@@ -8,6 +8,29 @@
         <v-icon>mdi-axis-y-arrow</v-icon>
         <v-divider class="my-5" />
       </v-flex>
+      <v-flex xs12 sm6 offset-sm-3 text-center>
+        <v-text-field
+          v-model="search"
+          placeholder="Search by Name.."
+          class="purple-input center"
+          solo
+          clearable
+          dense
+        />
+        <v-btn
+          v-if="search.length > 0 || city.length > 0 || trade.length > 0"
+          small
+          rounded
+          class="mt-n12"
+          color="orange darken-4"
+          @click="clearFilters"
+        >
+          Clear filters
+        </v-btn>
+        <v-btn rounded color="teal darken-4" small class="mt-n12" @click="searchDialog = !searchDialog">
+          Advanced search
+        </v-btn>
+      </v-flex>
       <v-flex
         xs6
         sm3
@@ -21,19 +44,8 @@
           <v-divider />
           <h3>Available users</h3>
           <v-divider />
-          <v-text-field
-            v-model="search"
-            placeholder="Search Name.."
-            class="purple-input center"
-            solo
-            clearable
-            dense
-          />
-          <v-btn text small class="mt-n12" @click="searchDialog = !searchDialog">
-            Advanced search
-          </v-btn>
         </v-card>
-        <v-card v-if="users.length > 0" class="pb-3 scroll mb-5 mt-n4" height="320">
+        <v-card v-if="users.length > 0" class="pb-3 scroll mb-5" height="320">
           <draggable class="list-group" :list="users" group="team" @change="save">
             <v-card
               v-for="user in filteredList"
@@ -48,7 +60,7 @@
             </v-card>
           </draggable>
         </v-card>
-        <v-card v-else class="mb-5" height="270">
+        <v-card v-else class="mb-5" height="320">
           <draggable class="list-group" :list="users" group="team" @change="save" />
           No users available
         </v-card>
@@ -59,9 +71,9 @@
           <h3>My Team</h3>
           <v-divider />
         </v-card>
-        <v-card class="scroll" height="405px">
+        <v-card class="scroll" height="320px">
           <draggable class="list-group" :list="team" group="team">
-            <v-card v-for="user in team" :key="user.id" shaped class="bg ma-2" @click="dialog2(user)">
+            <v-card v-for="user in filteredTeam" :key="user.id" shaped class="bg ma-2" @click="dialog2(user)">
               {{ user.name }} <v-divider />
             </v-card>
           </draggable>
@@ -233,6 +245,19 @@ export default {
         filtered = filtered.filter(user => this.trade.some(el => user.metadata.skills.includes(el)))
       }
       return filtered
+    },
+    filteredTeam () {
+      let filtered = this.team
+      if (this.search.length > 0) {
+        filtered = this.team.filter(user => user.name.toLowerCase().includes(this.search))
+      }
+      if (this.city.length > 0) {
+        filtered = filtered.filter(user => this.city.includes(user.metadata.city))
+      }
+      if (this.trade.length > 0) {
+        filtered = filtered.filter(user => this.trade.some(el => user.metadata.skills.includes(el)))
+      }
+      return filtered
     }
   },
   created () {
@@ -259,6 +284,11 @@ export default {
     })
   },
   methods: {
+    clearFilters () {
+      this.city = []
+      this.search = ''
+      this.trade = []
+    },
     dialog (item) {
       this.selectedJob = item
       this.dialogTeam = !this.dialogTeam
