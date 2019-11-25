@@ -218,11 +218,17 @@ export default {
       } else {
         this.info.liability = false
       }
+    },
+    profile () {
+      if (this.profile.user_metadata && this.profile.user_metadata.phone) {
+        this.info.phone = this.profile.user_metadata.phone
+      }
+      this.info.email = this.$auth.user.email
     }
   },
   created () {
-    if (this.$auth.user['https://subhub.com/user_metadata'].phone) {
-      this.info.phone = this.$auth.user['https://subhub.com/user_metadata'].phone
+    if (this.profile.user_metadata && this.profile.user_metadata.phone) {
+      this.info.phone = this.profile.user_metadata.phone
     }
     this.info.email = this.$auth.user.email
   },
