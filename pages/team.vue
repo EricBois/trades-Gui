@@ -184,6 +184,29 @@
               chips
             />
           </v-flex>
+          <v-flex xs6>
+            <v-select
+              v-model="ticket"
+              :items="tickets"
+              label="Tickets"
+              class="pr-8"
+              multiple
+              chips
+            />
+          </v-flex>
+          <v-flex xs6>
+            <v-checkbox
+              v-model="liability"
+              label="Liability"
+              background-color="grey darken-2"
+            ></v-checkbox>
+            <v-checkbox
+              v-model="wcb"
+              label="Wcb"
+              background-color="grey darken-2"
+              class="mt-n5"
+            ></v-checkbox>
+          </v-flex>
         </v-layout>
       </v-card>
     </v-dialog>
@@ -220,9 +243,13 @@ export default {
       searchDialog: false,
       search: '',
       trades: ['Drywall', 'Taping', 'Framing', 'Labour', 'Texturing', 'Insulation'],
+      tickets: ['WHIMIS', 'First Aid', 'Scissor Lift', 'Fall Arrest'],
+      ticket: [],
       cities: [],
       city: [],
       trade: [],
+      wcb: false,
+      liability: false,
       dialogProfile: false,
       dialogTeam: false,
       team: [],
@@ -241,8 +268,17 @@ export default {
       if (this.city.length > 0) {
         filtered = filtered.filter(user => this.city.includes(user.metadata.city))
       }
+      if (this.wcb) {
+        filtered = filtered.filter(user => user.metadata.wcb && user.metadata.wcb.length > 0)
+      }
+      if (this.liability) {
+        filtered = filtered.filter(user => user.metadata.liability && user.metadata.liability.length > 0)
+      }
       if (this.trade.length > 0) {
-        filtered = filtered.filter(user => this.trade.some(el => user.metadata.skills.includes(el)))
+        filtered = filtered.filter(user => this.trade.some(el => user.metadata.skills && user.metadata.skills.includes(el)))
+      }
+      if (this.ticket.length > 0) {
+        filtered = filtered.filter(user => this.ticket.some(el => user.metadata.tickets && user.metadata.tickets.includes(el)))
       }
       return filtered
     },
@@ -254,8 +290,17 @@ export default {
       if (this.city.length > 0) {
         filtered = filtered.filter(user => this.city.includes(user.metadata.city))
       }
+      if (this.wcb) {
+        filtered = filtered.filter(user => user.metadata.wcb && user.metadata.wcb.length > 0)
+      }
+      if (this.liability) {
+        filtered = filtered.filter(user => user.metadata.liability && user.metadata.liability.length > 0)
+      }
       if (this.trade.length > 0) {
-        filtered = filtered.filter(user => this.trade.some(el => user.metadata.skills.includes(el)))
+        filtered = filtered.filter(user => this.trade.some(el => user.metadata.skills && user.metadata.skills.includes(el)))
+      }
+      if (this.ticket.length > 0) {
+        filtered = filtered.filter(user => this.ticket.some(el => user.metadata.tickets && user.metadata.tickets.includes(el)))
       }
       return filtered
     }
