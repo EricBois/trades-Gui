@@ -18,7 +18,7 @@
           dense
         />
         <v-btn
-          v-if="search.length > 0 || city.length > 0 || trade.length > 0"
+          v-if="search.length > 0 || city.length > 0 || trade.length > 0 || wcb || liability || ticket.length > 0"
           small
           rounded
           class="mt-n12"
@@ -335,6 +335,9 @@ export default {
       this.city = []
       this.search = ''
       this.trade = []
+      this.ticket = []
+      this.wcb = false
+      this.liability = false
     },
     dialog (item) {
       this.selectedJob = item
