@@ -20,7 +20,8 @@ export default {
   },
   env: {
     trades: "Drywall, Taping, Framing, Labour, Texturing, Insulation",
-    tickets: "WHIMIS, First Aid, Scissor Lift, Fall Arrest"
+    tickets: "WHIMIS, First Aid, Scissor Lift, Fall Arrest",
+    welcome: "Welcome to subHub !"
   },
   /*
   ** Customize the progress-bar color
