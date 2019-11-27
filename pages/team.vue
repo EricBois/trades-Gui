@@ -199,13 +199,13 @@
               v-model="liability"
               label="Liability"
               background-color="grey darken-2"
-            ></v-checkbox>
+            />
             <v-checkbox
               v-model="wcb"
               label="Wcb"
               background-color="grey darken-2"
               class="mt-n5"
-            ></v-checkbox>
+            />
           </v-flex>
         </v-layout>
       </v-card>
@@ -321,8 +321,6 @@ export default {
             }
           })
         })
-    }).catch(() => {
-      this.$router.push('/')
     })
     this.$axios.$get('job/private').then((res) => {
       res.forEach((obj, i) => {

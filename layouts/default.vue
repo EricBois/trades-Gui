@@ -130,7 +130,7 @@
 
     <v-app-bar app clipped-left dense collapse elevate-on-scroll>
       <v-app-bar-nav-icon v-if="this.$auth.loggedIn" @click.stop="drawer = !drawer" />
-      <v-btn color="green" v-if="!this.$auth.loggedIn" @click="login" small label>
+      <v-btn v-if="!this.$auth.loggedIn" color="green" small label @click="login">
         <v-icon>mdi-login</v-icon> Login
       </v-btn>
     </v-app-bar>
