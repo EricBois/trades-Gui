@@ -18,6 +18,10 @@ export default {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400i,700i&display=swap' }
     ]
   },
+  env: {
+    trades: "Drywall, Taping, Framing, Labour, Texturing, Insulation",
+    tickets: "WHIMIS, First Aid, Scissor Lift, Fall Arrest"
+  },
   /*
   ** Customize the progress-bar color
   */

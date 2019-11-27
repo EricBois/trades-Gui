@@ -144,8 +144,8 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      itemSkills: ['Drywall', 'Taping', 'Framing', 'Labour', 'Texturing', 'Insulation'],
-      itemTickets: ['WHIMIS', 'First Aid', 'Scissor Lift', 'Fall Arrest'],
+      itemSkills: [],
+      itemTickets: [],
       nameRule: [
         v => !!v || 'The name is required',
         v => (v || '').length <= 40 || 'Name should be 40 characters or less '
@@ -227,6 +227,8 @@ export default {
     }
   },
   created () {
+    this.itemSkills = process.env.trades.split(',')
+    this.itemTickets = process.env.tickets.split(',')
     if (this.profile.user_metadata && this.profile.user_metadata.phone) {
       this.info.phone = this.profile.user_metadata.phone
     }

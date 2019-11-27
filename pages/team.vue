@@ -242,8 +242,8 @@ export default {
     return {
       searchDialog: false,
       search: '',
-      trades: ['Drywall', 'Taping', 'Framing', 'Labour', 'Texturing', 'Insulation'],
-      tickets: ['WHIMIS', 'First Aid', 'Scissor Lift', 'Fall Arrest'],
+      trades: [],
+      tickets: [],
       ticket: [],
       cities: [],
       city: [],
@@ -306,6 +306,8 @@ export default {
     }
   },
   created () {
+    this.trades = process.env.trades.split(',')
+    this.tickets = process.env.tickets.split(',')
     this.$axios.$get('team/fetch').then((res) => {
       this.team = res.team
       this.$axios

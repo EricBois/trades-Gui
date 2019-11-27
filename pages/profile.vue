@@ -224,15 +224,8 @@ export default {
       hasImage: false,
       photo: null,
       filename: '',
-      itemSkills: [
-        'Drywall',
-        'Taping',
-        'Framing',
-        'Labour',
-        'Texturing',
-        'Insulation'
-      ],
-      itemTickets: ['WHIMIS', 'First Aid', 'Scissor Lift', 'Fall Arrest'],
+      itemSkills: [],
+      itemTickets: [],
       info: {
         name: '',
         user_metadata: {
@@ -300,6 +293,8 @@ export default {
     }
   },
   created () {
+    this.itemSkills = process.env.trades.split(',')
+    this.itemTickets = process.env.tickets.split(',')
     if (this.profile && this.profile.user_metadata) {
       this.info.name = this.profile.name
       this.picture = this.profile.picture
