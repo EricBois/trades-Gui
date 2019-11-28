@@ -133,9 +133,22 @@
                 </v-flex>
                 <v-card-actions>
                   <v-btn @click="dialogPhoto = !dialogPhoto">
+                    <v-icon>mdi-image</v-icon>&nbsp;
                     Photos
                   </v-btn>
-                  <v-btn class="mx-3 font-weight-light" color="primary" @click="edit">
+                  <v-btn
+                    v-if="profile.user_metadata && !profile.user_metadata.profileDone"
+                    class="mx-3 ibm"
+                    color="green"
+                    elevation="24"
+                    x-large
+                    @click="edit"
+                  >
+                    <v-icon>mdi-content-save-outline</v-icon>&nbsp;
+                    Save Profile
+                  </v-btn>
+                  <v-btn v-else class="mx-3 ibm" color="primary" @click="edit">
+                    <v-icon>mdi-content-save-outline</v-icon>&nbsp;
                     Update Profile
                   </v-btn>
                 </v-card-actions>
@@ -204,6 +217,9 @@
   border-bottom: 2px solid grey;
   background-color: transparent;
 }
+.ibm {
+  font-family: 'IBM Plex Sans', sans-serif;
+}
 #fileInput {
   display: none;
 }
@@ -245,7 +261,8 @@ export default {
           country: '',
           city: '',
           province: '',
-          web: ''
+          web: '',
+          profileDone: true
         }
       },
       picture: null,
@@ -293,6 +310,18 @@ export default {
     }
   },
   created () {
+    // Welcome profile
+    if (this.profile.user_metadata && !this.profile.user_metadata.welcomeProfile) {
+      this.$swal.fire({
+        position: 'bottom-end',
+        type: 'info',
+        text: process.env.welcomeProfile,
+        showConfirmButton: true,
+        width: '22rem'
+      }).then(() => {
+        return this.$axios.$post('account/edit', { user_metadata: { welcomeProfile: true } })
+      })
+    }
     this.itemSkills = process.env.trades.split(',')
     this.itemTickets = process.env.tickets.split(',')
     if (this.profile && this.profile.user_metadata) {

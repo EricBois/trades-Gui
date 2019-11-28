@@ -21,7 +21,8 @@ export default {
   env: {
     trades: "Drywall, Taping, Framing, Labour, Texturing, Insulation",
     tickets: "WHIMIS, First Aid, Scissor Lift, Fall Arrest",
-    welcome: "Few things to get started, please fill in your profile as much as possible."
+    welcome: "Few things to get started, Let's start with building your profile!",
+    welcomeProfile: "Make sure to fill in your name and add as much information as possible for the prospect clients / bidders to see"
   },
   /*
   ** Customize the progress-bar color
