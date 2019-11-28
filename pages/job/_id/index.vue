@@ -478,6 +478,7 @@
 }
 </style>
 <script>
+import { mapGetters } from 'vuex'
 import BidsApproval from '../../../components/BidsApproval'
 import ExpandableImage from '../../../components/ExpandableImage'
 import photoUpload from '../../../components/PhotoUpload.vue'
@@ -543,7 +544,21 @@ export default {
       bidsTotal: 0
     }
   },
+  computed: mapGetters({
+    profile: 'profile/getProfile'
+  }),
   mounted () {
+    if (this.profile && !this.profile.user_metadata.welcomeJobs) {
+      this.$swal.fire({
+        position: 'bottom-end',
+        type: 'info',
+        text: process.env.welcomeJob,
+        showConfirmButton: true,
+        width: '22rem'
+      }).then(() => {
+        return this.$axios.$post('account/edit', { user_metadata: { welcomeJobs: true } })
+      })
+    }
     // get the job with the id
     this.$axios
       .$get(`job/view/${this.$route.params.id}`)
