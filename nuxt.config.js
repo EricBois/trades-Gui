@@ -21,7 +21,7 @@ export default {
   env: {
     trades: "Drywall, Taping, Framing, Labour, Texturing, Insulation",
     tickets: "WHIMIS, First Aid, Scissor Lift, Fall Arrest",
-    welcome: "Welcome to subHub !"
+    welcome: "Few things to get started, please fill in your profile as much as possible."
   },
   /*
   ** Customize the progress-bar color

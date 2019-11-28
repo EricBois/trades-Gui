@@ -192,9 +192,15 @@ export default {
   watch: {
     profile () {
       if (!this.profile.user_metadata.welcome) {
-        this.$swal.fire(process.env.welcome).then(
-          this.$axios.$post('account/edit', { user_metadata: { welcome: true } }) // Welcome message done
-        )
+        this.$swal.fire({
+          title: 'Welcome to SubHub',
+          text: process.env.welcome,
+          confirmButtonText: 'Lets Go'
+        }).then(() => {
+          return this.$axios.$post('account/edit', { user_metadata: { welcome: true } }).then(() => {
+            this.$router.push('profile')
+          })
+        })
       }
     }
   },
