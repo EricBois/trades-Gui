@@ -545,10 +545,10 @@ export default {
     }
   },
   computed: mapGetters({
-    profile: 'profile/getProfile'
+    myProfile: 'profile/getProfile'
   }),
   mounted () {
-    if (this.profile && !this.profile.user_metadata.welcomeJobs) {
+    if (this.myProfile.user_metadata && !this.myProfile.user_metadata.welcomeJob) {
       this.$swal.fire({
         position: 'bottom-end',
         type: 'info',
@@ -556,7 +556,7 @@ export default {
         showConfirmButton: true,
         width: '22rem'
       }).then(() => {
-        return this.$axios.$post('account/edit', { user_metadata: { welcomeJobs: true } })
+        return this.$axios.$post('account/edit', { user_metadata: { welcomeJob: true } })
       })
     }
     // get the job with the id
