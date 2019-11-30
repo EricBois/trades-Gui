@@ -24,7 +24,7 @@ export default {
     welcome: "Few things to get started, Let's start with building your profile!",
     welcomeProfile: "Make sure to fill in your name and add as much information as possible for the prospect clients / bidders to see",
     welcomeJob: "Here you can place a bid, direct message or lookup the contractor and get all available details about the project ( photos, files ) ...",
-    welcomeJobs: "Here's all the available public projects awaiting bidding, click on them for more info and to place a bid."
+    welcomeJobs: "Here's all the available public, private and your own posted project listings awaiting bidding, click on them for more info and to place a bid."
   },
   /*
   ** Customize the progress-bar color
