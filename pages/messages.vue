@@ -1,187 +1,207 @@
 <template>
   <v-container>
-    <v-flex v-if="newMessages.length >= 1" xs12 sm8 offset-sm-2>
-      <v-list subheader dense color="grey darken-3">
-        <v-subheader class="justify-center sub">
-          <b>New Messages</b>
-        </v-subheader>
-        <v-flex
-          v-for="item in newMessages"
-          :key="item._id"
-        >
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon color="red" @click="deleteMessage(item.id)">
-                mdi-close-box
-              </v-icon>
-            </v-list-item-icon>
-            <v-list-item-content @click="dialog(item)">
-              <v-list-item-title>
-                <v-chip color="green lighten-1" outlined>
-                  {{ item.project_name }}
-                </v-chip>
-              </v-list-item-title>
-              <v-list-item-subtitle class="pl-3">
-                <small><b> From: <u>{{ item.messages[item.messages.length - 1].name }} </u></b></small></br>
-                <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{ item.messages[item.messages.length - 1].text }}</small>
-                <small v-else>{{ item.messages[item.messages.length - 1].text.substring(0,60)+"..." }}</small>
-              </v-list-item-subtitle>
-            </v-list-item-content>
+    <v-tabs
+      v-model="tab"
+      background-color="transparent"
+      centered
+      show-arrows
+      color="white"
+    >
+      <v-tab>My Messages</v-tab>
+      <v-tab>My Meetings</v-tab>
+    </v-tabs>
+    <v-tabs-items v-model="tab" class="mt-8">
+      <v-tab-item>
+        <v-card flat color="#303030">
+          <v-flex v-if="newMessages.length >= 1" xs12 sm8 offset-sm-2>
+            <v-list subheader dense color="grey darken-3">
+              <v-subheader class="justify-center sub">
+                <b>New Messages</b>
+              </v-subheader>
+              <v-flex
+                v-for="item in newMessages"
+                :key="item._id"
+              >
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon color="red" @click="deleteMessage(item.id)">
+                      mdi-close-box
+                    </v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content @click="dialog(item)">
+                    <v-list-item-title>
+                      <v-chip color="green lighten-1" outlined>
+                        {{ item.project_name }}
+                      </v-chip>
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="pl-3">
+                      <small><b> From: <u>{{ item.messages[item.messages.length - 1].name }} </u></b></small></br>
+                      <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{ item.messages[item.messages.length - 1].text }}</small>
+                      <small v-else>{{ item.messages[item.messages.length - 1].text.substring(0,60)+"..." }}</small>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
 
-            <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
-              <v-icon color="blue">
-                chat_bubble
-              </v-icon>
-            </v-list-item-icon>
-          </v-list-item>
-          <v-divider class="my-1" />
-        </v-flex>
-      </v-list>
-      <v-divider />
-    </v-flex>
-    <v-flex v-if="readMessages.length >= 1" xs12 sm8 offset-sm-2>
-      <v-list subheader dense color="grey darken-3">
-        <v-subheader class="justify-center sub">
-          <b>Read & Sent </b>
-        </v-subheader>
-        <v-flex
-          v-for="item in readMessages"
-          :key="item._id"
-        >
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon color="red" @click="deleteMessage(item.id)">
-                mdi-close-box
-              </v-icon>
-            </v-list-item-icon>
-            <v-list-item-content @click="dialog(item)">
-              <v-list-item-title>
-                <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined>
-                  {{ item.project_name }}
-                </v-chip>
-                <v-chip v-else color="grey blue lighten-1" outlined>
-                  {{ item.project_name }}
-                </v-chip>
-              </v-list-item-title>
-              <v-list-item-subtitle class="pl-3">
-                <small><b>From: <u>{{ item.messages[item.messages.length - 1].name }} </u></b></small></br>
-                <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{ item.messages[item.messages.length - 1].text }}</small>
-                <small v-else>{{ item.messages[item.messages.length - 1].text.substring(0,60)+"..." }}</small>
-              </v-list-item-subtitle>
-            </v-list-item-content>
+                  <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
+                    <v-icon color="blue">
+                      chat_bubble
+                    </v-icon>
+                  </v-list-item-icon>
+                </v-list-item>
+                <v-divider class="my-1" />
+              </v-flex>
+            </v-list>
+            <v-divider />
+          </v-flex>
+          <v-flex v-if="readMessages.length >= 1" xs12 sm8 offset-sm-2>
+            <v-list subheader dense color="grey darken-3">
+              <v-subheader class="justify-center sub">
+                <b>Read & Sent </b>
+              </v-subheader>
+              <v-flex
+                v-for="item in readMessages"
+                :key="item._id"
+              >
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon color="red" @click="deleteMessage(item.id)">
+                      mdi-close-box
+                    </v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content @click="dialog(item)">
+                    <v-list-item-title>
+                      <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined>
+                        {{ item.project_name }}
+                      </v-chip>
+                      <v-chip v-else color="grey blue lighten-1" outlined>
+                        {{ item.project_name }}
+                      </v-chip>
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="pl-3">
+                      <small><b>From: <u>{{ item.messages[item.messages.length - 1].name }} </u></b></small></br>
+                      <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{ item.messages[item.messages.length - 1].text }}</small>
+                      <small v-else>{{ item.messages[item.messages.length - 1].text.substring(0,60)+"..." }}</small>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
 
-            <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
-              <v-icon color="blue">
-                chat_bubble
-              </v-icon>
-            </v-list-item-icon>
-          </v-list-item>
-          <v-divider class="my-1" />
-        </v-flex>
-      </v-list>
-    </v-flex>
-    <v-flex v-if="readMessages.length < 1" xs12 sm8 offset-sm-2 text-center>
-      <v-list subheader dense color="grey darken-3">
-        <v-subheader class="justify-center">
-          <b>No Messages Yet!</b>&nbsp;<v-icon small>
-            mdi-emoticon-sad-outline
-          </v-icon>
-        </v-subheader>
-      </v-list>
-    </v-flex>
-    <!-- meetings -->
-    <v-flex xs12 sm8 offset-sm-2>
-      <v-divider class="my-5" />
-      <v-list subheader dense color="blue-grey darken-3">
-        <v-subheader v-if="meetings.length >= 1" class="justify-center sub">
-          <b>Meeting Invites</b>
-        </v-subheader>
-        <v-subheader v-else class="justify-center sub">
-          <b>No Meeting Yet!</b>&nbsp;<v-icon small>
-            mdi-emoticon-sad-outline
-          </v-icon>
-        </v-subheader>
-        <v-flex
-          v-for="item in meetings"
-          :key="item.id"
-        >
-          <v-list-item>
-            <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
-              <v-icon>
-                mdi-account-multiple
-              </v-icon>
-            </v-list-item-icon>
-            <v-list-item-content @click="meetingPicker(item)">
-              <v-list-item-title>
-                <v-chip color="grey blue lighten-1" outlined>
-                  {{ item.projectName }}
-                </v-chip>
-                  &nbsp;
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed by <br v-if="$vuetify.breakpoint.xsOnly"><v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
-                <small v-if="!item.confirm.status && !item.change.status"><i class="awaiting">New Meeting request from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip small outlined>{{ item.contractor }}</v-chip></i></small>
-                <small v-if="item.change.status && $auth.user.sub !== item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Please review the changes</i></small>
-                <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Awaiting Confirmation</i></small>
-                <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
-              </v-list-item-subtitle>
-            </v-list-item-content>
-            <v-list-item-icon>
-              <v-icon v-if="item.confirm.status && !item.change.status" color="green">
-                mdi-calendar-check
-              </v-icon>
-              <v-icon v-else-if="item.change.status" color="orange">
-                mdi-calendar-edit
-              </v-icon>
-              <v-icon v-else color="red">
-                mdi-calendar-alert
-              </v-icon>
-            </v-list-item-icon>
-          </v-list-item>
-          <v-divider class="my-1" />
-        </v-flex>
-        <v-subheader v-if="meetingSent.length >= 1" class="justify-center sub">
-          <b>Meeting Request</b>
-        </v-subheader>
-        <v-flex
-          v-for="item in meetingSent"
-          :key="item.id"
-        >
-          <v-list-item>
-            <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
-              <v-icon>
-                mdi-account-multiple
-              </v-icon>
-            </v-list-item-icon>
-            <v-list-item-content @click="meetingPicker(item)">
-              <v-list-item-title>
-                <v-chip color="grey blue lighten-1" outlined>
-                  {{ item.projectName }}
-                </v-chip>
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed by <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
-                <small v-if="item.change.status && $auth.user.sub !== item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Please review the changes</i></small>
-                <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Awaiting Confirmation</i></small>
-                <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
-              </v-list-item-subtitle>
-            </v-list-item-content>
-            <v-list-item-icon>
-              <v-icon v-if="item.confirm.status && !item.change.status" color="green">
-                mdi-calendar-check
-              </v-icon>
-              <v-icon v-else-if="item.change.status" color="orange">
-                mdi-calendar-edit
-              </v-icon>
-              <v-icon v-else color="red">
-                mdi-calendar-alert
-              </v-icon>
-            </v-list-item-icon>
-          </v-list-item>
-          <v-divider class="my-1" />
-        </v-flex>
-      </v-list>
-    </v-flex>
+                  <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
+                    <v-icon color="blue">
+                      chat_bubble
+                    </v-icon>
+                  </v-list-item-icon>
+                </v-list-item>
+                <v-divider class="my-1" />
+              </v-flex>
+            </v-list>
+          </v-flex>
+          <v-flex v-if="readMessages.length < 1" xs12 sm8 offset-sm-2 text-center>
+            <v-list subheader dense color="grey darken-3">
+              <v-subheader class="justify-center">
+                <b>No Messages Yet!</b>&nbsp;<v-icon small>
+                  mdi-emoticon-sad-outline
+                </v-icon>
+              </v-subheader>
+            </v-list>
+          </v-flex>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat color="#303030">
+          <!-- meetings -->
+          <v-flex xs12 sm8 offset-sm-2>
+            <v-divider class="my-5" />
+            <v-list subheader dense color="blue-grey darken-3">
+              <v-subheader v-if="meetings.length >= 1" class="justify-center sub">
+                <b>Meeting Invites</b>
+              </v-subheader>
+              <v-subheader v-else class="justify-center sub">
+                <b>No Meeting Yet!</b>&nbsp;<v-icon small>
+                  mdi-emoticon-sad-outline
+                </v-icon>
+              </v-subheader>
+              <v-flex
+                v-for="item in meetings"
+                :key="item.id"
+              >
+                <v-list-item>
+                  <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
+                    <v-icon>
+                      mdi-account-multiple
+                    </v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content @click="meetingPicker(item)">
+                    <v-list-item-title>
+                      <v-chip color="grey blue lighten-1" outlined>
+                        {{ item.projectName }}
+                      </v-chip>
+                        &nbsp;
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed by <br v-if="$vuetify.breakpoint.xsOnly"><v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+                      <small v-if="!item.confirm.status && !item.change.status"><i class="awaiting">New Meeting request from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip small outlined>{{ item.contractor }}</v-chip></i></small>
+                      <small v-if="item.change.status && $auth.user.sub !== item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Please review the changes</i></small>
+                      <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Awaiting Confirmation</i></small>
+                      <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                  <v-list-item-icon>
+                    <v-icon v-if="item.confirm.status && !item.change.status" color="green">
+                      mdi-calendar-check
+                    </v-icon>
+                    <v-icon v-else-if="item.change.status" color="orange">
+                      mdi-calendar-edit
+                    </v-icon>
+                    <v-icon v-else color="red">
+                      mdi-calendar-alert
+                    </v-icon>
+                  </v-list-item-icon>
+                </v-list-item>
+                <v-divider class="my-1" />
+              </v-flex>
+              <v-subheader v-if="meetingSent.length >= 1" class="justify-center sub">
+                <b>Meeting Request</b>
+              </v-subheader>
+              <v-flex
+                v-for="item in meetingSent"
+                :key="item.id"
+              >
+                <v-list-item>
+                  <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
+                    <v-icon>
+                      mdi-account-multiple
+                    </v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content @click="meetingPicker(item)">
+                    <v-list-item-title>
+                      <v-chip color="grey blue lighten-1" outlined>
+                        {{ item.projectName }}
+                      </v-chip>
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed by <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+                      <small v-if="item.change.status && $auth.user.sub !== item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Please review the changes</i></small>
+                      <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Awaiting Confirmation</i></small>
+                      <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                  <v-list-item-icon>
+                    <v-icon v-if="item.confirm.status && !item.change.status" color="green">
+                      mdi-calendar-check
+                    </v-icon>
+                    <v-icon v-else-if="item.change.status" color="orange">
+                      mdi-calendar-edit
+                    </v-icon>
+                    <v-icon v-else color="red">
+                      mdi-calendar-alert
+                    </v-icon>
+                  </v-list-item-icon>
+                </v-list-item>
+                <v-divider class="my-1" />
+              </v-flex>
+            </v-list>
+          </v-flex>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
     <v-dialog v-model="dialogMessage" persistent max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
@@ -278,7 +298,8 @@ export default {
         uid: ''
       },
       meetings: [],
-      meetingSent: []
+      meetingSent: [],
+      tab: null
     }
   },
   computed: mapGetters({

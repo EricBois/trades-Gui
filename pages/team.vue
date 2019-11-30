@@ -8,7 +8,7 @@
       color="white"
     >
       <v-tab>Your Team</v-tab>
-      <v-tab>Private Projects</v-tab>
+      <v-tab>Team Projects</v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab" class="mt-8">
       <v-tab-item>
