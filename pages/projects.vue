@@ -65,6 +65,17 @@ export default {
             }
           })
         })
+        if (this.profile.user_metadata && !this.profile.user_metadata.privateJobs) {
+          this.$swal.fire({
+            position: 'bottom-end',
+            type: 'info',
+            text: process.env.privateJobs,
+            showConfirmButton: true,
+            width: '22rem'
+          }).then(() => {
+            return this.$axios.$post('account/edit', { user_metadata: { privateJobs: true } })
+          })
+        }
       }
     }
   },
