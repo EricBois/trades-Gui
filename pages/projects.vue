@@ -44,23 +44,31 @@ export default {
   computed: mapGetters({
     profile: 'profile/getProfile'
   }),
+  watch: {
+    tab () {
+      if (this.tab === 2 && this.jobs.length <= 0) {
+        this.$axios.$get('job/get/user').then((res) => {
+          res.forEach((obj, i) => {
+            this.jobs.push(obj)
+            if (obj.location.city.length > 0) {
+              this.cities.push(obj.location.city)
+            }
+          })
+        })
+      }
+      if (this.tab === 1 && this.jobsPrivate.length <= 0) {
+        this.$axios.$get('job/get/private').then((res) => {
+          res.forEach((obj, i) => {
+            this.jobsPrivate.push(obj)
+            if (obj.location.city.length > 0) {
+              this.citiesPrivate.push(obj.location.city)
+            }
+          })
+        })
+      }
+    }
+  },
   mounted () {
-    this.$axios.$get('job/get/user').then((res) => {
-      res.forEach((obj, i) => {
-        this.jobs.push(obj)
-        if (obj.location.city.length > 0) {
-          this.cities.push(obj.location.city)
-        }
-      })
-    })
-    this.$axios.$get('job/get/private').then((res) => {
-      res.forEach((obj, i) => {
-        this.jobsPrivate.push(obj)
-        if (obj.location.city.length > 0) {
-          this.citiesPrivate.push(obj.location.city)
-        }
-      })
-    })
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeJobs) {
       this.$swal.fire({
         position: 'bottom-end',
