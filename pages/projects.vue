@@ -5,20 +5,27 @@
       background-color="transparent"
       centered
       show-arrows
+      color="white"
     >
       <v-tab>Public Listing</v-tab>
       <v-tab>Private Listing</v-tab>
       <v-tab>Your Listing</v-tab>
     </v-tabs>
-    <v-tabs-items v-model="tab" class="mt-5">
+    <v-tabs-items v-model="tab" class="mt-8">
       <v-tab-item>
-        <Jobs class="pa-n12" :jobs="jobsPublic" :cities="citiesPublic" />
+        <v-card flat color="#303030">
+          <Jobs :jobs="jobsPublic" :cities="citiesPublic" />
+        </v-card>
       </v-tab-item>
       <v-tab-item>
-        <Jobs :jobs="jobsPrivate" :cities="citiesPrivate" />
+        <v-card flat color="#303030">
+          <Jobs :jobs="jobsPrivate" :cities="citiesPrivate" />
+        </v-card>
       </v-tab-item>
       <v-tab-item>
-        <Jobs :jobs="jobs" :cities="cities" />
+        <v-card flat color="#303030">
+          <Jobs :jobs="jobs" :cities="cities" />
+        </v-card>
       </v-tab-item>
     </v-tabs-items>
   </v-container>
