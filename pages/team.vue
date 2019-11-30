@@ -1,134 +1,154 @@
 <template>
   <v-container>
-    <v-layout row wrap>
-      <v-flex xs12 text-center>
-        <v-divider class="mb-5" />
-        <v-icon>mdi-axis-x-arrow</v-icon>
-        <span class="mainTitle">Your Team</span>
-        <v-icon>mdi-axis-y-arrow</v-icon>
-        <v-divider class="my-5" />
-      </v-flex>
-      <v-flex xs12 sm6 offset-sm-3 text-center>
-        <v-text-field
-          v-model="search"
-          placeholder="Search by Name.."
-          class="purple-input center"
-          solo
-          clearable
-          dense
-        />
-        <v-btn
-          v-if="search.length > 0 || city.length > 0 || trade.length > 0 || wcb || liability || ticket.length > 0"
-          small
-          rounded
-          class="mt-n12"
-          color="orange darken-4"
-          @click="clearFilters"
-        >
-          Clear filters
-        </v-btn>
-        <v-btn rounded color="teal darken-4" small class="mt-n12" @click="searchDialog = !searchDialog">
-          Advanced search
-        </v-btn>
-      </v-flex>
-      <v-flex
-        xs6
-        sm3
-        offset-sm-2
-        offset-xl-3
-        xl2
-        class="pr-3"
-        text-center
-      >
-        <v-card color="blue-grey darken-1">
-          <v-divider />
-          <h3>Available users</h3>
-          <v-divider />
-        </v-card>
-        <v-card v-if="users.length > 0" class="pb-3 scroll mb-5" height="320">
-          <draggable class="list-group" :list="users" group="team" @change="save">
-            <v-card
-              v-for="user in filteredList"
-              :key="user.id"
-              flat
-              outlined
-              shaped
-              class="bg ma-2"
-              @click="dialog2(user)"
-            >
-              {{ user.name }} <v-divider />
-            </v-card>
-          </draggable>
-        </v-card>
-        <v-card v-else class="mb-5" height="320">
-          <draggable class="list-group" :list="users" group="team" @change="save" />
-          No users available
-        </v-card>
-      </v-flex>
-      <v-flex xs6 sm3 offset-sm-2 xl2 text-center>
-        <v-card color="blue-grey darken-1">
-          <v-divider />
-          <h3>My Team</h3>
-          <v-divider />
-        </v-card>
-        <v-card class="scroll" height="320px">
-          <draggable class="list-group" :list="team" group="team">
-            <v-card v-for="user in filteredTeam" :key="user.id" shaped class="bg ma-2" @click="dialog2(user)">
-              {{ user.name }} <v-divider />
-            </v-card>
-          </draggable>
-        </v-card>
-      </v-flex>
-    </v-layout>
-    <v-layout v-if="jobs.length > 0" row wrap>
-      <v-flex xs12 text-center>
-        <v-divider class="my-5" />
-        <v-icon>mdi-axis-x-arrow</v-icon>
-        <span class="mainTitle">Your Projects</span>
-        <v-icon>mdi-axis-y-arrow</v-icon>
-        <v-divider class="my-5" />
-      </v-flex>
-      <v-flex
-        v-for="project in jobs"
-        :key="project.id"
-        xs6
-        sm6
-        md3
-        xl2
-        class="pr-3"
-        @click="dialog(project)"
-      >
-        <v-card
-          raised
-          ripple
-          min-height="200"
-        >
+    <v-tabs
+      v-model="tab"
+      background-color="transparent"
+      centered
+      show-arrows
+      color="white"
+    >
+      <v-tab>Your Team</v-tab>
+      <v-tab>Private Projects</v-tab>
+    </v-tabs>
+    <v-tabs-items v-model="tab" class="mt-8">
+      <v-tab-item>
+        <v-card flat color="#303030">
           <v-layout row wrap>
-            <v-flex xs12 text-center class="pa-3">
-              <v-chip
-                color="teal lighten-4"
-                label
-                class="mx-2"
-                large
-                outlined
-              >
-                <span class="ibm">{{ project.name }}</span>
-              </v-chip>
+            <v-flex xs12 text-center>
+              <v-divider class="mb-5" />
+              <v-icon>mdi-axis-x-arrow</v-icon>
+              <span class="mainTitle">Your Team</span>
+              <v-icon>mdi-axis-y-arrow</v-icon>
+              <v-divider class="my-5" />
             </v-flex>
-            <v-flex xs12 class="pa-3" text-center>
-              <v-card raised>
-                <span class="caption">Team</span>
+            <v-flex xs12 sm6 offset-sm-3 text-center>
+              <v-text-field
+                v-model="search"
+                placeholder="Search by Name.."
+                class="purple-input center"
+                solo
+                clearable
+                dense
+              />
+              <v-btn
+                v-if="search.length > 0 || city.length > 0 || trade.length > 0 || wcb || liability || ticket.length > 0"
+                small
+                rounded
+                class="mt-n12"
+                color="orange darken-4"
+                @click="clearFilters"
+              >
+                Clear filters
+              </v-btn>
+              <v-btn rounded color="teal darken-4" small class="mt-n12" @click="searchDialog = !searchDialog">
+                Advanced search
+              </v-btn>
+            </v-flex>
+            <v-flex
+              xs6
+              sm3
+              offset-sm-2
+              offset-xl-3
+              xl2
+              class="pr-3"
+              text-center
+            >
+              <v-card color="blue-grey darken-1">
                 <v-divider />
-                <v-card v-for="user in project.team" :key="user.id" class=" bg text-center ma-2">
-                  {{ user.name }} <v-divider />
-                </v-card>
+                <h3>Available users</h3>
+                <v-divider />
+              </v-card>
+              <v-card v-if="users.length > 0" class="pb-3 scroll mb-5" height="320">
+                <draggable class="list-group" :list="users" group="team" @change="save">
+                  <v-card
+                    v-for="user in filteredList"
+                    :key="user.id"
+                    flat
+                    outlined
+                    shaped
+                    class="bg ma-2"
+                    @click="dialog2(user)"
+                  >
+                    {{ user.name }} <v-divider />
+                  </v-card>
+                </draggable>
+              </v-card>
+              <v-card v-else class="mb-5" height="320">
+                <draggable class="list-group" :list="users" group="team" @change="save" />
+                No users available
+              </v-card>
+            </v-flex>
+            <v-flex xs6 sm3 offset-sm-2 xl2 text-center>
+              <v-card color="blue-grey darken-1">
+                <v-divider />
+                <h3>My Team</h3>
+                <v-divider />
+              </v-card>
+              <v-card class="scroll" height="320px">
+                <draggable class="list-group" :list="team" group="team">
+                  <v-card v-for="user in filteredTeam" :key="user.id" shaped class="bg ma-2" @click="dialog2(user)">
+                    {{ user.name }} <v-divider />
+                  </v-card>
+                </draggable>
               </v-card>
             </v-flex>
           </v-layout>
-          <v-flex mb-3 />
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat color="#303030">
+          <v-layout v-if="jobs.length > 0" row wrap>
+            <v-flex xs12 text-center>
+              <v-divider class="my-5" />
+              <v-icon>mdi-axis-x-arrow</v-icon>
+              <span class="mainTitle">Your Projects</span>
+              <v-icon>mdi-axis-y-arrow</v-icon>
+              <v-divider class="my-5" />
+            </v-flex>
+            <v-flex
+              v-for="project in jobs"
+              :key="project.id"
+              xs6
+              sm6
+              md3
+              xl2
+              class="pr-3"
+              @click="dialog(project)"
+            >
+              <v-card
+                raised
+                ripple
+                min-height="200"
+              >
+                <v-layout row wrap>
+                  <v-flex xs12 text-center class="pa-3">
+                    <v-chip
+                      color="teal lighten-4"
+                      label
+                      class="mx-2"
+                      large
+                      outlined
+                    >
+                      <span class="ibm">{{ project.name }}</span>
+                    </v-chip>
+                  </v-flex>
+                  <v-flex xs12 class="pa-3" text-center>
+                    <v-card raised>
+                      <span class="caption">Team</span>
+                      <v-divider />
+                      <v-card v-for="user in project.team" :key="user.id" class=" bg text-center ma-2">
+                        {{ user.name }} <v-divider />
+                      </v-card>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+                <v-flex mb-3 />
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
     <v-dialog v-model="dialogTeam" persistent max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
@@ -229,6 +249,7 @@
 }
 </style>
 <script>
+import { mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
 import ProjectTeam from '../components/ProjectTeam.vue'
 import PublicProfile from '../components/PublicProfile.vue'
@@ -256,10 +277,14 @@ export default {
       users: [],
       currentUser: '',
       jobs: [],
-      selectedJob: {}
+      selectedJob: {},
+      tab: null
     }
   },
   computed: {
+    ...mapGetters({
+      profile: 'profile/getProfile'
+    }),
     filteredList () {
       let filtered = this.users
       if (this.search.length > 0) {
@@ -327,6 +352,17 @@ export default {
         this.jobs.push(obj)
       })
     })
+    if (this.profile.user_metadata && !this.profile.user_metadata.welcomeTeam) {
+      this.$swal.fire({
+        position: 'bottom-end',
+        type: 'info',
+        text: process.env.welcomeTeam,
+        showConfirmButton: true,
+        width: '22rem'
+      }).then(() => {
+        return this.$axios.$post('account/edit', { user_metadata: { welcomeTeam: true } })
+      })
+    }
   },
   methods: {
     clearFilters () {

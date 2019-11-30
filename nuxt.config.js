@@ -25,7 +25,8 @@ export default {
     welcomeProfile: "Make sure to fill in your name and add as much information as possible for the prospect clients / bidders to see",
     welcomeJob: "Here you can place a bid, direct message or lookup the contractor and get all available details about the project ( photos, files ) ...",
     welcomeJobs: "Here's all the available public, private and your own posted project listings awaiting bidding, click on them for more info and to place a bid.",
-    privateJobs: "The projects in this section are invite to bid on private projects or your own private posting."
+    privateJobs: "The projects in this section are invite to bid on private projects or your own private posting.",
+    welcomeTeam: "Here you can manage your team and assign members to your private projects for bidding."
   },
   /*
   ** Customize the progress-bar color
