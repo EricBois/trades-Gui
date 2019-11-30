@@ -99,7 +99,7 @@
         <v-card flat color="#303030">
           <v-layout v-if="jobs.length > 0" row wrap>
             <v-flex xs12 text-center>
-              <v-divider class="my-5" />
+              <v-divider class="mb-5" />
               <v-icon>mdi-axis-x-arrow</v-icon>
               <span class="mainTitle">Your Projects</span>
               <v-icon>mdi-axis-y-arrow</v-icon>
