@@ -13,7 +13,9 @@
 
         <v-list-item-title>
           {{ this.$auth.user.name }}
-          <v-chip color="green" small class="ml-4" />
+          <v-icon color="green" class="ml-1">
+            mdi-tune
+          </v-icon>
         </v-list-item-title>
       </v-list-item>
       <v-divider />
@@ -30,55 +32,22 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item to="/jobs">
-          <v-list-item-action>
-            <v-icon>mdi-post</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              <v-chip outlined>
-                Projects
-              </v-chip>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item to="/team">
-          <v-list-item-action>
-            <v-icon>mdi-account-group</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              <v-chip outlined>
-                Team
-              </v-chip>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-divider class="my-5" />
+
         <v-list-group prepend-icon="mdi-alpha-p-box" no-action>
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title>
                 <v-chip outlined>
-                  My Projects
+                  Projects
                 </v-chip>
               </v-list-item-title>
             </v-list-item-content>
           </template>
-          <v-list-item to="/user/projects">
+          <v-list-item to="/projects">
             <v-list-item-content>
               <v-list-item-title>
                 <v-chip outlined>
-                  <v-icon>mdi-view-list</v-icon>&nbsp; Your Listing
-                </v-chip>
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item to="/user/private">
-            <v-list-item-content>
-              <v-list-item-title>
-                <v-chip outlined>
-                  <v-icon>mdi-book-lock</v-icon>&nbsp; Private Listing
+                  <v-icon>mdi-post</v-icon>&nbsp;Project Listings
                 </v-chip>
               </v-list-item-title>
             </v-list-item-content>
@@ -87,12 +56,25 @@
             <v-list-item-content>
               <v-list-item-title>
                 <v-chip outlined>
-                  <v-icon>mdi-post</v-icon>&nbsp; Post Project
+                  <v-icon>mdi-plus-box-outline</v-icon>&nbsp; Create Project
                 </v-chip>
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+        <v-divider class="my-5" />
+        <v-list-item to="/team">
+          <v-list-item-action>
+            <v-icon>mdi-account-group</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              <v-chip outlined>
+                My Team
+              </v-chip>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item to="/messages">
           <v-list-item-action>
             <v-icon>mdi-message</v-icon>
@@ -103,19 +85,7 @@
                 <v-icon>mdi-star</v-icon>&nbsp;New Message(s)
               </v-chip>
               <v-chip v-else outlined>
-                Messages
-              </v-chip>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item to="/profile">
-          <v-list-item-action>
-            <v-icon>mdi-settings</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              <v-chip outlined>
-                Settings
+                My Messages
               </v-chip>
             </v-list-item-title>
           </v-list-item-content>
@@ -146,7 +116,7 @@
       shift
       app
     >
-      <v-btn to="/jobs">
+      <v-btn to="/projects">
         <span>Listings</span>
         <v-icon>mdi-post</v-icon>
       </v-btn>
