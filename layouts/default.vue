@@ -191,7 +191,7 @@ export default {
   }),
   watch: {
     profile () {
-      if (!this.profile.user_metadata.welcome) {
+      if (this.profile.user_metadata && !this.profile.user_metadata.welcome) {
         this.$swal.fire({
           title: 'Welcome to SubHub',
           text: process.env.welcome,
