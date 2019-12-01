@@ -82,7 +82,9 @@
           <v-list-item-content>
             <v-list-item-title>
               <v-chip v-if="!read" color="green">
-                <v-icon>mdi-star</v-icon>&nbsp;New Message(s)
+                New Message(s)&nbsp; <v-icon small>
+                  mdi-star
+                </v-icon>
               </v-chip>
               <v-chip v-else outlined>
                 My Messages
@@ -177,6 +179,10 @@ export default {
   created () {
     this.$vuetify.theme.dark = true
     if (this.$auth.loggedIn) {
+      this.$OneSignal.push(() => {
+        this.$OneSignal.showSlidedownPrompt()
+        this.$OneSignal.setExternalUserId(this.$auth.user.sub)
+      })
       // this.$store.dispatch('profile/getProfile')
       this.picture = this.$auth.user.picture
       this.$store.dispatch('messages/getMessages')

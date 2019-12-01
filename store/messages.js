@@ -52,16 +52,16 @@ export const actions = {
             if (!message.read.includes(this.$auth.user.sub)) {
               commit('Read', false)
               commit('addNewMessage', message)
-              if (!message.notified.includes(this.$auth.user.sub)) {
-                this.$OneSignal.push(() => {
-                  // this.$OneSignal.log.setLevel('trace')
-                  this.$OneSignal.sendSelfNotification(
-                    'New message!',
-                    'You have a new message'
-                  )
-                })
-                this.$axios.$get(`message/notified/${message.id}`) // set to notified
-              }
+              // if (!message.notified.includes(this.$auth.user.sub)) {
+              //   this.$OneSignal.push(() => {
+              //     // this.$OneSignal.log.setLevel('trace')
+              //     this.$OneSignal.sendSelfNotification(
+              //       'New message!',
+              //       'You have a new message'
+              //     )
+              //   })
+              //   this.$axios.$get(`message/notified/${message.id}`) // set to notified
+              // }
             } else {
               commit('addReadMessage', message)
             }
