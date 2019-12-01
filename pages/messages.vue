@@ -303,6 +303,7 @@ export default {
     }
   },
   computed: mapGetters({
+    profile: 'profile/getProfile',
     read: 'messages/Read',
     newMessages: 'messages/getNewMessages',
     readMessages: 'messages/getReadMessages'
@@ -317,6 +318,17 @@ export default {
         }
       })
     })
+    if (this.profile.user_metadata && !this.profile.user_metadata.welcomeMsg) {
+      this.$swal.fire({
+        position: 'bottom-end',
+        type: 'info',
+        text: process.env.welcomeMsg,
+        showConfirmButton: true,
+        width: '22rem'
+      }).then(() => {
+        return this.$axios.$post('account/edit', { user_metadata: { welcomeMsg: true } })
+      })
+    }
   },
   methods: {
     deleteMessage (id) {

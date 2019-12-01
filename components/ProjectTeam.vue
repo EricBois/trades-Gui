@@ -159,6 +159,7 @@
 }
 </style>
 <script>
+import { mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
 export default {
   components: {
@@ -192,6 +193,9 @@ export default {
       }
     }
   },
+  computed: mapGetters({
+    profile: 'profile/getProfile'
+  }),
   watch: {
     selectedJob () {
       this.job = `/job/${this.selectedJob.id}`
@@ -205,6 +209,17 @@ export default {
     this.list = this.team
     this.projectTeam = this.selectedJob.team
     this.list = this.list.filter(val => !this.projectTeam.find(({ uid }) => val.uid === uid) && val.uid !== this.$auth.user.sub)
+    if (this.profile.user_metadata && !this.profile.user_metadata.projectTeam) {
+      this.$swal.fire({
+        position: 'bottom-end',
+        type: 'info',
+        text: process.env.projectTeam,
+        showConfirmButton: true,
+        width: '22rem'
+      }).then(() => {
+        return this.$axios.$post('account/edit', { user_metadata: { projectTeam: true } })
+      })
+    }
   },
   methods: {
     reset () {

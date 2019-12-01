@@ -26,7 +26,9 @@ export default {
     welcomeJob: "Here you can place a bid, direct message or lookup the contractor and get all available details about the project ( photos, files ) ...",
     welcomeJobs: "Here's all the available public, private and your own posted project listings awaiting bidding, click on them for more info and to place a bid.",
     privateJobs: "The projects in this section are invite to bid on private projects or your own private posting.",
-    welcomeTeam: "Here you can manage your team and assign members to your private projects for bidding."
+    welcomeTeam: "Here you can manage your team and assign members to your private projects for bidding.",
+    welcomeMsg: "Here's all your messages, if you swipe to the left or click on My Meeting on the top, you will be in the meeting section where you get all the invites and see the status of your sent request.",
+    projectTeam: "Drag and Drop members from team in the project team tab and request bids, a notification will be sent to them. You can also send a group message to them, see the blue msg button on project team tab."
   },
   /*
   ** Customize the progress-bar color
