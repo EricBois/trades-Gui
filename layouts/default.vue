@@ -181,7 +181,9 @@ export default {
     if (this.$auth.loggedIn) {
       this.$OneSignal.push(() => {
         this.$OneSignal.showSlidedownPrompt()
-        // this.$OneSignal.setExternalUserId(this.$auth.user.sub)
+        // TODO implement better way for this
+        this.$OneSignal.setExternalUserId(this.$auth.user.sub)
+        // this.$OneSignal.sendTags({ key: this.$auth.user.sub })
       })
       // this.$store.dispatch('profile/getProfile')
       this.picture = this.$auth.user.picture
