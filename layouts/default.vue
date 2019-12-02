@@ -183,6 +183,7 @@ export default {
         this.$OneSignal.showSlidedownPrompt()
         // TODO implement better way for this
         this.$OneSignal.setExternalUserId(this.$auth.user.sub)
+        // this.$OneSignal.setEmail(this.$auth.user.email)
         // this.$OneSignal.sendTags({ key: this.$auth.user.sub })
       })
       // this.$store.dispatch('profile/getProfile')
