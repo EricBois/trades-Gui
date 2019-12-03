@@ -1,166 +1,215 @@
 <template>
   <v-container fluid>
-    <v-card elevation="22" max-width="844" class="mx-auto">
-      <v-card-text>
-        <v-row class="py-4 pl-4">
-          <v-form
-            ref="form"
-            lazy-validation
-          >
-            <v-flex class="mb-4">
-              <v-avatar v-if="picture" size="164" class="mb-3">
-                <v-img :src="picture" />
-              </v-avatar>
-              <image-uploader
-                :preview="false"
-                :max-width="700"
-                :class-name="['fileinput', { 'fileinput--loaded': hasImage }]"
-                capture="environment"
-                :debug="1"
-                do-not-resize="gif"
-                :auto-rotate="true"
-                output-format="blob"
-                @input="setImageLogo"
+    <v-tabs
+      v-model="tab"
+      background-color="transparent"
+      centered
+      show-arrows
+      color="white"
+    >
+      <v-tab>My Profile</v-tab>
+      <v-tab>Settings</v-tab>
+    </v-tabs>
+    <v-tabs-items v-model="tab" class="mt-8">
+      <v-tab-item>
+        <v-card flat color="#303030">
+          <v-card elevation="22" max-width="844" class="mx-auto">
+            <v-card-text>
+              <v-row class="py-4 pl-4">
+                <v-form
+                  ref="form"
+                  lazy-validation
+                >
+                  <v-flex class="mb-4">
+                    <v-avatar v-if="picture" size="164" class="mb-3">
+                      <v-img :src="picture" />
+                    </v-avatar>
+                    <image-uploader
+                      :preview="false"
+                      :max-width="700"
+                      :class-name="['fileinput', { 'fileinput--loaded': hasImage }]"
+                      capture="environment"
+                      :debug="1"
+                      do-not-resize="gif"
+                      :auto-rotate="true"
+                      output-format="blob"
+                      @input="setImageLogo"
+                    >
+                      <label slot="upload-label" for="fileInput">
+                        <v-icon>mdi-48px mdi-camera-plus-outline</v-icon>
+                        <span class="upload-caption">"Edit / Upload"</span>
+                      </label>
+                    </image-uploader>
+                    <v-btn v-if="photo" color="green" loading text>
+                      <template v-slot:loader>
+                        <v-icon>mdi-36px mdi-spin mdi-loading</v-icon>
+                        <span>Loading...</span>
+                      </template>
+                    </v-btn>
+                  </v-flex>
+                  <v-row class="py-4 pl-4">
+                    <v-layout wrap>
+                      <v-flex xs10 md5 pr-12>
+                        <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Name" />
+                      </v-flex>
+                      <v-flex xs10 md5>
+                        <v-text-field
+                          v-model="info.user_metadata.phone"
+                          class="purple-input"
+                          label="Phone #"
+                          prepend-inner-icon="mdi-phone"
+                        />
+                      </v-flex>
+                      <v-flex xs10 pb-5>
+                        <label for="gmap">Address</label>
+                        <gmap-autocomplete
+                          class="gmap v-input__slot v-text-field"
+                          :value="info.user_metadata.address"
+                          :select-first-on-enter="true"
+                          placeholder="Project Location"
+                          @place_changed="setPlace"
+                        />
+                      </v-flex>
+                      <v-flex xs10 pb-5>
+                        <v-text-field
+                          v-model="info.user_metadata.web"
+                          class="purple-input"
+                          label="Website"
+                          prepend-inner-icon="mdi-web"
+                        />
+                      </v-flex>
+                      <v-flex xs10 md5 pb-5 pr-12>
+                        <v-text-field
+                          v-model="info.user_metadata.facebook"
+                          class="purple-input"
+                          label="Facebook"
+                          prepend-inner-icon="mdi-facebook-box"
+                        />
+                      </v-flex>
+                      <v-flex xs10 md5 pb-5>
+                        <v-text-field
+                          v-model="info.user_metadata.instagram"
+                          class="purple-input"
+                          label="Instagram"
+                          prepend-inner-icon="mdi-instagram"
+                        />
+                      </v-flex>
+                      <v-flex xs10>
+                        <v-textarea
+                          v-model="info.user_metadata.description"
+                          label="Description"
+                          solo
+                          outlined
+                          class="purple-input"
+                        />
+                      </v-flex>
+                      <v-flex xs10 md5 pr-12>
+                        <v-text-field
+                          v-model="info.user_metadata.wcb"
+                          class="purple-input"
+                          label="Wcb #"
+                        />
+                      </v-flex>
+                      <v-flex xs10 md5 pr-12>
+                        <v-text-field
+                          v-model="info.user_metadata.liability"
+                          class="purple-input"
+                          label="Liability Insurance"
+                        />
+                      </v-flex>
+                      <v-flex xs10 md5 pt-5>
+                        <v-select
+                          v-model="info.user_metadata.skills"
+                          :items="itemSkills"
+                          chips
+                          label="Skills"
+                          multiple
+                        />
+                      </v-flex>
+                      <v-flex xs10 md5 pl-md-5 pt-5>
+                        <v-select
+                          v-model="info.user_metadata.tickets"
+                          :items="itemTickets"
+                          chips
+                          label="Tickets"
+                          multiple
+                        />
+                      </v-flex>
+                      <v-flex xs10 md3 pr-12 pt-4>
+                        <v-text-field
+                          v-model="info.user_metadata.hourly"
+                          label="Hourly"
+                          class="purple-input"
+                          prefix="$"
+                          type="number"
+                        />
+                      </v-flex>
+                      <v-flex xs12 md2 pt-4>
+                        <v-switch v-model="switch1" label="Available" />
+                      </v-flex>
+                      <v-card-actions>
+                        <v-btn @click="dialogPhoto = !dialogPhoto">
+                          <v-icon>mdi-image</v-icon>&nbsp;
+                          Photos
+                        </v-btn>
+                        <v-btn
+                          v-if="profile.user_metadata && !profile.user_metadata.profileDone"
+                          class="mx-3 ibm"
+                          color="green"
+                          elevation="24"
+                          x-large
+                          @click="edit"
+                        >
+                          <v-icon>mdi-content-save-outline</v-icon>&nbsp;
+                          Save Profile
+                        </v-btn>
+                        <v-btn v-else class="mx-3 ibm" color="primary" @click="edit">
+                          <v-icon>mdi-content-save-outline</v-icon>&nbsp;
+                          Update Profile
+                        </v-btn>
+                      </v-card-actions>
+                    </v-layout>
+                  </v-row>
+                </v-form>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat color="#303030">
+          <v-card elevation="22" max-width="844" class="mx-auto">
+            <v-card-text>
+              <v-form
+                ref="form"
+                lazy-validation
               >
-                <label slot="upload-label" for="fileInput">
-                  <v-icon>mdi-48px mdi-camera-plus-outline</v-icon>
-                  <span class="upload-caption">"Edit / Upload"</span>
-                </label>
-              </image-uploader>
-              <v-btn v-if="photo" color="green" loading text>
-                <template v-slot:loader>
-                  <v-icon>mdi-36px mdi-spin mdi-loading</v-icon>
-                  <span>Loading...</span>
-                </template>
-              </v-btn>
-            </v-flex>
-            <v-row class="py-4 pl-4">
-              <v-layout wrap>
-                <v-flex xs10 md5 pr-12>
-                  <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Name" />
-                </v-flex>
-                <v-flex xs10 md5>
-                  <v-text-field
-                    v-model="info.user_metadata.phone"
-                    class="purple-input"
-                    label="Phone #"
-                    prepend-inner-icon="mdi-phone"
-                  />
-                </v-flex>
-                <v-flex xs10 pb-5>
-                  <label for="gmap">Address</label>
-                  <gmap-autocomplete
-                    class="gmap v-input__slot v-text-field"
-                    :value="info.user_metadata.address"
-                    :select-first-on-enter="true"
-                    placeholder="Project Location"
-                    @place_changed="setPlace"
-                  />
-                </v-flex>
-                <v-flex xs10 pb-5>
-                  <v-text-field
-                    v-model="info.user_metadata.web"
-                    class="purple-input"
-                    label="Website"
-                    prepend-inner-icon="mdi-web"
-                  />
-                </v-flex>
-                <v-flex xs10 md5 pb-5 pr-12>
-                  <v-text-field
-                    v-model="info.user_metadata.facebook"
-                    class="purple-input"
-                    label="Facebook"
-                    prepend-inner-icon="mdi-facebook-box"
-                  />
-                </v-flex>
-                <v-flex xs10 md5 pb-5>
-                  <v-text-field
-                    v-model="info.user_metadata.instagram"
-                    class="purple-input"
-                    label="Instagram"
-                    prepend-inner-icon="mdi-instagram"
-                  />
-                </v-flex>
-                <v-flex xs10>
-                  <v-textarea
-                    v-model="info.user_metadata.description"
-                    label="Description"
-                    solo
-                    outlined
-                    class="purple-input"
-                  />
-                </v-flex>
-                <v-flex xs10 md5 pr-12>
-                  <v-text-field
-                    v-model="info.user_metadata.wcb"
-                    class="purple-input"
-                    label="Wcb #"
-                  />
-                </v-flex>
-                <v-flex xs10 md5 pr-12>
-                  <v-text-field
-                    v-model="info.user_metadata.liability"
-                    class="purple-input"
-                    label="Liability Insurance"
-                  />
-                </v-flex>
-                <v-flex xs10 md5 pt-5>
-                  <v-select
-                    v-model="info.user_metadata.skills"
-                    :items="itemSkills"
-                    chips
-                    label="Skills"
-                    multiple
-                  />
-                </v-flex>
-                <v-flex xs10 md5 pl-md-5 pt-5>
-                  <v-select
-                    v-model="info.user_metadata.tickets"
-                    :items="itemTickets"
-                    chips
-                    label="Tickets"
-                    multiple
-                  />
-                </v-flex>
-                <v-flex xs10 md3 pr-12 pt-4>
-                  <v-text-field
-                    v-model="info.user_metadata.hourly"
-                    label="Hourly"
-                    class="purple-input"
-                    prefix="$"
-                    type="number"
-                  />
-                </v-flex>
-                <v-flex xs12 md2 pt-4>
-                  <v-switch v-model="switch1" label="Available" />
-                </v-flex>
-                <v-card-actions>
-                  <v-btn @click="dialogPhoto = !dialogPhoto">
-                    <v-icon>mdi-image</v-icon>&nbsp;
-                    Photos
-                  </v-btn>
-                  <v-btn
-                    v-if="profile.user_metadata && !profile.user_metadata.profileDone"
-                    class="mx-3 ibm"
-                    color="green"
-                    elevation="24"
-                    x-large
-                    @click="edit"
-                  >
-                    <v-icon>mdi-content-save-outline</v-icon>&nbsp;
-                    Save Profile
-                  </v-btn>
-                  <v-btn v-else class="mx-3 ibm" color="primary" @click="edit">
-                    <v-icon>mdi-content-save-outline</v-icon>&nbsp;
-                    Update Profile
-                  </v-btn>
-                </v-card-actions>
-              </v-layout>
-            </v-row>
-          </v-form>
-        </v-row>
-      </v-card-text>
-    </v-card>
+                <v-row class="py-4 pl-4">
+                  <v-layout wrap>
+                    <v-card elevation="15" text-center class="ma-10 pa-10">
+                      <v-flex xs12>
+                        <h2>Notifications</h2>
+                        <v-switch v-model="email" label="Email" />
+                        <v-switch v-model="sms" label="Sms" />
+                      </v-flex>
+                      <v-flex xs12 text-center>
+                        <v-btn
+                          class="ibm"
+                          @click="edit"
+                        >
+                          <v-icon>mdi-content-save-outline</v-icon>&nbsp;
+                          Save
+                        </v-btn>
+                      </v-flex>
+                    </v-card>
+                  </v-layout>
+                </v-row>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
     <v-dialog v-model="dialogPhoto" transition="dialog-bottom-transition" max-width="900">
       <v-card class="px-3">
         <v-toolbar dark color="primary">
@@ -265,7 +314,9 @@ export default {
           city: '',
           province: '',
           web: '',
-          profileDone: true
+          profileDone: true,
+          smsNotification: false,
+          emailNotification: true
         }
       },
       picture: null,
@@ -274,7 +325,10 @@ export default {
       nameRule: [
         v => !!v || 'The name is required',
         v => (v || '').length <= 40 || 'Name should be 40 characters or less '
-      ]
+      ],
+      tab: null,
+      email: true,
+      sms: false
     }
   },
   computed: mapGetters({
@@ -282,6 +336,24 @@ export default {
     profilePhotos: 'profile/getPhotos'
   }),
   watch: {
+    email () {
+      if (this.email) {
+        this.info.user_metadata.emailNotification = true
+        // this.edit()
+      } else {
+        this.info.user_metadata.emailNotification = false
+        // this.edit()
+      }
+    },
+    sms () {
+      if (this.sms) {
+        this.info.user_metadata.smsNotification = true
+        // this.edit()
+      } else {
+        this.info.user_metadata.smsNotification = false
+        // this.edit()
+      }
+    },
     switch1 () {
       if (this.switch1) {
         this.info.user_metadata.available = true
@@ -300,6 +372,8 @@ export default {
         this.info.user_metadata.hourly = this.profile.user_metadata.hourly
         this.info.user_metadata.address = this.profile.user_metadata.address
         this.info.user_metadata.available = this.profile.user_metadata.available
+        this.info.user_metadata.smsNotification = this.profile.user_metadata.smsNotification
+        this.info.user_metadata.emailNotification = this.profile.user_metadata.emailNotification
         this.info.user_metadata.wcb = this.profile.user_metadata.wcb
         this.info.user_metadata.liability = this.profile.user_metadata.liability
         this.info.user_metadata.skills = this.profile.user_metadata.skills
@@ -307,8 +381,12 @@ export default {
         this.info.user_metadata.web = this.profile.user_metadata.web
         if (this.info.user_metadata.available) {
           this.switch1 = true
-        } else {
-          this.switch1 = false
+        }
+        if (this.info.user_metadata.smsNotification) {
+          this.sms = true
+        }
+        if (this.info.user_metadata.emailNotification) {
+          this.email = true
         }
       }
     },
@@ -341,6 +419,8 @@ export default {
       this.info.user_metadata.description = this.profile.user_metadata.description
       this.info.user_metadata.hourly = this.profile.user_metadata.hourly
       this.info.user_metadata.available = this.profile.user_metadata.available
+      this.info.user_metadata.smsNotification = this.profile.user_metadata.smsNotification
+      this.info.user_metadata.emailNotification = this.profile.user_metadata.emailNotification
       this.info.user_metadata.wcb = this.profile.user_metadata.wcb
       this.info.user_metadata.address = this.profile.user_metadata.address
       this.info.user_metadata.liability = this.profile.user_metadata.liability
@@ -349,6 +429,12 @@ export default {
       this.info.user_metadata.web = this.profile.user_metadata.web
       if (this.profilePhotos.length > 0) {
         this.photos = this.profilePhotos
+      }
+      if (this.info.user_metadata.smsNotification) {
+        this.sms = true
+      }
+      if (this.info.user_metadata.emailNotification) {
+        this.email = true
       }
       if (this.info.user_metadata.available) {
         this.switch1 = true
