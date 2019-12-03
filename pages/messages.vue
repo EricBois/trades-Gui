@@ -291,7 +291,6 @@ export default {
       userColor: 'amber lighten-4',
       selectedMessage: {},
       dialogMessage: false,
-      intervalMsg: null,
       newMessage: {
         name: '',
         text: '',
@@ -299,7 +298,8 @@ export default {
       },
       meetings: [],
       meetingSent: [],
-      tab: null
+      tab: null,
+      interval: null
     }
   },
   computed: mapGetters({
@@ -309,15 +309,15 @@ export default {
     readMessages: 'messages/getReadMessages'
   }),
   created () {
-    this.$axios.$get(`bid/getMeetings`).then((res) => {
-      res.forEach((element) => {
-        if (element.meeting.host === this.$auth.user.sub) {
-          this.meetingSent.push(element)
-        } else {
-          this.meetings.push(element)
-        }
-      })
-    })
+    this.getMeetings()
+    this.$store.dispatch('messages/getMessages')
+    this.interval = setInterval(
+      function () {
+        this.$store.dispatch('messages/getMessages')
+        this.getMeetings()
+      }.bind(this),
+      150000
+    )
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeMsg) {
       this.$swal.fire({
         position: 'bottom-end',
@@ -331,6 +331,17 @@ export default {
     }
   },
   methods: {
+    getMeetings () {
+      this.$axios.$get(`bid/getMeetings`).then((res) => {
+        res.forEach((element) => {
+          if (element.meeting.host === this.$auth.user.sub) {
+            this.meetingSent.push(element)
+          } else {
+            this.meetings.push(element)
+          }
+        })
+      })
+    },
     deleteMessage (id) {
       this.$axios.$post(`message/delete/${id}`).then((res) => {
         this.$store.dispatch('messages/getMessages')

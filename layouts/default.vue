@@ -20,6 +20,28 @@
       </v-list-item>
       <v-divider />
       <v-list dense>
+        <div class="text-center my-5 ibm" v-if="messages.length > 0 || meetings.length > 0">
+          <v-menu>
+            <template v-slot:activator="{ on: menu }">
+              <v-btn
+                color="green darken-3"
+                dark
+                v-on="{ ...menu }"
+              ><v-icon>mdi-bell</v-icon>&nbsp; New Notifications !</v-btn>
+            </template>
+            <v-list>
+              <v-list-item v-if="messages.length > 0" to="messages">
+                <v-list-item-title>You have {{messages.length}} new messages</v-list-item-title>
+              </v-list-item>
+              <v-list-item v-if="meetings.length > 0">
+                <v-list-item-title>New activity in the meeting section</v-list-item-title>
+              </v-list-item>
+              <v-list-item>
+                <v-btn @click="clearNotifications" small>Clear</v-btn>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
         <v-list-item to="/">
           <v-list-item-action>
             <v-icon>mdi-view-dashboard</v-icon>
@@ -81,12 +103,7 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              <v-chip v-if="!read" color="green">
-                New Message(s)&nbsp; <v-icon small>
-                  mdi-star
-                </v-icon>
-              </v-chip>
-              <v-chip v-else outlined>
+              <v-chip outlined>
                 My Messages
               </v-chip>
             </v-list-item-title>
@@ -155,7 +172,10 @@ export default {
     drawer: true,
     picture: '',
     mini: false,
-    interval: null
+    interval: null,
+    notifications: [],
+    messages: [],
+    meetings: []
   }),
   computed: mapGetters({
     read: 'messages/Read',
@@ -179,6 +199,7 @@ export default {
   created () {
     this.$vuetify.theme.dark = true
     if (this.$auth.loggedIn) {
+      this.getNotifications()
       this.$OneSignal.push(() => {
         this.$OneSignal.showSlidedownPrompt()
         // TODO implement better way for this
@@ -186,12 +207,10 @@ export default {
         // this.$OneSignal.setEmail(this.$auth.user.email)
         // this.$OneSignal.sendTags({ key: this.$auth.user.sub })
       })
-      // this.$store.dispatch('profile/getProfile')
       this.picture = this.$auth.user.picture
-      this.$store.dispatch('messages/getMessages')
       this.interval = setInterval(
         function () {
-          this.$store.dispatch('messages/getMessages')
+          this.getNotifications()
         }.bind(this),
         150000
       )
@@ -209,6 +228,19 @@ export default {
       window.location.replace(
         'https://dev-2upadx1s.auth0.com/v2/logout?returnTo=http%3A%2F%2Flocalhost:3333/'
       )
+    },
+    getNotifications () {
+      this.$axios.$get('notification/fetch').then((res) => {
+        this.notifications = res
+        this.messages = res.filter(notification => notification.activity === 'Message')
+        this.meetings = res.filter(notification => notification.activity === 'Meeting')
+      })
+    },
+    clearNotifications () {
+      this.$axios.$delete('notification/delete').then((res) => {
+        this.messages = []
+        this.meetings = []
+      })
     }
   }
 }
