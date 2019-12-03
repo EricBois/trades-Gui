@@ -93,7 +93,7 @@
               </v-flex>
             </v-list>
           </v-flex>
-          <v-flex v-if="readMessages.length < 1" xs12 sm8 offset-sm-2 text-center>
+          <v-flex v-if="readMessages.length < 1 && newMessage.length < 1" xs12 sm8 offset-sm-2 text-center>
             <v-list subheader dense color="grey darken-3">
               <v-subheader class="justify-center">
                 <b>No Messages Yet!</b>&nbsp;<v-icon small>
