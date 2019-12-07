@@ -629,7 +629,7 @@ export default {
               .$post(`job/delete/${id}`)
               .then((res) => {
                 //  direct to jobs page
-                this.$router.push(`../../user/projects`)
+                this.$router.push(`../projects`)
                 this.$swal.fire('Success!', 'Deleted Successfully.', 'success')
               })
               .catch((error) => {
