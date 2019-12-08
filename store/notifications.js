@@ -1,23 +1,16 @@
 const getDefaultState = () => { // Default state
   return {
-    messages: [],
-    meetings: []
+    notifications: []
   }
 }
 
 export const state = () => ({
-  messages: [],
-  meetings: []
+  notifications: []
 })
 
 export const mutations = {
   addNewNotification (state, message) {
-    if (message.activity === 'Message') {
-      state.messages.push(message)
-    }
-    if (message.activity === 'Meeting') {
-      state.meetings.push(message)
-    }
+    state.notifications.push(message)
   },
   resetState (state) { // reset the state
     Object.assign(state, getDefaultState())
@@ -25,11 +18,8 @@ export const mutations = {
 }
 
 export const getters = {
-  getNotifMessages (state) {
-    return state.messages
-  },
-  getNotifMeetings (state) {
-    return state.meetings
+  getNotifications (state) {
+    return state.notifications
   }
 }
 

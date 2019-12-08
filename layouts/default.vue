@@ -100,7 +100,11 @@
       <v-btn v-if="!this.$auth.loggedIn" color="green" small label @click="login">
         <v-icon>mdi-login</v-icon> Login
       </v-btn>
-      <v-menu v-if="this.$auth.loggedIn" class="mx-1">
+      <v-menu
+        v-if="this.$auth.loggedIn"
+        transition="scale-transition"
+        class="mx-1"
+        offset-x>
             <template v-slot:activator="{ on: menu }">
               <v-btn
                 :color="notificationColor"
@@ -113,7 +117,7 @@
                 left
               >
                 <template v-slot:badge>
-                  <span v-if="messages.concat(meetings).length > 0">{{messages.concat(meetings).length}}</span>
+                  <span v-if="notifications.length > 0">{{notifications.length}}</span>
                 </template>
                 <v-icon small>mdi-bell</v-icon>
               </v-badge>
@@ -121,16 +125,42 @@
             </template>
             <v-list>
               <v-list-item v-if="messages.length > 0" to="messages">
-                <v-list-item-title>You have {{messages.length}} new messages</v-list-item-title>
+                <v-list-item-action>
+                  <v-badge
+                    color="primary"
+                  >
+                    <template v-slot:badge>
+                      <span v-if="messages.length > 0">{{messages.length}}</span>
+                    </template>
+                    <v-icon>mdi-message</v-icon>
+                  </v-badge>
+                </v-list-item-action>
+                <v-list-item-title>New message(s)</v-list-item-title>
               </v-list-item>
               <v-list-item v-else>
-                <v-list-item-title>No new messages</v-list-item-title>
+                <v-list-item-action>
+                  <v-icon>mdi-message</v-icon>
+                </v-list-item-action>
+                <v-list-item-title>No new message(s)</v-list-item-title>
               </v-list-item>
-              <v-list-item v-if="meetings.length > 0">
-                <v-list-item-title>New activity in the meeting section</v-list-item-title>
+              <v-list-item v-if="meetings.length > 0" to="messages">
+                <v-list-item-action>
+                  <v-badge
+                    color="primary"
+                  >
+                    <template v-slot:badge>
+                      <span v-if="meetings.length > 0">{{meetings.length}}</span>
+                    </template>
+                    <v-icon>mdi-account-group</v-icon>
+                  </v-badge>
+                </v-list-item-action>
+                <v-list-item-title> New meeting request(s)</v-list-item-title>
               </v-list-item>
               <v-list-item v-else>
-                <v-list-item-title>No New activity in the meeting section</v-list-item-title>
+                <v-list-item-action>
+                  <v-icon>mdi-account-group</v-icon>
+                </v-list-item-action>
+                <v-list-item-title>No meeting request(s)</v-list-item-title>
               </v-list-item>
               <v-list-item>
                 <v-btn v-if="messages.concat(meetings).length > 0" @click="clearNotifications" small>Clear</v-btn>
@@ -187,24 +217,20 @@ export default {
     drawer: true,
     picture: '',
     mini: false,
-    notificationColor: 'grey'
+    notificationColor: 'blue-grey darken-1',
+    messages: [],
+    meetings: []
   }),
   computed: mapGetters({
     read: 'messages/Read',
     profile: 'profile/getProfile',
-    meetings: 'notifications/getNotifMeetings',
-    messages: 'notifications/getNotifMessages'
+    notifications: 'notifications/getNotifications'
   }),
   watch: {
-    meetings () {
-      if (this.meetings.length > 0) {
-        this.notificationColor = 'green darken-3'
-      } else {
-        this.notificationColor = 'blue-grey darken-1'
-      }
-    },
-    messages () {
-      if (this.messages.length > 0) {
+    notifications () {
+      if (this.notifications.length > 0) {
+        this.messages = this.notifications.filter(notification => notification.activity === 'Message')
+        this.meetings = this.notifications.filter(notification => notification.activity === 'Meeting')
         this.notificationColor = 'green darken-3'
       } else {
         this.notificationColor = 'blue-grey darken-1'

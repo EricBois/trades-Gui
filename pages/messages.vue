@@ -28,7 +28,7 @@
                       mdi-close-box
                     </v-icon>
                   </v-list-item-icon>
-                  <v-list-item-content @click="dialog(item)">
+                  <v-list-item-content class="ml-n6 ml-sm-0" @click="dialog(item)">
                     <v-list-item-title>
                       <v-chip color="green lighten-1" outlined>
                         {{ item.project_name }}
@@ -67,7 +67,7 @@
                       mdi-close-box
                     </v-icon>
                   </v-list-item-icon>
-                  <v-list-item-content @click="dialog(item)">
+                  <v-list-item-content class="ml-n6 ml-sm-0" @click="dialog(item)">
                     <v-list-item-title>
                       <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined>
                         {{ item.project_name }}
@@ -91,6 +91,15 @@
                 </v-list-item>
                 <v-divider class="my-1" />
               </v-flex>
+            </v-list>
+          </v-flex>
+          <v-flex v-if="readMessages.length < 1 && newMessages.length < 1">
+            <v-list subheader dense color="grey darken-3">
+              <v-subheader class="justify-center sub">
+                <b>No Messages Yet!</b>&nbsp;<v-icon small>
+                  mdi-emoticon-sad-outline
+                </v-icon>
+              </v-subheader>
             </v-list>
           </v-flex>
           <v-flex v-if="readMessages.length < 1 && newMessage.length < 1" xs12 sm8 offset-sm-2 text-center>
@@ -333,6 +342,8 @@ export default {
   methods: {
     getMeetings () {
       this.$axios.$get(`bid/getMeetings`).then((res) => {
+        this.meetings = []
+        this.meetingSent = []
         res.forEach((element) => {
           if (element.meeting.host === this.$auth.user.sub) {
             this.meetingSent.push(element)

@@ -167,6 +167,15 @@ export default {
               text: 'Meeting has been Confirmed!',
               timer: 2000
             })
+            const user = (res.host === this.$auth.user.sub) ? res.user : res.host
+            this.$store.dispatch('notifications/createNotification',
+              {
+                senderId: this.$auth.user.sub,
+                recipientId: user,
+                activity: 'Meeting',
+                activityDesc: 'new meeting request',
+                link: res._id
+              })
           })
         }
       })
