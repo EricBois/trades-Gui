@@ -104,69 +104,74 @@
         v-if="this.$auth.loggedIn"
         transition="scale-transition"
         class="mx-1"
-        offset-x>
-            <template v-slot:activator="{ on: menu }">
-              <v-btn
-                :color="notificationColor"
-                dark
-                v-on="{ ...menu }"
-                x-small
-              >
+        offset-x
+      >
+        <template v-slot:activator="{ on: menu }">
+          <v-btn
+            :color="notificationColor"
+            dark
+            x-small
+            v-on="{ ...menu }"
+          >
+            <v-badge
+              :color="notificationColor"
+              left
+            >
+              <template v-slot:badge>
+                <span v-if="notifications.length > 0">{{ notifications.length }}</span>
+              </template>
+              <v-icon small>
+                mdi-bell
+              </v-icon>
+            </v-badge>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-if="messages.length > 0" to="messages">
+            <v-list-item-action>
               <v-badge
-                :color="notificationColor"
-                left
+                color="primary"
               >
                 <template v-slot:badge>
-                  <span v-if="notifications.length > 0">{{notifications.length}}</span>
+                  <span v-if="messages.length > 0">{{ messages.length }}</span>
                 </template>
-                <v-icon small>mdi-bell</v-icon>
+                <v-icon>mdi-message</v-icon>
               </v-badge>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-if="messages.length > 0" to="messages">
-                <v-list-item-action>
-                  <v-badge
-                    color="primary"
-                  >
-                    <template v-slot:badge>
-                      <span v-if="messages.length > 0">{{messages.length}}</span>
-                    </template>
-                    <v-icon>mdi-message</v-icon>
-                  </v-badge>
-                </v-list-item-action>
-                <v-list-item-title>New message(s)</v-list-item-title>
-              </v-list-item>
-              <v-list-item v-else>
-                <v-list-item-action>
-                  <v-icon>mdi-message</v-icon>
-                </v-list-item-action>
-                <v-list-item-title>No new message(s)</v-list-item-title>
-              </v-list-item>
-              <v-list-item v-if="meetings.length > 0" to="messages">
-                <v-list-item-action>
-                  <v-badge
-                    color="primary"
-                  >
-                    <template v-slot:badge>
-                      <span v-if="meetings.length > 0">{{meetings.length}}</span>
-                    </template>
-                    <v-icon>mdi-account-group</v-icon>
-                  </v-badge>
-                </v-list-item-action>
-                <v-list-item-title> New meeting request(s)</v-list-item-title>
-              </v-list-item>
-              <v-list-item v-else>
-                <v-list-item-action>
-                  <v-icon>mdi-account-group</v-icon>
-                </v-list-item-action>
-                <v-list-item-title>No meeting request(s)</v-list-item-title>
-              </v-list-item>
-              <v-list-item>
-                <v-btn v-if="messages.concat(meetings).length > 0" @click="clearNotifications" small>Clear</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+            </v-list-item-action>
+            <v-list-item-title>New message(s)</v-list-item-title>
+          </v-list-item>
+          <v-list-item v-else>
+            <v-list-item-action>
+              <v-icon>mdi-message</v-icon>
+            </v-list-item-action>
+            <v-list-item-title>No new message(s)</v-list-item-title>
+          </v-list-item>
+          <v-list-item v-if="meetings.length > 0" to="messages">
+            <v-list-item-action>
+              <v-badge
+                color="primary"
+              >
+                <template v-slot:badge>
+                  <span v-if="meetings.length > 0">{{ meetings.length }}</span>
+                </template>
+                <v-icon>mdi-account-group</v-icon>
+              </v-badge>
+            </v-list-item-action>
+            <v-list-item-title> New meeting request(s)</v-list-item-title>
+          </v-list-item>
+          <v-list-item v-else>
+            <v-list-item-action>
+              <v-icon>mdi-account-group</v-icon>
+            </v-list-item-action>
+            <v-list-item-title>No meeting request(s)</v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-btn v-if="messages.concat(meetings).length > 0" small @click="clearNotifications">
+              Clear
+            </v-btn>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-content>
