@@ -268,6 +268,14 @@ export default {
                 showConfirmButton: false,
                 position: 'top-end'
               })
+            this.$store.dispatch('notifications/createNotification',
+              {
+                senderId: this.$auth.user.sub,
+                recipientId: user.uid,
+                activity: 'Message',
+                activityDesc: 'You have a new message',
+                link: res._id
+              })
           })
         }
         this.dialogMessage = false

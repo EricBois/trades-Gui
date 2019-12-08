@@ -356,6 +356,7 @@ export default {
             this.$axios.$get(`message/read/${this.selectedMessage.id}`).then((res) => { // set message to read
               this.$store.commit('messages/Read', true)
               this.$store.dispatch('messages/getMessages')
+              this.$store.dispatch('notifications/getNotifications')
             })
           }
         }
@@ -372,6 +373,15 @@ export default {
         this.$axios.$post(`message/send/${this.selectedMessage.id}`, { name: this.$auth.user.name, message: this.newMessage }).then((res) => {
           this.selectedMessage = res
           this.newMessage.text = ''
+          const user = (res.to === this.$auth.user.sub) ? res.from : res.to
+          this.$store.dispatch('notifications/createNotification',
+            {
+              senderId: this.$auth.user.sub,
+              recipientId: user,
+              activity: 'Message',
+              activityDesc: 'You have a new message',
+              link: res._id
+            })
           this.$store.dispatch('messages/getMessages')
         })
       }

@@ -20,28 +20,6 @@
       </v-list-item>
       <v-divider />
       <v-list dense>
-        <div class="text-center my-5 ibm" v-if="messages.length > 0 || meetings.length > 0">
-          <v-menu>
-            <template v-slot:activator="{ on: menu }">
-              <v-btn
-                color="green darken-3"
-                dark
-                v-on="{ ...menu }"
-              ><v-icon>mdi-bell</v-icon>&nbsp; New Notifications !</v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-if="messages.length > 0" to="messages">
-                <v-list-item-title>You have {{messages.length}} new messages</v-list-item-title>
-              </v-list-item>
-              <v-list-item v-if="meetings.length > 0">
-                <v-list-item-title>New activity in the meeting section</v-list-item-title>
-              </v-list-item>
-              <v-list-item>
-                <v-btn @click="clearNotifications" small>Clear</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
         <v-list-item to="/">
           <v-list-item-action>
             <v-icon>mdi-view-dashboard</v-icon>
@@ -122,6 +100,43 @@
       <v-btn v-if="!this.$auth.loggedIn" color="green" small label @click="login">
         <v-icon>mdi-login</v-icon> Login
       </v-btn>
+      <v-menu v-if="this.$auth.loggedIn" class="mx-1">
+            <template v-slot:activator="{ on: menu }">
+              <v-btn
+                :color="notificationColor"
+                dark
+                v-on="{ ...menu }"
+                x-small
+              >
+              <v-badge
+                :color="notificationColor"
+                left
+              >
+                <template v-slot:badge>
+                  <span v-if="messages.concat(meetings).length > 0">{{messages.concat(meetings).length}}</span>
+                </template>
+                <v-icon small>mdi-bell</v-icon>
+              </v-badge>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item v-if="messages.length > 0" to="messages">
+                <v-list-item-title>You have {{messages.length}} new messages</v-list-item-title>
+              </v-list-item>
+              <v-list-item v-else>
+                <v-list-item-title>No new messages</v-list-item-title>
+              </v-list-item>
+              <v-list-item v-if="meetings.length > 0">
+                <v-list-item-title>New activity in the meeting section</v-list-item-title>
+              </v-list-item>
+              <v-list-item v-else>
+                <v-list-item-title>No New activity in the meeting section</v-list-item-title>
+              </v-list-item>
+              <v-list-item>
+                <v-btn v-if="messages.concat(meetings).length > 0" @click="clearNotifications" small>Clear</v-btn>
+              </v-list-item>
+            </v-list>
+          </v-menu>
     </v-app-bar>
 
     <v-content>
@@ -161,7 +176,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  middleware: 'profile',
+  middleware: ['profile', 'notifications'],
   props: {
     source: {
       type: String,
@@ -172,16 +187,29 @@ export default {
     drawer: true,
     picture: '',
     mini: false,
-    interval: null,
-    notifications: [],
-    messages: [],
-    meetings: []
+    notificationColor: 'grey'
   }),
   computed: mapGetters({
     read: 'messages/Read',
-    profile: 'profile/getProfile'
+    profile: 'profile/getProfile',
+    meetings: 'notifications/getNotifMeetings',
+    messages: 'notifications/getNotifMessages'
   }),
   watch: {
+    meetings () {
+      if (this.meetings.length > 0) {
+        this.notificationColor = 'green darken-3'
+      } else {
+        this.notificationColor = 'blue-grey darken-1'
+      }
+    },
+    messages () {
+      if (this.messages.length > 0) {
+        this.notificationColor = 'green darken-3'
+      } else {
+        this.notificationColor = 'blue-grey darken-1'
+      }
+    },
     profile () {
       if (this.profile.user_metadata && !this.profile.user_metadata.welcome) {
         this.$swal.fire({
@@ -199,7 +227,6 @@ export default {
   created () {
     this.$vuetify.theme.dark = true
     if (this.$auth.loggedIn) {
-      this.getNotifications()
       this.$OneSignal.push(() => {
         this.$OneSignal.showSlidedownPrompt()
         // TODO implement better way for this
@@ -208,16 +235,7 @@ export default {
         // this.$OneSignal.sendTags({ key: this.$auth.user.sub })
       })
       this.picture = this.$auth.user.picture
-      this.interval = setInterval(
-        function () {
-          this.getNotifications()
-        }.bind(this),
-        150000
-      )
     }
-  },
-  beforeDestroy () {
-    clearInterval(this.interval)
   },
   methods: {
     login () {
@@ -229,18 +247,8 @@ export default {
         'https://dev-2upadx1s.auth0.com/v2/logout?returnTo=http%3A%2F%2Flocalhost:3333/'
       )
     },
-    getNotifications () {
-      this.$axios.$get('notification/fetch').then((res) => {
-        this.notifications = res
-        this.messages = res.filter(notification => notification.activity === 'Message')
-        this.meetings = res.filter(notification => notification.activity === 'Meeting')
-      })
-    },
     clearNotifications () {
-      this.$axios.$delete('notification/delete').then((res) => {
-        this.messages = []
-        this.meetings = []
-      })
+      this.$store.dispatch('notifications/clearNotifications')
     }
   }
 }
