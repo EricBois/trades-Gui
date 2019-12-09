@@ -5,7 +5,7 @@ export default function ({ store, $auth }) {
       function () {
         store.dispatch('notifications/getNotifications')
       },
-      30000
+      300000
     )
   }
 }

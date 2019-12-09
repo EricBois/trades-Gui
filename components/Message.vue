@@ -38,11 +38,15 @@ export default {
         project: '',
         project_name: '',
         to: '',
-        senders: [],
         messages: {
+          uid: '',
           name: '',
           text: ''
 
+        },
+        names: {
+          to: '',
+          from: ''
         }
       }
     }
@@ -50,13 +54,17 @@ export default {
   methods: {
     send () {
       if (this.message.messages.text) {
-        this.message.senders = [this.$auth.user.name]
+        this.message.names.from = this.$auth.user.name
         if (this.project) {
           this.message.project_name = this.project.name
           this.message.to = this.project.user
+          this.message.names.to = this.project.createdBy
+          this.message.messages.uid = this.$auth.user.sub
         } else {
-          this.message.project_name = `DM from ${this.$auth.user.name}`
+          this.message.project_name = `Direct Message`
           this.message.to = this.user.uid
+          this.message.names.to = this.user.name
+          this.message.messages.uid = this.$auth.user.sub
         }
         this.message.messages.name = this.$auth.user.name
         this.$axios.$post('message/send', this.message).then((res) => {

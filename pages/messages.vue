@@ -14,7 +14,7 @@
       <v-tab-item>
         <v-card flat color="#303030">
           <v-flex v-if="newMessages.length >= 1" xs12 sm8 offset-sm-2>
-            <v-list subheader dense color="grey darken-3">
+            <v-card subheader dense color="grey darken-3">
               <v-subheader class="justify-center sub">
                 <b>New Messages</b>
               </v-subheader>
@@ -30,14 +30,12 @@
                   </v-list-item-icon>
                   <v-list-item-content class="ml-n6 ml-sm-0" @click="dialog(item)">
                     <v-list-item-title>
-                      <v-chip color="green lighten-1" outlined>
+                      <v-chip color="green lighten-1" outlined label>
                         {{ item.project_name }}
                       </v-chip>
                     </v-list-item-title>
                     <v-list-item-subtitle class="pl-3">
-                      <small><b> From: <u>{{ item.messages[item.messages.length - 1].name }} </u></b></small></br>
-                      <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{ item.messages[item.messages.length - 1].text }}</small>
-                      <small v-else>{{ item.messages[item.messages.length - 1].text.substring(0,60)+"..." }}</small>
+                      <small><b> To: <u>{{ item.names.to }}</u></b> / <b> From: <u>{{ item.names.from }}</u></b></small><br>
                     </v-list-item-subtitle>
                   </v-list-item-content>
 
@@ -49,11 +47,11 @@
                 </v-list-item>
                 <v-divider class="my-1" />
               </v-flex>
-            </v-list>
+            </v-card>
             <v-divider />
           </v-flex>
           <v-flex v-if="readMessages.length >= 1" xs12 sm8 offset-sm-2>
-            <v-list subheader dense color="grey darken-3">
+            <v-card subheader dense color="grey darken-3">
               <v-subheader class="justify-center sub">
                 <b>Read & Sent </b>
               </v-subheader>
@@ -69,17 +67,15 @@
                   </v-list-item-icon>
                   <v-list-item-content class="ml-n6 ml-sm-0" @click="dialog(item)">
                     <v-list-item-title>
-                      <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined>
+                      <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined label>
                         {{ item.project_name }}
                       </v-chip>
-                      <v-chip v-else color="grey blue lighten-1" outlined>
+                      <v-chip v-else color="grey blue lighten-1" outlined label>
                         {{ item.project_name }}
                       </v-chip>
                     </v-list-item-title>
                     <v-list-item-subtitle class="pl-3">
-                      <small><b>From: <u>{{ item.messages[item.messages.length - 1].name }} </u></b></small></br>
-                      <small v-if="item.messages[item.messages.length - 1].text.length <= 60">{{ item.messages[item.messages.length - 1].text }}</small>
-                      <small v-else>{{ item.messages[item.messages.length - 1].text.substring(0,60)+"..." }}</small>
+                      <small><b> To: <u>{{ item.names.to }}</u></b> / <b> From: <u>{{ item.names.from }}</u></b></small><br>
                     </v-list-item-subtitle>
                   </v-list-item-content>
 
@@ -91,9 +87,9 @@
                 </v-list-item>
                 <v-divider class="my-1" />
               </v-flex>
-            </v-list>
+            </v-card>
           </v-flex>
-          <v-flex v-if="readMessages.length < 1 && newMessages.length < 1">
+          <v-flex v-if="readMessages.length < 1 && newMessages.length < 1" xs12 sm8 offset-sm-2>
             <v-list subheader dense color="grey darken-3">
               <v-subheader class="justify-center sub">
                 <b>No Messages Yet!</b>&nbsp;<v-icon small>
@@ -224,14 +220,33 @@
           <v-layout>
             <v-flex xs12>
               <v-card class="scroll" height="400">
-                <v-flex v-for="message in selectedMessage.messages" :key="message.id" px-3>
-                  <v-chip v-if="message.uid === $auth.user.sub" color="teal lighten-4" outlined class="mb-2 mr-5">
-                    {{ message.name }}
-                  </v-chip>
-                  <v-chip v-else color="orange accent-1" outlined class="mb-2 mr-5">
-                    {{ message.name }}
-                  </v-chip> {{ message.text }}
-                  <v-divider class="pt-3" />
+                <v-flex mt-10 text-center>
+                  <v-card v-for="message in selectedMessage.messages" :key="message.id" elevation="12" shaped class="mt-5">
+                    <v-chip
+                      v-if="message.uid === $auth.user.sub"
+                      color="blue lighten-4"
+                      outlined
+                      class="mb-2 mr-5 mt-n2"
+                      small
+                      label
+                    >
+                      {{ message.name }}
+                    </v-chip>
+                    <v-chip
+                      v-else
+                      color="orange accent-1"
+                      outlined
+                      class="mb-2 mr-5 mt-n2"
+                      small
+                      label
+                    >
+                      {{ message.name }}
+                    </v-chip>
+                    <v-flex class="ibm ma-2" text-left>
+                      {{ message.text }}
+                    </v-flex>
+                    <v-divider class="pt-3" />
+                  </v-card>
                 </v-flex>
               </v-card>
             </v-flex>
@@ -284,6 +299,10 @@
 }
 .sub {
   background-color: #546E7A;
+}
+.ibm {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: italic;
 }
 </style>
 <script>
