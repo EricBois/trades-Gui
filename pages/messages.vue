@@ -214,7 +214,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-toolbar-title v-if="selectedMessage.names">
-            Messages with {{ (selectedMessage.names.from === $auth.user.name) ? selectedMessage.names.to : selectedMessage.names.from }}
+            Message(s) with {{ (selectedMessage.names.from === $auth.user.name) ? selectedMessage.names.to : selectedMessage.names.from }}
           </v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
@@ -222,36 +222,39 @@
           <v-layout>
             <v-flex xs12>
               <v-card class="scroll" height="400">
-                <v-flex mt-10 text-center>
+                <v-flex v-for="message in selectedMessage.messages" :key="message.id">
                   <v-card
-                    v-for="message in selectedMessage.messages"
-                    :key="message.id"
-                    width="80%"
-                    class="mt-5 mx-auto"
+                    v-if="message.uid === $auth.user.sub"
+                    max-width="250px"
+                    class="mt-8 bg"
                     outlined
                   >
                     <v-chip
-                      v-if="message.uid === $auth.user.sub"
-                      color="blue darken-3"
-                      class="mb-2 mr-5 mt-n4"
-                      small
+                      color="cyan darken-3"
+                      class="mb-2 ml-10 mt-n7 ibm"
                       label
                     >
-                      You
+                      <b>You</b>
                     </v-chip>
-                    <v-chip
-                      v-else
-                      color="light-green darken-3"
-                      class="mb-2 mr-5 mt-n4"
-                      small
-                      label
-                    >
-                      {{ message.name }}
-                    </v-chip>
-                    <v-flex class="ibm ma-2" text-left>
+                    <v-flex class="ibm mb-2 ml-2" text-left>
                       {{ message.text }}
                     </v-flex>
-                    <v-divider class="pt-3" />
+                  </v-card>
+                  <v-card
+                    v-else
+                    max-width="250px"
+                    class="mt-8 mx-auto bg2"
+                    outlined
+                  >
+                    <v-chip
+                      color="green darken-3"
+                      class="mb-2 ml-10 mt-n7 ibm"
+                    >
+                      <b>{{ message.name }}</b>
+                    </v-chip>
+                    <v-flex class="ibm mb-2 ml-2" text-left>
+                      {{ message.text }}
+                    </v-flex>
                   </v-card>
                 </v-flex>
               </v-card>
@@ -293,6 +296,12 @@
 <style scoped>
 .scroll {
   overflow-y: auto;
+}
+.bg {
+  background-color: #00838F;
+}
+.bg2 {
+  background-color: #2E7D32;
 }
 .confirmed {
   color:rgb(21, 170, 21);

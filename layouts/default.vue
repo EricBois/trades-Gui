@@ -258,6 +258,7 @@ export default {
   created () {
     this.$vuetify.theme.dark = true
     if (this.$auth.loggedIn) {
+      // Notifications onesignal
       this.$OneSignal.push(() => {
         this.$OneSignal.showSlidedownPrompt()
         // TODO implement better way for this
