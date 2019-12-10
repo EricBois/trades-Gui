@@ -213,7 +213,9 @@
           <v-btn icon dark @click="dialogMessage = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Messages</v-toolbar-title>
+          <v-toolbar-title v-if="selectedMessage.names">
+            Messages with {{ (selectedMessage.names.from === $auth.user.name) ? selectedMessage.names.to : selectedMessage.names.from }}
+          </v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
         <v-container fluid>
@@ -221,22 +223,26 @@
             <v-flex xs12>
               <v-card class="scroll" height="400">
                 <v-flex mt-10 text-center>
-                  <v-card v-for="message in selectedMessage.messages" :key="message.id" elevation="12" shaped class="mt-5">
+                  <v-card
+                    v-for="message in selectedMessage.messages"
+                    :key="message.id"
+                    width="80%"
+                    class="mt-5 mx-auto"
+                    outlined
+                  >
                     <v-chip
                       v-if="message.uid === $auth.user.sub"
-                      color="blue lighten-4"
-                      outlined
-                      class="mb-2 mr-5 mt-n2"
+                      color="blue darken-3"
+                      class="mb-2 mr-5 mt-n4"
                       small
                       label
                     >
-                      {{ message.name }}
+                      You
                     </v-chip>
                     <v-chip
                       v-else
-                      color="orange accent-1"
-                      outlined
-                      class="mb-2 mr-5 mt-n2"
+                      color="light-green darken-3"
+                      class="mb-2 mr-5 mt-n4"
                       small
                       label
                     >

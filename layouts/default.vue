@@ -127,13 +127,13 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item v-if="messages.length > 0" to="messages">
+          <v-list-item v-if="notifMessages.length > 0" to="messages">
             <v-list-item-action>
               <v-badge
                 color="primary"
               >
                 <template v-slot:badge>
-                  <span v-if="messages.length > 0">{{ messages.length }}</span>
+                  <span v-if="notifMessages.length > 0">{{ notifMessages.length }}</span>
                 </template>
                 <v-icon>mdi-message</v-icon>
               </v-badge>
@@ -146,13 +146,13 @@
             </v-list-item-action>
             <v-list-item-title>No new message(s)</v-list-item-title>
           </v-list-item>
-          <v-list-item v-if="meetings.length > 0" to="messages">
+          <v-list-item v-if="notifMeetings.length > 0" to="messages">
             <v-list-item-action>
               <v-badge
                 color="primary"
               >
                 <template v-slot:badge>
-                  <span v-if="meetings.length > 0">{{ meetings.length }}</span>
+                  <span v-if="notifMeetings.length > 0">{{ notifMeetings.length }}</span>
                 </template>
                 <v-icon>mdi-account-group</v-icon>
               </v-badge>
@@ -166,7 +166,7 @@
             <v-list-item-title>No meeting request(s)</v-list-item-title>
           </v-list-item>
           <v-list-item>
-            <v-btn v-if="messages.concat(meetings).length > 0" small @click="clearNotifications">
+            <v-btn v-if="notifMessages.concat(notifMeetings).length > 0" small @click="clearNotifications">
               Clear
             </v-btn>
           </v-list-item>
@@ -223,8 +223,8 @@ export default {
     picture: '',
     mini: false,
     notificationColor: 'blue-grey darken-1',
-    messages: [],
-    meetings: []
+    notifMessages: [],
+    notifMeetings: []
   }),
   computed: mapGetters({
     read: 'messages/Read',
@@ -234,8 +234,8 @@ export default {
   watch: {
     notifications () {
       if (this.notifications.length > 0) {
-        this.messages = this.notifications.filter(notification => notification.activity === 'Message')
-        this.meetings = this.notifications.filter(notification => notification.activity === 'Meeting')
+        this.notifMessages = this.notifications.filter(notification => notification.activity === 'Message')
+        this.notifMeetings = this.notifications.filter(notification => notification.activity === 'Meeting')
         this.notificationColor = 'green darken-3'
       } else {
         this.notificationColor = 'blue-grey darken-1'
