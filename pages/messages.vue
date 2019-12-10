@@ -207,7 +207,7 @@
         </v-card>
       </v-tab-item>
     </v-tabs-items>
-    <v-dialog v-model="dialogMessage" persistent max-width="600">
+    <v-dialog v-model="dialogMessage" ref="chat" persistent max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogMessage = false">
@@ -342,12 +342,12 @@ export default {
     newMessages: 'messages/getNewMessages',
     readMessages: 'messages/getReadMessages'
   }),
-  created () {
+  mounted () {
     this.getMeetings()
     this.$store.dispatch('messages/getMessages')
+    this.scrollDown()
     this.interval = setInterval(
       function () {
-        this.$store.dispatch('messages/getMessages')
         this.getMeetings()
       }.bind(this),
       150000
@@ -364,7 +364,23 @@ export default {
       })
     }
   },
+  watch: {
+    dialogMessage () {
+      this.scrollDown()
+    },
+    newMessages () {
+      this.scrollDown()
+    }
+  },
   methods: {
+    scrollDown () {
+      this.$nextTick(() => {
+        const scrollDown = this.$refs.chat.$refs.dialog.querySelector('.scroll')
+        if (scrollDown) {
+          scrollDown.scrollTop = scrollDown.scrollHeight
+        }
+      })
+    },
     getMeetings () {
       this.$axios.$get(`bid/getMeetings`).then((res) => {
         this.meetings = []
