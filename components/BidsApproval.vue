@@ -30,24 +30,13 @@
           </template>
         </v-data-table>
       </v-flex>
-      <v-flex v-if="emails.length > 0" xs12 sm6 pt-3>
-        <v-btn color="blue darken-2" small @click="email">
-          <v-icon>mdi-email</v-icon>&nbsp; Notify by email
-        </v-btn>
-      </v-flex>
-      <v-flex v-if="phones.length > 0" xs12 sm6 pt-3>
-        <v-btn color="blue darken-2" small>
-          <v-icon>mdi-message-text</v-icon>&nbsp; Notify by text message
-        </v-btn>
-      </v-flex>
-      <v-flex v-if="emails.length > 0 || phones.length > 0" xs12 sm6 pt-3>
-        <v-btn color="blue darken-2" small>
-          <v-icon>mdi-phone</v-icon>&nbsp; Request Call back
-        </v-btn>
-      </v-flex>
-      <v-flex v-if="emails.length > 0 || phones.length > 0" xs12 sm6 pt-3>
-        <v-btn color="blue darken-2" small @click="dialogMeeting = !dialogMeeting">
+      <v-flex v-if="emails.length > 0 || phones.length > 0" class="mt-3" xs12 text-center>
+        <v-btn color="blue darken-2" class="mt-3 ml-2 mt-sm-0" small @click="dialogMeeting = !dialogMeeting">
           <v-icon>mdi-account-group</v-icon>&nbsp; Request Onsite meeting
+        </v-btn>
+        <!-- v-if some() to check if any need to be notified -->
+        <v-btn v-if="selectedBids.some(bid => !bid.notified)" color="green darken-3" class="mt-3 ml-2 mt-sm-0" small @click="notify">
+          <v-icon>mdi-check-decagram</v-icon>&nbsp; Approve bid(s)
         </v-btn>
       </v-flex>
     </v-layout>
@@ -123,8 +112,7 @@ export default {
     selectedBids () {
       this.emails = []
       this.phones = []
-      for (const key in this.selectedBids) {
-        const bid = this.selectedBids[key]
+      this.selectedBids.forEach((bid) => {
         if (!this.emails.includes(bid.email)) {
           this.emails.push(bid.email)
         }
@@ -133,12 +121,35 @@ export default {
             this.phones.push(bid.phone)
           }
         }
-      }
+      })
     }
   },
   methods: {
-    email () {
-      this.$axios.$post('bid/email', { emails: this.emails, bid: this.selectedBids }).then((res) => {})
+    notify () {
+      this.selectedBids.forEach((bid) => {
+        if (!bid.notified) {
+          this.$store.dispatch('notifications/createNotification',
+            {
+              senderId: this.$auth.user.sub,
+              recipientId: bid.user,
+              activity: 'Bid',
+              activityDesc: 'You have won a bid!',
+              link: bid._id
+            })
+          this.$axios.$post('bid/notified', {
+            bid
+          }).then((res) => {
+            this.$swal.fire({
+              type: 'success',
+              title: 'Success!',
+              text: 'Meeting request has been sent!',
+              timer: 2000
+            })
+            bid.notified = true
+          })
+        }
+      })
+      this.$axios.$post(`job/edit/${this.$route.params.id}`, { bidding: false })
     },
     setMeeting () {
       this.meeting.host = this.$auth.user.sub

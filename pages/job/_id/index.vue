@@ -413,7 +413,7 @@
           <v-btn icon dark @click="dialogBidApproval = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Bids Approval</v-toolbar-title>
+          <v-toolbar-title>Select user(s) and option</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
         <BidsApproval :bids.sync="selected" />
@@ -754,8 +754,7 @@ export default {
       } else {
         this.bidding = true
       }
-      this.$axios.$post(`job/edit/${this.$route.params.id}`, { bidding: this.bidding }).then((res) => {
-      })
+      this.$axios.$post(`job/edit/${this.$route.params.id}`, { bidding: this.bidding })
     }
   }
 }
