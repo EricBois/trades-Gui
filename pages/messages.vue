@@ -207,7 +207,7 @@
         </v-card>
       </v-tab-item>
     </v-tabs-items>
-    <v-dialog v-model="dialogMessage" ref="chat" persistent max-width="600">
+    <v-dialog ref="chat" v-model="dialogMessage" persistent max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogMessage = false">
@@ -232,11 +232,10 @@
                     <v-chip
                       color="cyan darken-3"
                       class="mb-2 ml-10 mt-n7 ibm"
-                      label
                     >
                       <b>You</b>
                     </v-chip>
-                    <v-flex class="ibm mb-2 ml-2" text-left>
+                    <v-flex class="ibm mb-2 ml-2 mt-n3" text-left>
                       {{ message.text }}
                     </v-flex>
                   </v-card>
@@ -252,7 +251,7 @@
                     >
                       <b>{{ message.name }}</b>
                     </v-chip>
-                    <v-flex class="ibm mb-2 ml-2" text-left>
+                    <v-flex class="ibm mb-2 ml-2 mt-n3" text-left>
                       {{ message.text }}
                     </v-flex>
                   </v-card>
@@ -269,6 +268,7 @@
               clearable
               class="purple-input"
               auto-grow
+              @keydown.enter="send"
             />
             <v-btn @click="send()">
               Send
@@ -351,6 +351,14 @@ export default {
     newMessages: 'messages/getNewMessages',
     readMessages: 'messages/getReadMessages'
   }),
+  watch: {
+    dialogMessage () {
+      this.scrollDown()
+    },
+    newMessages () {
+      this.scrollDown()
+    }
+  },
   mounted () {
     this.getMeetings()
     this.$store.dispatch('messages/getMessages')
@@ -371,14 +379,6 @@ export default {
       }).then(() => {
         return this.$axios.$post('account/edit', { user_metadata: { welcomeMsg: true } })
       })
-    }
-  },
-  watch: {
-    dialogMessage () {
-      this.scrollDown()
-    },
-    newMessages () {
-      this.scrollDown()
     }
   },
   methods: {
@@ -428,7 +428,7 @@ export default {
       this.dialogMeeting = !this.dialogMeeting
     },
     send () {
-      if (this.newMessage.text) {
+      if (this.newMessage.text.trim().length > 0) {
         this.newMessage.uid = this.$auth.user.sub
         this.newMessage.name = this.$auth.user.name
         this.$axios.$post(`message/send/${this.selectedMessage.id}`, { name: this.$auth.user.name, message: this.newMessage }).then((res) => {
