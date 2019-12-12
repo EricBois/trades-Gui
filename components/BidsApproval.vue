@@ -35,7 +35,7 @@
           <v-icon>mdi-account-group</v-icon>&nbsp; Request Onsite meeting
         </v-btn>
         <!-- v-if some() to check if any need to be notified -->
-        <v-btn v-if="selectedBids.some(bid => !bid.notified)" color="green darken-3" class="mt-3 ml-2 mt-sm-0" small @click="notify">
+        <v-btn color="green darken-3" v-if="selectedBids.some(bid => !bid.notified)" class="mt-3 ml-2 mt-sm-0" small @click="notify">
           <v-icon>mdi-check-decagram</v-icon>&nbsp; Approve bid(s)
         </v-btn>
       </v-flex>
@@ -128,6 +128,7 @@ export default {
     notify () {
       this.selectedBids.forEach((bid) => {
         if (!bid.notified) {
+          // create notification
           this.$store.dispatch('notifications/createNotification',
             {
               senderId: this.$auth.user.sub,
@@ -136,6 +137,7 @@ export default {
               activityDesc: 'You have won a bid!',
               link: bid._id
             })
+          // set bid as notified
           this.$axios.$post('bid/notified', {
             bid
           }).then((res) => {
@@ -149,6 +151,7 @@ export default {
           })
         }
       })
+      //turn off bidding
       this.$axios.$post(`job/edit/${this.$route.params.id}`, { bidding: false })
     },
     setMeeting () {
