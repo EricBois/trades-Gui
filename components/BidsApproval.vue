@@ -31,11 +31,17 @@
         </v-data-table>
       </v-flex>
       <v-flex v-if="emails.length > 0 || phones.length > 0" class="mt-3" xs12 text-center>
-        <v-btn color="blue darken-2" class="mt-3 ml-2 mt-sm-0" small @click="dialogMeeting = !dialogMeeting">
+        <v-btn v-if="selectedBids.some(bid => !bid.meetingRequested)" color="blue darken-2" class="mt-3 ml-2 mt-sm-0" small @click="dialogMeeting = !dialogMeeting">
+          <v-icon>mdi-account-group</v-icon>&nbsp; Request Onsite meeting
+        </v-btn>
+        <v-btn v-else color="blue darken-2" class="mt-3 ml-2 mt-sm-0" small disabled>
           <v-icon>mdi-account-group</v-icon>&nbsp; Request Onsite meeting
         </v-btn>
         <!-- v-if some() to check if any need to be notified -->
-        <v-btn color="green darken-3" v-if="selectedBids.some(bid => !bid.notified)" class="mt-3 ml-2 mt-sm-0" small @click="notify">
+        <v-btn v-if="selectedBids.some(bid => !bid.notified)" color="green darken-3" class="mt-3 ml-2 mt-sm-0" small @click="notify">
+          <v-icon>mdi-check-decagram</v-icon>&nbsp; Approve bid(s)
+        </v-btn>
+        <v-btn v-else color="green darken-3" class="mt-3 ml-2 mt-sm-0" small disabled>
           <v-icon>mdi-check-decagram</v-icon>&nbsp; Approve bid(s)
         </v-btn>
       </v-flex>
@@ -144,14 +150,13 @@ export default {
             this.$swal.fire({
               type: 'success',
               title: 'Success!',
-              text: 'Meeting request has been sent!',
-              timer: 2000
+              text: 'Contractor(s) have been notified and will be in touch shortly.'
             })
             bid.notified = true
           })
         }
       })
-      //turn off bidding
+      //  turn off bidding
       this.$axios.$post(`job/edit/${this.$route.params.id}`, { bidding: false })
     },
     setMeeting () {
@@ -185,6 +190,14 @@ export default {
             activityDesc: 'new meeting request',
             link: res._id
           })
+        this.selectedBids.forEach((bid) => {
+          this.$axios.$post('bid/notified', {
+            bid,
+            meetingRequested: true
+          }).then(
+            bid.meetingRequested = true
+          )
+        })
       })
     }
   }
