@@ -165,6 +165,25 @@
             </v-list-item-action>
             <v-list-item-title>No meeting request(s)</v-list-item-title>
           </v-list-item>
+          <v-list-item v-if="notifBids.length > 0" to="projects">
+            <v-list-item-action>
+              <v-badge
+                color="primary"
+              >
+                <template v-slot:badge>
+                  <span v-if="notifBids.length > 0">{{ notifBids.length }}</span>
+                </template>
+                <v-icon>mdi-currency-usd</v-icon>
+              </v-badge>
+            </v-list-item-action>
+            <v-list-item-title> New bid(s) on your project</v-list-item-title>
+          </v-list-item>
+          <v-list-item v-else>
+            <v-list-item-action>
+              <v-icon>mdi-currency-usd</v-icon>
+            </v-list-item-action>
+            <v-list-item-title>No new bid</v-list-item-title>
+          </v-list-item>
           <v-list-item>
             <v-btn v-if="notifMessages.concat(notifMeetings).length > 0" small @click="clearNotifications">
               Clear
@@ -224,7 +243,8 @@ export default {
     mini: false,
     notificationColor: 'blue-grey darken-1',
     notifMessages: [],
-    notifMeetings: []
+    notifMeetings: [],
+    notifBids: []
   }),
   computed: mapGetters({
     read: 'messages/Read',
@@ -236,6 +256,7 @@ export default {
       if (this.notifications.length > 0) {
         this.notifMessages = this.notifications.filter(notification => notification.activity === 'Message')
         this.notifMeetings = this.notifications.filter(notification => notification.activity === 'Meeting')
+        this.notifBids = this.notifications.filter(notification => notification.activity === 'Bid')
         this.notificationColor = 'green darken-3'
       } else {
         this.notificationColor = 'blue-grey darken-1'

@@ -674,6 +674,15 @@ export default {
             this.infobid.trade = []
             this.infobid.price = ''
             this.infobid.description = ''
+            // notify owner of project of new bid
+            this.$store.dispatch('notifications/createNotification',
+              {
+                senderId: this.$auth.user.sub,
+                recipientId: this.project.user,
+                activity: 'Bid',
+                activityDesc: `New bid added to ${this.project.name} from ${this.$auth.user.name}`,
+                link: this.project._id
+              })
           })
           .catch((error) => {
             this.$swal.fire({
