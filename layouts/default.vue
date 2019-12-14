@@ -184,11 +184,11 @@
             </v-list-item-action>
             <v-list-item-title>No new bid</v-list-item-title>
           </v-list-item>
-          <v-list-item>
-            <v-btn v-if="notifMessages.concat(notifMeetings).length > 0" small @click="clearNotifications">
+          <v-flex class="my-3" text-center>
+            <v-btn v-if="notifications.length > 0" small @click="clearNotifications">
               Clear
             </v-btn>
-          </v-list-item>
+          </v-flex>
         </v-list>
       </v-menu>
     </v-app-bar>
