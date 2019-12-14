@@ -126,7 +126,7 @@
             </v-badge>
           </v-btn>
         </template>
-        <v-list>
+        <v-list v-if="notifications.length > 0">
           <v-list-item v-if="notifMessages.length > 0" to="messages">
             <v-list-item-action>
               <v-badge
@@ -139,12 +139,6 @@
               </v-badge>
             </v-list-item-action>
             <v-list-item-title>New message(s)</v-list-item-title>
-          </v-list-item>
-          <v-list-item v-else>
-            <v-list-item-action>
-              <v-icon>mdi-message</v-icon>
-            </v-list-item-action>
-            <v-list-item-title>No new message(s)</v-list-item-title>
           </v-list-item>
           <v-list-item v-if="notifMeetings.length > 0" to="messages">
             <v-list-item-action>
@@ -159,12 +153,6 @@
             </v-list-item-action>
             <v-list-item-title> New meeting request(s)</v-list-item-title>
           </v-list-item>
-          <v-list-item v-else>
-            <v-list-item-action>
-              <v-icon>mdi-account-group</v-icon>
-            </v-list-item-action>
-            <v-list-item-title>No meeting request(s)</v-list-item-title>
-          </v-list-item>
           <v-list-item v-if="notifBids.length > 0" to="projects">
             <v-list-item-action>
               <v-badge
@@ -178,17 +166,32 @@
             </v-list-item-action>
             <v-list-item-title> New bid(s) on your project</v-list-item-title>
           </v-list-item>
-          <v-list-item v-else>
+          <v-list-item v-if="notifBidRequest.length > 0" to="projects">
             <v-list-item-action>
-              <v-icon>mdi-currency-usd</v-icon>
+              <v-badge
+                color="primary"
+              >
+                <template v-slot:badge>
+                  <span v-if="notifBidRequest.length > 0">{{ notifBidRequest.length }}</span>
+                </template>
+                <v-icon>mdi-currency-usd</v-icon>
+              </v-badge>
             </v-list-item-action>
-            <v-list-item-title>No new bid</v-list-item-title>
+            <v-list-item-title> New bid(s) request</v-list-item-title>
           </v-list-item>
           <v-flex class="my-3" text-center>
             <v-btn v-if="notifications.length > 0" small @click="clearNotifications">
               Clear
             </v-btn>
           </v-flex>
+        </v-list>
+        <v-list v-else>
+          <v-list-item>
+            <v-list-item-action>
+              <v-icon>mdi-bell-off</v-icon>
+            </v-list-item-action>
+            <v-list-item-title> No new notification(s)</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
     </v-app-bar>
@@ -244,6 +247,7 @@ export default {
     notificationColor: 'blue-grey darken-1',
     notifMessages: [],
     notifMeetings: [],
+    notifBidRequest: [],
     notifBids: []
   }),
   computed: mapGetters({
@@ -257,6 +261,7 @@ export default {
         this.notifMessages = this.notifications.filter(notification => notification.activity === 'Message')
         this.notifMeetings = this.notifications.filter(notification => notification.activity === 'Meeting')
         this.notifBids = this.notifications.filter(notification => notification.activity === 'Bid')
+        this.notifBidRequest = this.notifications.filter(notification => notification.activity === 'bidRequest')
         this.notificationColor = 'green darken-3'
       } else {
         this.notificationColor = 'blue-grey darken-1'

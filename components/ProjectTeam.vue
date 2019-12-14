@@ -95,7 +95,7 @@
         <v-btn color="primary" :href="job" target="_blank" small>
           Go to Project
         </v-btn>
-        <v-btn small>
+        <v-btn small @click="requestBids">
           Request for bids
         </v-btn>
       </v-flex>
@@ -281,6 +281,18 @@ export default {
         this.dialogMessage = false
         this.message.messages.text = ''
       }
+    },
+    requestBids () {
+      this.projectTeam.forEach((user) => {
+        this.$store.dispatch('notifications/createNotification',
+          {
+            senderId: this.$auth.user.sub,
+            recipientId: user.uid,
+            activity: 'bidRequest',
+            activityDesc: `${this.$auth.user.name} is asking for a bid on ${this.selectedJob.name}`,
+            link: this.selectedJob.id
+          })
+      })
     }
   }
 }
