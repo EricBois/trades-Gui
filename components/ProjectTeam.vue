@@ -294,12 +294,12 @@ export default {
               senderId: this.$auth.user.sub,
               recipientId: user.uid,
               activity: 'bidRequest',
-              activityDesc: `${this.$auth.user.name} is asking for a bid on ${this.selectedJob.name}`,
+              activityDesc: `${this.$auth.user.name}'s requesting a bid on ${this.selectedJob.name}`,
               link: this.selectedJob.id
             })
         }
+        this.$axios.$post(`job/edit/${this.selectedJob.id}`, { team: this.projectTeam })
       })
-      this.$axios.$post(`job/edit/${this.selectedJob.id}`, { team: this.projectTeam })
     }
   }
 }
