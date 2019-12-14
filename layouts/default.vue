@@ -104,7 +104,9 @@
         v-if="this.$auth.loggedIn"
         transition="scale-transition"
         class="mx-1"
+        :close-on-content-click="contentClick"
         offset-x
+        :offset-overflow="overflow"
       >
         <template v-slot:activator="{ on: menu }">
           <v-btn
@@ -166,19 +168,22 @@
             </v-list-item-action>
             <v-list-item-title> New bid(s) on your project</v-list-item-title>
           </v-list-item>
-          <v-list-item v-if="notifBidRequest.length > 0" to="projects">
-            <v-list-item-action>
-              <v-badge
-                color="primary"
-              >
-                <template v-slot:badge>
-                  <span v-if="notifBidRequest.length > 0">{{ notifBidRequest.length }}</span>
-                </template>
-                <v-icon>mdi-currency-usd</v-icon>
-              </v-badge>
-            </v-list-item-action>
-            <v-list-item-title> New bid(s) request</v-list-item-title>
+          <v-list-item>
+            <v-list-item-title><u>Bid(s) Request</u></v-list-item-title>
           </v-list-item>
+          <v-layout v-for="bid in notifBidRequest" :key="bid._id" wrap>
+            <v-flex v-if="$vuetify.breakpoint.smAndUp" xs1 pl-sm-1>
+              <v-icon>mdi-lightbulb-group</v-icon>
+            </v-flex>
+            <v-flex class="pl-2 pl-sm-0" xs11>
+              <nuxt-link :to="bidUrl + bid.link">
+                {{ bid.activityDesc }}
+              </nuxt-link>
+            </v-flex>
+            <v-flex xs12 my-2>
+              <v-divider />
+            </v-flex>
+          </v-layout>
           <v-flex class="my-3" text-center>
             <v-btn v-if="notifications.length > 0" small @click="clearNotifications">
               Clear
@@ -241,6 +246,9 @@ export default {
     }
   },
   data: () => ({
+    bidUrl: '/job/',
+    overflow: true,
+    contentClick: false,
     drawer: true,
     picture: '',
     mini: false,
