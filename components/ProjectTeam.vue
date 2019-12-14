@@ -294,7 +294,7 @@ export default {
               senderId: this.$auth.user.sub,
               recipientId: user.uid,
               activity: 'bidRequest',
-              activityDesc: `${this.$auth.user.name}'s requesting a bid on ${this.selectedJob.name}`,
+              activityDesc: `${this.$auth.user.name}'s requesting a bid.`,
               link: this.selectedJob.id
             })
         }
