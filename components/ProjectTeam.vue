@@ -95,8 +95,11 @@
         <v-btn color="primary" :href="job" target="_blank" small>
           Go to Project
         </v-btn>
-        <v-btn small @click="requestBids">
+        <v-btn v-if="projectTeam.some(user => !user.notified)" small @click="requestBids">
           Request for bids
+        </v-btn>
+        <v-btn v-else small disabled>
+          Requested for bids
         </v-btn>
       </v-flex>
     </v-layout>
@@ -282,17 +285,21 @@ export default {
         this.message.messages.text = ''
       }
     },
-    requestBids () {
-      this.projectTeam.forEach((user) => {
-        this.$store.dispatch('notifications/createNotification',
-          {
-            senderId: this.$auth.user.sub,
-            recipientId: user.uid,
-            activity: 'bidRequest',
-            activityDesc: `${this.$auth.user.name} is asking for a bid on ${this.selectedJob.name}`,
-            link: this.selectedJob.id
-          })
+    async requestBids () {
+      await this.projectTeam.forEach((user) => {
+        if (!user.notified) {
+          user.notified = true
+          this.$store.dispatch('notifications/createNotification',
+            {
+              senderId: this.$auth.user.sub,
+              recipientId: user.uid,
+              activity: 'bidRequest',
+              activityDesc: `${this.$auth.user.name} is asking for a bid on ${this.selectedJob.name}`,
+              link: this.selectedJob.id
+            })
+        }
       })
+      this.$axios.$post(`job/edit/${this.selectedJob.id}`, { team: this.projectTeam })
     }
   }
 }
