@@ -173,7 +173,7 @@ export default {
                 senderId: this.$auth.user.sub,
                 recipientId: user,
                 activity: 'Meeting',
-                activityDesc: 'new meeting request',
+                activityDesc: `New meeting request from ${this.$auth.user.name}`,
                 link: res._id
               })
           })
