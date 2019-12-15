@@ -129,7 +129,7 @@
                     outlined
                   >
                     <v-card-text class="mt-n4">
-                      <div>{{message.name}}</div>
+                      <div>{{ message.name }}</div>
                       <v-divider />
                     </v-card-text>
                     <v-flex class="ibm ma-2 mt-n2">
