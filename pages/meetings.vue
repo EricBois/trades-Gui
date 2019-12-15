@@ -128,6 +128,7 @@
 }
 </style>
 <script>
+import { mapGetters } from 'vuex'
 import DatePicker from '../components/DatePicker.vue'
 export default {
   components: {
@@ -143,6 +144,9 @@ export default {
       interval: null
     }
   },
+  computed: mapGetters({
+    profile: 'profile/getProfile'
+  }),
   mounted () {
     this.getMeetings()
     this.interval = setInterval(
@@ -151,18 +155,17 @@ export default {
       }.bind(this),
       150000
     )
-    // TODO make welcome message
-    // if (this.profile.user_metadata && !this.profile.user_metadata.welcomeMsg) {
-    //   this.$swal.fire({
-    //     position: 'bottom-end',
-    //     type: 'info',
-    //     text: process.env.welcomeMsg,
-    //     showConfirmButton: true,
-    //     width: '22rem'
-    //   }).then(() => {
-    //     return this.$axios.$post('account/edit', { user_metadata: { welcomeMsg: true } })
-    //   })
-    // }
+    if (this.profile.user_metadata && !this.profile.user_metadata.welcomeMeeting) {
+      this.$swal.fire({
+        position: 'bottom-end',
+        type: 'info',
+        text: process.env.welcomeMeeting,
+        showConfirmButton: true,
+        width: '22rem'
+      }).then(() => {
+        return this.$axios.$post('account/edit', { user_metadata: { welcomeMeeting: true } })
+      })
+    }
   },
   methods: {
     async getMeetings () {
