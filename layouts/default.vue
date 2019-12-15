@@ -186,9 +186,9 @@
               <v-icon>mdi-beaker-plus</v-icon>
             </v-flex>
             <v-flex class="px-2 ibm" xs11>
-              <nuxt-link :to="bidUrl + bid.link">
+              <span @click="redirect(bid.link)">
                 {{ bid.activityDesc }}
-              </nuxt-link>
+              </span>
             </v-flex>
             <v-flex xs12 my-2>
               <v-divider />
@@ -205,9 +205,9 @@
               <v-icon>mdi-lightbulb-group</v-icon>
             </v-flex>
             <v-flex class="px-2 ibm" xs11>
-              <nuxt-link :to="bidUrl + bid.link">
+              <span @click="redirect(bid.link)">
                 {{ bid.activityDesc }}
-              </nuxt-link>
+              </span>
             </v-flex>
             <v-flex xs12 my-2>
               <v-divider />
@@ -283,7 +283,6 @@ export default {
     }
   },
   data: () => ({
-    bidUrl: '/job/',
     overflow: true,
     contentClick: true,
     drawer: true,
@@ -352,6 +351,10 @@ export default {
     },
     clearNotifications () {
       this.$store.dispatch('notifications/clearNotifications')
+    },
+    async redirect (bid) {
+      await this.$store.dispatch('notifications/deleteBulkNotification', [bid])
+      await this.$router.push(`/job/${bid}`)
     }
   }
 }
