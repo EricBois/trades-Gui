@@ -168,14 +168,14 @@
             </v-list-item-action>
             <v-list-item-title> New bid(s) on your project</v-list-item-title>
           </v-list-item>
-          <v-list-item>
-            <v-list-item-title><u>Bid(s) Request</u></v-list-item-title>
-          </v-list-item>
+          <v-flex xs12 my-2>
+            <v-divider />
+          </v-flex>
           <v-layout v-for="bid in notifBidRequest" :key="bid._id" wrap>
-            <v-flex v-if="$vuetify.breakpoint.smAndUp" xs1 pl-sm-1>
+            <v-flex v-if="$vuetify.breakpoint.smAndUp" xs1 px-sm-1>
               <v-icon>mdi-lightbulb-group</v-icon>
             </v-flex>
-            <v-flex class="pl-2 pl-sm-0" xs11>
+            <v-flex class="px-2" xs11>
               <nuxt-link :to="bidUrl + bid.link">
                 {{ bid.activityDesc }}
               </nuxt-link>

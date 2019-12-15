@@ -297,8 +297,8 @@ export default {
               activityDesc: `${this.$auth.user.name}'s requesting a bid.`,
               link: this.selectedJob.id
             })
+          this.$axios.$post(`job/edit/${this.selectedJob.id}`, { team: this.projectTeam })
         }
-        this.$axios.$post(`job/edit/${this.selectedJob.id}`, { team: this.projectTeam })
       })
     }
   }
