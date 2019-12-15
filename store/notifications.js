@@ -37,6 +37,11 @@ export const actions = {
   createNotification ({ commit }, payload) {
     this.$axios.$post('notification/create', payload)
   },
+  deleteBulkNotification ({ commit, dispatch }, payload) {
+    this.$axios.$post('notification/bulk', { links: payload }).then(
+      dispatch('getNotifications')
+    )
+  },
   clearNotifications ({ commit }) {
     this.$axios.$delete('notification/delete').then(
       commit('resetState')

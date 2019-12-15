@@ -87,6 +87,18 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item to="/meetings">
+          <v-list-item-action>
+            <v-icon>mdi-handshake</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              <v-chip outlined>
+                My Meetings
+              </v-chip>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item class="mt-12 justify-center">
           <v-btn v-if="this.$auth.loggedIn" color="amber darken-4" small @click="logout">
             Logout
@@ -140,9 +152,14 @@
                 <v-icon>mdi-message</v-icon>
               </v-badge>
             </v-list-item-action>
-            <v-list-item-title>New message(s)</v-list-item-title>
+            <v-list-item-title class="ibm">
+              New message(s)
+            </v-list-item-title>
           </v-list-item>
-          <v-list-item v-if="notifMeetings.length > 0" to="messages">
+          <v-flex v-if="notifMessages.length > 0" xs12 my-2>
+            <v-divider />
+          </v-flex>
+          <v-list-item v-if="notifMeetings.length > 0" to="../meetings">
             <v-list-item-action>
               <v-badge
                 color="primary"
@@ -153,29 +170,41 @@
                 <v-icon>mdi-account-group</v-icon>
               </v-badge>
             </v-list-item-action>
-            <v-list-item-title> New meeting request(s)</v-list-item-title>
+            <v-list-item-title> New meeting activity</v-list-item-title>
           </v-list-item>
-          <v-list-item v-if="notifBids.length > 0" to="projects">
-            <v-list-item-action>
-              <v-badge
-                color="primary"
-              >
-                <template v-slot:badge>
-                  <span v-if="notifBids.length > 0">{{ notifBids.length }}</span>
-                </template>
-                <v-icon>mdi-currency-usd</v-icon>
-              </v-badge>
-            </v-list-item-action>
-            <v-list-item-title> New bid(s) on your project</v-list-item-title>
-          </v-list-item>
-          <v-flex xs12 my-2>
+          <v-flex v-if="notifMeetings.length > 0" xs12 my-2>
             <v-divider />
+          </v-flex>
+          <v-flex v-if="notifBids.length > 0" xs12 class="ibm" text-center>
+            <v-chip label>
+              Bids Received
+            </v-chip>
+            <v-divider my-2 />
+          </v-flex>
+          <v-layout v-for="bid in notifBids" :key="bid._id" wrap>
+            <v-flex v-if="$vuetify.breakpoint.smAndUp" xs1 px-sm-1>
+              <v-icon>mdi-beaker-plus</v-icon>
+            </v-flex>
+            <v-flex class="px-2 ibm" xs11>
+              <nuxt-link :to="bidUrl + bid.link">
+                {{ bid.activityDesc }}
+              </nuxt-link>
+            </v-flex>
+            <v-flex xs12 my-2>
+              <v-divider />
+            </v-flex>
+          </v-layout>
+          <v-flex v-if="notifBidRequest.length > 0" xs12 class="ibm" text-center>
+            <v-chip label>
+              Bids Invite
+            </v-chip>
+            <v-divider my-2 />
           </v-flex>
           <v-layout v-for="bid in notifBidRequest" :key="bid._id" wrap>
             <v-flex v-if="$vuetify.breakpoint.smAndUp" xs1 px-sm-1>
               <v-icon>mdi-lightbulb-group</v-icon>
             </v-flex>
-            <v-flex class="px-2" xs11>
+            <v-flex class="px-2 ibm" xs11>
               <nuxt-link :to="bidUrl + bid.link">
                 {{ bid.activityDesc }}
               </nuxt-link>
@@ -234,7 +263,15 @@
     </v-bottom-navigation>
   </v-app>
 </template>
-
+<style scoped>
+.ibm {
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+a {
+  text-decoration: none;
+  color: #CFD8DC !important;
+}
+</style>
 <script>
 import { mapGetters } from 'vuex'
 export default {
@@ -248,7 +285,7 @@ export default {
   data: () => ({
     bidUrl: '/job/',
     overflow: true,
-    contentClick: false,
+    contentClick: true,
     drawer: true,
     picture: '',
     mini: false,

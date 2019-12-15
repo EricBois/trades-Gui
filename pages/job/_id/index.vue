@@ -680,8 +680,8 @@ export default {
                 senderId: this.$auth.user.sub,
                 recipientId: this.project.user,
                 activity: 'Bid',
-                activityDesc: `New bid added to ${this.project.name} from ${this.$auth.user.name}`,
-                link: this.project._id
+                activityDesc: `${this.$auth.user.name} placed a bid on ${this.project.name}`,
+                link: this.project.id
               })
           })
           .catch((error) => {
