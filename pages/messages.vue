@@ -115,32 +115,24 @@
                   <v-card
                     v-if="message.uid === $auth.user.sub"
                     max-width="250px"
-                    class="mt-8 bg"
+                    class="mt-3 bg ml-2"
                     outlined
                   >
-                    <v-chip
-                      color="cyan darken-3"
-                      class="mb-2 ml-10 mt-n7 ibm"
-                    >
-                      <b>You</b>
-                    </v-chip>
-                    <v-flex class="ibm mb-2 ml-2 mt-n3" text-left>
+                    <v-flex class="ibm ma-2">
                       {{ message.text }}
                     </v-flex>
                   </v-card>
                   <v-card
                     v-else
                     max-width="250px"
-                    class="mt-8 mx-auto bg2"
+                    class="mt-3 mx-auto bg2"
                     outlined
                   >
-                    <v-chip
-                      color="green darken-3"
-                      class="mb-2 ml-10 mt-n7 ibm"
-                    >
-                      <b>{{ message.name }}</b>
-                    </v-chip>
-                    <v-flex class="ibm mb-2 ml-2 mt-n3" text-left>
+                    <v-card-text class="mt-n4">
+                      <div>{{message.name}}</div>
+                      <v-divider />
+                    </v-card-text>
+                    <v-flex class="ibm ma-2 mt-n2">
                       {{ message.text }}
                     </v-flex>
                   </v-card>
@@ -174,10 +166,10 @@
   overflow-y: auto;
 }
 .bg {
-  background-color: #00838F;
+  background-color: #616161;
 }
 .bg2 {
-  background-color: #2E7D32;
+  background-color: #004D40;
 }
 .confirmed {
   color:rgb(21, 170, 21);
