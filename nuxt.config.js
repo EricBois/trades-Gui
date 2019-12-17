@@ -19,8 +19,8 @@ export default {
     ]
   },
   env: {
-    trades: "Drywall, Taping, Framing, Labour, Texturing, Insulation",
-    tickets: "WHIMIS, First Aid, Scissor Lift, Fall Arrest",
+    trades: "Drywall,Taping,Framing,Labour,Texturing,Insulation",
+    tickets: "WHIMIS,First Aid,Scissor Lift,Fall Arrest",
     welcome: "Few things to get started, Let's start with building your profile!",
     welcomeProfile: "Make sure to fill in your name and add as much information as possible for the prospect clients / bidders to see. If you'd like to make some change at a later date you can always access this page from the left menu on the top ( your name )",
     welcomeJob: "Here you can place a bid, direct message or lookup the contractor and get all available details about the project ( photos, files ) ...",
@@ -104,7 +104,8 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: "http://localhost:3000/v1/"
+    /* baseURL: "http://localhost:3000/v1/" */
+    baseURL: "https://sub-hub.ca/api/"
   },
   router: {
     middleware: ['auth']
