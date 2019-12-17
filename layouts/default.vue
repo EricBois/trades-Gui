@@ -346,7 +346,7 @@ export default {
     logout () {
       this.$auth.logout()
       window.location.replace(
-        'https://dev-2upadx1s.auth0.com/v2/logout?returnTo=http%3A%2F%2Flocalhost:3333/'
+        'https://dev-2upadx1s.auth0.com/v2/logout?returnTo=https%3A%2F%2Fwww.sub-hub.ca/'
       )
     },
     clearNotifications () {
