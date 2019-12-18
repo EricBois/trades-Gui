@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nuxt --port 3333",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "start": "nuxt start --port 3333",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
   },
@@ -21,8 +21,9 @@
     "@nuxtjs/pwa": "^3.0.0-beta.19",
     "auth0-js": "^9.11.3",
     "blueimp-canvas-to-blob": "^3.16.0",
+    "fibers": "^4.0.2",
     "firebase": "^6.5.0",
-    "nuxt": "^2.0.0",
+    "nuxt": "^2.10.2",
     "nuxt-material-design-icons": "^1.0.4",
     "vue-image-upload-resize": "^2.1.1",
     "vue-sweetalert2": "^2.1.1",
@@ -41,3 +42,4 @@
     "core-js": "^2.6.5"
   }
 }
+
