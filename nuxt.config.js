@@ -82,6 +82,12 @@ export default {
       }
     }
   },
+  pwa: {
+    manifest: {
+      name: 'Sub-Hub',
+      lang: 'en-US'
+    }
+  },
   auth: {
     resetOnError: true,
     strategies: {
