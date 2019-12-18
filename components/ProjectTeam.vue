@@ -187,7 +187,10 @@ export default {
       list: [],
       message: {
         to: '',
-        senders: [],
+        names: {
+          to: '',
+          from: ''
+        },
         project_name: '',
         messages: {
           text: '',
@@ -256,11 +259,12 @@ export default {
     },
     async send () {
       if (this.message.messages.text) {
-        this.message.senders = [this.$auth.user.name]
         this.message.project_name = `${this.selectedJob.name} Project Team`
         this.message.messages.name = this.$auth.user.name
+        this.message.names.from = this.$auth.user.name
         for (const key in this.projectTeam) {
           const user = this.projectTeam[key]
+          this.message.names.to = user.name
           this.message.to = user.uid
           await this.$axios.$post('message/send', this.message).then((res) => {
             this.$swal

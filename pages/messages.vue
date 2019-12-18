@@ -217,7 +217,7 @@ export default {
       this.scrollDown()
     }
   },
-  mounted () {
+  created () {
     this.$store.dispatch('messages/getMessages')
     this.scrollDown()
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeMsg) {
