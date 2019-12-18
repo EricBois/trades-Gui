@@ -261,6 +261,7 @@ export default {
       if (this.message.messages.text) {
         this.message.project_name = `${this.selectedJob.name} Project Team`
         this.message.messages.name = this.$auth.user.name
+        this.message.messages.uid = this.$auth.user.sub
         this.message.names.from = this.$auth.user.name
         for (const key in this.projectTeam) {
           const user = this.projectTeam[key]
