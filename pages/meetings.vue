@@ -7,7 +7,7 @@
           <v-subheader v-if="meetings.length >= 1" class="justify-center sub">
             <b>Meeting Invites</b>
           </v-subheader>
-          <v-subheader v-else class="justify-center sub">
+          <v-subheader v-if="meetings.concat(meetingSent).length < 1" class="justify-center sub">
             <b>No Meeting Yet!</b>&nbsp;<v-icon small>
               mdi-emoticon-sad-outline
             </v-icon>
