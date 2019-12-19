@@ -103,7 +103,7 @@
           <v-btn v-if="this.$auth.loggedIn" color="amber darken-4" small @click="logout">
             Logout
           </v-btn>
-          <v-btn ref="addBtn" class="addBtn">
+          <v-btn :style="{'display': addBtnShow}" class="addBtn">
             Add To Page
           </v-btn>
         </v-list-item>
@@ -289,6 +289,7 @@ export default {
     }
   },
   data: () => ({
+    addBtnShow: 'none',
     overflow: true,
     contentClick: true,
     drawer: true,
@@ -343,18 +344,17 @@ export default {
         // this.$OneSignal.sendTags({ key: this.$auth.user.sub })
       })
       let deferredPrompt
-      const addBtn = this.$refs.addBtn
       window.addEventListener('beforeinstallprompt', (e) => {
         // Prevent Chrome 67 and earlier from automatically showing the prompt
         e.preventDefault()
         // Stash the event so it can be triggered later.
         deferredPrompt = e
         // Update UI to notify the user they can add to home screen
-        addBtn.style.display = 'block'
+        this.addBtnShow = 'block'
 
         addBtn.addEventListener('click', (e) => {
           // hide our user interface that shows our A2HS button
-          addBtn.style.display = 'none'
+          this.addBtnShow = 'none'
           // Show the prompt
           deferredPrompt.prompt()
           // Wait for the user to respond to the prompt
