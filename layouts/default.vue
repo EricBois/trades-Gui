@@ -103,7 +103,7 @@
           <v-btn v-if="this.$auth.loggedIn" color="amber darken-4" small @click="logout">
             Logout
           </v-btn>
-          <v-btn :style="{'display': addBtnShow}" class="addBtn ml-3" @click="addToPage" small>
+          <v-btn :style="{'display': addBtnShow}" class="addBtn ml-3" small @click="addToPage">
             <v-icon>mdi-tablet-cellphone</v-icon>&nbsp;
             Install App
           </v-btn>
