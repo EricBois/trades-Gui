@@ -1,7 +1,7 @@
 {
-  "name": "gui",
+  "name": "Sub-Hub",
   "version": "1.0.0",
-  "description": "trade gui",
+  "description": "Sub-Hub company",
   "author": "Eric Boisvenu",
   "private": true,
   "scripts": {
