@@ -86,6 +86,9 @@ export default {
     manifest: {
       name: 'Sub-Hub',
       lang: 'en-US'
+    },
+    meta: {
+      name: 'Sub-Hub'
     }
   },
   auth: {
