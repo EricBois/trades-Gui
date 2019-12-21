@@ -77,7 +77,9 @@
             <v-list-item-content>
               <v-list-item-title>
                 <v-chip outlined>
-                  <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
+                  <v-icon class="mr-2">
+                    mdi-account-multiple-plus
+                  </v-icon>
                   <span>Manage Team</span>
                 </v-chip>
               </v-list-item-title>
@@ -87,7 +89,9 @@
             <v-list-item-content>
               <v-list-item-title>
                 <v-chip outlined>
-                  <v-icon class="mr-2">mdi-pencil-outline</v-icon>
+                  <v-icon class="mr-2">
+                    mdi-pencil-outline
+                  </v-icon>
                   <span>Manage Projects</span>
                 </v-chip>
               </v-list-item-title>
@@ -269,14 +273,14 @@
         <v-icon>mdi-post</v-icon>
       </v-btn>
 
-      <v-btn to="/team">
-        <span>Team</span>
+      <v-btn to="/team/projects">
+        <span>Team Projects</span>
         <v-icon>mdi-account-group</v-icon>
       </v-btn>
 
-      <v-btn to="/user/create">
-        <span>Post</span>
-        <v-icon>mdi-clipboard-plus</v-icon>
+      <v-btn to="/meetings">
+        <span>Meetings</span>
+        <v-icon>mdi-handshake</v-icon>
       </v-btn>
 
       <v-btn to="/messages">
@@ -383,11 +387,6 @@ export default {
       this.deferredPrompt.prompt()
       // Wait for the user to respond to the prompt
       this.deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt')
-        } else {
-          console.log('User dismissed the A2HS prompt')
-        }
         this.deferredPrompt = null
       })
     },
