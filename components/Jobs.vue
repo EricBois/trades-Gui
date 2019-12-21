@@ -79,28 +79,30 @@
             </v-icon>
           </v-chip>
         </v-flex>
-        <v-card tile ripple class="pa-sm-6 mt-n1 mx-auto">
-          <v-flex xs12 text-center class="mt-n1">
-            <span class="mainTitle"><u>{{ project.name }}</u></span>
-            <v-chip
-              v-if="project.location.city"
-              color="grey lighten-1"
-              class="mt-n2 mr-2"
-              x-small
-              label
-              outlined
-            >
-              <v-icon small>
-                mdi-city
-              </v-icon>&nbsp;{{ project.location.city }}
-            </v-chip>
-          </v-flex>
-          <v-flex xs12 text-center>
-            <div class="ml-1 ibm">
-              {{ project.description }}
-            </div>
-          </v-flex>
-        </v-card>
+        <v-flex xs12>
+          <v-card tile ripple class="pa-sm-6 mt-n1 mx-auto">
+            <v-flex xs12 text-center class="mt-n1">
+              <span class="mainTitle"><u>{{ project.name }}</u></span>
+              <v-chip
+                v-if="project.location.city"
+                color="grey lighten-1"
+                class="mt-n2 mr-2"
+                x-small
+                label
+                outlined
+              >
+                <v-icon small>
+                  mdi-city
+                </v-icon>&nbsp;{{ project.location.city }}
+              </v-chip>
+            </v-flex>
+            <v-flex xs12 text-center>
+              <div class="ml-1 ibm">
+                {{ project.description }}
+              </div>
+            </v-flex>
+          </v-card>
+        </v-flex>
         <v-flex xs8 mt-2>
           <v-chip
             v-for="item in project.skills"
