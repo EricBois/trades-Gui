@@ -63,18 +63,37 @@
           </v-list-item>
         </v-list-group>
         <v-divider class="my-5" />
-        <v-list-item to="/team">
-          <v-list-item-action>
-            <v-icon>mdi-account-group</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              <v-chip outlined>
-                My Team
-              </v-chip>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        <v-list-group prepend-icon="mdi-account-group" no-action>
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>
+                <v-chip outlined>
+                  My Team
+                </v-chip>
+              </v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item to="/team/manage">
+            <v-list-item-content>
+              <v-list-item-title>
+                <v-chip outlined>
+                  <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
+                  <span>Manage Team</span>
+                </v-chip>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item to="/team/projects">
+            <v-list-item-content>
+              <v-list-item-title>
+                <v-chip outlined>
+                  <v-icon class="mr-2">mdi-pencil-outline</v-icon>
+                  <span>Manage Projects</span>
+                </v-chip>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
         <v-list-item to="/messages">
           <v-list-item-action>
             <v-icon>mdi-message</v-icon>
