@@ -1,52 +1,29 @@
 <template>
   <v-container>
     <v-card max-width="844" class="mx-auto" raised>
-      <v-layout row wrap class="pa-3">
-        <v-flex xs6 sm4 text-center text-sm-left>
-          <div>
-            <v-chip
-              color="grey"
-              outlined
-              small
-              label
-            >
-              {{ $moment(project.Created).fromNow() }}
-            </v-chip>
-          </div>
-        </v-flex>
-        <v-flex xs6 sm4 text-sm-center text-left>
-          <v-chip v-if="project.budget" outlined small color="green" label>
+      <v-layout row wrap class="pa-2">
+        <v-flex xs6 text-left>
+          <v-chip v-if="project.budget" small color="grey lighten-2" outlined label>
             <b>Budget: ${{ project.budget }}</b>
           </v-chip>
         </v-flex>
         <v-flex
-          xs12
-          sm4
-          text-sm-right
-          text-center
-          class="pr-5 pt-1 pt-sm-0"
+          xs6
+          text-right
+          class="pr-2"
           label
         >
-          <v-chip color="orange" small label>
+          <v-chip color="grey lighten-2" outlined small label>
             {{ project.jobType }}
             <v-icon right>
               mdi-star
             </v-icon>
           </v-chip>
-          <v-chip
-            v-if="project.location && project.location.city"
-            color="grey lighten-1"
-            small
-            outlined
-            label
-          >
-            <v-icon>mdi-city</v-icon>&nbsp;{{ project.location.city }}
-          </v-chip>
         </v-flex>
         <v-flex xs12>
           <v-divider class="mt-3" />
         </v-flex>
-        <v-flex xs12 class="pt-4">
+        <v-flex class="pa-2" xs12>
           <div class="main text-center">
             {{ project.name }} &nbsp; <a :href="url" target="_blank"><v-icon v-if="url !== ''">mdi-google-maps</v-icon></a>
             <div v-if="project.createdBy" class="caption grey--text">
@@ -98,7 +75,7 @@
             </v-chip>
           </div>
         </v-flex>
-        <v-flex xs4 md3 offset-xs4 offset-md9>
+        <v-flex xs12 text-center>
           <v-btn v-if="project.wcb" class="ma-1" x-small text>
             <v-icon>mdi-check-decagram</v-icon>&nbsp; Wcb
           </v-btn>

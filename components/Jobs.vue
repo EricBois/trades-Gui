@@ -43,21 +43,32 @@
       class="mx-auto"
     >
       <v-layout row wrap class="pa-3">
-        <v-flex xs6 sm4 text-center text-sm-left>
-          <v-chip outlined small color="teal lighten-4" label>
+        <v-flex :xs4="$vuetify.breakpoint.width >370" :xs6="$vuetify.breakpoint.width >370" text-left>
+          <v-chip class="mt-n6 ml-2" small color="grey lighten-2" outlined label>
             {{ $moment(project.Created).fromNow() }}
           </v-chip>
         </v-flex>
-        <v-flex xs6 sm4 text-center>
-          <v-chip v-if="project.budget" outlined color="green" small label>
-            <b>Budget ${{ project.budget }}</b>
+        <v-flex v-if="$vuetify.breakpoint.width >= 370" xs4 sm4 text-center>
+          <v-chip
+            v-if="project.budget"
+            class="mt-n6 mr-4"
+            color="grey lighten-2"
+            small
+            outlined
+            label
+          >
+            <v-icon small class="ml-n3">
+              mdi-currency-usd
+            </v-icon>
+            <b>{{ project.budget }}</b>
           </v-chip>
         </v-flex>
-        <v-flex xs12 sm4 text-center text-sm-right>
+        <v-flex :xs4="$vuetify.breakpoint.width >370" :xs6="$vuetify.breakpoint.width >370" text-right>
           <v-chip
-            color="orange"
-            class="mr-2 mt-2 mt-sm-0 jobtype"
+            color="grey lighten-2"
+            class="mt-n6 ml-n2 mr-2 jobtype"
             small
+            outlined
             label
           >
             {{ project.jobType }}<v-icon v-if="project.jobType === 'Hourly'" right>
@@ -67,25 +78,29 @@
               mdi-file-document-outline
             </v-icon>
           </v-chip>
-          <v-chip
-            v-if="project.location.city"
-            color="grey lighten-1"
-            class="mt-2 mr-2"
-            small
-            label
-            outlined
-          >
-            <v-icon>mdi-city</v-icon>&nbsp;{{ project.location.city }}
-          </v-chip>
         </v-flex>
-        <v-flex xs12 text-center class="mt-2">
-          <span class="mainTitle"><u>{{ project.name }}</u></span>
-        </v-flex>
-        <v-flex xs12 text-center>
-          <div class="ml-1 ibm">
-            {{ project.description }}
-          </div>
-        </v-flex>
+        <v-card tile ripple class="pa-sm-6 mt-n1 mx-auto">
+          <v-flex xs12 text-center class="mt-n1">
+            <span class="mainTitle"><u>{{ project.name }}</u></span>
+            <v-chip
+              v-if="project.location.city"
+              color="grey lighten-1"
+              class="mt-n2 mr-2"
+              x-small
+              label
+              outlined
+            >
+              <v-icon small>
+                mdi-city
+              </v-icon>&nbsp;{{ project.location.city }}
+            </v-chip>
+          </v-flex>
+          <v-flex xs12 text-center>
+            <div class="ml-1 ibm">
+              {{ project.description }}
+            </div>
+          </v-flex>
+        </v-card>
         <v-flex xs8 mt-2>
           <v-chip
             v-for="item in project.skills"
