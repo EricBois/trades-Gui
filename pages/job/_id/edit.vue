@@ -100,7 +100,7 @@
                     />
                   </v-flex>
                   <v-flex xs6 md3 pt-4>
-                    <v-switch v-model="switch1" label="Private" />
+                    <v-switch v-model="switch1" label="Assign To Team" />
                   </v-flex>
                   <v-flex xs6 md2 pt-4>
                     <v-tooltip bottom>
