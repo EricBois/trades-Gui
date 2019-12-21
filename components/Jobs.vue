@@ -45,7 +45,7 @@
       <v-layout row wrap class="pa-3">
         <v-flex :xs4="$vuetify.breakpoint.width >370" :xs6="$vuetify.breakpoint.width >370" text-left>
           <v-chip class="mt-n6 ml-2" small color="grey lighten-2" outlined label>
-            {{ $moment(project.Created).fromNow() }}
+            {{ fromNow(project.Created) }}
           </v-chip>
         </v-flex>
         <v-flex v-if="$vuetify.breakpoint.width >= 370" xs4 sm4 text-center>
@@ -183,7 +183,8 @@
 }
 </style>
 <script>
-
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 export default {
   props: {
     jobs: {
@@ -228,6 +229,9 @@ export default {
       this.setPages()
     }
   },
+  created () {
+    dayjs.extend(relativeTime)
+  },
   methods: {
     setPages () {
       this.pages = Math.ceil(this.jobs.length / this.perPage)
@@ -238,6 +242,9 @@ export default {
       const from = (page * perPage) - perPage
       const to = (page * perPage)
       return jobs.slice(from, to)
+    },
+    fromNow (date) {
+      return dayjs(date).fromNow()
     }
   }
 }

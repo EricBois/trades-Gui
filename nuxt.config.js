@@ -68,7 +68,6 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify',
-    '@nuxtjs/moment',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/onesignal',
