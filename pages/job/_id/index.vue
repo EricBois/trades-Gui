@@ -697,6 +697,7 @@ export default {
         this.$axios
           .$post('bid/create', this.infobid)
           .then((res) => {
+            this.bidsTotal = this.bidsTotal + 1
             // make a sweetalert2
             res.trade = res.trade.toString().replace(/,/g, ', ')
             this.bids.push(res)
