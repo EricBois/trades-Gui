@@ -91,11 +91,11 @@
             </v-flex>
           </v-card>
         </v-flex>
-        <v-flex xs8 mt-3>
+        <v-flex xs12 mt-3>
           <v-chip
             v-for="item in project.skills"
             :key="item"
-            color="blue accent-1"
+            color="cyan lighten-4"
             x-small
             class="mt-1"
             outlined
@@ -104,27 +104,29 @@
             {{ item }}
           </v-chip>
         </v-flex>
-        <v-flex xs4 mt-3>
-          <v-btn v-if="project.wcb" class="ma-1" color="green accent-4" x-small text>
-            <v-icon small>
-              mdi-check-decagram
-            </v-icon>&nbsp; Wcb
-          </v-btn>
-          <v-btn v-else class="ma-1" x-small color="grey" text>
-            <v-icon small>
-              mdi-checkbox-blank-outline
-            </v-icon>&nbsp; Wcb
-          </v-btn>
-          <v-btn v-if="project.liability" class="ma-1" color="green accent-4" x-small text>
-            <v-icon small>
-              mdi-check-decagram
-            </v-icon>&nbsp;Liability
-          </v-btn>
-          <v-btn v-else class="ma-1" color="grey" x-small text>
-            <v-icon small>
-              mdi-checkbox-blank-outline
-            </v-icon>&nbsp;Liability
-          </v-btn>
+        <v-flex xs12 mt-3 text-center>
+          <v-card class="mb-n2">
+            <v-btn v-if="project.wcb" class="ma-1" color="green accent-4" x-small text>
+              <v-icon small>
+                mdi-check-decagram
+              </v-icon>&nbsp; Wcb
+            </v-btn>
+            <v-btn v-else class="ma-1" x-small color="grey" text>
+              <v-icon small>
+                mdi-checkbox-blank-outline
+              </v-icon>&nbsp; Wcb
+            </v-btn>
+            <v-btn v-if="project.liability" class="ma-1" color="green accent-4" x-small text>
+              <v-icon small>
+                mdi-check-decagram
+              </v-icon>&nbsp;Liability
+            </v-btn>
+            <v-btn v-else class="ma-1" color="grey" x-small text>
+              <v-icon small>
+                mdi-checkbox-blank-outline
+              </v-icon>&nbsp;Liability
+            </v-btn>
+          </v-card>
         </v-flex>
       </v-layout>
       <v-flex mb-2 />

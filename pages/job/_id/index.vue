@@ -28,7 +28,7 @@
             {{ project.name }} &nbsp; <a :href="url" target="_blank"><v-icon v-if="url !== ''">mdi-google-maps</v-icon></a>
             <div v-if="project.createdBy" class="caption grey--text">
               Project by:
-              <v-chip color="blue-grey lighten-4" outlined x-small @click="profile(project.user)">
+              <v-chip color="blue-grey lighten-4" class="ibm" outlined x-small @click="profile(project.user)">
                 {{ project.createdBy }}
               </v-chip>
             </div>
@@ -72,8 +72,9 @@
           <v-chip
             v-for="item in project.skills"
             :key="item"
-            color="primary"
+            color="green lighten-2"
             x-small
+            class="ibm"
             label
           >
             {{ item }}
@@ -86,8 +87,9 @@
           <v-chip
             v-for="item in project.tickets"
             :key="item"
-            color="yellow"
+            color="orange lighten-3"
             x-small
+            class="ibm"
             label
           >
             {{ item }}
@@ -491,6 +493,10 @@
 .sub {
   transform: rotate(359deg);
   margin: 0 auto;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: bold;
+}
+.ibm {
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: bold;
 }
