@@ -136,6 +136,9 @@ export default {
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
   */
+  build: {
+    transpile: [/^vue2-google-maps($|\/)/]
+  },
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
