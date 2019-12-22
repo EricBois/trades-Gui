@@ -30,7 +30,7 @@ export default {
     ]
   },
   env: {
-    trades: "Drywall,Taping,Framing,Labour,Texturing,Insulation,T-Bar,Ceiling Tiles",
+    trades: "Drywall,Taping,Framing,Labour,Texturing,Insulation,T-bar,Ceiling tiles",
     tickets: "WHIMIS,First Aid,Scissor Lift,Fall Arrest",
     welcome: "Few things to get started, Let's start with building your profile!",
     welcomeProfile: "Make sure to fill in your name and add as much information as possible for the prospect clients / bidders to see. If you'd like to make some change at a later date you can always access this page from the left menu on the top ( your name )",
