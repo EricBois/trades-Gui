@@ -143,7 +143,7 @@ a:link {
   background-color: rgb(94, 91, 91);
 }
 .name {
-  font-family: "Righteous", cursive;
+  font-family: 'IBM Plex Sans', sans-serif;
   font-size: 2.3em;
   transform: rotate(358deg);
   background-color: rgb(87, 88, 88);
