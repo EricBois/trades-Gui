@@ -23,7 +23,15 @@
           Skills
           <v-divider class="mx-10 pt-1" />
         </div>
-        <v-chip v-for="item in user.metadata.skills" :key="item" color="primary" small>
+        <v-chip
+          v-for="item in user.metadata.skills"
+          :key="item"
+          color="cyan lighten-4"
+          x-small
+          class="mr-1"
+          outlined
+          label
+        >
           {{ item }}
         </v-chip>
       </v-flex>
@@ -32,24 +40,32 @@
           Tickets
           <v-divider class="mx-10 pt-1" />
         </div>
-        <v-chip v-for="item in user.metadata.tickets" :key="item" color="teal" small>
+        <v-chip
+          v-for="item in user.metadata.tickets"
+          :key="item"
+          color="orange lighten-3"
+          x-small
+          class="mr-1"
+          outlined
+          label
+        >
           {{ item }}
         </v-chip>
       </v-flex>
       <v-flex xs12 text-center>
-        <v-chip v-if="user.metadata.wcb">
-          <v-icon color="green">
+        <v-chip v-if="user.metadata.wcb" small>
+          <v-icon small color="green">
             mdi-check-decagram
           </v-icon>&nbsp; Wcb Coverage
         </v-chip>
-        <v-chip v-if="user.metadata.liability">
-          <v-icon color="green">
+        <v-chip v-if="user.metadata.liability" small>
+          <v-icon small color="green">
             mdi-check-decagram
           </v-icon>&nbsp; Liability Insurance
         </v-chip>
       </v-flex>
-      <v-flex xs12 description text-center>
-        <p class="mt-2 pa-3 elevation-4">
+      <v-flex xs12 class="mt-n4" text-center>
+        <p class=" pa-1 elevation-2 description">
           {{ user.metadata.description }}
         </p>
       </v-flex>
@@ -143,7 +159,8 @@ a:link {
 }
 .description {
   color: white;
-  font-family: "Righteous", cursive;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.8em;
 }
 .container {
   max-width: 1200px;
