@@ -57,7 +57,7 @@ export default {
   */
   plugins: [
     { src: '~/plugins/googleMap'},
-    { src: '~/plugins/sweetalert2'},
+    // { src: '~/plugins/sweetalert2'},
     { src: '~/plugins/vue-image-resize'},
     { src: '~/plugins/axios'}
   ],
@@ -77,6 +77,7 @@ export default {
     // '@nuxtjs/vuetify',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
+    'vue-sweetalert2/nuxt',
     '@nuxtjs/onesignal',
     '@nuxtjs/pwa',
     'nuxt-material-design-icons'
