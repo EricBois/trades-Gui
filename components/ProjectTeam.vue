@@ -92,7 +92,7 @@
         <v-divider class="my-1" />
         <span class="controls">Controls</span>
         <v-divider class="my-1" />
-        <v-btn color="primary" :href="job" target="_blank" small>
+        <v-btn color="primary" :href="job" small>
           Go to Project
         </v-btn>
         <v-btn v-if="projectTeam.some(user => !user.notified)" small @click="requestBids">

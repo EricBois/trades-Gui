@@ -32,7 +32,7 @@
           <b><u>Location</u></b>
         </h3>
         <span>
-          <a :href="selectedMeeting.addressUrl" target="_blank">{{ selectedMeeting.address }}</a>
+          <a :href="selectedMeeting.addressUrl">{{ selectedMeeting.address }}</a>
         </span>
       </div>
       <v-divider class="my-4" />
