@@ -74,7 +74,7 @@
 </template>
 <style scoped>
 .bg {
-  background-color: #00897B;
+  background-color: #EF6C00;
 }
 .scroll {
   overflow-y: auto;
