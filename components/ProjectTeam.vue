@@ -6,30 +6,44 @@
         <span class="mainTitle">{{ selectedJob.name }}</span>
         <v-divider class="my-5" />
       </v-flex>
-      <v-flex v-if="selectedJob.skills && selectedJob.skills.length > 0" xs6 text-center>
-        <div class="sub">
-          Skills
-          <v-divider class="mx-10 pt-1" />
-        </div>
+      <v-flex
+        v-if="selectedJob.tickets && selectedJob.tickets.length > 0"
+        :xs6="selectedJob.tickets.length > 0 && $vuetify.breakpoint.width >= 400"
+        :xs12="selectedJob.tickets.length < 1 || $vuetify.breakpoint.width < 400"
+        text-center
+      >
+        <v-flex class="sub" xs12 text-center>
+          <u>Skills</u>
+        </v-flex>
         <v-chip
           v-for="item in selectedJob.skills"
           :key="item"
-          color="primary"
-          small
+          color="cyan lighten-4"
+          x-small
+          class="ibm ma-1"
+          outlined
+          label
         >
           {{ item }}
         </v-chip>
       </v-flex>
-      <v-flex v-if="selectedJob.tickets && selectedJob.tickets.length > 0" xs6 text-center>
-        <div class="sub">
-          Tickets
-          <v-divider class="mx-10 pt-1" />
-        </div>
+      <v-flex
+        v-if="selectedJob.tickets && selectedJob.tickets.length > 0"
+        :xs6="selectedJob.skills.length > 0 && $vuetify.breakpoint.width >= 400"
+        :xs12="selectedJob.skills.length < 1 || $vuetify.breakpoint.width < 400"
+        text-center
+      >
+        <v-flex class="sub" xs12 text-center>
+          <u>Tickets</u>
+        </v-flex>
         <v-chip
           v-for="item in selectedJob.tickets"
           :key="item"
-          color="green"
-          small
+          color="orange lighten-3"
+          x-small
+          class="ibm ma-1"
+          outlined
+          label
         >
           {{ item }}
         </v-chip>
@@ -42,8 +56,15 @@
         </v-card-text>
       </v-flex>
       <v-flex xs12 class="pt-5" />
-      <v-flex xs5 sm4 text-center ml-sm-12>
-        <v-card class="main scroll" min-height="200px" max-height="400">
+      <v-flex
+        xs6
+        sm4
+        text-center
+        mx-auto
+        ml-sm-12
+        pr-2
+      >
+        <v-card class="main scroll" min-height="200px" max-height="600">
           <v-divider />
           <h3 class="ibm">
             My Team
@@ -61,9 +82,16 @@
           </v-icon>
         </v-btn>
       </v-flex>
-      <v-flex xs2 />
-      <v-flex xs5 sm4 text-center mr-sm-12>
-        <v-card class="pb-3 main scroll" min-height="200px" max-height="400">
+
+      <v-flex
+        xs6
+        sm4
+        text-center
+        mx-auto
+        mr-sm-12
+        pl-2
+      >
+        <v-card class="pb-3 main scroll" min-height="200px" max-height="600">
           <v-divider />
           <h3 class="ibm">
             Project Team
@@ -73,8 +101,6 @@
             <v-card
               v-for="user in projectTeam"
               :key="user.id"
-              flat
-              outlined
               class="bg ma-2"
             >
               {{ user.name }} <v-divider />
@@ -92,10 +118,10 @@
         <v-divider class="my-1" />
         <span class="controls">Controls</span>
         <v-divider class="my-1" />
-        <v-btn color="primary" :href="job" small>
+        <v-btn color="primary" class="mt-2" :href="job" small>
           Go to Project
         </v-btn>
-        <v-btn v-if="projectTeam.some(user => !user.notified)" small @click="requestBids">
+        <v-btn v-if="projectTeam.some(user => !user.notified)" class="mt-2" small @click="requestBids">
           Request for bids
         </v-btn>
         <v-btn v-else small disabled>
@@ -143,7 +169,8 @@
 }
 .mainTitle {
   font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 2em;
+  font-size: 1.7em;
+  font-style: italic;
   font-weight: bold;
 }
 .controls {
