@@ -194,14 +194,46 @@ export default {
   watch: {
     switch1 () {
       if (this.switch1) {
-        this.info.private = true
+        this.$swal
+          .fire({
+            title: 'Assign project to team',
+            text: 'This project wont be publicly available, you can manage it in your team section.',
+            type: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'I Understand'
+          })
+          .then((result) => {
+            if (result.value) {
+              this.info.private = true
+            } else {
+              this.switch1 = false
+            }
+          })
       } else {
         this.info.private = false
       }
     },
     switch2 () {
       if (this.switch2) {
-        this.info.oneBid = true
+        this.$swal
+          .fire({
+            title: 'Activate 1 bid',
+            text: 'Only 1 bid per user will be allowed.',
+            type: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'I Understand'
+          })
+          .then((result) => {
+            if (result.value) {
+              this.info.oneBid = true
+            } else {
+              this.switch2 = false
+            }
+          })
       } else {
         this.info.oneBid = false
       }
