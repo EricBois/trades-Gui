@@ -36,24 +36,19 @@
     <v-card
       v-for="project in filteredList"
       :key="project.id"
-      raised
+      outlined
       ripple
+      hover
       :to="job+project.id"
-      max-width="600"
-      class="mx-auto"
+      max-width="800"
+      class="mx-auto mt-5"
     >
-      <v-layout row wrap class="pa-3">
-        <v-flex :xs4="$vuetify.breakpoint.width >370" :xs6="$vuetify.breakpoint.width >370" text-left>
-          <v-chip class="mt-n6 ml-2" small color="grey lighten-2" outlined label>
-            {{ fromNow(project.Created) }}
-          </v-chip>
-        </v-flex>
-        <v-flex v-if="$vuetify.breakpoint.width >= 370" xs4 sm4 text-center>
+      <v-layout wrap>
+        <v-flex v-if="$vuetify.breakpoint.width >= 370" class="mb-n6" xs12 text-center>
           <v-chip
             v-if="project.budget"
-            class="mt-n6 mr-4"
-            color="grey lighten-2"
-            small
+            color="amber lighten-3"
+            x-small
             outlined
             label
           >
@@ -63,70 +58,72 @@
             <b>{{ project.budget }}</b>
           </v-chip>
         </v-flex>
-        <v-flex :xs4="$vuetify.breakpoint.width >370" :xs6="$vuetify.breakpoint.width >370" text-right>
+        <v-flex :xs6="$vuetify.breakpoint.width >370" text-left>
+          <v-chip x-small color="amber lighten-3" outlined label>
+            {{ fromNow(project.Created) }}
+          </v-chip>
+        </v-flex>
+        <v-flex :xs6="$vuetify.breakpoint.width >370" text-right>
           <v-chip
-            color="grey lighten-2"
-            class="mt-n6 ml-n2 mr-2 jobtype"
-            small
+            color="amber lighten-3"
+            class=" mr-2 jobtype"
+            x-small
             outlined
             label
           >
-            {{ project.jobType }}<v-icon v-if="project.jobType === 'Hourly'" right>
+            {{ project.jobType }}<v-icon v-if="project.jobType === 'Hourly'" small right>
               mdi-clock-outline
             </v-icon>
-            <v-icon v-else right>
+            <v-icon v-else small right>
               mdi-file-document-outline
             </v-icon>
           </v-chip>
         </v-flex>
         <v-flex xs12>
-          <v-card tile ripple class="pa-sm-6 mt-n1 mx-auto">
+          <v-card tile ripple class="pa-3 mx-auto">
             <v-flex xs12 text-center class="mt-n1">
-              <span class="mainTitle"><u>{{ project.name }}</u></span>
-              <v-chip
-                v-if="project.location.city"
-                color="grey lighten-1"
-                class="mt-n2 mr-2"
-                x-small
-                label
-                outlined
-              >
-                <v-icon small>
-                  mdi-city
-                </v-icon>&nbsp;{{ project.location.city }}
-              </v-chip>
+              <span class="mainTitle"><u>{{ project.name }}</u></span><br>
             </v-flex>
             <v-flex xs12 text-center>
-              <div class="ml-1 ibm">
+              <div class="pa-2 description">
                 {{ project.description }}
               </div>
             </v-flex>
           </v-card>
         </v-flex>
-        <v-flex xs8 mt-2>
+        <v-flex xs8 mt-3>
           <v-chip
             v-for="item in project.skills"
             :key="item"
             color="blue accent-1"
-            small
+            x-small
             class="mt-1"
             outlined
+            label
           >
             {{ item }}
           </v-chip>
         </v-flex>
-        <v-flex xs4 mt-2>
+        <v-flex xs4 mt-3>
           <v-btn v-if="project.wcb" class="ma-1" color="green accent-4" x-small text>
-            <v-icon>mdi-check-decagram</v-icon>&nbsp; Wcb
+            <v-icon small>
+              mdi-check-decagram
+            </v-icon>&nbsp; Wcb
           </v-btn>
           <v-btn v-else class="ma-1" x-small color="grey" text>
-            <v-icon>mdi-checkbox-blank-outline</v-icon>&nbsp; Wcb
+            <v-icon small>
+              mdi-checkbox-blank-outline
+            </v-icon>&nbsp; Wcb
           </v-btn>
           <v-btn v-if="project.liability" class="ma-1" color="green accent-4" x-small text>
-            <v-icon>mdi-check-decagram</v-icon>&nbsp;Liability
+            <v-icon small>
+              mdi-check-decagram
+            </v-icon>&nbsp;Liability
           </v-btn>
           <v-btn v-else class="ma-1" color="grey" x-small text>
-            <v-icon>mdi-checkbox-blank-outline</v-icon>&nbsp;Liability
+            <v-icon small>
+              mdi-checkbox-blank-outline
+            </v-icon>&nbsp;Liability
           </v-btn>
         </v-flex>
       </v-layout>
@@ -162,6 +159,11 @@
     }
     .ibm {
       font-family: 'IBM Plex Sans', sans-serif;
+    }
+    .description {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.8em;
+      font-style: semi-bold;
     }
     .jobtype {
       font-family: 'IBM Plex Sans', sans-serif;

@@ -15,7 +15,7 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400i,700i&display=swap' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600&display=swap' },
       { href:"splashscreens/iphone5_splash.png", media:"(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)", rel:"apple-touch-startup-image" },
       { href:"splashscreens/iphone6_splash.png", media:"(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)", rel:"apple-touch-startup-image" },
       { href:"splashscreens/iphoneplus_splash.png", media:"(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)", rel:"apple-touch-startup-image" },

@@ -15,7 +15,7 @@
             mdi-message-text mdi-36px
           </v-icon>
           <a v-if="user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon class="circle-icon" color="green">mdi-web mdi-36px</v-icon></a>
-          <a v-if="user.metadata.phone" :href="phone" ><v-icon class="circle-icon" color="teal">mdi-phone-classic mdi-36px</v-icon></a>
+          <a v-if="user.metadata.phone" :href="phone"><v-icon class="circle-icon" color="teal">mdi-phone-classic mdi-36px</v-icon></a>
         </div>
       </v-flex>
       <v-flex v-if="user.metadata.skills && user.metadata.skills.length > 0" xs12 sm6 text-center>
