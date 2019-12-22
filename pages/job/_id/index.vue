@@ -1,19 +1,19 @@
 <template>
   <v-container>
     <v-card max-width="844" class="mx-auto" raised>
-      <v-layout row wrap class="pa-2">
-        <v-flex xs6 text-left>
-          <v-chip v-if="project.budget" small color="grey lighten-2" outlined label>
+      <v-layout wrap>
+        <v-flex xs6 class="mt-1" text-left>
+          <v-chip v-if="project.budget" small color="amber lighten-3" outlined label>
             <b>Budget: ${{ project.budget }}</b>
           </v-chip>
         </v-flex>
         <v-flex
           xs6
           text-right
-          class="pr-2"
+          class="pr-2 mt-1"
           label
         >
-          <v-chip color="grey lighten-2" outlined small label>
+          <v-chip color="amber lighten-3" outlined small label>
             {{ project.jobType }}
             <v-icon right>
               mdi-star
@@ -21,123 +21,170 @@
           </v-chip>
         </v-flex>
         <v-flex xs12>
-          <v-divider class="mt-3" />
+          <v-divider class="mt-2" />
         </v-flex>
-        <v-flex class="pa-2" xs12>
-          <div class="main text-center">
+        <v-flex xs12>
+          <div class="main my-6 text-center">
             {{ project.name }} &nbsp; <a :href="url" target="_blank"><v-icon v-if="url !== ''">mdi-google-maps</v-icon></a>
             <div v-if="project.createdBy" class="caption grey--text">
               Project by:
-              <u>{{ project.createdBy }}</u>
+              <v-chip color="blue-grey lighten-4" outlined x-small @click="profile(project.user)">
+                {{ project.createdBy }}
+              </v-chip>
             </div>
           </div>
         </v-flex>
-        <v-flex v-if="project.skills && project.skills.length > 0" xs6 text-center>
+        <v-flex :xs6="$vuetify.breakpoint.width <450" :xs4="$vuetify.breakpoint.width >450" :offset-4="$vuetify.breakpoint.width >450" :offset-3="$vuetify.breakpoint.width <450" text-center>
+          <v-card class="mb-4">
+            <v-btn
+              v-if="project.files && project.files.length > 0 || ownProject"
+              color="amber lighten-5"
+              ripple
+              icon
+              large
+              @click="dialogFile = !dialogFile"
+            >
+              <v-icon>
+                mdi-file-document-box-outline
+              </v-icon>
+            </v-btn>
+            <v-btn
+              v-if="project.photos && project.photos.length > 0 || ownProject"
+              color="amber lighten-5"
+              icon
+              large
+              ripple
+              @click="dialogPhoto = !dialogPhoto"
+            >
+              <v-icon>
+                mdi-camera-outline
+              </v-icon>
+            </v-btn>
+          </v-card>
+        </v-flex>
+        <v-flex xs12>
+          <v-divider class="mb-2" />
+        </v-flex>
+        <v-flex v-if="project.skills && project.skills.length > 0" :xs6="project.tickets.length > 0" :xs12="project.tickets.length < 1" text-center>
           <div class="sub">
-            Skills
-            <v-divider class="mx-12 pt-1" />
+            <u>Skills</u>
           </div>
           <v-chip
             v-for="item in project.skills"
             :key="item"
             color="primary"
-            small
+            x-small
+            label
           >
             {{ item }}
           </v-chip>
         </v-flex>
-        <v-flex v-if="project.tickets && project.tickets.length > 0" xs6 text-center>
+        <v-flex v-if="project.tickets && project.tickets.length > 0" :xs6="project.skills.length > 0" :xs12="project.skills.length < 1" text-center>
           <div class="sub">
-            Tickets
-            <v-divider class="mx-12 pt-1" />
+            <u>Tickets</u>
           </div>
           <v-chip
             v-for="item in project.tickets"
             :key="item"
             color="yellow"
-            small
+            x-small
+            label
           >
             {{ item }}
           </v-chip>
         </v-flex>
         <v-flex xs12>
-          <v-card-text class="text-center">
-            {{ project.description }}
-          </v-card-text>
-        </v-flex>
-        <v-flex xs12 md4 offset-md4 text-center>
-          <div class="mb-4">
-            <v-chip v-if="project.files && project.files.length > 0 || ownProject" color="green" ripple small @click="dialogFile = !dialogFile">
-              <v-icon>mdi-file-document-box-outline</v-icon>&nbsp;Documents
-            </v-chip>
-            <v-chip v-if="project.photos && project.photos.length > 0 || ownProject" color="blue-grey lighten-4" small ripple @click="dialogPhoto = !dialogPhoto">
-              <v-icon>mdi-camera</v-icon>&nbsp;Photos
-            </v-chip>
-          </div>
+          <v-divider class="my-2" />
         </v-flex>
         <v-flex xs12 text-center>
-          <v-btn v-if="project.wcb" class="ma-1" x-small text>
-            <v-icon>mdi-check-decagram</v-icon>&nbsp; Wcb
-          </v-btn>
-          <v-btn v-if="project.liability" class="ma-1" x-small text>
-            <v-icon>mdi-check-decagram</v-icon>&nbsp;Liability
-          </v-btn>
+          <v-card tile class="pa-4 my-2">
+            {{ project.description }}
+          </v-card>
         </v-flex>
-        <v-flex xs12>
-          <v-card-actions class="justify-center">
-            <v-btn
-              v-if="project.user !== this.$auth.user.sub"
-              class="ma-1"
-              color="blue darken-1"
-              small
-              @click="dialogMessage = !dialogMessage"
-            >
-              <v-icon>
-                mdi-android-messages
-              </v-icon>
-              &nbsp;Message
-            </v-btn>
-            <v-btn
-              v-if="project.user !== this.$auth.user.sub && bidding"
-              class="ma-1"
-              color="teal lighten-1"
-              small
-              @click="dialogBid = !dialogBid"
-            >
-              Place a Bid
-            </v-btn>
-            <v-btn
-              v-else-if="project.user !== this.$auth.user.sub && !bidding"
-              class="ma-1"
-              color="teal lighten-1"
-              small
-              disabled
-            >
-              Place a Bid
-            </v-btn>
-            <v-btn
-              v-if="project.user === this.$auth.user.sub"
-              class="blue-grey lighten-1 ma-1"
-              small
-              :to="job+project.id+edit"
-            >
-              Edit
-            </v-btn>
-            <v-btn
-              v-if="project.user === this.$auth.user.sub"
-              class="red darken-4 ma-1"
-              small
-              @click="deleteProject(project.id)"
-            >
-              Delete Project
-            </v-btn>
-          </v-card-actions>
-          <v-flex v-if="project.user !== this.$auth.user.sub && !bidding" xs12 text-center>
-            <small class="red--text">*Bids have been disabled</small>
-          </v-flex>
+        <v-flex xs12 text-center>
+          <v-btn v-if="project.wcb" class="ma-1" color="green accent-4" x-small text>
+            <v-icon small>
+              mdi-check-decagram
+            </v-icon>&nbsp; Wcb
+          </v-btn>
+          <v-btn v-else class="ma-1" x-small color="grey" text>
+            <v-icon small>
+              mdi-checkbox-blank-outline
+            </v-icon>&nbsp; Wcb
+          </v-btn>
+          <v-btn v-if="project.liability" class="ma-1" color="green accent-4" x-small text>
+            <v-icon small>
+              mdi-check-decagram
+            </v-icon>&nbsp;Liability
+          </v-btn>
+          <v-btn v-else class="ma-1" color="grey" x-small text>
+            <v-icon small>
+              mdi-checkbox-blank-outline
+            </v-icon>&nbsp;Liability
+          </v-btn>
         </v-flex>
       </v-layout>
     </v-card>
+    <v-flex xs12>
+      <v-card-actions class="justify-center">
+        <v-btn
+          v-if="project.user !== this.$auth.user.sub"
+          class="ma-1"
+          color="blue darken-3"
+          small
+          @click="dialogMessage = !dialogMessage"
+        >
+          <v-icon>
+            mdi-android-messages
+          </v-icon>
+        </v-btn>
+        <v-btn
+          v-if="project.user !== this.$auth.user.sub && bidding"
+          class="ma-1"
+          color="green darken-1"
+          small
+          @click="dialogBid = !dialogBid"
+        >
+          <v-icon class="mr-1">
+            mdi-domain-plus
+          </v-icon>
+          Bid
+        </v-btn>
+        <v-btn
+          v-else-if="project.user !== this.$auth.user.sub && !bidding"
+          class="ma-1"
+          color="teal lighten-1"
+          small
+          disabled
+        >
+          <v-icon class="mr-1">
+            mdi-domain-plus
+          </v-icon>
+          Bid
+        </v-btn>
+        <v-btn
+          v-if="project.user === this.$auth.user.sub"
+          class="teal darken-2 ma-1"
+          icon
+          large
+          :to="job+project.id+edit"
+        >
+          <v-icon>mdi-pencil-outline</v-icon>
+        </v-btn>
+        <v-btn
+          v-if="project.user === this.$auth.user.sub"
+          class="red darken-4 ma-1"
+          icon
+          large
+          @click="deleteProject(project.id)"
+        >
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
+      </v-card-actions>
+      <v-flex v-if="project.user !== this.$auth.user.sub && !bidding" xs12 text-center>
+        <small class="red--text">*Bids have been disabled</small>
+      </v-flex>
+    </v-flex>
     <v-flex class="mt-5" />
     <v-card v-if="bids.length > 0" max-width="844" class="mx-auto" raised>
       <v-flex xs12 text-right>
@@ -439,7 +486,7 @@
   font-family: 'IBM Plex Sans', sans-serif;
   font-style: italic;
   font-weight: bold;
-  font-size: 2.1em;
+  font-size: 1.5em;
 }
 .sub {
   transform: rotate(359deg);
