@@ -64,10 +64,17 @@ export default {
   /*
   ** Nuxt.js modules
   */
+  buildModules: [
+    '@nuxtjs/vuetify',
+    '@nuxtjs/eslint-module'
+  ],
+  eslint: {
+    /* module options */
+    fix: true
+  },
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/eslint-module',
-    '@nuxtjs/vuetify',
+    // '@nuxtjs/vuetify',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/onesignal',
