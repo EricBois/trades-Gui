@@ -50,7 +50,7 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              <v-chip color="green darken-3" outlined label>
+              <v-chip color="green darken-1" outlined label>
                 Create Project
               </v-chip>
             </v-list-item-title>
