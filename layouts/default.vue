@@ -26,14 +26,37 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              <v-chip outlined>
+              <v-chip outlined label>
                 Dashboard
               </v-chip>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
-        <v-list-group prepend-icon="mdi-alpha-p-box" no-action>
+        <v-list-item to="/projects">
+          <v-list-item-action>
+            <v-icon>mdi-alpha-p-box</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              <v-chip color="blue darken-1" outlined label>
+                Project Listings
+              </v-chip>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item to="/user/create">
+          <v-list-item-action>
+            <v-icon>mdi-file-plus-outline</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              <v-chip color="green darken-3" outlined label>
+                Create Project
+              </v-chip>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <!-- <v-list-group prepend-icon="mdi-alpha-p-box" no-action>
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title>
@@ -61,7 +84,7 @@
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-        </v-list-group>
+        </v-list-group> -->
         <v-divider class="my-5" />
         <v-list-group prepend-icon="mdi-account-group" no-action>
           <template v-slot:activator>
@@ -124,6 +147,9 @@
         </v-list-item>
         <v-list-item class="mt-12 justify-center">
           <v-btn v-if="this.$auth.loggedIn" color="amber darken-4" small @click="logout">
+            <v-icon class="mr-1">
+              mdi-logout
+            </v-icon>
             Logout
           </v-btn>
           <v-btn :style="{'display': addBtnShow}" class="addBtn ml-3" small @click="addToPage">
@@ -316,7 +342,7 @@ export default {
     addBtnShow: 'none',
     overflow: true,
     contentClick: true,
-    drawer: true,
+    drawer: false,
     picture: '',
     mini: false,
     notificationColor: 'blue-grey darken-1',
