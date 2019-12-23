@@ -34,7 +34,9 @@
         </v-list-item>
         <v-list-item to="/projects">
           <v-list-item-action>
-            <v-icon>mdi-alpha-p-box</v-icon>
+            <v-icon color="blue darken-1">
+              mdi-alpha-p-box
+            </v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
@@ -46,7 +48,9 @@
         </v-list-item>
         <v-list-item to="/user/create">
           <v-list-item-action>
-            <v-icon>mdi-file-plus-outline</v-icon>
+            <v-icon color="green darken-1">
+              mdi-file-plus-outline
+            </v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>

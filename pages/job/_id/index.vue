@@ -104,6 +104,7 @@
           </v-card>
         </v-flex>
         <v-flex xs12 text-center>
+          <span class="font-weight-black ibm"><u>Requirements</u></span></br>
           <v-btn v-if="project.wcb" class="ma-1" color="green accent-4" x-small text>
             <v-icon small>
               mdi-check-decagram
@@ -203,6 +204,14 @@
         </h2>
       </v-flex>
       <v-flex xs12>
+        <div v-if="ownProject">
+          <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">
+            Turn Bidding off
+          </v-btn>
+          <v-btn v-else color="light-green darken-4" small @click="bidsToggle">
+            Turn Bidding on
+          </v-btn>
+        </div>
         <v-data-table
           v-model="selected"
           item-key="_id"
@@ -247,14 +256,6 @@
             </v-icon>
           </template>
         </v-data-table>
-        <div v-if="ownProject">
-          <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">
-            Turn Bidding off
-          </v-btn>
-          <v-btn v-else color="light-green darken-4" small @click="bidsToggle">
-            Turn Bidding on
-          </v-btn>
-        </div>
       </v-flex>
     </v-card>
     <v-card v-else max-width="844" class="mx-auto" raised>
