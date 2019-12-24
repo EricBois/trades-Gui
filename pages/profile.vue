@@ -15,163 +15,161 @@
         <v-card flat color="#303030">
           <v-card elevation="22" max-width="844" class="mx-auto">
             <v-card-text>
-              <v-row class="py-4 pl-4">
-                <v-form
-                  ref="form"
-                  lazy-validation
-                >
-                  <v-flex class="mb-4">
-                    <v-avatar v-if="picture" size="164" class="mb-3">
-                      <v-img :src="picture" />
-                    </v-avatar>
-                    <image-uploader
-                      :preview="false"
-                      :max-width="700"
-                      :class-name="['fileinput', { 'fileinput--loaded': hasImage }]"
-                      capture="environment"
-                      :debug="1"
-                      do-not-resize="gif"
-                      :auto-rotate="true"
-                      output-format="blob"
-                      @input="setImageLogo"
-                    >
-                      <label slot="upload-label" for="fileInput">
-                        <v-icon>mdi-48px mdi-camera-plus-outline</v-icon>
-                        <span class="upload-caption">"Edit / Upload"</span>
-                      </label>
-                    </image-uploader>
-                    <v-btn v-if="photo" color="green" loading text>
-                      <template v-slot:loader>
-                        <v-icon>mdi-36px mdi-spin mdi-loading</v-icon>
-                        <span>Loading...</span>
-                      </template>
+              <v-form
+                ref="form"
+                lazy-validation
+              >
+                <v-flex class="mb-4">
+                  <v-avatar v-if="picture" size="164" class="mb-3">
+                    <v-img :src="picture" />
+                  </v-avatar>
+                  <image-uploader
+                    :preview="false"
+                    :max-width="700"
+                    :class-name="['fileinput', { 'fileinput--loaded': hasImage }]"
+                    capture="environment"
+                    :debug="1"
+                    do-not-resize="gif"
+                    :auto-rotate="true"
+                    output-format="blob"
+                    @input="setImageLogo"
+                  >
+                    <label slot="upload-label" for="fileInput">
+                      <v-icon>mdi-48px mdi-camera-plus-outline</v-icon>
+                      <span class="upload-caption">"Edit / Upload"</span>
+                    </label>
+                  </image-uploader>
+                  <v-btn v-if="photo" color="green" loading text>
+                    <template v-slot:loader>
+                      <v-icon>mdi-36px mdi-spin mdi-loading</v-icon>
+                      <span>Loading...</span>
+                    </template>
+                  </v-btn>
+                </v-flex>
+                <v-layout row wrap pa-2>
+                  <v-flex xs12 md6 pr-sm-4>
+                    <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Name" />
+                  </v-flex>
+                  <v-flex xs12 md6>
+                    <v-text-field
+                      v-model="info.user_metadata.phone"
+                      class="purple-input"
+                      label="Phone #"
+                      prepend-inner-icon="mdi-phone"
+                    />
+                  </v-flex>
+                  <v-flex xs12 pb-5>
+                    <label for="gmap">Address</label>
+                    <gmap-autocomplete
+                      class="gmap v-input__slot v-text-field"
+                      :value="info.user_metadata.address"
+                      :select-first-on-enter="true"
+                      placeholder="Project Location"
+                      @place_changed="setPlace"
+                    />
+                  </v-flex>
+                  <v-flex xs12 pb-5>
+                    <v-text-field
+                      v-model="info.user_metadata.web"
+                      class="purple-input"
+                      label="Website"
+                      prepend-inner-icon="mdi-web"
+                    />
+                  </v-flex>
+                  <v-flex xs12 md6 pb-5 pr-sm-4>
+                    <v-text-field
+                      v-model="info.user_metadata.facebook"
+                      class="purple-input"
+                      label="Facebook"
+                      prepend-inner-icon="mdi-facebook-box"
+                    />
+                  </v-flex>
+                  <v-flex xs12 md6 pb-5>
+                    <v-text-field
+                      v-model="info.user_metadata.instagram"
+                      class="purple-input"
+                      label="Instagram"
+                      prepend-inner-icon="mdi-instagram"
+                    />
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-textarea
+                      v-model="info.user_metadata.description"
+                      label="Description"
+                      solo
+                      outlined
+                      class="purple-input"
+                    />
+                  </v-flex>
+                  <v-flex xs12 md6 pr-sm-4>
+                    <v-text-field
+                      v-model="info.user_metadata.wcb"
+                      class="purple-input"
+                      label="Wcb #"
+                    />
+                  </v-flex>
+                  <v-flex xs12 md6 pr-sm-4>
+                    <v-text-field
+                      v-model="info.user_metadata.liability"
+                      class="purple-input"
+                      label="Liability Insurance"
+                    />
+                  </v-flex>
+                  <v-flex xs12 md6 pt-5>
+                    <v-select
+                      v-model="info.user_metadata.skills"
+                      :items="itemSkills"
+                      chips
+                      label="Skills"
+                      multiple
+                    />
+                  </v-flex>
+                  <v-flex xs12 md6 pl-md-5 pt-5>
+                    <v-select
+                      v-model="info.user_metadata.tickets"
+                      :items="itemTickets"
+                      chips
+                      label="Tickets"
+                      multiple
+                    />
+                  </v-flex>
+                  <v-flex xs12 md3 pr-sm-4 pt-4>
+                    <v-text-field
+                      v-model="info.user_metadata.hourly"
+                      label="Hourly"
+                      class="purple-input"
+                      prefix="$"
+                      type="number"
+                    />
+                  </v-flex>
+                  <v-flex xs12 md4 pt-4>
+                    <v-switch v-model="switch1" label="Available for work" color="white" inset />
+                  </v-flex>
+                  <v-flex xs6 class="justify-center text-center">
+                    <v-btn class="ma-1" small @click="dialogPhoto = !dialogPhoto">
+                      <v-icon>mdi-image</v-icon>&nbsp;
+                      Photos
                     </v-btn>
                   </v-flex>
-                  <v-row class="py-4 pl-4">
-                    <v-layout wrap>
-                      <v-flex xs10 md5 pr-12>
-                        <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Name" />
-                      </v-flex>
-                      <v-flex xs10 md5>
-                        <v-text-field
-                          v-model="info.user_metadata.phone"
-                          class="purple-input"
-                          label="Phone #"
-                          prepend-inner-icon="mdi-phone"
-                        />
-                      </v-flex>
-                      <v-flex xs10 pb-5>
-                        <label for="gmap">Address</label>
-                        <gmap-autocomplete
-                          class="gmap v-input__slot v-text-field"
-                          :value="info.user_metadata.address"
-                          :select-first-on-enter="true"
-                          placeholder="Project Location"
-                          @place_changed="setPlace"
-                        />
-                      </v-flex>
-                      <v-flex xs10 pb-5>
-                        <v-text-field
-                          v-model="info.user_metadata.web"
-                          class="purple-input"
-                          label="Website"
-                          prepend-inner-icon="mdi-web"
-                        />
-                      </v-flex>
-                      <v-flex xs10 md5 pb-5 pr-12>
-                        <v-text-field
-                          v-model="info.user_metadata.facebook"
-                          class="purple-input"
-                          label="Facebook"
-                          prepend-inner-icon="mdi-facebook-box"
-                        />
-                      </v-flex>
-                      <v-flex xs10 md5 pb-5>
-                        <v-text-field
-                          v-model="info.user_metadata.instagram"
-                          class="purple-input"
-                          label="Instagram"
-                          prepend-inner-icon="mdi-instagram"
-                        />
-                      </v-flex>
-                      <v-flex xs10>
-                        <v-textarea
-                          v-model="info.user_metadata.description"
-                          label="Description"
-                          solo
-                          outlined
-                          class="purple-input"
-                        />
-                      </v-flex>
-                      <v-flex xs10 md5 pr-12>
-                        <v-text-field
-                          v-model="info.user_metadata.wcb"
-                          class="purple-input"
-                          label="Wcb #"
-                        />
-                      </v-flex>
-                      <v-flex xs10 md5 pr-12>
-                        <v-text-field
-                          v-model="info.user_metadata.liability"
-                          class="purple-input"
-                          label="Liability Insurance"
-                        />
-                      </v-flex>
-                      <v-flex xs10 md5 pt-5>
-                        <v-select
-                          v-model="info.user_metadata.skills"
-                          :items="itemSkills"
-                          chips
-                          label="Skills"
-                          multiple
-                        />
-                      </v-flex>
-                      <v-flex xs10 md5 pl-md-5 pt-5>
-                        <v-select
-                          v-model="info.user_metadata.tickets"
-                          :items="itemTickets"
-                          chips
-                          label="Tickets"
-                          multiple
-                        />
-                      </v-flex>
-                      <v-flex xs10 md3 pr-12 pt-4>
-                        <v-text-field
-                          v-model="info.user_metadata.hourly"
-                          label="Hourly"
-                          class="purple-input"
-                          prefix="$"
-                          type="number"
-                        />
-                      </v-flex>
-                      <v-flex xs12 md2 pt-4>
-                        <v-switch v-model="switch1" label="Available" />
-                      </v-flex>
-                      <v-card-actions>
-                        <v-btn @click="dialogPhoto = !dialogPhoto">
-                          <v-icon>mdi-image</v-icon>&nbsp;
-                          Photos
-                        </v-btn>
-                        <v-btn
-                          v-if="profile.user_metadata && !profile.user_metadata.profileDone"
-                          class="mx-3 ibm"
-                          color="green"
-                          elevation="24"
-                          x-large
-                          @click="edit"
-                        >
-                          <v-icon>mdi-content-save-outline</v-icon>&nbsp;
-                          Save Profile
-                        </v-btn>
-                        <v-btn v-else class="mx-3 ibm" color="primary" @click="edit">
-                          <v-icon>mdi-content-save-outline</v-icon>&nbsp;
-                          Update Profile
-                        </v-btn>
-                      </v-card-actions>
-                    </v-layout>
-                  </v-row>
-                </v-form>
-              </v-row>
+                  <v-flex xs6>
+                    <v-btn
+                      v-if="profile.user_metadata && !profile.user_metadata.profileDone"
+                      class="ma-1 ibm justify-center text-center"
+                      color="green"
+                      elevation="24"
+                      small
+                      @click="edit"
+                    >
+                      <v-icon>mdi-content-save-outline</v-icon>&nbsp;
+                      Save Profile
+                    </v-btn>
+                    <v-btn v-else class="ma-1 ibm justify-center text-center" color="green darken-2" small @click="edit">
+                      <v-icon>mdi-content-save-outline</v-icon>&nbsp;
+                      Edit Profile
+                    </v-btn>
+                  </v-flex>
+                </v-layout>
+              </v-form>
             </v-card-text>
           </v-card>
         </v-card>
@@ -184,26 +182,24 @@
                 ref="form"
                 lazy-validation
               >
-                <v-row class="py-4 pl-4">
-                  <v-layout wrap>
-                    <v-card elevation="15" text-center class="ma-10 pa-10">
-                      <v-flex xs12>
-                        <h2>Notifications</h2>
-                        <v-switch v-model="email" label="Email" />
-                        <v-switch v-model="sms" label="Sms" />
-                      </v-flex>
-                      <v-flex xs12 text-center>
-                        <v-btn
-                          class="ibm"
-                          @click="edit"
-                        >
-                          <v-icon>mdi-content-save-outline</v-icon>&nbsp;
-                          Save
-                        </v-btn>
-                      </v-flex>
-                    </v-card>
-                  </v-layout>
-                </v-row>
+                <v-layout wrap>
+                  <v-card elevation="15" text-center class="ma-10 pa-10">
+                    <v-flex xs12>
+                      <h2>Notifications</h2>
+                      <v-switch v-model="email" label="Email" />
+                      <v-switch v-model="sms" label="Sms" />
+                    </v-flex>
+                    <v-flex xs12 text-center>
+                      <v-btn
+                        class="ibm"
+                        @click="edit"
+                      >
+                        <v-icon>mdi-content-save-outline</v-icon>&nbsp;
+                        Save
+                      </v-btn>
+                    </v-flex>
+                  </v-card>
+                </v-layout>
               </v-form>
             </v-card-text>
           </v-card>
