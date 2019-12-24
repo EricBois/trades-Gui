@@ -379,23 +379,9 @@ export default {
     },
     switchAvailable () {
       if (this.switchAvailable && this.profile.user_metadata && !this.profile.user_metadata.available) {
-        this.$swal
-          .fire({
-            title: 'Are you available for work ?',
-            text: 'Make yourself available to companies.',
-            type: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'I am available'
-          })
-          .then((result) => {
-            if (result.value) {
-              this.$axios.$post('account/edit', { user_metadata: { available: true } }).then(
-                this.$store.dispatch('profile/getProfile')
-              )
-            }
-          })
+        this.$axios.$post('account/edit', { user_metadata: { available: true } }).then(
+          this.$store.dispatch('profile/getProfile')
+        )
       } else {
         this.$axios.$post('account/edit', { user_metadata: { available: false } }).then(
           this.$store.dispatch('profile/getProfile')
@@ -436,9 +422,6 @@ export default {
         this.addBtnShow = 'block'
       })
       this.picture = this.$auth.user.picture
-      if (this.profile.user_metadata) {
-        this.switchAvailable = this.profile.user_metadata.available
-      }
     }
   },
   methods: {
