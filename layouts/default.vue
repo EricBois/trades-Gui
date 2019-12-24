@@ -396,7 +396,7 @@ export default {
               )
             }
           })
-      } else if (!this.switchAvailable && this.profile.user_metadata && this.profile.user_metadata.available) {
+      } else {
         this.$axios.$post('account/edit', { user_metadata: { available: false } }).then(
           this.$store.dispatch('profile/getProfile')
         )
