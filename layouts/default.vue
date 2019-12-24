@@ -394,7 +394,7 @@ export default {
               this.$axios.$post('account/edit', { user_metadata: { available: true } })
             }
           })
-      } else if (!this.switchAvailable) {
+      } else {
         this.$axios.$post('account/edit', { user_metadata: { available: false } })
       }
     },
