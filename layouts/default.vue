@@ -34,13 +34,13 @@
         </v-list-item>
         <v-list-item to="/projects">
           <v-list-item-action>
-            <v-icon color="blue darken-1">
+            <v-icon color="amber lighten-3">
               mdi-alpha-p-box
             </v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              <v-chip color="blue darken-1" outlined label>
+              <v-chip color="amber lighten-3" outlined label>
                 Project Listings
               </v-chip>
             </v-list-item-title>
@@ -48,13 +48,13 @@
         </v-list-item>
         <v-list-item to="/user/create">
           <v-list-item-action>
-            <v-icon color="green darken-1">
+            <v-icon color="green lighten-3">
               mdi-file-plus-outline
             </v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              <v-chip color="green darken-1" outlined label>
+              <v-chip color="green lighten-3" outlined label>
                 Create Project
               </v-chip>
             </v-list-item-title>

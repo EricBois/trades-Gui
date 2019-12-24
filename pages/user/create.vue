@@ -96,7 +96,7 @@
                       class="purple-input"
                       prefix="$"
                       :rules="budgetRule"
-                      type="number"
+                      type="text"
                     />
                   </v-flex>
                   <v-flex xs6 md3 pt-4>
@@ -150,7 +150,10 @@ export default {
         v => !!v || 'The name is required',
         v => (v || '').length <= 40 || 'Name should be 40 characters or less '
       ],
-      budgetRule: [v => !!v || 'Please enter a budget'],
+      budgetRule: [
+        v => !!v || 'Please enter a budget',
+        v => /^(\d+(?:[.,]\d{2})?)$/.test(v) || 'Only numbers & commas allowed. ( 1000 , 1,000 , 10,34 ..)'
+      ],
       projectRule: [v => !!v || 'The project type is required'],
       descRule: [
         v => !!v || 'The description is required',
