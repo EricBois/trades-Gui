@@ -403,9 +403,6 @@ export default {
       }
     },
     profile () {
-      if (this.profile.user_metadata) {
-        this.switchAvailable = this.profile.user_metadata.available
-      }
       if (this.profile.user_metadata && !this.profile.user_metadata.welcome) {
         this.$swal.fire({
           title: 'Welcome to SubHub',
@@ -422,6 +419,9 @@ export default {
   mounted () {
     this.$vuetify.theme.dark = true
     if (this.$auth.loggedIn) {
+      if (this.profile.user_metadata) {
+        this.switchAvailable = this.profile.user_metadata.available
+      }
       // Notifications onesignal
       this.$OneSignal.push(() => {
         this.$OneSignal.showSlidedownPrompt()
