@@ -394,12 +394,14 @@ export default {
               this.$axios.$post('account/edit', { user_metadata: { available: true } })
             }
           })
-      } else {
+      } else if (!this.switchAvailable && this.profile.user_metadata && this.profile.user_metadata.available) {
         this.$axios.$post('account/edit', { user_metadata: { available: false } })
       }
     },
     profile () {
-      this.switchAvailable = this.profile.user_metadata.available
+      if (this.profile.user_metadata) {
+        this.switchAvailable = this.profile.user_metadata.available
+      }
       if (this.profile.user_metadata && !this.profile.user_metadata.welcome) {
         this.$swal.fire({
           title: 'Welcome to SubHub',
