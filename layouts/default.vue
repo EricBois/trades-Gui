@@ -378,7 +378,7 @@ export default {
       }
     },
     switchAvailable () {
-      if (this.switchAvailable && this.profile.user_metadata && !this.profile.user_metadata.available) {
+      if (this.switchAvailable) {
         this.$axios.$post('account/edit', { user_metadata: { available: true } })
       } else {
         this.$axios.$post('account/edit', { user_metadata: { available: false } })
