@@ -149,6 +149,9 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item class=" mt-6 justify-center">
+          <v-switch v-model="switchAvailable" label="Available for work" color="green" inset />
+        </v-list-item>
         <v-list-item class="mt-12 justify-center">
           <v-btn v-if="this.$auth.loggedIn" color="amber darken-4" small @click="logout">
             <v-icon class="mr-1">
@@ -343,6 +346,7 @@ export default {
     }
   },
   data: () => ({
+    switchAvailable: false,
     addBtnShow: 'none',
     overflow: true,
     contentClick: true,
@@ -373,7 +377,29 @@ export default {
         this.notificationColor = 'blue-grey darken-1'
       }
     },
+    switchAvailable () {
+      if (this.switchAvailable && this.profile.user_metadata && !this.profile.user_metadata.available) {
+        this.$swal
+          .fire({
+            title: 'Are you available for work ?',
+            text: 'Make yourself available to companies.',
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'I am available'
+          })
+          .then((result) => {
+            if (result.value) {
+              this.$axios.$post('account/edit', { user_metadata: { available: true } })
+            }
+          })
+      } else if (!this.switchAvailable) {
+        this.$axios.$post('account/edit', { user_metadata: { available: false } })
+      }
+    },
     profile () {
+      this.switchAvailable = this.profile.user_metadata.available
       if (this.profile.user_metadata && !this.profile.user_metadata.welcome) {
         this.$swal.fire({
           title: 'Welcome to SubHub',
