@@ -379,13 +379,9 @@ export default {
     },
     switchAvailable () {
       if (this.switchAvailable && this.profile.user_metadata && !this.profile.user_metadata.available) {
-        this.$axios.$post('account/edit', { user_metadata: { available: true } }).then(
-          this.$store.dispatch('profile/getProfile')
-        )
+        this.$axios.$post('account/edit', { user_metadata: { available: true } })
       } else {
-        this.$axios.$post('account/edit', { user_metadata: { available: false } }).then(
-          this.$store.dispatch('profile/getProfile')
-        )
+        this.$axios.$post('account/edit', { user_metadata: { available: false } })
       }
     },
     profile () {
