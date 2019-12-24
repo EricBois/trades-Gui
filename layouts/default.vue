@@ -385,6 +385,7 @@ export default {
       }
     },
     profile () {
+      this.switchAvailable = this.profile.user_metadata.available
       if (this.profile.user_metadata && !this.profile.user_metadata.welcome) {
         this.$swal.fire({
           title: 'Welcome to SubHub',
