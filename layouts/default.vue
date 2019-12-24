@@ -419,9 +419,6 @@ export default {
   mounted () {
     this.$vuetify.theme.dark = true
     if (this.$auth.loggedIn) {
-      if (this.profile.user_metadata) {
-        this.switchAvailable = this.profile.user_metadata.available
-      }
       // Notifications onesignal
       this.$OneSignal.push(() => {
         this.$OneSignal.showSlidedownPrompt()
@@ -439,6 +436,9 @@ export default {
         this.addBtnShow = 'block'
       })
       this.picture = this.$auth.user.picture
+      if (this.profile.user_metadata) {
+        this.switchAvailable = this.profile.user_metadata.available
+      }
     }
   },
   methods: {
