@@ -100,12 +100,12 @@
                     />
                   </v-flex>
                   <v-flex xs6 md3 pt-4>
-                    <v-switch v-model="switch1" label="Assign To Team" />
+                    <v-switch v-model="switch1" label="Assign To Team" color="white" inset />
                   </v-flex>
                   <v-flex xs6 md2 pt-4>
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on }">
-                        <v-switch v-model="switch2" label="Single Bid" v-on="on" />
+                        <v-switch v-model="switch2" label="Single Bid" color="white" inset v-on="on" />
                       </template>
                       <span>Only 1 bid per user will be allowed on whole project.</span>
                     </v-tooltip>
