@@ -41,8 +41,8 @@
                           output-format="blob"
                           @input="setImageLogo"
                         >
-                          <label slot="upload-label" for="fileInput">
-                            <v-icon>mdi-48px mdi-camera-plus-outline</v-icon>
+                          <label slot="upload-label" for="fileInput" class="label">
+                            <v-icon> mdi-camera-plus-outline</v-icon>
                             <span class="upload-caption">"Edit / Upload"</span>
                           </label>
                         </image-uploader>
@@ -278,7 +278,10 @@
 }
 .rounded {
   border-radius: 20px;
-  padding-top: 10px;
+  margin-top: 10px;
+}
+.label {
+  opacity: 50%;
 }
 #fileInput {
   display: none;
