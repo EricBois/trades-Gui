@@ -53,7 +53,7 @@
                           </template>
                         </v-btn>
                       </v-flex>
-                      <v-flex xs12 md4 offset-md-4>
+                      <v-flex xs12 md4 offset-md-4 class="pa-2">
                         <v-text-field v-model="info.name" prepend-inner-icon="mdi-account" :rules="nameRule" class="purple-input" label="Name" />
                         <v-text-field
                           v-model="info.user_metadata.phone"
