@@ -152,7 +152,7 @@
                   />
                 </v-flex>
                 <v-flex xs12 md4 pt-4>
-                  <v-switch v-model="switch1" label="Available for work" color="white" inset />
+                  <v-switch v-model="switch1" label="Available for work" color="green" inset />
                 </v-flex>
                 <v-flex xs6 class="justify-center text-center">
                   <v-btn class="ma-1" small @click="dialogPhoto = !dialogPhoto">
