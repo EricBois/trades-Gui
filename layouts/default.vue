@@ -7,8 +7,8 @@
       clipped
     >
       <v-list-item to="/profile">
-        <v-list-item-avatar>
-          <v-img :src="picture" />
+        <v-list-item-avatar tile>
+          <v-img class="rounded" :src="picture" />
         </v-list-item-avatar>
 
         <v-list-item-title>
@@ -333,6 +333,9 @@ a {
 }
 .addBtn {
   display: none;
+}
+.rounded {
+  border-radius: 10px;
 }
 </style>
 <script>
