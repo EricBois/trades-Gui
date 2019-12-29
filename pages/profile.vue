@@ -27,7 +27,7 @@
                   >
                     <v-layout wrap align-center justify-center text-center>
                       <v-flex xs12 md4 class="mt-n6 mb-2">
-                        <v-avatar v-if="picture" size="200" class="mb-3">
+                        <v-avatar v-if="picture" size="200" class="mb-3 rounded" tile>
                           <v-img :src="picture" />
                         </v-avatar>
                         <image-uploader
@@ -275,6 +275,10 @@
 }
 .ibm {
   font-family: 'IBM Plex Sans', sans-serif;
+}
+.rounded {
+  border-radius: 20px;
+  padding-top: 10px;
 }
 #fileInput {
   display: none;
