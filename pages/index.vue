@@ -1,11 +1,21 @@
 <template>
-  <v-layout>
+  <v-layout wrap>
     <v-flex xs12 text-center>
-      TODO Graphs and general informations
+      <v-card max-width="650" class="mx-auto pa-6">
+        <v-card max-width="600" min-height="100" class="mx-auto" elevation="15" shaped>
+          <h1>Sub Hub community</h1>
+          <span class="sub">Where contractors meet</span>
+        </v-card>
+      </v-card>
     </v-flex>
   </v-layout>
 </template>
-
+<style scoped>
+.sub {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: italic;
+}
+</style>
 <script>
 
 export default {
