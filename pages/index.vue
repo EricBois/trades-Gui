@@ -1,7 +1,7 @@
 <template>
   <v-layout wrap>
-    <v-flex xs12 text-center>
-      <h2 v-if="error" class="error sub">
+    <v-flex v-if="error.length > 0" xs12 text-center class="mb-5">
+      <h2 class="error sub">
         {{ error }}
       </h2>
     </v-flex>
@@ -19,9 +19,6 @@
 .sub {
   font-family: 'IBM Plex Sans', sans-serif;
   font-style: italic;
-}
-.error {
-  color: red;
 }
 </style>
 <script>
