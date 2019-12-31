@@ -1,7 +1,7 @@
 <template>
   <v-layout wrap>
     <v-flex xs12 text-center>
-      <h2 class="error sub" v-if="error">
+      <h2 v-if="error" class="error sub">
         {{ error }}
       </h2>
     </v-flex>
