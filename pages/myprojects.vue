@@ -54,6 +54,7 @@ export default {
   watch: {
     async tab () {
       if (this.tab === 2 && this.placedBids.length <= 0) {
+        this.$nuxt.$loading.start()
         await this.$axios.$get('job/get').then((res) => {
           res.forEach((obj, i) => {
             obj.bids.forEach((bid, i) => {
@@ -64,6 +65,7 @@ export default {
                 }
               }
             })
+            this.$nuxt.$loading.finish()
           })
         })
         if (this.jobsPrivate.length <= 0) { await this.getPrivate() }

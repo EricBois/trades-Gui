@@ -109,26 +109,30 @@ export default {
     })
   },
   created () {
-    this.tickets = process.env.tickets.split(',')
-    this.$axios.$get('team/fetch').then((res) => {
-      this.team = res.team
-    })
-    this.$axios.$get('job/private').then((res) => {
-      res.forEach((obj, i) => {
-        this.jobs.push(obj)
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()
+      this.tickets = process.env.tickets.split(',')
+      this.$axios.$get('team/fetch').then((res) => {
+        this.team = res.team
       })
-    })
-    if (this.profile.user_metadata && !this.profile.user_metadata.welcomeTeamProjects) {
-      this.$swal.fire({
-        position: 'bottom-end',
-        type: 'info',
-        text: process.env.welcomeTeamProjects,
-        showConfirmButton: true,
-        width: '22rem'
-      }).then(() => {
-        return this.$axios.$post('account/edit', { user_metadata: { welcomeTeamProjects: true } })
+      this.$axios.$get('job/private').then((res) => {
+        res.forEach((obj, i) => {
+          this.jobs.push(obj)
+          this.$nuxt.$loading.finish()
+        })
       })
-    }
+      if (this.profile.user_metadata && !this.profile.user_metadata.welcomeTeamProjects) {
+        this.$swal.fire({
+          position: 'bottom-end',
+          type: 'info',
+          text: process.env.welcomeTeamProjects,
+          showConfirmButton: true,
+          width: '22rem'
+        }).then(() => {
+          return this.$axios.$post('account/edit', { user_metadata: { welcomeTeamProjects: true } })
+        })
+      }
+    })
   },
   methods: {
     dialog (item) {
