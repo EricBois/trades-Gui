@@ -179,10 +179,27 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app clipped-left dense collapse elevate-on-scroll>
+    <v-app-bar
+      :max-width="(this.$auth.loggedIn)?'':'250'"
+      app
+      clipped-left
+      dense
+      collapse
+      elevate-on-scroll
+    >
       <v-app-bar-nav-icon v-if="this.$auth.loggedIn" @click.stop="drawer = !drawer" />
-      <v-btn v-if="!this.$auth.loggedIn" color="green" small label @click="login">
+      <v-btn
+        v-if="!this.$auth.loggedIn"
+        color="green"
+        class="mr-2"
+        small
+        label
+        @click="login"
+      >
         <v-icon>mdi-login</v-icon> Login
+      </v-btn>
+      <v-btn v-if="!this.$auth.loggedIn" color="blue darken-3" small label @click="registerDialog = !registerDialog">
+        <v-icon>mdi-content-save</v-icon> Register
       </v-btn>
       <v-menu
         v-if="this.$auth.loggedIn"
@@ -333,6 +350,18 @@
         <v-icon>mdi-message</v-icon>
       </v-btn>
     </v-bottom-navigation>
+    <v-dialog v-model="registerDialog" persistent max-width="800">
+      <v-card class="px-3">
+        <v-toolbar height="50" dark color="blue">
+          <v-btn icon dark @click="registerDialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Register an account</v-toolbar-title>
+        </v-toolbar>
+        <Register />
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 <style scoped>
@@ -352,8 +381,12 @@ a {
 </style>
 <script>
 import { mapGetters } from 'vuex'
+import Register from '../components/Register'
 export default {
   middleware: ['profile', 'notifications'],
+  components: {
+    Register
+  },
   props: {
     source: {
       type: String,
@@ -373,7 +406,8 @@ export default {
     notifMeetings: [],
     notifBidRequest: [],
     notifBids: [],
-    deferredPrompt: ''
+    deferredPrompt: '',
+    registerDialog: false
   }),
   computed: mapGetters({
     read: 'messages/Read',
