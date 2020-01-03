@@ -128,7 +128,7 @@ export default {
       logout: '/logout',
       // callback: '/login',
       callback: '/',
-      home: '/'
+      home: '/home'
     }
   },
   /*
