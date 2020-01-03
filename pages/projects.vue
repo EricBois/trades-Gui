@@ -1,33 +1,8 @@
 <template>
   <v-container>
-    <v-tabs
-      v-model="tab"
-      background-color="transparent"
-      centered
-      show-arrows
-      color="white"
-    >
-      <v-tab>Public Listing</v-tab>
-      <v-tab>Private Listing</v-tab>
-      <v-tab>Your Listing</v-tab>
-    </v-tabs>
-    <v-tabs-items v-model="tab" class="mt-8">
-      <v-tab-item>
-        <v-card flat color="#303030">
-          <Jobs :jobs="jobsPublic" :cities="citiesPublic" />
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card flat color="#303030">
-          <Jobs :jobs="jobsPrivate" :cities="citiesPrivate" />
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card flat color="#303030">
-          <Jobs :jobs="jobs" :cities="cities" />
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>
+    <v-card flat color="#303030">
+      <Jobs :jobs="jobsPublic" :cities="citiesPublic" />
+    </v-card>
   </v-container>
 </template>
 <script>
@@ -39,53 +14,13 @@ export default {
   },
   data () {
     return {
-      jobs: [],
-      cities: [],
-      jobsPrivate: [],
-      citiesPrivate: [],
       jobsPublic: [],
-      citiesPublic: [],
-      tab: null
+      citiesPublic: []
     }
   },
   computed: mapGetters({
     profile: 'profile/getProfile'
   }),
-  watch: {
-    tab () {
-      if (this.tab === 2 && this.jobs.length <= 0) {
-        this.$axios.$get('job/get/user').then((res) => {
-          res.forEach((obj, i) => {
-            this.jobs.push(obj)
-            if (obj.location.city.length > 0) {
-              this.cities.push(obj.location.city)
-            }
-          })
-        })
-      }
-      if (this.tab === 1 && this.jobsPrivate.length <= 0) {
-        this.$axios.$get('job/get/private').then((res) => {
-          res.forEach((obj, i) => {
-            this.jobsPrivate.push(obj)
-            if (obj.location.city.length > 0) {
-              this.citiesPrivate.push(obj.location.city)
-            }
-          })
-        })
-        if (this.profile.user_metadata && !this.profile.user_metadata.privateJobs) {
-          this.$swal.fire({
-            position: 'bottom-end',
-            type: 'info',
-            text: process.env.privateJobs,
-            showConfirmButton: true,
-            width: '22rem'
-          }).then(() => {
-            return this.$axios.$post('account/edit', { user_metadata: { privateJobs: true } })
-          })
-        }
-      }
-    }
-  },
   mounted () {
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeJobs) {
       this.$swal.fire({
