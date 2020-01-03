@@ -125,6 +125,18 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+        <v-list-item to="/myprojects">
+          <v-list-item-action>
+            <v-icon>mdi-alpha-p-box</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              <v-chip outlined>
+                My Projects
+              </v-chip>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item to="/messages">
           <v-list-item-action>
             <v-icon>mdi-message</v-icon>
