@@ -161,10 +161,10 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item class=" mt-6 justify-center">
+        <v-list-item class=" mt-5 justify-center">
           <v-switch v-model="switchAvailable" label="Available for work" color="green" inset />
         </v-list-item>
-        <v-list-item class="mt-12 justify-center">
+        <v-list-item class="mt-5 justify-center">
           <v-btn v-if="this.$auth.loggedIn" color="amber darken-4" small @click="logout">
             <v-icon class="mr-1">
               mdi-logout
