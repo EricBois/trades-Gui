@@ -15,16 +15,27 @@
       <v-tab-item>
         <v-card flat color="#303030">
           <Jobs :jobs="jobs" :cities="cities" />
+          <v-flex v-if="jobs.length < 1" xs12 text-center>
+            <h2>You didn't post any projects.</h2>
+            <span class="ibm">*Once you post a project it will appear here so you can easily manage it.*</span>
+          </v-flex>
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat color="#303030">
-          <Jobs :jobs="jobsPrivate" :cities="citiesPrivate" />
+          <Jobs :jobs="jobsPrivate" :cities="citiesPrivate" /><v-flex v-if="jobs.length < 1" xs12 text-center>
+            <h2>No project to display yet!</h2>
+            <span class="ibm">*Once you are invited to bid on a project it will be here.*</span>
+          </v-flex>
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat color="#303030">
           <Jobs :jobs="placedBids" :cities="citiesPlacedBids" />
+          <v-flex v-if="placedBids.length < 1" xs12 text-center>
+            <h2>You didn't place any bid yet!</h2>
+            <span class="ibm">*Once you bid on a project it will appear here.*</span>
+          </v-flex>
         </v-card>
       </v-tab-item>
     </v-tabs-items>
