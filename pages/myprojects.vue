@@ -66,6 +66,17 @@ export default {
               }
             })
             this.$nuxt.$loading.finish()
+            if (this.profile.user_metadata && !this.profile.user_metadata.biddedJobs) {
+              this.$swal.fire({
+                position: 'bottom-end',
+                type: 'info',
+                text: process.env.biddedJobs,
+                showConfirmButton: true,
+                width: '22rem'
+              }).then(() => {
+                return this.$axios.$post('account/edit', { user_metadata: { biddedJobs: true } })
+              })
+            }
           })
         })
         if (this.jobsPrivate.length <= 0) { await this.getPrivate() }
@@ -97,15 +108,15 @@ export default {
     }
   },
   mounted () {
-    if (this.profile.user_metadata && !this.profile.user_metadata.welcomeJobs) {
+    if (this.profile.user_metadata && !this.profile.user_metadata.ownPosting) {
       this.$swal.fire({
         position: 'bottom-end',
         type: 'info',
-        text: process.env.welcomeJobs,
+        text: process.env.ownPosting,
         showConfirmButton: true,
         width: '22rem'
       }).then(() => {
-        return this.$axios.$post('account/edit', { user_metadata: { welcomeJobs: true } })
+        return this.$axios.$post('account/edit', { user_metadata: { ownPosting: true } })
       })
     }
     this.$axios.$get('job/get/user').then((res) => {
