@@ -152,7 +152,7 @@ export default {
       ],
       budgetRule: [
         v => !!v || 'Please enter a budget',
-        v => /^(\d+(?:[.,]\d{2})?)$/.test(v) || 'Only numbers & commas allowed. ( 1000 , 1,000 , 10,34 ..)'
+        v => /^(\d+(?:[.,]\d{2,3})?)$/.test(v) || 'Only numbers & commas allowed. ( 1000 , 1,000 , 10,34 ..)'
       ],
       projectRule: [v => !!v || 'The project type is required'],
       descRule: [
