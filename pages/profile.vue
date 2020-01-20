@@ -54,7 +54,12 @@
                         </v-btn>
                       </v-flex>
                       <v-flex xs12 md4 offset-md-4 class="pa-2">
-                        <v-text-field v-model="info.name" prepend-inner-icon="mdi-account" :rules="nameRule" class="purple-input" label="Name" />
+                        <v-chip label class="mb-6 mr-12" large @click="editName">
+                          {{ name }}
+                          <v-icon right>
+                            mdi-pencil
+                          </v-icon>
+                        </v-chip>
                         <v-text-field
                           v-model="info.user_metadata.phone"
                           class="purple-input"
@@ -305,8 +310,8 @@ export default {
       filename: '',
       itemSkills: [],
       itemTickets: [],
+      name: '',
       info: {
-        name: '',
         user_metadata: {
           instagram: '',
           facebook: '',
@@ -374,7 +379,7 @@ export default {
     },
     profile () {
       if (this.profile) {
-        this.info.name = (!this.profile.user_metadata.welcomeProfile) ? '' : this.profile.name
+        this.name = (!this.profile.user_metadata.welcomeProfile) ? '' : this.profile.name
         this.picture = this.profile.picture
         this.info.user_metadata.facebook = this.profile.user_metadata.facebook
         this.info.user_metadata.instagram = this.profile.user_metadata.instagram
@@ -408,7 +413,7 @@ export default {
   created () {
     // Welcome profile
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeProfile) {
-      this.info.name = ''
+      this.name = ''
       this.$swal.fire({
         position: 'bottom-end',
         type: 'info',
@@ -422,7 +427,7 @@ export default {
     this.itemSkills = process.env.trades.split(',')
     this.itemTickets = process.env.tickets.split(',')
     if (this.profile && this.profile.user_metadata) {
-      this.info.name = this.profile.name
+      this.name = this.profile.name
       this.picture = this.profile.picture
       this.info.user_metadata.facebook = this.profile.user_metadata.facebook
       this.info.user_metadata.instagram = this.profile.user_metadata.instagram
@@ -455,6 +460,13 @@ export default {
     }
   },
   methods: {
+    editName () {
+      this.$swal.fire({
+        type: 'info',
+        title: 'Change of name',
+        text: 'Please contact support@sub-hub.ca with your registered email to request a name change.'
+      })
+    },
     edit () {
       if (this.$refs.form.validate()) {
         this.$axios.$post('account/edit', this.info).then((res) => {
