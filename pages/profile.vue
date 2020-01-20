@@ -53,11 +53,11 @@
                           </template>
                         </v-btn>
                       </v-flex>
-                      <v-flex xs12 md4 offset-md-4 class="pa-2">
-                        <v-chip label class="mb-6 mr-12" large @click="editName">
-                          {{ name }}
-                          <v-icon right>
-                            mdi-pencil
+                      <v-flex xs12 md5 offset-md-3 class="pa-2">
+                        <v-chip label class="mb-6" x-large @click="editName">
+                          <span class="name">{{ name }}</span>
+                          <v-icon right large>
+                            mdi-pencil-box-outline
                           </v-icon>
                         </v-chip>
                         <v-text-field
@@ -280,6 +280,9 @@
 }
 .ibm {
   font-family: 'IBM Plex Sans', sans-serif;
+}
+.name {
+  font-size: 24px;
 }
 .rounded {
   border-radius: 20px;
