@@ -168,14 +168,25 @@ export default {
               timer: 2000
             })
             const user = (res.host === this.$auth.user.sub) ? res.user : res.host
-            this.$store.dispatch('notifications/createNotification',
-              {
-                senderId: this.$auth.user.sub,
-                recipientId: user,
-                activity: 'Meeting',
-                activityDesc: `New meeting request from ${this.$auth.user.name}`,
-                link: res._id
-              })
+            if (!res.confirm.status || res.change.status) {
+              this.$store.dispatch('notifications/createNotification',
+                {
+                  senderId: this.$auth.user.sub,
+                  recipientId: user,
+                  activity: 'Meeting',
+                  activityDesc: `New meeting request from ${this.$auth.user.name}`,
+                  link: res._id
+                })
+            } else if (res.confirm.status && !res.change.status) {
+              this.$store.dispatch('notifications/createNotification',
+                {
+                  senderId: this.$auth.user.sub,
+                  recipientId: user,
+                  activity: 'Meeting',
+                  activityDesc: `Meeting with ${this.$auth.user.name} has been confirmed!`,
+                  link: res._id
+                })
+            }
           })
         }
       })
