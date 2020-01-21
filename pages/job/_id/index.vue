@@ -305,7 +305,7 @@
                     v-if="project.jobType === 'Contract'"
                     v-model="infobid.price"
                     :rules="priceRule"
-                    type="number"
+                    type="text"
                     prepend-inner-icon="mdi-currency-usd"
                     label="Price"
                   />
@@ -313,7 +313,7 @@
                     v-else
                     v-model="infobid.price"
                     :rules="priceRule"
-                    type="number"
+                    type="text"
                     prepend-inner-icon="mdi-currency-usd"
                     label="Price"
                     placeholder="Hourly"
@@ -537,7 +537,10 @@ export default {
       dialogFile: false,
       loading: false,
       doc: null,
-      priceRule: [v => !!v || 'The price is required'],
+      priceRule: [
+        v => !!v || 'The price is required',
+        v => /^(\d+(?:[.,]\d{2,3})?)$/.test(v) || 'Only numbers & commas allowed. ( 1000 , 1,000 , 10,34 ..)'
+      ],
       infobid: {
         phone: '',
         email: '',
