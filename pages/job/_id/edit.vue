@@ -147,8 +147,8 @@ export default {
   data () {
     return {
       job: '../../job/',
-      itemSkills: ['Drywall', 'Taping', 'Framing', 'Labour', 'Texturing', 'Insulation'],
-      itemTickets: ['WHIMIS', 'First Aid', 'Scissor Lift', 'Fall Arrest'],
+      itemSkills: [],
+      itemTickets: [],
       nameRule: [
         v => !!v || 'The name is required',
         v => (v || '').length <= 40 || 'Name should be 40 characters or less '
@@ -261,6 +261,8 @@ export default {
     }
   },
   mounted () {
+    this.itemSkills = process.env.trades.split(',')
+    this.itemTickets = process.env.tickets.split(',')
     // get the job with the id
     this.$axios.$get(`job/view/${this.$route.params.id}`).then((res) => {
       this.info = res
