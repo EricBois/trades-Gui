@@ -1,5 +1,28 @@
 <template>
   <v-container fluid>
+    <v-alert
+      v-model="alert"
+      icon="mdi-information-outline"
+      prominent
+      dense
+      dismissible
+      transition="scale-transition"
+      text
+      :type="alertInfo"
+    >
+      {{ alertText }}
+    </v-alert>
+    <v-snackbar
+      v-model="snackbar"
+      top
+      :color="snackbarColor"
+      right
+    >
+      {{ snackbarText }}
+      <v-icon>
+        mdi-check-circle-outline
+      </v-icon>
+    </v-snackbar>
     <v-tabs
       v-model="tab"
       background-color="transparent"
@@ -307,6 +330,12 @@ export default {
   },
   data () {
     return {
+      snackbar: false,
+      snackbarColor: 'green darken-3',
+      snackbarText: '',
+      alert: false,
+      alertInfo: 'info',
+      alertText: '',
       dialogPhoto: false,
       hasImage: false,
       photo: null,
@@ -417,15 +446,9 @@ export default {
     // Welcome profile
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeProfile) {
       this.name = ''
-      this.$swal.fire({
-        position: 'bottom-end',
-        type: 'info',
-        text: process.env.welcomeProfile,
-        showConfirmButton: true,
-        width: '22rem'
-      }).then(() => {
-        return this.$axios.$post('account/edit', { user_metadata: { welcomeProfile: true } })
-      })
+      this.alertText = process.env.welcomeProfile
+      this.alert = true
+      this.$axios.$post('account/edit', { user_metadata: { welcomeProfile: true } })
     }
     this.itemSkills = process.env.trades.split(',')
     this.itemTickets = process.env.tickets.split(',')
@@ -464,23 +487,17 @@ export default {
   },
   methods: {
     editName () {
-      this.$swal.fire({
-        type: 'info',
-        title: 'Change of name',
-        text: 'Please contact support@sub-hub.ca with your registered email to request a name change.'
-      })
+      this.alertText = 'Please contact support@sub-hub.ca with your registered email to request a name change.'
+      this.alertInfo = 'warning'
+      this.alert = true
     },
     edit () {
       if (this.$refs.form.validate()) {
         this.$axios.$post('account/edit', this.info).then((res) => {
           this.$store.commit('profile/updateProfile', res) // for the profile store
           this.$auth.fetchUser() // fetch tokenID
-          this.$swal.fire({
-            type: 'success',
-            title: 'Success',
-            text: 'Successfully Updated!',
-            timer: 1000
-          })
+          this.snackbarText = 'Successfully Updated!'
+          this.snackbar = true
         })
       }
     },
