@@ -1,5 +1,28 @@
 <template>
   <v-container>
+    <v-alert
+      v-model="alert"
+      icon="mdi-information-outline"
+      prominent
+      dense
+      dismissible
+      transition="scale-transition"
+      text
+      :type="alertInfo"
+    >
+      {{ alertText }}
+    </v-alert>
+    <v-snackbar
+      v-model="snackbar"
+      top
+      :color="snackbarColor"
+      right
+    >
+      {{ snackbarText }}
+      <v-icon>
+        mdi-alert-outline
+      </v-icon>
+    </v-snackbar>
     <v-card max-width="844" class="mx-auto" raised>
       <v-layout wrap>
         <v-flex xs6 class="mt-1" text-left>
@@ -179,7 +202,7 @@
           class="red darken-4 ma-1"
           icon
           large
-          @click="deleteProject(project.id)"
+          @click="dialogDeleteProject =!dialogDeleteProject"
         >
           <v-icon>mdi-delete</v-icon>
         </v-btn>
@@ -481,6 +504,40 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="dialogDeleteProject"
+      max-width="400"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Please Confirm
+        </v-card-title>
+
+        <v-card-text>
+          Are you sure you want to delete this project ?
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            color="orange darken-3"
+            text
+            @click="dialogDeleteProject = false"
+          >
+            No
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteProject(project.id)"
+          >
+            Yes, Let's Go!
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-flex v-if="ownProject" xs12 text-center class="mt-5">
       <v-btn v-if="selected.length > 0" color="light-green darken-3" @click="dialogBidApproval = !dialogBidApproval">
         Accept Bid(s)
@@ -533,6 +590,13 @@ export default {
   },
   data () {
     return {
+      snackbar: false,
+      snackbarColor: 'red darken-3',
+      snackbarText: '',
+      alert: false,
+      alertInfo: 'info',
+      alertText: '',
+      dialogDeleteProject: false,
       bidding: true,
       url: '',
       dialogProfile: false,
@@ -591,15 +655,9 @@ export default {
   }),
   mounted () {
     if (this.myProfile.user_metadata && !this.myProfile.user_metadata.welcomeJob) {
-      this.$swal.fire({
-        position: 'bottom-end',
-        type: 'info',
-        text: process.env.welcomeJob,
-        showConfirmButton: true,
-        width: '22rem'
-      }).then(() => {
-        return this.$axios.$post('account/edit', { user_metadata: { welcomeJob: true } })
-      })
+      this.alertText = process.env.welcomeJob
+      this.alert = true
+      return this.$axios.$post('account/edit', { user_metadata: { welcomeJob: true } })
     }
     // get the job with the id
     this.$axios
@@ -655,34 +713,16 @@ export default {
       })
     },
     deleteProject (id) {
-      this.$swal
-        .fire({
-          title: 'Delete this project ?',
-          text: "You won't be able to revert this!",
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, delete it!'
+      this.$axios
+        .$post(`job/delete/${id}`)
+        .then((res) => {
+          //  direct to jobs page
+          this.dialogDeleteProject = false
+          this.$router.push(`../projects`)
         })
-        .then((result) => {
-          if (result.value) {
-            this.$axios
-              .$post(`job/delete/${id}`)
-              .then((res) => {
-                //  direct to jobs page
-                this.$router.push(`../projects`)
-                this.$swal.fire('Success!', 'Deleted Successfully.', 'success')
-              })
-              .catch((error) => {
-                this.$swal.fire({
-                  type: 'error',
-                  title: 'Oops...',
-                  text: 'Something went wrong!',
-                  footer: `${error}`
-                })
-              })
-          }
+        .catch((error) => {
+          this.snackbarText = `${error}`
+          this.snackbar = true
         })
     },
     postBid () {
@@ -728,12 +768,8 @@ export default {
               })
           })
           .catch((error) => {
-            this.$swal.fire({
-              type: 'error',
-              title: 'Oops...',
-              text: 'Something went wrong!',
-              footer: `${error}`
-            })
+            this.snackbarText = `${error}`
+            this.snackbar = true
           })
       }
     },
@@ -749,12 +785,8 @@ export default {
           }
         })
         .catch((error) => {
-          this.$swal.fire({
-            type: 'error',
-            title: 'Oops...',
-            text: 'Something went wrong!',
-            footer: `${error}`
-          })
+          this.snackbarText = `${error}`
+          this.snackbar = true
         })
     },
     deleteFile (file, type) {
@@ -770,12 +802,8 @@ export default {
             this.project = res
           })
           .catch((error) => {
-            this.$swal.fire({
-              type: 'error',
-              title: 'Oops...',
-              text: 'Something went wrong!',
-              footer: `${error}`
-            })
+            this.snackbarText = `${error}`
+            this.snackbar = true
           })
       }
     },
@@ -791,14 +819,11 @@ export default {
           this.loading = false
         })
         .catch((error) => {
-          this.$swal.fire({
-            type: 'error',
-            title: 'Oops...',
-            text: 'Something went wrong!',
-            footer: `${error}`
-          })
+          this.snackbarText = `${error}`
+          this.snackbar = true
           this.loading = false
         })
+      this.loading = false
     },
     bidsToggle () {
       if (this.bidding) {
