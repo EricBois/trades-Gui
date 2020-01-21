@@ -206,10 +206,14 @@
       <v-flex xs12>
         <div v-if="ownProject">
           <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">
-            Turn Bidding off
+            <v-icon left>
+              mdi-alert
+            </v-icon>Turn Bidding off
           </v-btn>
           <v-btn v-else color="light-green darken-4" small @click="bidsToggle">
-            Turn Bidding on
+            <v-icon left>
+              mdi-star-three-points
+            </v-icon>Turn Bidding on
           </v-btn>
         </div>
         <v-data-table
@@ -264,10 +268,14 @@
       </v-flex>
       <div v-if="ownProject">
         <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">
-          Turn Bidding off
+          <v-icon left>
+            mdi-alert
+          </v-icon>Turn Bidding off
         </v-btn>
         <v-btn v-else color="light-green darken-4" small @click="bidsToggle">
-          Turn Bidding on
+          <v-icon left>
+            mdi-star-three-points
+          </v-icon>Turn Bidding on
         </v-btn>
       </div>
     </v-card>
