@@ -464,12 +464,16 @@ export default {
     if (this.$auth.loggedIn) {
       // Notifications onesignal
       this.$OneSignal.push(() => {
-        this.$OneSignal.showSlidedownPrompt()
-        // TODO implement better way for this
-        this.$OneSignal.setExternalUserId(this.$auth.user.sub)
-        // this.$OneSignal.setEmail(this.$auth.user.email)
-        // this.$OneSignal.sendTags({ key: this.$auth.user.sub })
+        /* In milliseconds, time to wait before prompting user. This time is relative to right after the user presses <ENTER> on the address bar and navigates to your page */
+        const notificationPromptDelay = 30000
+        /* Use navigation timing to find out when the page actually loaded instead of using setTimeout() only which can be delayed by script execution */
+        const navigationStart = window.performance.timing.navigationStart
+        /* Get current time */
+        const timeNow = Date.now()
+        /* Prompt the user if enough time has elapsed */
+        setTimeout(this.promptAndSubscribeUser, Math.max(notificationPromptDelay - (timeNow - navigationStart), 0))
       })
+
       window.addEventListener('beforeinstallprompt', (e) => {
         // Prevent Chrome 67 and earlier from automatically showing the prompt
         e.preventDefault()
@@ -482,6 +486,16 @@ export default {
     }
   },
   methods: {
+    promptAndSubscribeUser () {
+      this.$OneSignal.isPushNotificationsEnabled(function (isEnabled) {
+        if (!isEnabled) {
+          // show prompt
+          this.$OneSignal.showSlidedownPrompt()
+          // set userId
+          this.$OneSignal.setExternalUserId(this.$auth.user.sub)
+        }
+      })
+    },
     addToPage () {
       // hide our user interface that shows our A2HS button
       this.addBtnShow = 'none'
