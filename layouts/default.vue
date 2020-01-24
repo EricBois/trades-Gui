@@ -1,5 +1,14 @@
 <template>
   <v-app id="inspire">
+    <v-snackbar
+      v-model="snackbar"
+      :color="snackbarColor"
+    >
+      {{ snackbarText }}
+      <v-icon>
+        mdi-check-circle-outline
+      </v-icon>
+    </v-snackbar>
     <v-navigation-drawer
       v-if="this.$auth.loggedIn"
       v-model="drawer"
@@ -410,6 +419,9 @@ export default {
     }
   },
   data: () => ({
+    snackbar: false,
+    snackbarColor: 'green darken-3',
+    snackbarText: '',
     sheet: false,
     welcomeText: '',
     switchAvailable: false,
@@ -446,9 +458,15 @@ export default {
     },
     switchAvailable () {
       if (this.switchAvailable) {
-        this.$axios.$post('account/edit', { user_metadata: { available: true } })
+        this.$axios.$post('account/edit', { user_metadata: { available: true } }).then(() => {
+          this.snackbarText = 'You are now available for hire.'
+          this.snackbar = true
+        })
       } else {
-        this.$axios.$post('account/edit', { user_metadata: { available: false } })
+        this.$axios.$post('account/edit', { user_metadata: { available: false } }).then(() => {
+          this.snackbarText = 'You are not available for hire anymore.'
+          this.snackbar = true
+        })
       }
     },
     profile () {
