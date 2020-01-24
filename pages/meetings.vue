@@ -173,6 +173,7 @@ export default {
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeMeeting) {
       this.alertText = process.env.welcomeMeeting
       this.alert = true
+      this.$axios.$post('account/edit', { user_metadata: { welcomeMeeting: true } })
     }
   },
   methods: {
