@@ -693,12 +693,8 @@ export default {
       })
       .catch((error) => {
         // handle this error here
-        this.$swal.fire({
-          type: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!',
-          footer: `${error}`
-        })
+        this.snackbarText = `${error}`
+        this.snackbar = true
       })
   },
   methods: {

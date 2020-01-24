@@ -1,5 +1,17 @@
 <template>
   <v-container>
+    <v-alert
+      v-model="alert"
+      icon="mdi-information-outline"
+      prominent
+      dense
+      dismissible
+      transition="scale-transition"
+      text
+      :type="alertInfo"
+    >
+      {{ alertText }}
+    </v-alert>
     <v-card flat color="#303030">
       <v-flex v-if="newMessages.length >= 1" xs12 sm8 offset-sm-2>
         <v-card subheader dense color="grey darken-3">
@@ -193,6 +205,9 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      alert: false,
+      alertInfo: 'info',
+      alertText: '',
       userColor: 'amber lighten-4',
       selectedMessage: {},
       dialogMessage: false,
@@ -221,15 +236,9 @@ export default {
     this.$store.dispatch('messages/getMessages')
     this.scrollDown()
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeMsg) {
-      this.$swal.fire({
-        position: 'bottom-end',
-        type: 'info',
-        text: process.env.welcomeMsg,
-        showConfirmButton: true,
-        width: '22rem'
-      }).then(() => {
-        return this.$axios.$post('account/edit', { user_metadata: { welcomeMsg: true } })
-      })
+      this.alertText = process.env.welcomeMsg
+      this.alert = true
+      return this.$axios.$post('account/edit', { user_metadata: { welcomeMsg: true } })
     }
   },
   methods: {

@@ -1,5 +1,16 @@
 <template>
   <v-layout row wrap align-center my-4>
+    <v-snackbar
+      v-model="snackbar"
+      top
+      :color="snackbarColor"
+      right
+    >
+      {{ snackbarText }}
+      <v-icon>
+        mdi-check-circle-outline
+      </v-icon>
+    </v-snackbar>
     <v-flex xs12 text-center mb-3>
       <h2 v-if="!meeting.confirm.status">
         <u><b>Confirm a meeting date</b></u>
@@ -76,6 +87,34 @@
         Confirm Changes
       </v-btn>
     </v-flex>
+    <v-dialog v-model="dialogConfirm" persistent max-width="800">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogConfirm = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title class="ibm">
+            Confirm Meeting ?
+          </v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <v-flex class="ma-6" text-center>
+          The contractor will be notified, be sure to include a time and to pick a day
+        </v-flex>
+        <v-divider />
+        <v-flex xs12 text-center>
+          <v-btn color="orange darken-3" @click="dialogConfirm = false">
+            Cancel
+          </v-btn>
+          <v-btn v-if="!confirmedTrue" color="green darken-3" @click="confirmed('yes')">
+            Confirm
+          </v-btn>
+          <v-btn v-else color="green darken-3" @click="confirmed(true)">
+            Confirm
+          </v-btn>
+        </v-flex>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 <script>
@@ -92,6 +131,11 @@ export default {
   },
   data () {
     return {
+      snackbar: false,
+      snackbarColor: 'green darken-3',
+      snackbarText: '',
+      confirmedTrue: false,
+      dialogConfirm: false,
       changeDate: false,
       date: '',
       dates: [],
@@ -133,63 +177,51 @@ export default {
       }
     },
     confirmed (ok) {
-      this.$swal.fire({
-        title: 'Confirm meeting?',
-        text: 'The contractor will be notified, be sure to include a time and to pick a day',
-        type: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#4CAF50',
-        cancelButtonColor: '#0D47A1',
-        confirmButtonText: 'Yes, confirm it!'
-      }).then((result) => {
-        if (result.value) {
-          if (this.dates.length >= 1) {
-            this.meeting.meeting.dates = this.dates
-          }
-          this.meeting.confirm.date = this.date
-          if (!this.selectedMeeting.confirm.status && this.selectedMeeting.user === this.$auth.user.sub) {
-            this.meeting.confirm.status = true
-          }
-          if (this.selectedMeeting.change.status && ok === true) {
-            this.meeting.change.status = false
-            this.meeting.change.uid = ''
-          } else if (this.selectedMeeting.confirm.status) {
-            this.meeting.change.status = true
-            this.meeting.change.uid = this.$auth.user.sub
-          }
-          this.$axios.$post('bid/setMeeting', { bid: [this.selectedMeeting], meeting: this.meeting }).then((res) => {
-            this.$emit('update:selectedMeeting', res)
-            this.$emit('update:dialogMeeting', false)
-            this.changeDate = false
-            this.$swal.fire({
-              type: 'success',
-              title: 'Success!',
-              text: 'Meeting has been Confirmed!',
-              timer: 2000
-            })
-            const user = (res.host === this.$auth.user.sub) ? res.user : res.host
-            if (!res.confirm.status || res.change.status) {
-              this.$store.dispatch('notifications/createNotification',
-                {
-                  senderId: this.$auth.user.sub,
-                  recipientId: user,
-                  activity: 'Meeting',
-                  activityDesc: `New meeting request from ${this.$auth.user.name}`,
-                  link: res._id
-                })
-            } else if (res.confirm.status && !res.change.status) {
-              this.$store.dispatch('notifications/createNotification',
-                {
-                  senderId: this.$auth.user.sub,
-                  recipientId: user,
-                  activity: 'Meeting',
-                  activityDesc: `Meeting with ${this.$auth.user.name} has been confirmed!`,
-                  link: res._id
-                })
-            }
-          })
+      if (ok === true) { this.confirmedTrue = true }
+      this.dialogConfirm = true
+      if (ok === 'yes' || ok === true) {
+        if (this.dates.length >= 1) {
+          this.meeting.meeting.dates = this.dates
         }
-      })
+        this.meeting.confirm.date = this.date
+        if (!this.selectedMeeting.confirm.status && this.selectedMeeting.user === this.$auth.user.sub) {
+          this.meeting.confirm.status = true
+        }
+        if (this.selectedMeeting.change.status && ok === true) {
+          this.meeting.change.status = false
+          this.meeting.change.uid = ''
+        } else if (this.selectedMeeting.confirm.status) {
+          this.meeting.change.status = true
+          this.meeting.change.uid = this.$auth.user.sub
+        }
+        this.$axios.$post('bid/setMeeting', { bid: [this.selectedMeeting], meeting: this.meeting }).then((res) => {
+          this.$emit('update:selectedMeeting', res)
+          this.$emit('update:dialogMeeting', false)
+          this.changeDate = false
+          this.snackbarText = 'Meeting has been Confirmed!'
+          this.snackbar = true
+          const user = (res.host === this.$auth.user.sub) ? res.user : res.host
+          if (!res.confirm.status || res.change.status) {
+            this.$store.dispatch('notifications/createNotification',
+              {
+                senderId: this.$auth.user.sub,
+                recipientId: user,
+                activity: 'Meeting',
+                activityDesc: `New meeting request from ${this.$auth.user.name}`,
+                link: res._id
+              })
+          } else if (res.confirm.status && !res.change.status) {
+            this.$store.dispatch('notifications/createNotification',
+              {
+                senderId: this.$auth.user.sub,
+                recipientId: user,
+                activity: 'Meeting',
+                activityDesc: `Meeting with ${this.$auth.user.name} has been confirmed!`,
+                link: res._id
+              })
+          }
+        })
+      }
     }
   }
 }

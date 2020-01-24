@@ -1,5 +1,28 @@
 <template>
   <v-container>
+    <v-alert
+      v-model="alert"
+      icon="mdi-information-outline"
+      prominent
+      dense
+      dismissible
+      transition="scale-transition"
+      text
+      :type="alertInfo"
+    >
+      {{ alertText }}
+    </v-alert>
+    <v-snackbar
+      v-model="snackbar"
+      top
+      :color="snackbarColor"
+      right
+    >
+      {{ snackbarText }}
+      <v-icon>
+        mdi-check-circle-outline
+      </v-icon>
+    </v-snackbar>
     <v-card flat color="#303030">
       <v-layout row wrap>
         <v-flex xs12 text-center>
@@ -177,6 +200,12 @@ export default {
   },
   data () {
     return {
+      snackbar: false,
+      snackbarColor: 'green darken-3',
+      snackbarText: '',
+      alert: false,
+      alertInfo: 'info',
+      alertText: '',
       searchDialog: false,
       search: '',
       trades: [],
@@ -260,15 +289,9 @@ export default {
         })
     })
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeTeam) {
-      this.$swal.fire({
-        position: 'bottom-end',
-        type: 'info',
-        text: process.env.welcomeTeam,
-        showConfirmButton: true,
-        width: '22rem'
-      }).then(() => {
-        return this.$axios.$post('account/edit', { user_metadata: { welcomeTeam: true } })
-      })
+      this.alertText = process.env.welcomeTeam
+      this.alert = true
+      return this.$axios.$post('account/edit', { user_metadata: { welcomeTeam: true } })
     }
   },
   methods: {
@@ -287,15 +310,8 @@ export default {
     save () {
       setTimeout(() => {
         this.$axios.$post('team/edit', { team: this.team }).then((res) => {
-          this.$swal
-            .fire({
-              text: 'Successfully Updated!',
-              type: 'success',
-              toast: true,
-              showConfirmButton: false,
-              position: 'top-end',
-              timer: 1500
-            })
+          this.snackbarText = 'Successfully Updated!'
+          this.snackbar = true
         })
       }, 1000)
     }

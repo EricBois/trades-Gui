@@ -362,6 +362,22 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-bottom-sheet v-model="sheet" persistent>
+      <v-sheet class="text-center" height="200px">
+        <h2>Welcome to Sub-Hub !</h2>
+        <div class="ma-2">
+          {{ welcomeText }}
+        </div>
+        <v-btn
+          class="mt-6"
+          flat
+          color="error"
+          @click="letsGo()"
+        >
+          Go !
+        </v-btn>
+      </v-sheet>
+    </v-bottom-sheet>
   </v-app>
 </template>
 <style scoped>
@@ -394,6 +410,8 @@ export default {
     }
   },
   data: () => ({
+    sheet: false,
+    welcomeText: '',
     switchAvailable: false,
     addBtnShow: 'none',
     overflow: true,
@@ -436,15 +454,8 @@ export default {
     profile () {
       this.switchAvailable = this.profile.user_metadata.available
       if (this.profile.user_metadata && !this.profile.user_metadata.welcome) {
-        this.$swal.fire({
-          title: 'Welcome to SubHub',
-          text: process.env.welcome,
-          confirmButtonText: 'Lets Go'
-        }).then(() => {
-          return this.$axios.$post('account/edit', { user_metadata: { welcome: true } }).then(() => {
-            this.$router.push('profile')
-          })
-        })
+        this.welcomeText = process.env.welcome
+        this.sheet = true
       }
     }
   },
@@ -479,6 +490,12 @@ export default {
       // Wait for the user to respond to the prompt
       this.deferredPrompt.userChoice.then((choiceResult) => {
         this.deferredPrompt = null
+      })
+    },
+    letsGo () {
+      this.sheet = false
+      this.$axios.$post('account/edit', { user_metadata: { welcome: true } }).then(() => {
+        this.$router.push('profile')
       })
     },
     login () {

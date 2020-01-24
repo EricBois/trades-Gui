@@ -1,5 +1,17 @@
 <template>
   <v-container>
+    <v-alert
+      v-model="alert"
+      icon="mdi-information-outline"
+      prominent
+      dense
+      dismissible
+      transition="scale-transition"
+      text
+      :type="alertInfo"
+    >
+      {{ alertText }}
+    </v-alert>
     <v-card flat color="#303030">
       <!-- meetings -->
       <v-flex xs12 sm8 offset-sm-2>
@@ -136,6 +148,9 @@ export default {
   },
   data () {
     return {
+      alert: false,
+      alertInfo: 'info',
+      alertText: '',
       selectedMeeting: {},
       dialogMeeting: false,
       meetings: [],
@@ -156,15 +171,8 @@ export default {
       150000
     )
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeMeeting) {
-      this.$swal.fire({
-        position: 'bottom-end',
-        type: 'info',
-        text: process.env.welcomeMeeting,
-        showConfirmButton: true,
-        width: '22rem'
-      }).then(() => {
-        return this.$axios.$post('account/edit', { user_metadata: { welcomeMeeting: true } })
-      })
+      this.alertText = process.env.welcomeMeeting
+      this.alert = true
     }
   },
   methods: {

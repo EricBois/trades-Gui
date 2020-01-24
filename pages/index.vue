@@ -1,9 +1,18 @@
 <template>
   <v-layout wrap>
-    <v-flex v-if="error.length > 0" xs12 text-center class="mb-5">
-      <h2 class="error sub">
-        {{ error }}
-      </h2>
+    <v-flex xs12>
+      <v-alert
+        v-model="alert"
+        icon="mdi-information-outline"
+        prominent
+        dense
+        dismissible
+        transition="scale-transition"
+        text
+        :type="alertInfo"
+      >
+        {{ alertText }}
+      </v-alert>
     </v-flex>
     <v-flex xs12 text-center>
       <v-card max-width="650" class="mx-auto pa-6">
@@ -26,8 +35,10 @@
 export default {
   data () {
     return {
-      profile: this.$auth.token,
-      error: ''
+      alert: false,
+      alertInfo: 'warning',
+      alertText: '',
+      profile: this.$auth.token
     }
   },
   created () {
@@ -36,13 +47,8 @@ export default {
         '#error=unauthorized&error_description=Please%20verify%20your%20email%20before%20logging%20in'
       )
     ) {
-      this.error = 'Please verify your email before logging in'
-      this.$swal.fire({
-        type: 'info',
-        title: 'Verify Your Email',
-        text: 'Please verify your email address.',
-        footer: 'Look in your email'
-      })
+      this.alertText = 'Please verify your email to confirm your account before login.'
+      this.alert = true
     }
   },
   methods: {

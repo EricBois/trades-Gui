@@ -1,5 +1,17 @@
 <template>
   <v-container>
+    <v-alert
+      v-model="alert"
+      icon="mdi-information-outline"
+      prominent
+      dense
+      dismissible
+      transition="scale-transition"
+      text
+      :type="alertInfo"
+    >
+      {{ alertText }}
+    </v-alert>
     <v-card flat color="#303030">
       <v-layout v-if="jobs.length > 0" row wrap>
         <v-flex xs12 text-center>
@@ -93,6 +105,9 @@ export default {
   },
   data () {
     return {
+      alert: false,
+      alertInfo: 'info',
+      alertText: '',
       dialogTeam: false,
       team: [],
       jobs: [],
@@ -115,15 +130,9 @@ export default {
       })
     })
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeTeamProjects) {
-      this.$swal.fire({
-        position: 'bottom-end',
-        type: 'info',
-        text: process.env.welcomeTeamProjects,
-        showConfirmButton: true,
-        width: '22rem'
-      }).then(() => {
-        return this.$axios.$post('account/edit', { user_metadata: { welcomeTeamProjects: true } })
-      })
+      this.alertText = process.env.welcomeTeamProjects
+      this.alert = true
+      this.$axios.$post('account/edit', { user_metadata: { welcomeTeamProjects: true } })
     }
   },
   methods: {

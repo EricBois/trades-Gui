@@ -1,5 +1,15 @@
 <template>
   <v-container>
+    <v-snackbar
+      v-model="snackbar"
+      :color="snackbarColor"
+      vertical
+    >
+      {{ snackbarText }}
+      <v-icon>
+        mdi-check-circle-outline
+      </v-icon>
+    </v-snackbar>
     <v-layout row wrap class="pa-3">
       <v-flex xs12>
         <v-data-table
@@ -94,6 +104,9 @@ export default {
   },
   data () {
     return {
+      snackbar: false,
+      snackbarColor: 'green darken-3',
+      snackbarText: '',
       dialogMeeting: false,
       phones: [],
       emails: [],
@@ -147,11 +160,8 @@ export default {
           this.$axios.$post('bid/notified', {
             bid
           }).then((res) => {
-            this.$swal.fire({
-              type: 'success',
-              title: 'Success!',
-              text: 'Contractor(s) have been notified and will be in touch shortly.'
-            })
+            this.snackbarText = 'Contractor(s) have been notified and will be in touch shortly.'
+            this.snackbar = true
             bid.notified = true
           })
         }
@@ -175,12 +185,8 @@ export default {
         this.meeting.dates = []
         this.meeting.description = ''
         this.dialogMeeting = false
-        this.$swal.fire({
-          type: 'success',
-          title: 'Success!',
-          text: 'Meeting request has been sent!',
-          timer: 2000
-        })
+        this.snackbarText = 'Meeting request has been sent!'
+        this.snackbar = true
         const user = (res.host === this.$auth.user.sub) ? res.user : res.host
         this.$store.dispatch('notifications/createNotification',
           {

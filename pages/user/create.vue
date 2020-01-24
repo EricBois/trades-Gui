@@ -1,5 +1,15 @@
 <template>
   <v-container fluid>
+    <v-snackbar
+      v-model="snackbar"
+      bottom
+      :color="snackbarColor"
+    >
+      {{ snackbarText }}
+      <v-icon>
+        mdi-check-circle-outline
+      </v-icon>
+    </v-snackbar>
     <v-layout column>
       <v-card
         elevation="22"
@@ -144,6 +154,9 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      snackbar: false,
+      snackbarColor: 'blue darken-3',
+      snackbarText: '',
       itemSkills: [],
       itemTickets: [],
       nameRule: [
@@ -195,48 +208,28 @@ export default {
   }),
   watch: {
     switch1 () {
-      if (this.switch1) {
-        this.$swal
-          .fire({
-            title: 'Assign project to team',
-            text: 'This project wont be publicly available, you can manage it in your team section.',
-            type: 'info',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'I Understand'
-          })
-          .then((result) => {
-            if (result.value) {
-              this.info.private = true
-            } else {
-              this.switch1 = false
-            }
-          })
+      if (this.switch1 && !this.info.private) {
+        this.snackbarText = 'The project is now private and you can manage it in your team section.'
+        this.snackbar = true
+        this.info.private = true
+      } else if (this.switch1) {
+        this.info.private = true
       } else {
         this.info.private = false
+        this.snackbarText = 'The project is now public.'
+        this.snackbar = true
       }
     },
     switch2 () {
-      if (this.switch2) {
-        this.$swal
-          .fire({
-            title: 'Activate 1 bid',
-            text: 'Only 1 bid per user will be allowed.',
-            type: 'info',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'I Understand'
-          })
-          .then((result) => {
-            if (result.value) {
-              this.info.oneBid = true
-            } else {
-              this.switch2 = false
-            }
-          })
+      if (this.switch2 && !this.info.oneBid) {
+        this.snackbarText = 'Only 1 bid per user will be allowed.'
+        this.snackbar = true
+        this.info.oneBid = true
+      } else if (this.switch2) {
+        this.info.oneBid = true
       } else {
+        this.snackbarText = 'Unlimited bids will be allowed.'
+        this.snackbar = true
         this.info.oneBid = false
       }
     },

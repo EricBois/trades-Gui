@@ -1,5 +1,28 @@
 <template>
   <v-container>
+    <v-alert
+      v-model="alert"
+      icon="mdi-information-outline"
+      prominent
+      dense
+      dismissible
+      transition="scale-transition"
+      text
+      :type="alertInfo"
+    >
+      {{ alertText }}
+    </v-alert>
+    <v-snackbar
+      v-model="snackbar"
+      bottom
+      :color="snackbarColor"
+    >
+      {{ snackbarText }}
+      <v-icon>
+        mdi-check-circle-outline
+      </v-icon>
+    </v-snackbar>
+
     <v-layout row wrap>
       <v-flex xs12 text-center class="sub">
         <v-divider class="my-5" />
@@ -207,6 +230,12 @@ export default {
   },
   data () {
     return {
+      snackbar: false,
+      snackbarColor: 'green darken-3',
+      snackbarText: '',
+      alert: false,
+      alertInfo: 'info',
+      alertText: '',
       job: '',
       dialogMessage: false,
       dialog: false,
@@ -243,15 +272,9 @@ export default {
     this.projectTeam = this.selectedJob.team
     this.list = this.list.filter(val => !this.projectTeam.find(({ uid }) => val.uid === uid) && val.uid !== this.$auth.user.sub)
     if (this.profile.user_metadata && !this.profile.user_metadata.projectTeam) {
-      this.$swal.fire({
-        position: 'bottom-end',
-        type: 'info',
-        text: process.env.projectTeam,
-        showConfirmButton: true,
-        width: '22rem'
-      }).then(() => {
-        return this.$axios.$post('account/edit', { user_metadata: { projectTeam: true } })
-      })
+      this.alertText = process.env.projectTeam
+      this.alert = true
+      return this.$axios.$post('account/edit', { user_metadata: { projectTeam: true } })
     }
   },
   methods: {
@@ -272,15 +295,8 @@ export default {
     save () {
       setTimeout(() => {
         this.$axios.$post(`job/edit/${this.selectedJob.id}`, { team: this.projectTeam }).then((res) => {
-          this.$swal
-            .fire({
-              text: 'Successfully Updated!',
-              type: 'success',
-              toast: true,
-              showConfirmButton: false,
-              position: 'top-end',
-              timer: 1500
-            })
+          this.snackbarText = 'Successfully Updated!'
+          this.snackbar = true
         })
       }, 1000)
     },
@@ -295,14 +311,8 @@ export default {
           this.message.names.to = user.name
           this.message.to = user.uid
           await this.$axios.$post('message/send', this.message).then((res) => {
-            this.$swal
-              .fire({
-                text: 'Successfully sent!',
-                type: 'success',
-                toast: true,
-                showConfirmButton: false,
-                position: 'top-end'
-              })
+            this.snackbarText = 'Successfully Sent!'
+            this.snackbar = true
             this.$store.dispatch('notifications/createNotification',
               {
                 senderId: this.$auth.user.sub,

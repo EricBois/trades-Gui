@@ -411,7 +411,7 @@ export default {
     },
     profile () {
       if (this.profile) {
-        this.name = (!this.profile.user_metadata.welcomeProfile) ? '' : this.profile.name
+        this.name = this.profile.name
         this.picture = this.profile.picture
         this.info.user_metadata.facebook = this.profile.user_metadata.facebook
         this.info.user_metadata.instagram = this.profile.user_metadata.instagram
@@ -445,7 +445,6 @@ export default {
   created () {
     // Welcome profile
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeProfile) {
-      this.name = ''
       this.alertText = process.env.welcomeProfile
       this.alert = true
       this.$axios.$post('account/edit', { user_metadata: { welcomeProfile: true } })

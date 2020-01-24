@@ -1,5 +1,16 @@
 <template>
   <v-container>
+    <v-snackbar
+      v-model="snackbar"
+      top
+      :color="snackbarColor"
+      right
+    >
+      {{ snackbarText }}
+      <v-icon>
+        mdi-alert-outline
+      </v-icon>
+    </v-snackbar>
     <image-uploader
       :preview="false"
       :max-width="700"
@@ -42,6 +53,9 @@ export default {
   },
   data () {
     return {
+      snackbar: false,
+      snackbarColor: 'red darken-3',
+      snackbarText: '',
       hasImage: false,
       photo: null,
       filename: ''
@@ -64,12 +78,8 @@ export default {
         this.hasImage = false
         this.filename = ''
       }).catch((error) => {
-        this.$swal.fire({
-          type: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!',
-          footer: `${error}`
-        })
+        this.snackbarText = `Oh no! ${error}`
+        this.snackbar = true
       })
     }
   }

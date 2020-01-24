@@ -1,5 +1,17 @@
 <template>
   <v-container>
+    <v-alert
+      v-model="alert"
+      icon="mdi-information-outline"
+      prominent
+      dense
+      dismissible
+      transition="scale-transition"
+      text
+      :type="alertInfo"
+    >
+      {{ alertText }}
+    </v-alert>
     <v-card flat color="#303030">
       <Jobs :jobs="jobsPublic" :cities="citiesPublic" />
     </v-card>
@@ -14,6 +26,9 @@ export default {
   },
   data () {
     return {
+      alert: false,
+      alertInfo: 'info',
+      alertText: '',
       jobsPublic: [],
       citiesPublic: []
     }
@@ -23,15 +38,9 @@ export default {
   }),
   mounted () {
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeJobs) {
-      this.$swal.fire({
-        position: 'bottom-end',
-        type: 'info',
-        text: process.env.welcomeJobs,
-        showConfirmButton: true,
-        width: '22rem'
-      }).then(() => {
-        return this.$axios.$post('account/edit', { user_metadata: { welcomeJobs: true } })
-      })
+      this.alertText = process.env.welcomeJobs
+      this.alert = true
+      this.$axios.$post('account/edit', { user_metadata: { welcomeJobs: true } })
     }
     this.$axios.$get('job/get').then((res) => {
       res.forEach((obj, i) => {

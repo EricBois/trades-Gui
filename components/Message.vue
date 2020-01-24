@@ -69,12 +69,6 @@ export default {
         this.message.messages.name = this.$auth.user.name
         this.$axios.$post('message/send', this.message).then((res) => {
           this.$emit('update:dialogMessage', false)
-          this.$swal.fire({
-            type: 'success',
-            title: 'Success',
-            text: 'Message Sent!',
-            timer: 1500
-          })
           // make sure it sends to right user
           const user = (res.to === this.$auth.user.sub) ? res.from : res.to
           this.$store.dispatch('notifications/createNotification',

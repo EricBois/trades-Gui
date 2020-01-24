@@ -1,5 +1,17 @@
 <template>
   <v-container>
+    <v-alert
+      v-model="alert"
+      icon="mdi-information-outline"
+      prominent
+      dense
+      dismissible
+      transition="scale-transition"
+      text
+      :type="alertInfo"
+    >
+      {{ alertText }}
+    </v-alert>
     <v-tabs
       v-model="tab"
       background-color="transparent"
@@ -50,6 +62,9 @@ export default {
   },
   data () {
     return {
+      alert: false,
+      alertInfo: 'info',
+      alertText: '',
       jobs: [],
       cities: [],
       jobsPrivate: [],
@@ -78,15 +93,9 @@ export default {
             })
             this.$nuxt.$loading.finish()
             if (this.profile.user_metadata && !this.profile.user_metadata.biddedJobs) {
-              this.$swal.fire({
-                position: 'bottom-end',
-                type: 'info',
-                text: process.env.biddedJobs,
-                showConfirmButton: true,
-                width: '22rem'
-              }).then(() => {
-                return this.$axios.$post('account/edit', { user_metadata: { biddedJobs: true } })
-              })
+              this.alertText = process.env.biddedJobs
+              this.alert = true
+              this.$axios.$post('account/edit', { user_metadata: { biddedJobs: true } })
             }
           })
         })
@@ -105,30 +114,18 @@ export default {
       if (this.tab === 1 && this.jobsPrivate.length <= 0) {
         this.getPrivate()
         if (this.profile.user_metadata && !this.profile.user_metadata.privateJobs) {
-          this.$swal.fire({
-            position: 'bottom-end',
-            type: 'info',
-            text: process.env.privateJobs,
-            showConfirmButton: true,
-            width: '22rem'
-          }).then(() => {
-            return this.$axios.$post('account/edit', { user_metadata: { privateJobs: true } })
-          })
+          this.alertText = process.env.privateJobs
+          this.alert = true
+          this.$axios.$post('account/edit', { user_metadata: { privateJobs: true } })
         }
       }
     }
   },
   mounted () {
     if (this.profile.user_metadata && !this.profile.user_metadata.ownPosting) {
-      this.$swal.fire({
-        position: 'bottom-end',
-        type: 'info',
-        text: process.env.ownPosting,
-        showConfirmButton: true,
-        width: '22rem'
-      }).then(() => {
-        return this.$axios.$post('account/edit', { user_metadata: { ownPosting: true } })
-      })
+      this.alertText = process.env.ownPosting
+      this.alert = true
+      this.$axios.$post('account/edit', { user_metadata: { ownPosting: true } })
     }
     this.$axios.$get('job/get/user').then((res) => {
       res.forEach((obj, i) => {
