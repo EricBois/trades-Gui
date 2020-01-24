@@ -19,8 +19,11 @@
       right
     >
       {{ snackbarText }}
-      <v-icon>
+      <v-icon v-if="snackbarColor.includes('red')">
         mdi-alert-outline
+      </v-icon>
+      <v-icon v-else>
+        mdi-check-circle-outline
       </v-icon>
     </v-snackbar>
     <v-card max-width="844" class="mx-auto" raised>
@@ -487,7 +490,7 @@
           <v-toolbar-title>Messages</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
-        <Message :dialog-message.sync="dialogMessage" :project="project" />
+        <Message :dialog-message.sync="dialogMessage" :project="project" :snackbar.sync="snackbar" :snackbar-color.sync="snackbarColor" :snackbar-text.sync="snackbarText" />
         <v-divider />
       </v-card>
     </v-dialog>

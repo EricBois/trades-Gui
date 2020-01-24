@@ -29,6 +29,17 @@ export default {
     },
     dialogMessage: {
       type: Boolean
+    },
+    snackbar: {
+      type: Boolean
+    },
+    snackbarColor: {
+      type: String,
+      default: ''
+    },
+    snackbarText: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -68,6 +79,9 @@ export default {
         }
         this.message.messages.name = this.$auth.user.name
         this.$axios.$post('message/send', this.message).then((res) => {
+          this.$emit('update:snackbar', true)
+          this.$emit('update:snackbarColor', 'green darken-3')
+          this.$emit('update:snackbarText', 'Message Sent!')
           this.$emit('update:dialogMessage', false)
           // make sure it sends to right user
           const user = (res.to === this.$auth.user.sub) ? res.from : res.to
