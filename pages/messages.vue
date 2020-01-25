@@ -15,7 +15,7 @@
     <v-card flat color="#303030">
       <v-flex
         v-if="team.length >= 1"
-        class="my-2"
+        class="my-6"
         xs12
         sm8
         offset-sm-2
@@ -23,29 +23,42 @@
       >
         <v-card subheader dense color="grey darken-3">
           <v-subheader class="justify-center sub">
-            <b>Direct messaging</b>
+            <b class="justify-center">Direct messaging</b>
           </v-subheader>
+          <v-flex v-if="selectUser.length >= 1" class=" mb-2">
+            <v-btn v-if="selectUser.length >= 1" color="orange darken-3" small class="mt-n12 ml-2 mb-4" @click="selectUser = []">
+              <v-icon class="mr-2" small>
+                mdi-autorenew
+              </v-icon>
+              reset
+            </v-btn>
+          </v-flex>
+          <v-flex v-if="selectUser.length >= 1" class="mt-n8 mb-2" text-right>
+            <v-btn color="primary" class="mt-n12 mr-2 mb-4" small @click="dialogMassMessage = !dialogMassMessage">
+              <v-icon class="mr-2" small>
+                mdi-send
+              </v-icon>
+              Send
+            </v-btn>
+          </v-flex>
           <v-sheet elevation="10" class="py-4 px-1">
             <v-chip-group
               v-model="selectUser"
               multiple
-              active-class="primary--text"
+              active-class="amber--text"
               show-arrows
             >
-              <v-chip v-for="user in team" :key="user.uid" :value="user" label outlined>
+              <v-chip
+                v-for="user in team"
+                :key="user.uid"
+                color="grey darken-1"
+                :value="user"
+              >
                 {{ user.name }}
               </v-chip>
             </v-chip-group>
           </v-sheet>
         </v-card>
-        <v-flex text-center>
-          <v-btn color="orange darken-3" small fab class="mt-n4" @click="selectUser = []">
-            <v-icon>mdi-autorenew</v-icon>
-          </v-btn>
-          <v-btn color="primary" class="mt-n4 ml-4" small fab @click="dialogMassMessage = !dialogMassMessage">
-            <v-icon>mdi-message-text</v-icon>
-          </v-btn>
-        </v-flex>
       </v-flex>
       <v-flex v-if="newMessages.length >= 1" xs12 sm8 offset-sm-2>
         <v-card subheader dense color="grey darken-3">
