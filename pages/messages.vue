@@ -21,9 +21,21 @@
         offset-sm-2
         justify="space-around"
       >
+        <v-flex class="mb-n5" xs12>
+          <v-text-field
+            v-model="search"
+            label="Search by Name.."
+            class="purple-input center"
+            rounded
+            clearable
+            prepend-inner-icon="mdi-magnify"
+            shaped
+            dense
+          />
+        </v-flex>
         <v-card subheader dense color="grey darken-3">
           <v-subheader class="justify-center sub">
-            <b class="justify-center">Direct messaging</b>
+            <b class="justify-center">Direct messaging</b><br>
           </v-subheader>
           <v-flex v-if="selectUser.length >= 1" class=" mb-2">
             <v-btn v-if="selectUser.length >= 1" color="orange darken-3" small class="mt-n12 ml-2 mb-4" @click="selectUser = []">
@@ -49,7 +61,7 @@
               show-arrows
             >
               <v-chip
-                v-for="user in team"
+                v-for="user in filteredList"
                 :key="user.uid"
                 color="grey darken-1"
                 :value="user"
@@ -286,6 +298,7 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      search: '',
       dialogMassMessage: false,
       selectUser: [],
       alert: false,
@@ -313,13 +326,24 @@ export default {
       }
     }
   },
-  computed: mapGetters({
-    profile: 'profile/getProfile',
-    read: 'messages/Read',
-    newMessages: 'messages/getNewMessages',
-    readMessages: 'messages/getReadMessages',
-    team: 'team/getTeam'
-  }),
+  computed: {
+    ...mapGetters({
+      profile: 'profile/getProfile',
+      read: 'messages/Read',
+      newMessages: 'messages/getNewMessages',
+      readMessages: 'messages/getReadMessages',
+      team: 'team/getTeam'
+    }),
+    filteredList () {
+      let filtered = this.team
+      if (this.search) {
+        if (this.search.length > 0) {
+          filtered = this.team.filter(user => user.name.toLowerCase().includes(this.search.toLowerCase()))
+        }
+      }
+      return filtered
+    }
+  },
   watch: {
     dialogMessage () {
       this.scrollDown()
