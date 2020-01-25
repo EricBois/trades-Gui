@@ -69,6 +69,13 @@
           {{ user.metadata.description }}
         </p>
       </v-flex>
+      <v-flex xs12 text-center>
+        <v-btn v-if="user.uid !== $auth.user.sub && !alreadyInTeam" class="mt-n6" color="blue darken-4" @click="addToTeam()">
+          <v-icon class="mr-2">
+            mdi-account-plus-outline
+          </v-icon> Team
+        </v-btn>
+      </v-flex>
       <v-container v-if="user.photos" class="mx-5 photo">
         <v-layout row wrap class="pa-3">
           <v-flex
@@ -168,6 +175,7 @@ a:link {
 </style>
 
 <script>
+import { mapGetters } from 'vuex'
 import ExpandableImage from '../components/ExpandableImage'
 import Message from '../components/Message.vue'
 export default {
@@ -183,13 +191,58 @@ export default {
   },
   data () {
     return {
+      alreadyInTeam: false,
       dialogMessage: false,
       phone: ''
+    }
+  },
+  computed: mapGetters({
+    team: 'team/getTeam'
+  }),
+  watch: {
+    user () {
+      this.alreadyInTeam = false
+      // make sure user isn't in team already
+      this.team.forEach((member) => {
+        if (member.uid === this.user.uid) {
+          this.alreadyInTeam = true
+        }
+      })
+    },
+    team () {
+      this.alreadyInTeam = false
+      // make sure user isn't in team already
+      if (this.team) {
+        this.team.forEach((member) => {
+          if (member.uid === this.user.uid) {
+            this.alreadyInTeam = true
+          }
+        })
+      }
     }
   },
   created () {
     if (this.user.metadata.phone) {
       this.phone = `tel:${this.user.metadata.phone}`
+    }
+    if (this.team) {
+      // make sure user isn't in team already
+      this.team.forEach((member) => {
+        if (member.uid === this.user.uid) {
+          this.alreadyInTeam = true
+        }
+      })
+    }
+  },
+  methods: {
+    addToTeam () {
+      this.$store.commit('team/addMember', {
+        uid: this.user.uid, // ID
+        name: this.user.name,
+        picture: this.user.picture,
+        metadata: this.user.metadata
+      })
+      this.$store.dispatch('team/saveTeam')
     }
   }
 }

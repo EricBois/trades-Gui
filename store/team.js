@@ -5,6 +5,9 @@ export const state = () => ({
 export const mutations = {
   updateTeam (state, team) {
     state.team = team
+  },
+  addMember (state, member) {
+    state.team.push(member)
   }
 }
 
@@ -21,5 +24,10 @@ export const actions = {
       .then((res) => {
         commit('updateTeam', res.team)
       })
+  },
+  saveTeam ({ commit, state }) {
+    this.$axios.$post('team/edit', { team: state.team }).then((res) => {
+      commit('updateTeam', res.team)
+    })
   }
 }
