@@ -30,46 +30,57 @@
             clearable
             prepend-inner-icon="mdi-magnify"
             dense
+            @change="show = !show"
           />
         </v-flex>
         <v-card subheader dense color="grey darken-3">
           <v-subheader class="justify-center sub">
             <b class="justify-center">Direct messaging</b><br>
           </v-subheader>
-          <v-flex v-if="selectUser.length >= 1" class=" mb-2">
-            <v-btn v-if="selectUser.length >= 1" color="orange darken-3" small class="mt-n12 ml-2 mb-4" @click="selectUser = []">
-              <v-icon class="mr-2" small>
-                mdi-autorenew
-              </v-icon>
-              reset
-            </v-btn>
-          </v-flex>
-          <v-flex v-if="selectUser.length >= 1" class="mt-n8 mb-2" text-right>
-            <v-btn color="primary" class="mt-n12 mr-2 mb-4" small @click="dialogMassMessage = !dialogMassMessage">
-              <v-icon class="mr-2" small>
-                mdi-send
-              </v-icon>
-              Send
-            </v-btn>
-          </v-flex>
-          <v-sheet elevation="10" class="py-4 px-1">
-            <v-chip-group
-              v-model="selectUser"
-              multiple
-              column
-              active-class="amber--text"
-            >
-              <v-chip
-                v-for="user in filteredList"
-                :key="user.uid"
-                color="grey darken-1"
-                :value="user"
-                small
-              >
-                {{ user.name }}
-              </v-chip>
-            </v-chip-group>
-          </v-sheet>
+          <v-btn
+            icon
+            @click="show = !show"
+          >
+            <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+          </v-btn>
+          <v-expand-transition>
+            <div v-show="show">
+              <v-flex v-if="selectUser.length >= 1" class=" mb-2">
+                <v-btn v-if="selectUser.length >= 1" color="orange darken-3" small class="mt-n12 ml-2 mb-4" @click="selectUser = []">
+                  <v-icon class="mr-2" small>
+                    mdi-autorenew
+                  </v-icon>
+                  reset
+                </v-btn>
+              </v-flex>
+              <v-flex v-if="selectUser.length >= 1" class="mt-n8 mb-2" text-right>
+                <v-btn color="primary" class="mt-n12 mr-2 mb-4" small @click="dialogMassMessage = !dialogMassMessage">
+                  <v-icon class="mr-2" small>
+                    mdi-send
+                  </v-icon>
+                  Send
+                </v-btn>
+              </v-flex>
+              <v-sheet elevation="10" class="py-4 px-1">
+                <v-chip-group
+                  v-model="selectUser"
+                  multiple
+                  column
+                  active-class="amber--text"
+                >
+                  <v-chip
+                    v-for="user in filteredList"
+                    :key="user.uid"
+                    color="grey darken-1"
+                    :value="user"
+                    small
+                  >
+                    {{ user.name }}
+                  </v-chip>
+                </v-chip-group>
+              </v-sheet>
+            </div>
+          </v-expand-transition>
         </v-card>
       </v-flex>
       <v-flex v-if="newMessages.length >= 1" xs12 sm8 offset-sm-2>
@@ -298,6 +309,7 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      show: false,
       search: '',
       dialogMassMessage: false,
       selectUser: [],
