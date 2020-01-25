@@ -354,6 +354,7 @@ export default {
         this.$axios.$post('team/edit', { team: this.team }).then((res) => {
           this.snackbarText = 'Successfully Updated!'
           this.snackbar = true
+          this.$store.commit('team/updateTeam', res.team) // update team store
         })
       }, 1000)
     },
