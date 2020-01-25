@@ -102,6 +102,9 @@
               </v-card>
             </draggable>
           </v-card>
+          <v-btn color="primary" class="mt-n5" small fab @click="dialogMessage = !dialogMessage">
+            <v-icon>mdi-message-text</v-icon>
+          </v-btn>
         </v-flex>
       </v-layout>
     </v-card>
@@ -171,6 +174,32 @@
         </v-layout>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogMessage" persistent max-width="600">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogMessage = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Message Project Team</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <v-form ref="form" lazy-validation class="mt-5">
+          <v-textarea
+            v-model="message.messages.text"
+            label="Message"
+            solo
+            outlined
+            clearable
+            class="purple-input"
+            auto-grow
+          />
+        </v-form>
+        <v-btn @click="send">
+          Send
+        </v-btn>
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -200,6 +229,19 @@ export default {
   },
   data () {
     return {
+      dialogMessage: false,
+      message: {
+        to: '',
+        names: {
+          to: '',
+          from: ''
+        },
+        project_name: '',
+        messages: {
+          text: '',
+          name: ''
+        }
+      },
       snackbar: false,
       snackbarColor: 'green darken-3',
       snackbarText: '',
@@ -314,6 +356,33 @@ export default {
           this.snackbar = true
         })
       }, 1000)
+    },
+    async send () {
+      if (this.message.messages.text) {
+        this.message.project_name = this.$auth.user.name
+        this.message.messages.name = this.$auth.user.name
+        this.message.messages.uid = this.$auth.user.sub
+        this.message.names.from = this.$auth.user.name
+        for (const key in this.filteredTeam) {
+          const user = this.filteredTeam[key]
+          this.message.names.to = user.name
+          this.message.to = user.uid
+          await this.$axios.$post('message/send', this.message).then((res) => {
+            this.snackbarText = 'Successfully Sent!'
+            this.snackbar = true
+            this.$store.dispatch('notifications/createNotification',
+              {
+                senderId: this.$auth.user.sub,
+                recipientId: user.uid,
+                activity: 'Message',
+                activityDesc: 'You have a new message',
+                link: res._id
+              })
+          })
+        }
+        this.dialogMessage = false
+        this.message.messages.text = ''
+      }
     }
   }
 }
