@@ -29,7 +29,6 @@
             rounded
             clearable
             prepend-inner-icon="mdi-magnify"
-            shaped
             dense
           />
         </v-flex>
@@ -57,14 +56,15 @@
             <v-chip-group
               v-model="selectUser"
               multiple
+              column
               active-class="amber--text"
-              show-arrows
             >
               <v-chip
                 v-for="user in filteredList"
                 :key="user.uid"
                 color="grey darken-1"
                 :value="user"
+                small
               >
                 {{ user.name }}
               </v-chip>
