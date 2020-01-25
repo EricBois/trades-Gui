@@ -227,6 +227,12 @@
           <v-toolbar-title>Message</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
+        <v-flex xs12 class="my-4">
+          <span class="mr-2 mt-1 ibm">Sending to:</span>
+          <v-chip v-for="user in selectUser" :key="user.uid" class="mr-2 mt-1" small>
+            {{ user.name }}
+          </v-chip>
+        </v-flex>
         <v-form ref="form" lazy-validation class="mt-5">
           <v-textarea
             v-model="massMessage.messages.text"
@@ -238,9 +244,11 @@
             auto-grow
           />
         </v-form>
-        <v-btn @click="massSend">
-          Send
-        </v-btn>
+        <v-flex text-right class="ma-2">
+          <v-btn color="blue darken-3" @click="massSend">
+            Send
+          </v-btn>
+        </v-flex>
         <v-divider />
       </v-card>
     </v-dialog>
