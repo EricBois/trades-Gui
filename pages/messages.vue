@@ -13,6 +13,40 @@
       {{ alertText }}
     </v-alert>
     <v-card flat color="#303030">
+      <v-flex
+        v-if="team.length >= 1"
+        class="my-2"
+        xs12
+        sm8
+        offset-sm-2
+        justify="space-around"
+      >
+        <v-card subheader dense color="grey darken-3">
+          <v-subheader class="justify-center sub">
+            <b>Direct messaging</b>
+          </v-subheader>
+          <v-sheet elevation="10" class="py-4 px-1">
+            <v-chip-group
+              v-model="selectUser"
+              multiple
+              active-class="primary--text"
+              show-arrows
+            >
+              <v-chip v-for="user in team" :key="user.uid" :value="user" label outlined>
+                {{ user.name }}
+              </v-chip>
+            </v-chip-group>
+          </v-sheet>
+        </v-card>
+        <v-flex text-center>
+          <v-btn color="orange darken-3" small fab class="mt-n4" @click="selectUser = []">
+            <v-icon>mdi-autorenew</v-icon>
+          </v-btn>
+          <v-btn color="primary" class="mt-n4 ml-4" small fab @click="dialogMassMessage = !dialogMassMessage">
+            <v-icon>mdi-message-text</v-icon>
+          </v-btn>
+        </v-flex>
+      </v-flex>
       <v-flex v-if="newMessages.length >= 1" xs12 sm8 offset-sm-2>
         <v-card subheader dense color="grey darken-3">
           <v-subheader class="justify-center sub">
@@ -171,6 +205,32 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogMassMessage" persistent max-width="600">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogMassMessage = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Message</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <v-form ref="form" lazy-validation class="mt-5">
+          <v-textarea
+            v-model="massMessage.messages.text"
+            label="Message"
+            solo
+            outlined
+            clearable
+            class="purple-input"
+            auto-grow
+          />
+        </v-form>
+        <v-btn @click="massSend">
+          Send
+        </v-btn>
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -205,16 +265,30 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      dialogMassMessage: false,
+      selectUser: [],
       alert: false,
       alertInfo: 'info',
       alertText: '',
       userColor: 'amber lighten-4',
       selectedMessage: {},
       dialogMessage: false,
-      newMessage: {
+      newMessage: { // for replying to a message
         name: '',
         text: '',
         uid: ''
+      },
+      massMessage: { // for the mass message fn
+        to: '',
+        names: {
+          to: '',
+          from: ''
+        },
+        project_name: '',
+        messages: {
+          text: '',
+          name: ''
+        }
       }
     }
   },
@@ -222,7 +296,8 @@ export default {
     profile: 'profile/getProfile',
     read: 'messages/Read',
     newMessages: 'messages/getNewMessages',
-    readMessages: 'messages/getReadMessages'
+    readMessages: 'messages/getReadMessages',
+    team: 'team/getTeam'
   }),
   watch: {
     dialogMessage () {
@@ -288,6 +363,33 @@ export default {
             })
           this.$store.dispatch('messages/getMessages')
         })
+      }
+    },
+    async massSend () {
+      if (this.massMessage.messages.text) {
+        this.massMessage.project_name = this.$auth.user.name
+        this.massMessage.messages.name = this.$auth.user.name
+        this.massMessage.messages.uid = this.$auth.user.sub
+        this.massMessage.names.from = this.$auth.user.name
+        for (const key in this.selectUser) {
+          const user = this.selectUser[key]
+          this.massMessage.names.to = user.name
+          this.massMessage.to = user.uid
+          await this.$axios.$post('message/send', this.massMessage).then((res) => {
+            this.snackbarText = 'Successfully Sent!'
+            this.snackbar = true
+            this.$store.dispatch('notifications/createNotification',
+              {
+                senderId: this.$auth.user.sub,
+                recipientId: user.uid,
+                activity: 'Message',
+                activityDesc: 'You have a new message',
+                link: res._id
+              })
+          })
+        }
+        this.dialogMassMessage = false
+        this.massMessage.messages.text = ''
       }
     }
   }
