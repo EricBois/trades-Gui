@@ -459,12 +459,12 @@ export default {
     switchAvailable () {
       if (this.switchAvailable) {
         this.$axios.$post('account/edit', { user_metadata: { available: true } }).then(() => {
-          this.snackbarText = 'You are now available for hire.'
+          this.snackbarText = 'Available for hire.'
           this.snackbar = true
         })
       } else {
         this.$axios.$post('account/edit', { user_metadata: { available: false } }).then(() => {
-          this.snackbarText = 'You are not available for hire anymore.'
+          this.snackbarText = 'Not available for hire.'
           this.snackbar = true
         })
       }
