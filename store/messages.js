@@ -41,10 +41,11 @@ export const getters = {
 
 export const actions = {
   getMessages ({ commit }) {
-    commit('resetState')
+    // commit('resetState')
     this.$axios
       .$get('message/get')
       .then((res) => {
+        commit('resetState')
         for (const key in res) {
           const message = res[key]
           message._id = key
