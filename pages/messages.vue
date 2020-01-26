@@ -30,19 +30,23 @@
             clearable
             prepend-inner-icon="mdi-magnify"
             dense
-            @change="show = !show"
+            @change="show = true"
           />
         </v-flex>
         <v-card subheader dense color="grey darken-3">
           <v-subheader class="justify-center sub">
-            <b class="justify-center">Direct messaging</b><br>
+            <v-flex xs1 text-left>
+              <v-btn
+                icon
+                @click="show = !show"
+              >
+                <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+              </v-btn>
+            </v-flex>
+            <v-flex xs11 class="mr-6" text-center>
+              <b class="justify-center">Direct messaging</b><br>
+            </v-flex>
           </v-subheader>
-          <v-btn
-            icon
-            @click="show = !show"
-          >
-            <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-          </v-btn>
           <v-expand-transition>
             <div v-show="show">
               <v-flex v-if="selectUser.length >= 1" class=" mb-2">
@@ -58,7 +62,7 @@
                   <v-icon class="mr-2" small>
                     mdi-send
                   </v-icon>
-                  Send
+                  Message
                 </v-btn>
               </v-flex>
               <v-sheet elevation="10" class="py-4 px-1">
@@ -123,40 +127,54 @@
       <v-flex v-if="readMessages.length >= 1" xs12 sm8 offset-sm-2>
         <v-card subheader dense color="grey darken-3">
           <v-subheader class="justify-center sub">
-            <b>Read & Sent </b>
+            <v-flex xs1 text-left>
+              <v-btn
+                icon
+                @click="showRead = !showRead"
+              >
+                <v-icon>{{ showRead ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+              </v-btn>
+            </v-flex>
+            <v-flex xs11 class="mr-6" text-center>
+              <b>Read & Sent </b>
+            </v-flex>
           </v-subheader>
-          <v-flex
-            v-for="item in readMessages"
-            :key="item._id"
-          >
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon color="red" @click="deleteMessage(item.id)">
-                  mdi-close-box
-                </v-icon>
-              </v-list-item-icon>
-              <v-list-item-content class="ml-n6 ml-sm-0" @click="dialog(item)">
-                <v-list-item-title>
-                  <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined label>
-                    {{ item.project_name }}
-                  </v-chip>
-                  <v-chip v-else color="grey blue lighten-1" outlined label>
-                    {{ item.project_name }}
-                  </v-chip>
-                </v-list-item-title>
-                <v-list-item-subtitle class="pl-3">
-                  <small><b> To: <u>{{ item.names.to }}</u></b> / <b> From: <u>{{ item.names.from }}</u></b></small><br>
-                </v-list-item-subtitle>
-              </v-list-item-content>
+          <v-expand-transition>
+            <div v-show="showRead">
+              <v-flex
+                v-for="item in readMessages"
+                :key="item._id"
+              >
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon color="red" @click="deleteMessage(item.id)">
+                      mdi-close-box
+                    </v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content class="ml-n6 ml-sm-0" @click="dialog(item)">
+                    <v-list-item-title>
+                      <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined label>
+                        {{ item.project_name }}
+                      </v-chip>
+                      <v-chip v-else color="grey blue lighten-1" outlined label>
+                        {{ item.project_name }}
+                      </v-chip>
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="pl-3">
+                      <small><b> To: <u>{{ item.names.to }}</u></b> / <b> From: <u>{{ item.names.from }}</u></b></small><br>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
 
-              <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
-                <v-icon color="blue">
-                  chat_bubble
-                </v-icon>
-              </v-list-item-icon>
-            </v-list-item>
-            <v-divider class="my-1" />
-          </v-flex>
+                  <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
+                    <v-icon color="blue">
+                      chat_bubble
+                    </v-icon>
+                  </v-list-item-icon>
+                </v-list-item>
+                <v-divider class="my-1" />
+              </v-flex>
+            </div>
+          </v-expand-transition>
         </v-card>
       </v-flex>
       <v-flex v-if="readMessages.length < 1 && newMessages.length < 1" xs12 sm8 offset-sm-2>
@@ -309,6 +327,7 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      showRead: false,
       show: false,
       search: '',
       dialogMassMessage: false,
