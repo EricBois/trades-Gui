@@ -210,7 +210,7 @@ export default {
       job: '../job/',
       search: '',
       city: [],
-      trades: ['Drywall', 'Taping', 'Framing', 'Labour', 'Texturing', 'Insulation'],
+      trades: [],
       trade: [],
       page: 1,
       perPage: 4,
@@ -240,6 +240,7 @@ export default {
   },
   created () {
     dayjs.extend(relativeTime)
+    this.trades = process.env.trades.split(',')
   },
   methods: {
     setPages () {
