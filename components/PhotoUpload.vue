@@ -32,7 +32,7 @@
     <v-btn v-if="photo" color="green" loading text>
       <template v-slot:loader>
         <v-icon>mdi-36px mdi-spin mdi-loading</v-icon>
-        <span>Loading...</span>
+        <span>Please Wait, Uploading...</span>
       </template>
     </v-btn>
   </v-container>
