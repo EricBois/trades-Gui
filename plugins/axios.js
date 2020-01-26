@@ -7,14 +7,14 @@ export default function ({ $axios, redirect, error }) {
     const code = parseInt(err.response && err.response.status)
     if (code === 401) {
       window.location.replace('https://dev-2upadx1s.auth0.com/v2/logout?returnTo=https%3A%2F%2Fwww.sub-hub.ca/')
-      redirect('/login')
+      redirect('/')
     }
   })
   $axios.onResponseError((error) => {
     const code = parseInt(error.response && error.response.status)
     if (code === 401) {
       window.location.replace('https://dev-2upadx1s.auth0.com/v2/logout?returnTo=https%3A%2F%2Fwww.sub-hub.ca/')
-      redirect('/login')
+      redirect('/')
     }
   })
 }
