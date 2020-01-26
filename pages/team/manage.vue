@@ -180,7 +180,7 @@
           <v-btn icon dark @click="dialogMessage = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Message Project Team</v-toolbar-title>
+          <v-toolbar-title>Message Team</v-toolbar-title>
           <div class="flex-grow-1" />
         </v-toolbar>
         <v-form ref="form" lazy-validation class="mt-5">
