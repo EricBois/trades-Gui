@@ -466,6 +466,7 @@ export default {
         }
         this.dialogMassMessage = false
         this.massMessage.messages.text = ''
+        this.selectUser = []
       }
     }
   }
