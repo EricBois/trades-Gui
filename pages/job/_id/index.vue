@@ -236,10 +236,10 @@
         </div>
       </v-flex>
       <v-flex xs12 text-center>
-        <h2 v-if="!ownProject">
+        <h2 v-if="!ownProject" class="mb-n4">
           Your Placed Bids
         </h2>
-        <h2 v-if="ownProject">
+        <h2 v-if="ownProject" class="mb-n4">
           Project Bids / Offers
         </h2>
       </v-flex>
