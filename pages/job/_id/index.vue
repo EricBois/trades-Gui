@@ -221,6 +221,20 @@
           Bids: {{ bidsTotal }}
         </v-chip><br>
       </v-flex>
+      <v-flex xs12 class="mt-n6 ml-2">
+        <div v-if="ownProject" class="mb-4">
+          <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">
+            <v-icon left>
+              mdi-alert
+            </v-icon>Bidding off
+          </v-btn>
+          <v-btn v-else color="blue darken-3" small @click="bidsToggle">
+            <v-icon left>
+              mdi-star-three-points
+            </v-icon>Bidding on
+          </v-btn>
+        </div>
+      </v-flex>
       <v-flex xs12 text-center>
         <h2 v-if="!ownProject">
           Your Placed Bids
@@ -230,18 +244,6 @@
         </h2>
       </v-flex>
       <v-flex xs12>
-        <div v-if="ownProject">
-          <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">
-            <v-icon left>
-              mdi-alert
-            </v-icon>Turn Bidding off
-          </v-btn>
-          <v-btn v-else color="light-green darken-4" small @click="bidsToggle">
-            <v-icon left>
-              mdi-star-three-points
-            </v-icon>Turn Bidding on
-          </v-btn>
-        </div>
         <v-data-table
           v-model="selected"
           item-key="_id"
