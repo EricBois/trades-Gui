@@ -244,7 +244,8 @@
         </h2>
       </v-flex>
       <v-flex xs12>
-        <v-data-table
+        <Bids :bids="bids" />
+        <!-- <v-data-table
           v-model="selected"
           item-key="_id"
           :headers="headers"
@@ -290,7 +291,7 @@
               mdi-close-octagon
             </v-icon>
           </template>
-        </v-data-table>
+        </v-data-table> -->
       </v-flex>
     </v-card>
     <v-card v-else max-width="844" class="mx-auto" raised>
@@ -588,13 +589,15 @@ import ExpandableImage from '../../../components/ExpandableImage'
 import photoUpload from '../../../components/PhotoUpload.vue'
 import Message from '../../../components/Message.vue'
 import PublicProfile from '../../../components/PublicProfile.vue'
+import Bids from '../../../components/Bids.vue'
 export default {
   components: {
     photoUpload,
     ExpandableImage,
     BidsApproval,
     Message,
-    PublicProfile
+    PublicProfile,
+    Bids
   },
   data () {
     return {
