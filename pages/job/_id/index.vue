@@ -244,7 +244,7 @@
         </h2>
       </v-flex>
       <v-flex xs12>
-        <Bids :bids.sync="bids" :selected.sync="selected" />
+        <Bids :bids.sync="bids" :own-project="ownProject" :selected.sync="selected" />
       </v-flex>
     </v-card>
     <v-card v-else max-width="844" class="mx-auto" raised>

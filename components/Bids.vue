@@ -12,13 +12,13 @@
         <v-flex xs1 sm1 class="mt-n5 mb-n6">
           <v-checkbox v-model="selectedBids" :value="bid" />
         </v-flex>
-        <v-flex xs6 sm3 class="pl-2">
-          <v-chip color="orange accent-1" outlined label @click="profile(bid.user)">
+        <v-flex :xs7="ownProject" :xs6="!ownProject" sm3 class="pl-2">
+          <span @click="profile(bid.user)">
             <v-icon color="green" small>
               mdi-information-variant
             </v-icon>&nbsp;
             {{ bid.createdBy }}
-          </v-chip>
+          </span>
         </v-flex>
         <v-flex v-if="$vuetify.breakpoint.smAndUp" sm4 text-center @click.stop="open(bid)">
           <v-chip
@@ -37,7 +37,7 @@
             ${{ bid.price }}
           </v-chip>
         </v-flex>
-        <v-flex xs1>
+        <v-flex v-if="!ownProject" xs1>
           <v-icon large color="red darken-3" @click="deleteBid(bid.id)">
             mdi-close-octagon
           </v-icon>
@@ -156,6 +156,10 @@ export default {
     selected: {
       type: Array,
       default: () => []
+    },
+    ownProject: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
