@@ -30,20 +30,27 @@
       <v-card>
         <v-layout wrap>
           <v-flex class="headline ma-2" xs12 text-center>
-            <v-chip label large>
+            <span class="name">
               {{ currentBid.createdBy }}
-            </v-chip>
+            </span>
             <v-divider class="mt-2" />
           </v-flex>
           <v-flex xs12>
             <span class="ml-12">
-              Bid On: <v-chip class="ml-3" small label>{{ currentBid.trade }}</v-chip>
+              Bid On: <v-chip
+                v-for="trade in trades"
+                :key="trade.id"
+                color="grey darken-2"
+                class="ml-1 ma-1"
+                small
+                label
+              >{{ trade }}</v-chip>
             </span>
             <v-divider class="ma-2" />
           </v-flex>
           <v-flex xs12>
             <span class="ml-12">
-              Price: <v-chip class="ml-6" small label>
+              Price: <v-chip color="amber ligthen-4" class="ml-6" small outlined label>
                 ${{ currentBid.price }}
               </v-chip>
             </span>
@@ -93,6 +100,14 @@
     </v-dialog>
   </v-container>
 </template>
+<style scoped>
+.name {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.0em;
+}
+</style>
 <script>
 export default {
   props: {
@@ -109,12 +124,16 @@ export default {
     return {
       currentBid: {},
       dialog: false,
-      selectedBids: []
+      selectedBids: [],
+      trades: []
     }
   },
   watch: {
     selectedBids () {
       this.$emit('update:selected', this.selectedBids)
+    },
+    currentBid () {
+      this.trades = this.currentBid.trade.split(', ')
     }
   },
   created () {
