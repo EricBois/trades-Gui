@@ -9,38 +9,47 @@
       shaped
     >
       <v-layout wrap>
-        <v-flex xs1 sm1 class="mt-n5 mb-n6">
+        <v-flex v-if="ownProject" xs1 sm1 class="mt-n5 mb-n6">
           <v-checkbox v-model="selectedBids" :value="bid" />
         </v-flex>
-        <v-flex :xs7="ownProject" :xs6="!ownProject" sm3 class="pl-2">
-          <span @click="profile(bid.user)">
+        <v-flex :xs8="!ownProject" :xs7="ownProject" sm4 class="pl-2">
+          <v-chip
+            v-if="$vuetify.breakpoint.width >= 375"
+            color="orange accent-1"
+            outlined
+            small
+            label
+            @click="profile(bid.user)"
+          >
+            <v-icon color="green" small>
+              mdi-information-variant
+            </v-icon>&nbsp;
+            {{ bid.createdBy }}
+          </v-chip>
+          <span v-else color="orange accent-1" @click="profile(bid.user)">
             <v-icon color="green" small>
               mdi-information-variant
             </v-icon>&nbsp;
             {{ bid.createdBy }}
           </span>
         </v-flex>
-        <v-flex v-if="$vuetify.breakpoint.smAndUp" sm4 text-center @click.stop="open(bid)">
+        <v-flex v-if="$vuetify.breakpoint.smAndUp" sm5 text-center @click.stop="open(bid)">
           <v-chip
             v-for="trade in bid.trade.split(', ')"
             :key="trade.id"
-            color="grey darken-3"
+            color="grey-blue darken-3"
             class="ml-1 ma-1"
             small
             label
+            outlined
           >
             {{ trade }}
           </v-chip>
         </v-flex>
-        <v-flex xs4 sm3 text-center @click.stop="open(bid)">
-          <v-chip color="amber ligthen-4" outlined label>
+        <v-flex xs4 sm2 text-center @click.stop="open(bid)">
+          <v-chip small color="grey darken-3" label>
             ${{ bid.price }}
           </v-chip>
-        </v-flex>
-        <v-flex v-if="!ownProject" xs1>
-          <v-icon large color="red darken-3" @click="deleteBid(bid.id)">
-            mdi-close-octagon
-          </v-icon>
         </v-flex>
       </v-layout>
     </v-card>
@@ -88,9 +97,11 @@
 
         <v-card-actions>
           <v-spacer />
-
+          <v-btn v-if="!ownProject" color="red ligthen-3" small text @click="deleteBid(bid.id)">
+            Delete
+          </v-btn>
           <v-btn
-            color="green darken-1"
+            color="amber darken-3"
             text
             small
             @click="dialog = false"
@@ -100,7 +111,7 @@
 
           <v-btn
             v-if="!selectedBids.some(bid => bid.id === currentBid.id)"
-            color="green darken-1"
+            color="green ligthen-3"
             text
             small
             @click="selectBid()"
