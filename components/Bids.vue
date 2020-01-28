@@ -70,7 +70,7 @@
               Bid On: <v-chip
                 v-for="trade in trades"
                 :key="trade.id"
-                color="grey darken-2"
+                color="grey ligthen-2"
                 class="ml-1"
                 x-small
                 label
@@ -229,10 +229,7 @@ export default {
             }
           }
           this.$emit('update:bids', this.updatedBids)
-        })
-        .catch((error) => {
-          this.snackbarText = `${error}`
-          this.snackbar = true
+          this.dialog = false
         })
     }
   }
