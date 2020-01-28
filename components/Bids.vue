@@ -12,8 +12,13 @@
         <v-flex xs1 sm1 class="mt-n5 mb-n6">
           <v-checkbox v-model="selectedBids" :value="bid" />
         </v-flex>
-        <v-flex xs6 sm3 class="pl-2" @click.stop="open(bid)">
-          {{ bid.createdBy }}
+        <v-flex xs6 sm3 class="pl-2">
+          <v-chip color="orange accent-1" outlined label @click="profile(bid.user)">
+            <v-icon color="green" small>
+              mdi-information-variant
+            </v-icon>&nbsp;
+            {{ bid.createdBy }}
+          </v-chip>
         </v-flex>
         <v-flex v-if="$vuetify.breakpoint.smAndUp" sm4 text-center @click.stop="open(bid)">
           <v-chip
@@ -57,8 +62,8 @@
                 v-for="trade in trades"
                 :key="trade.id"
                 color="grey darken-2"
-                class="ml-1 ma-1"
-                small
+                class="ml-1"
+                x-small
                 label
               >{{ trade }}</v-chip>
             </span>
@@ -114,6 +119,19 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogProfile" persistent max-width="800">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogProfile = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Profile</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <PublicProfile :user="user" />
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -125,7 +143,11 @@
 }
 </style>
 <script>
+import PublicProfile from './PublicProfile.vue'
 export default {
+  components: {
+    PublicProfile
+  },
   props: {
     bids: {
       type: Array,
@@ -138,15 +160,17 @@ export default {
   },
   data () {
     return {
+      dialogProfile: false,
       currentBid: {},
       dialog: false,
       selectedBids: [],
-      trades: []
+      trades: [],
+      user: {}
     }
   },
   watch: {
     selectedBids () {
-      this.$emit('update:selected', this.sselectedBidselectedBids)
+      this.$emit('update:selected', this.selectedBids)
     },
     currentBid () {
       this.trades = this.currentBid.trade.split(', ')
@@ -156,6 +180,16 @@ export default {
     this.selectedBids = this.selected
   },
   methods: {
+    profile (id) {
+      this.$axios.$get(`account/getProfile/${id}`).then((res) => {
+        this.user = res
+        if (!this.user.photos) {
+          this.user.photos = []
+        }
+      }).then(() => {
+        this.dialogProfile = !this.dialogProfile
+      })
+    },
     open (bid) {
       this.currentBid = bid
       this.dialog = true
