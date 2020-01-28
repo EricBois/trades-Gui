@@ -97,7 +97,7 @@
 
         <v-card-actions>
           <v-spacer />
-          <v-btn v-if="!ownProject" color="red ligthen-3" small text @click="deleteBid(bid.id)">
+          <v-btn v-if="!ownProject" color="red ligthen-3" small text @click="deleteBid(currentBid.id)">
             Delete
           </v-btn>
           <v-btn

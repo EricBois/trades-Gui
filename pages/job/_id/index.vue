@@ -221,8 +221,8 @@
           Bids: {{ bidsTotal }}
         </v-chip><br>
       </v-flex>
-      <v-flex xs12 class="mt-n6 ml-2">
-        <div v-if="ownProject" class="mb-4">
+      <v-flex xs12 class="ml-2">
+        <div v-if="ownProject" class="mb-4 mt-n6">
           <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">
             <v-icon left>
               mdi-alert
