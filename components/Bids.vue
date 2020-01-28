@@ -4,7 +4,7 @@
       v-for="bid in bids"
       :key="bid.id"
       color="grey darken-2"
-      class="mt-2 pa-1"
+      class="mt-2 pa-1 pr-4"
       raised
       shaped
     >
@@ -12,14 +12,30 @@
         <v-flex xs1 sm1 class="mt-n5 mb-n6">
           <v-checkbox v-model="selectedBids" :value="bid" />
         </v-flex>
-        <v-flex xs7 sm4 class="pl-4" @click.stop="open(bid)">
+        <v-flex xs6 sm3 class="pl-2" @click.stop="open(bid)">
           {{ bid.createdBy }}
         </v-flex>
         <v-flex v-if="$vuetify.breakpoint.smAndUp" sm4 text-center @click.stop="open(bid)">
-          {{ bid.trade }}
+          <v-chip
+            v-for="trade in bid.trade.split(', ')"
+            :key="trade.id"
+            color="grey darken-3"
+            class="ml-1 ma-1"
+            small
+            label
+          >
+            {{ trade }}
+          </v-chip>
         </v-flex>
         <v-flex xs4 sm3 text-center @click.stop="open(bid)">
-          ${{ bid.price }}
+          <v-chip color="amber ligthen-4" outlined label>
+            ${{ bid.price }}
+          </v-chip>
+        </v-flex>
+        <v-flex xs1>
+          <v-icon large color="red darken-3" @click="deleteBid(bid.id)">
+            mdi-close-octagon
+          </v-icon>
         </v-flex>
       </v-layout>
     </v-card>
@@ -117,7 +133,7 @@ export default {
     },
     selected: {
       type: Array,
-      required: true
+      default: () => []
     }
   },
   data () {
@@ -130,7 +146,7 @@ export default {
   },
   watch: {
     selectedBids () {
-      this.$emit('update:selected', this.selectedBids)
+      this.$emit('update:selected', this.sselectedBidselectedBids)
     },
     currentBid () {
       this.trades = this.currentBid.trade.split(', ')
@@ -151,6 +167,24 @@ export default {
       // TODO polyfill indexOf needed ?
       const index = this.selectedBids.indexOf(this.currentBid)
       this.selectedBids.splice(index, 1)
+    },
+    deleteBid (id) {
+      this.updatedBids = this.bids
+      this.$axios
+        .$post('bid/delete', { id })
+        .then((res) => {
+          for (const key in this.bids) {
+            const bid = this.bids[key]
+            if (id === bid.id) {
+              this.updatedBids.splice(key, 1)
+            }
+          }
+          this.$emit('update:bids', this.updatedBids)
+        })
+        .catch((error) => {
+          this.snackbarText = `${error}`
+          this.snackbar = true
+        })
     }
   }
 }
