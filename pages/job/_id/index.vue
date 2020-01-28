@@ -244,54 +244,7 @@
         </h2>
       </v-flex>
       <v-flex xs12>
-        <Bids :bids="bids" />
-        <!-- <v-data-table
-          v-model="selected"
-          item-key="_id"
-          :headers="headers"
-          :items="bids"
-          :items-per-page="5"
-          show-select
-          class="elevation-1"
-        >
-          <template v-slot:item.trade="{ item }">
-            <v-chip color="light-green lighten-5" small label>
-              <b>{{ item.trade }}</b>
-            </v-chip>
-          </template>
-          <template v-slot:item.description="{ item }">
-            <v-chip
-              v-if="item.description"
-              color="cyan lighten-4"
-              outlined
-              small
-              label
-            >
-              {{ item.description }}
-            </v-chip>
-          </template>
-          <template v-slot:item.price="{ item }">
-            <v-chip color="light-green lighten-3" small label>
-              <v-icon small>
-                mdi-currency-usd
-              </v-icon>
-              <b>{{ item.price }}</b>
-            </v-chip>
-          </template>
-          <template v-slot:item.createdBy="{ item }">
-            <v-chip color="orange accent-1" outlined small label @click="profile(item.user)">
-              <v-icon color="green" small>
-                mdi-information-variant
-              </v-icon>&nbsp;
-              {{ item.createdBy }}
-            </v-chip>
-          </template>
-          <template v-if="!ownProject" v-slot:item.action="{ item }">
-            <v-icon class="ml-2" color="red darken-3" @click="deleteBid(item.id)">
-              mdi-close-octagon
-            </v-icon>
-          </template>
-        </v-data-table> -->
+        <Bids :bids="bids" :selected.sync="selected" />
       </v-flex>
     </v-card>
     <v-card v-else max-width="844" class="mx-auto" raised>
