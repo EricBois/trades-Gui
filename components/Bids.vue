@@ -12,7 +12,7 @@
         <v-flex v-if="ownProject" xs1 sm1 class="mt-n5 mb-n6">
           <v-checkbox v-model="selectedBids" :value="bid" />
         </v-flex>
-        <v-flex :xs8="!ownProject" :xs7="ownProject" sm4 class="pl-2">
+        <v-flex :xs8="!ownProject" :xs7="ownProject" sm4 class="pl-2" @click.self="open(bid)">
           <v-chip
             v-if="$vuetify.breakpoint.width >= 375"
             color="orange accent-1"
@@ -97,7 +97,7 @@
 
         <v-card-actions>
           <v-spacer />
-          <v-btn v-if="!ownProject" color="red ligthen-3" small text @click="deleteBid(currentBid.id)">
+          <v-btn v-if="!ownProject" color="red ligthen-3" small text @click="dialogDeleteBid = true">
             Delete
           </v-btn>
           <v-btn
@@ -143,6 +143,40 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="dialogDeleteBid"
+      max-width="400"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Please Confirm
+        </v-card-title>
+
+        <v-card-text>
+          Are you sure you want to delete this bid ?
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            color="orange darken-3"
+            text
+            @click="dialogDeleteBid = false"
+          >
+            No
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteBid(currentBid.id)"
+          >
+            Yes, Let's Go!
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -175,6 +209,7 @@ export default {
   },
   data () {
     return {
+      dialogDeleteBid: false,
       dialogProfile: false,
       currentBid: {},
       dialog: false,
@@ -230,6 +265,7 @@ export default {
           }
           this.$emit('update:bids', this.updatedBids)
           this.dialog = false
+          this.dialogDeleteBid = false
         })
     }
   }
