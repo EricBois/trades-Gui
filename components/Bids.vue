@@ -107,25 +107,26 @@
           >
             Close
           </v-btn>
-
-          <v-btn
-            v-if="!selectedBids.some(bid => bid.id === currentBid.id)"
-            color="green ligthen-3"
-            text
-            small
-            @click="selectBid()"
-          >
-            Select Quote
-          </v-btn>
-          <v-btn
-            v-else
-            color="green darken-1"
-            text
-            small
-            @click="unselectBid()"
-          >
-            Unselect
-          </v-btn>
+          <div v-if="ownProject">
+            <v-btn
+              v-if="!selectedBids.some(bid => bid.id === currentBid.id)"
+              color="green ligthen-3"
+              text
+              small
+              @click="selectBid()"
+            >
+              Select Quote
+            </v-btn>
+            <v-btn
+              v-else
+              color="green darken-1"
+              text
+              small
+              @click="unselectBid()"
+            >
+              Unselect
+            </v-btn>
+          </div>
         </v-card-actions>
       </v-card>
     </v-dialog>
