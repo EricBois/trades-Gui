@@ -221,94 +221,50 @@
           Bids: {{ bidsTotal }}
         </v-chip><br>
       </v-flex>
-      <v-flex xs12 class="mt-n6 ml-2">
-        <div v-if="ownProject" class="mb-4">
-          <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">
-            <v-icon left>
-              mdi-alert
-            </v-icon>Bidding off
-          </v-btn>
-          <v-btn v-else color="blue darken-3" small @click="bidsToggle">
+      <v-flex xs12 class="ml-2">
+        <div v-if="ownProject" class="mb-4 mt-n6">
+          <v-btn v-if="bidding" color="green darken-3" small @click="bidsToggle">
             <v-icon left>
               mdi-star-three-points
-            </v-icon>Bidding on
+            </v-icon>Bidding On
+          </v-btn>
+          <v-btn v-else color="amber darken-3" small @click="bidsToggle">
+            <v-icon left>
+              mdi-alert
+            </v-icon>Bidding Off
           </v-btn>
         </div>
       </v-flex>
       <v-flex xs12 text-center>
-        <h2 v-if="!ownProject">
+        <h2 v-if="!ownProject" class="mb-n4">
           Your Placed Bids
         </h2>
-        <h2 v-if="ownProject">
+        <h2 v-if="ownProject" class="mb-n4">
           Project Bids / Offers
         </h2>
       </v-flex>
       <v-flex xs12>
-        <v-data-table
-          v-model="selected"
-          item-key="_id"
-          :headers="headers"
-          :items="bids"
-          :items-per-page="5"
-          show-select
-          class="elevation-1"
-        >
-          <template v-slot:item.trade="{ item }">
-            <v-chip color="light-green lighten-5" small label>
-              <b>{{ item.trade }}</b>
-            </v-chip>
-          </template>
-          <template v-slot:item.description="{ item }">
-            <v-chip
-              v-if="item.description"
-              color="cyan lighten-4"
-              outlined
-              small
-              label
-            >
-              {{ item.description }}
-            </v-chip>
-          </template>
-          <template v-slot:item.price="{ item }">
-            <v-chip color="light-green lighten-3" small label>
-              <v-icon small>
-                mdi-currency-usd
-              </v-icon>
-              <b>{{ item.price }}</b>
-            </v-chip>
-          </template>
-          <template v-slot:item.createdBy="{ item }">
-            <v-chip color="orange accent-1" outlined small label @click="profile(item.user)">
-              <v-icon color="green" small>
-                mdi-information-variant
-              </v-icon>&nbsp;
-              {{ item.createdBy }}
-            </v-chip>
-          </template>
-          <template v-if="!ownProject" v-slot:item.action="{ item }">
-            <v-icon class="ml-2" color="red darken-3" @click="deleteBid(item.id)">
-              mdi-close-octagon
-            </v-icon>
-          </template>
-        </v-data-table>
+        <Bids :bids.sync="bids" :own-project="ownProject" :selected.sync="selected" />
       </v-flex>
     </v-card>
     <v-card v-else max-width="844" class="mx-auto" raised>
-      <v-flex xs12 text-center>
-        <h2>No Bids</h2>
-      </v-flex>
-      <div v-if="ownProject">
-        <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">
-          <v-icon left>
-            mdi-alert
-          </v-icon>Turn Bidding off
-        </v-btn>
-        <v-btn v-else color="light-green darken-4" small @click="bidsToggle">
+      <div v-if="ownProject" class="mb-4 mt-n6">
+        <v-btn v-if="bidding" color="green darken-3" small @click="bidsToggle">
           <v-icon left>
             mdi-star-three-points
-          </v-icon>Turn Bidding on
+          </v-icon>Bidding On
+        </v-btn>
+        <v-btn v-else color="amber darken-3" small @click="bidsToggle">
+          <v-icon left>
+            mdi-alert
+          </v-icon>Bidding Off
         </v-btn>
       </div>
+      <v-flex xs12 text-center>
+        <h3 class="ibm">
+          No Bids
+        </h3>
+      </v-flex>
     </v-card>
     <v-dialog v-model="dialogBid" persistent max-width="600px">
       <v-card>
@@ -588,13 +544,15 @@ import ExpandableImage from '../../../components/ExpandableImage'
 import photoUpload from '../../../components/PhotoUpload.vue'
 import Message from '../../../components/Message.vue'
 import PublicProfile from '../../../components/PublicProfile.vue'
+import Bids from '../../../components/Bids.vue'
 export default {
   components: {
     photoUpload,
     ExpandableImage,
     BidsApproval,
     Message,
-    PublicProfile
+    PublicProfile,
+    Bids
   },
   data () {
     return {
@@ -832,8 +790,14 @@ export default {
     bidsToggle () {
       if (this.bidding) {
         this.bidding = false
+        this.snackbarText = 'Bidding has been turned off'
+        this.snackbarColor = 'amber darken-3'
+        this.snackbar = true
       } else {
         this.bidding = true
+        this.snackbarColor = 'green darken-3'
+        this.snackbarText = 'Bidding has been turned on'
+        this.snackbar = true
       }
       this.$axios.$post(`job/edit/${this.$route.params.id}`, { bidding: this.bidding })
     }
