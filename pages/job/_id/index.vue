@@ -223,15 +223,15 @@
       </v-flex>
       <v-flex xs12 class="ml-2">
         <div v-if="ownProject" class="mb-4 mt-n6">
-          <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">
-            <v-icon left>
-              mdi-alert
-            </v-icon>Bidding off
-          </v-btn>
-          <v-btn v-else color="blue darken-3" small @click="bidsToggle">
+          <v-btn v-if="bidding" color="green darken-3" small @click="bidsToggle">
             <v-icon left>
               mdi-star-three-points
-            </v-icon>Bidding on
+            </v-icon>Bidding On
+          </v-btn>
+          <v-btn v-else color="amber darken-3" small @click="bidsToggle">
+            <v-icon left>
+              mdi-alert
+            </v-icon>Bidding Off
           </v-btn>
         </div>
       </v-flex>
@@ -248,21 +248,23 @@
       </v-flex>
     </v-card>
     <v-card v-else max-width="844" class="mx-auto" raised>
-      <v-flex xs12 text-center>
-        <h2>No Bids</h2>
-      </v-flex>
-      <div v-if="ownProject">
-        <v-btn v-if="bidding" color="deep-orange darken-3" small @click="bidsToggle">
-          <v-icon left>
-            mdi-alert
-          </v-icon>Turn Bidding off
-        </v-btn>
-        <v-btn v-else color="light-green darken-4" small @click="bidsToggle">
+      <div v-if="ownProject" class="mb-4 mt-n6">
+        <v-btn v-if="bidding" color="green darken-3" small @click="bidsToggle">
           <v-icon left>
             mdi-star-three-points
-          </v-icon>Turn Bidding on
+          </v-icon>Bidding On
+        </v-btn>
+        <v-btn v-else color="amber darken-3" small @click="bidsToggle">
+          <v-icon left>
+            mdi-alert
+          </v-icon>Bidding Off
         </v-btn>
       </div>
+      <v-flex xs12 text-center>
+        <h3 class="ibm">
+          No Bids
+        </h3>
+      </v-flex>
     </v-card>
     <v-dialog v-model="dialogBid" persistent max-width="600px">
       <v-card>
@@ -788,8 +790,14 @@ export default {
     bidsToggle () {
       if (this.bidding) {
         this.bidding = false
+        this.snackbarText = 'Bidding has been turned off'
+        this.snackbarColor = 'amber darken-3'
+        this.snackbar = true
       } else {
         this.bidding = true
+        this.snackbarColor = 'green darken-3'
+        this.snackbarText = 'Bidding has been turned on'
+        this.snackbar = true
       }
       this.$axios.$post(`job/edit/${this.$route.params.id}`, { bidding: this.bidding })
     }
