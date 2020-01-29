@@ -41,13 +41,12 @@
             class="ml-1 ma-1"
             small
             label
-            outlined
           >
             {{ trade }}
           </v-chip>
         </v-flex>
         <v-flex xs4 sm2 text-center @click.stop="open(bid)">
-          <v-chip small color="grey darken-3" label>
+          <v-chip small color="orange accent-1" label outlined>
             ${{ bid.price }}
           </v-chip>
         </v-flex>
