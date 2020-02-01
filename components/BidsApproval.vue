@@ -161,7 +161,7 @@ export default {
               recipientId: bid.user,
               activity: 'Bid',
               activityDesc: 'You have won a bid!',
-              link: bid._id
+              link: bid.project
             })
           // set bid as notified
           this.$axios.$post('bid/notified', {

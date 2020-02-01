@@ -135,7 +135,7 @@
     <v-card
       v-if="pages > 1"
       max-width="600"
-      class="mx-auto"
+      class="mx-auto mt-4"
     >
       <v-pagination
         v-model="page"

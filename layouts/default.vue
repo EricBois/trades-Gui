@@ -283,7 +283,7 @@
             <v-flex v-if="$vuetify.breakpoint.smAndUp" xs1 px-sm-1>
               <v-icon>mdi-beaker-plus</v-icon>
             </v-flex>
-            <v-flex class="px-2 ibm" xs11>
+            <v-flex class="pl-4 ibm" xs11>
               <span @click="redirect(bid.link)">
                 {{ bid.activityDesc }}
               </span>
