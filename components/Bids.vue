@@ -47,7 +47,7 @@
         </v-flex>
         <v-flex xs4 sm2 text-center @click.stop="open(bid)">
           <v-chip small color="orange accent-1" label outlined>
-            ${{ bid.price }}
+            ${{ bid.price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }}
           </v-chip>
         </v-flex>
       </v-layout>

@@ -30,7 +30,7 @@
       <v-layout wrap>
         <v-flex xs6 class="mt-1" text-left>
           <v-chip v-if="project.budget" small color="amber lighten-3" outlined label>
-            <b>Budget: ${{ project.budget }}</b>
+            <b>Budget: ${{ project.budget.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }}</b>
           </v-chip>
         </v-flex>
         <v-flex

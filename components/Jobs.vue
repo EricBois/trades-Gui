@@ -55,7 +55,7 @@
             <v-icon small class="ml-n3">
               mdi-currency-usd
             </v-icon>
-            <b>{{ project.budget }}</b>
+            <b>{{ project.budget.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }}</b>
           </v-chip>
         </v-flex>
         <v-flex :xs6="$vuetify.breakpoint.width >370" text-left>
