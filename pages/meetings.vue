@@ -42,22 +42,25 @@
                         &nbsp;
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed by <br v-if="$vuetify.breakpoint.xsOnly"><v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
-                  <small v-if="!item.confirm.status && !item.change.status"><i class="awaiting">New Meeting request from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip small outlined>{{ item.contractor }}</v-chip></i></small>
-                  <small v-if="item.change.status && $auth.user.sub !== item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Please review the changes</i></small>
-                  <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Awaiting Confirmation</i></small>
-                  <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+                  <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed with <br v-if="$vuetify.breakpoint.xsOnly"><v-chip class="ml-1" x-small label outlined>{{ item.contractor }}</v-chip></i></small>
+                  <small v-if="!item.confirm.status && !item.change.status"><i class="awaiting">New Meeting request from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip class="ml-1" x-small label outlined>{{ item.contractor }}</v-chip></i></small>
+                  <small v-if="item.change.status && $auth.user.sub !== item.change.uid"><v-icon class="mr-2 change" small>mdi-alert-outline</v-icon><i class="change">Please review the changes</i></small>
+                  <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon class="mr-2 awaitConfirm" small>mdi-clock-outline</v-icon><i class="awaitConfirm">Awaiting Confirmation from <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip class="ml-1" x-small label outlined>{{ item.contractor }}</v-chip></i></small>
+                  <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip class="ml-1" x-small label outlined>{{ item.createdBy }}</v-chip></i></small>
                 </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-icon>
-                <v-icon v-if="item.confirm.status && !item.change.status" color="green">
+                <v-icon v-if="item.confirm.status && !item.change.status" class="confirmed">
                   mdi-calendar-check
                 </v-icon>
-                <v-icon v-else-if="item.change.status" color="orange">
+                <v-icon v-else-if="item.change.status && $auth.user.sub !== item.change.uid" class="change">
                   mdi-calendar-edit
                 </v-icon>
-                <v-icon v-else color="red">
-                  mdi-calendar-alert
+                <v-icon v-else-if="item.change.status && $auth.user.sub === item.change.uid" class="awaitConfirm">
+                  mdi-clock-outline
+                </v-icon>
+                <v-icon v-else-if="!item.confirm.status && item.host == $auth.user.sub" class="awaiting">
+                  mdi-clock-outline
                 </v-icon>
               </v-list-item-icon>
             </v-list-item>
@@ -83,21 +86,24 @@
                   </v-chip>
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed by <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
-                  <small v-if="item.change.status && $auth.user.sub !== item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Please review the changes</i></small>
-                  <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon color="orange" small>mdi-alert-outline</v-icon><i class="change">Awaiting Confirmation</i></small>
-                  <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip small outlined>{{ item.createdBy }}</v-chip></i></small>
+                  <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed with <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip class="ml-1" x-small label outlined>{{ item.createdBy }}</v-chip></i></small>
+                  <small v-if="item.change.status && $auth.user.sub !== item.change.uid"><v-icon class="mr-2 change" small>mdi-alert-outline</v-icon><i class="change">Please review the changes</i></small>
+                  <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon class="mr-2 awaitConfirm" small>mdi-clock-outline</v-icon><i class="awaitConfirm">Awaiting Confirmation from <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip class="ml-1" x-small label outlined>{{ item.createdBy }}</v-chip></i></small>
+                  <small v-if="!item.confirm.status && item.host == $auth.user.sub"><v-icon class="mr-2 awaiting" small>mdi-clock-outline</v-icon><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip class="ml-1" x-small label outlined>{{ item.createdBy }}</v-chip></i></small>
                 </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-icon>
-                <v-icon v-if="item.confirm.status && !item.change.status" color="green">
+                <v-icon v-if="item.confirm.status && !item.change.status" class="confirmed">
                   mdi-calendar-check
                 </v-icon>
-                <v-icon v-else-if="item.change.status" color="orange">
+                <v-icon v-else-if="item.change.status && $auth.user.sub !== item.change.uid" class="change">
                   mdi-calendar-edit
                 </v-icon>
-                <v-icon v-else color="red">
-                  mdi-calendar-alert
+                <v-icon v-else-if="item.change.status && $auth.user.sub === item.change.uid" class="awaitConfirm">
+                  mdi-clock-outline
+                </v-icon>
+                <v-icon v-else-if="!item.confirm.status && item.host == $auth.user.sub" class="awaiting">
+                  mdi-clock-outline
                 </v-icon>
               </v-list-item-icon>
             </v-list-item>
@@ -126,10 +132,13 @@
   color:rgb(21, 170, 21);
 }
 .awaiting {
-  color: #F44336;
+  color: rgb(207, 176, 39);
+}
+.awaitConfirm {
+  color:rgb(117, 172, 81)
 }
 .change {
-  color: rgb(238, 121, 25);
+  color: rgb(245, 255, 104);
 }
 .sub {
   background-color: #546E7A;
