@@ -187,9 +187,11 @@ export default {
         if (!this.selectedMeeting.confirm.status && this.selectedMeeting.user === this.$auth.user.sub) {
           this.meeting.confirm.status = true
         }
+        // confirm meeting
         if (this.selectedMeeting.change.status && ok === true) {
           this.meeting.change.status = false
           this.meeting.change.uid = ''
+        // meeting changes
         } else if (this.selectedMeeting.confirm.status) {
           this.meeting.change.status = true
           this.meeting.change.uid = this.$auth.user.sub
