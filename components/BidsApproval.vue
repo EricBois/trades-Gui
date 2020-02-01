@@ -129,6 +129,7 @@ export default {
   },
   watch: {
     selectedBids () {
+      // make a list of email and phone number of selected bids
       this.emails = []
       this.phones = []
       this.selectedBids.forEach((bid) => {
@@ -142,6 +143,12 @@ export default {
         }
       })
     }
+  },
+  created () {
+    // select all bids automatically on open
+    this.bids.forEach((bid) => {
+      this.selectedBids.push(bid)
+    })
   },
   methods: {
     notify () {
