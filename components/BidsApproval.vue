@@ -142,10 +142,16 @@ export default {
           }
         }
       })
+    },
+    bids () {
+      // select all bids automatically on update/open
+      this.bids.forEach((bid) => {
+        this.selectedBids.push(bid)
+      })
     }
   },
   created () {
-    // select all bids automatically on open
+    // select all bids automatically on create
     this.bids.forEach((bid) => {
       this.selectedBids.push(bid)
     })
