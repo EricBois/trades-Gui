@@ -35,7 +35,7 @@
       </v-tab-item>
       <v-tab-item>
         <v-card flat color="#303030">
-          <Jobs :jobs="jobsPrivate" :cities="citiesPrivate" /><v-flex v-if="jobs.length < 1" xs12 text-center>
+          <Jobs :jobs="jobsPrivate" :cities="citiesPrivate" /><v-flex v-if="jobsPrivate.length < 1" xs12 text-center>
             <h2>No project to display yet!</h2>
             <span class="ibm">*Once you are invited to bid on a project it will be here.*</span>
           </v-flex>
