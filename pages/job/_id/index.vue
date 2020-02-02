@@ -243,6 +243,18 @@
           Project Bids / Offers
         </h2>
       </v-flex>
+      <v-flex v-if="alert2" class="mt-4 mb-n4">
+        <v-alert
+          v-model="alert2"
+          border="top"
+          dense
+          dismissible
+          color="blue-grey darken-3"
+          transition="scale-transition"
+        >
+          {{ alertText2 }}
+        </v-alert>
+      </v-flex>
       <v-flex xs12>
         <Bids :bids.sync="bids" :own-project="ownProject" :selected.sync="selected" />
       </v-flex>
@@ -562,6 +574,8 @@ export default {
       alert: false,
       alertInfo: 'info',
       alertText: '',
+      alert2: false,
+      alertText2: '',
       dialogDeleteProject: false,
       bidding: true,
       url: '',
@@ -623,7 +637,10 @@ export default {
     if (this.myProfile.user_metadata && !this.myProfile.user_metadata.welcomeJob) {
       this.alertText = process.env.welcomeJob
       this.alert = true
-      return this.$axios.$post('account/edit', { user_metadata: { welcomeJob: true } })
+      return this.$axios.$post('account/edit', { user_metadata: { welcomeJob: true } }).then((res) => {
+        this.$store.commit('profile/updateProfile', res) // for the profile store
+        this.$auth.fetchUser()
+      })
     }
     // get the job with the id
     this.$axios
@@ -657,6 +674,15 @@ export default {
           } else {
             this.bids.push(bid)
           }
+        }
+        // Help message first time seeing bids on a project
+        if (this.ownProject && this.bids.length >= 1 && this.myProfile.user_metadata && !this.myProfile.user_metadata.newBids) {
+          this.alertText2 = process.env.newBids
+          this.alert2 = true
+          this.$axios.$post('account/edit', { user_metadata: { newBids: true } }).then((res) => {
+            this.$store.commit('profile/updateProfile', res) // for the profile store
+            this.$auth.fetchUser()
+          })
         }
       })
       .catch((error) => {
