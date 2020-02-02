@@ -63,7 +63,7 @@ export default {
   plugins: [
     { src: '~/plugins/googleMap'},
     // { src: '~/plugins/sweetalert2'},
-    { src: '~/plugins/vue-image-resize'},
+    { src: '~/plugins/vue-image-resize', mode: 'client'},
     { src: '~/plugins/axios'}
   ],
   /*
@@ -152,7 +152,9 @@ export default {
   ** https://github.com/nuxt-community/vuetify-module
   */
   build: {
-    transpile: [/^vue2-google-maps($|\/)/]
+    transpile: [/^vue2-google-maps($|\/)/],
+    analyze:true,
+    extractCSS: true
   },
   vuetify: {
     treeShake: true,

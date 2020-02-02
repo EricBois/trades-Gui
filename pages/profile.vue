@@ -53,22 +53,24 @@
                         <v-avatar v-if="picture" size="200" class="mb-3 rounded" tile>
                           <v-img :src="picture" />
                         </v-avatar>
-                        <image-uploader
-                          :preview="false"
-                          :max-width="700"
-                          :class-name="['fileinput', { 'fileinput--loaded': hasImage }]"
-                          capture="environment"
-                          :debug="1"
-                          do-not-resize="gif"
-                          :auto-rotate="true"
-                          output-format="blob"
-                          @input="setImageLogo"
-                        >
-                          <label slot="upload-label" for="fileInput" class="label">
-                            <v-icon> mdi-camera-plus-outline</v-icon>
-                            <span class="upload-caption">"Edit / Upload"</span>
-                          </label>
-                        </image-uploader>
+                        <client-only>
+                          <image-uploader
+                            :preview="false"
+                            :max-width="700"
+                            :class-name="['fileinput', { 'fileinput--loaded': hasImage }]"
+                            capture="environment"
+                            :debug="1"
+                            do-not-resize="gif"
+                            :auto-rotate="true"
+                            output-format="blob"
+                            @input="setImageLogo"
+                          >
+                            <label slot="upload-label" for="fileInput" class="label">
+                              <v-icon> mdi-camera-plus-outline</v-icon>
+                              <span class="upload-caption">"Edit / Upload"</span>
+                            </label>
+                          </image-uploader>
+                        </client-only>
                         <v-btn v-if="photo" color="green" loading text>
                           <template v-slot:loader>
                             <v-icon>mdi-36px mdi-spin mdi-loading</v-icon>
@@ -512,6 +514,7 @@ export default {
         } else {
           this.switch1 = false
         }
+        this.$store.commit('profile/updateProfile', res) // for the profile store
         this.$auth.fetchUser()
       })
     },
