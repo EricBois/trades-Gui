@@ -649,9 +649,11 @@ export default {
           bid._id = key
           bid.trade = bid.trade.toString().replace(/,/g, ', ')
           if (!this.ownProject) {
+            // show own bids only if bidding on other projects
             if (bid.user === this.$auth.user.sub) {
               this.bids.push(bid)
             }
+          // show all bids if own project
           } else {
             this.bids.push(bid)
           }
