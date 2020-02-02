@@ -155,6 +155,7 @@ export default {
     transpile: [/^vue2-google-maps($|\/)/]
   },
   vuetify: {
+    treeShake: true,
     customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: true,
