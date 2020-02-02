@@ -254,23 +254,25 @@
           <div class="flex-grow-1" />
         </v-toolbar>
         <v-flex xs12 text-center>
-          <image-uploader
-            id="photos"
-            :preview="false"
-            :max-width="700"
-            :class-name="['photos', { 'fileinput--loaded': hasImage }]"
-            capture="environment"
-            :debug="1"
-            do-not-resize="gif"
-            :auto-rotate="true"
-            output-format="blob"
-            @input="setPhoto"
-          >
-            <label slot="upload-label" for="photos">
-              <v-icon>mdi-48px mdi-camera-plus-outline</v-icon>
-              <span class="upload-caption">"Click to upload"</span>
-            </label>
-          </image-uploader>
+          <client-only>
+            <image-uploader
+              id="photos"
+              :preview="false"
+              :max-width="700"
+              :class-name="['photos', { 'fileinput--loaded': hasImage }]"
+              capture="environment"
+              :debug="1"
+              do-not-resize="gif"
+              :auto-rotate="true"
+              output-format="blob"
+              @input="setPhoto"
+            >
+              <label slot="upload-label" for="photos">
+                <v-icon>mdi-48px mdi-camera-plus-outline</v-icon>
+                <span class="upload-caption">"Click to upload"</span>
+              </label>
+            </image-uploader>
+          </client-only>
         </v-flex>
         <v-divider />
         <v-container class="mx-5 photo">
