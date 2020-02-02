@@ -153,8 +153,7 @@ export default {
   */
   build: {
     transpile: [/^vue2-google-maps($|\/)/],
-    analyze:true,
-    extractCSS: true
+    // extractCSS: true
   },
   vuetify: {
     treeShake: true,
