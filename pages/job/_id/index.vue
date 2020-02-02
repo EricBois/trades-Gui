@@ -51,7 +51,7 @@
         </v-flex>
         <v-flex xs12>
           <div class="main my-6 text-center">
-            {{ project.name }} &nbsp; <a :href="url" target="_blank"><v-icon v-if="url !== ''">mdi-google-maps</v-icon></a>
+            {{ project.name }} &nbsp; <a :href="url" rel="noreferrer" target="_blank"><v-icon v-if="url !== ''">mdi-google-maps</v-icon></a>
             <div v-if="project.createdBy" class="caption grey--text">
               Project by:
               <v-chip color="blue-grey lighten-4" class="ibm" outlined x-small @click="profile(project.user)">
