@@ -28,7 +28,7 @@
     "nuxt-material-design-icons": "^1.0.4",
     "vue": "^2.6.11",
     "vue-dayjs-plugin": "^1.0.0",
-    "vue-image-upload-resize": "^2.1.1",
+    "vue-image-upload-resize": "^2.3.0",
     "vue2-google-maps": "^0.10.7",
     "vuedraggable": "^2.23.2"
   },
