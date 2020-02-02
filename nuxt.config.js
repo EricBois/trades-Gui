@@ -44,7 +44,9 @@ export default {
     projectTeam: "Drag and Drop members from team in the project team tab and request bids, a notification will be sent to them. You can also send a group message to them, see the blue msg button on project team tab.",
     welcomeTeamProjects: "Here you can manage all your team projects.",
     biddedJobs: "All the project you have bidded on are here",
-    ownPosting: "All your own posted projects are here"
+    ownPosting: "All your own posted projects are here",
+    newBids: "You've got some new bids on your project. Now, if you would like to see the bidders profile you can click on their name or to see more information on the bid click anywhere on the card. To accept a bid, select one or many and click the" + 
+      " 'ACCEPT BID(S)' button, that will open a windows with a few options, you can request a meeting or approve bids which will notify the bidder and will get in touch."
   },
   /*
   ** Customize the progress-bar color
