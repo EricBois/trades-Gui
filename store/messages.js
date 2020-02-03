@@ -2,6 +2,7 @@ const getDefaultState = () => { // Default state
   return {
     newMessages: [],
     readMessages: [],
+    sentMessages: [],
     read: true
   }
 }
@@ -9,6 +10,7 @@ const getDefaultState = () => { // Default state
 export const state = () => ({
   newMessages: [],
   readMessages: [],
+  sentMessages: [],
   read: true
 })
 
@@ -21,6 +23,9 @@ export const mutations = {
   },
   addReadMessage (state, message) {
     state.readMessages.push(message)
+  },
+  addSentMessage (state, message) {
+    state.sentMessages.push(message)
   },
   resetState (state) { // reset the state
     Object.assign(state, getDefaultState())
@@ -36,6 +41,9 @@ export const getters = {
   },
   getReadMessages (state) {
     return state.readMessages
+  },
+  getSentMessages (state) {
+    return state.sentMessages
   }
 }
 
@@ -53,6 +61,8 @@ export const actions = {
             if (!message.read.includes(this.$auth.user.sub)) {
               commit('Read', false)
               commit('addNewMessage', message)
+            } else if (message.messages.length <= 1 && message.messages[0].uid === this.$auth.user.sub) {
+              commit('addSentMessage', message)
             } else {
               commit('addReadMessage', message)
             }
