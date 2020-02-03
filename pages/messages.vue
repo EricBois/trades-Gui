@@ -34,7 +34,7 @@
           />
         </v-flex>
         <v-card subheader dense color="grey darken-3">
-          <v-subheader class="justify-center sub">
+          <v-subheader class="justify-center sub" @click="show = !show">
             <v-flex xs1 text-left>
               <v-btn
                 icon
@@ -126,7 +126,7 @@
       </v-flex>
       <v-flex v-if="readMessages.length >= 1" xs12 sm8 offset-sm-2>
         <v-card subheader dense color="grey darken-3">
-          <v-subheader class="justify-center sub">
+          <v-subheader class="justify-center sub" @click="showRead = !showRead">
             <v-flex xs1 text-left>
               <v-btn
                 icon
