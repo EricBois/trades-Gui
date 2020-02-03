@@ -36,7 +36,7 @@
               </v-list-item-icon>
               <v-list-item-content @click="meetingPicker(item)">
                 <v-list-item-title>
-                  <v-chip color="grey blue lighten-1" outlined>
+                  <v-chip color="grey blue lighten-1" label outlined>
                     {{ item.projectName }}
                   </v-chip>
                         &nbsp;
@@ -81,7 +81,7 @@
               </v-list-item-icon>
               <v-list-item-content @click="meetingPicker(item)">
                 <v-list-item-title>
-                  <v-chip color="grey blue lighten-1" outlined>
+                  <v-chip color="grey blue lighten-1" label outlined>
                     {{ item.projectName }}
                   </v-chip>
                 </v-list-item-title>
