@@ -1,14 +1,5 @@
 <template>
   <v-app id="inspire">
-    <v-snackbar
-      v-model="snackbar"
-      :color="snackbarColor"
-    >
-      {{ snackbarText }}
-      <v-icon>
-        mdi-check-circle-outline
-      </v-icon>
-    </v-snackbar>
     <v-navigation-drawer
       v-if="this.$auth.loggedIn"
       v-model="drawer"
@@ -148,7 +139,18 @@
         </v-list-item>
         <v-list-item to="/messages">
           <v-list-item-action>
-            <v-icon>mdi-message</v-icon>
+            <v-badge
+              color="green darken-3"
+              overlap
+              right
+            >
+              <template v-slot:badge>
+                <span v-if="newMessages.length > 0">{{ newMessages.length }}</span>
+              </template>
+              <v-icon>
+                mdi-message
+              </v-icon>
+            </v-badge>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
@@ -356,7 +358,9 @@
 
       <v-btn to="/messages">
         <span>Messages</span>
-        <v-icon>mdi-message</v-icon>
+        <v-icon>
+          mdi-message
+        </v-icon>
       </v-btn>
     </v-bottom-navigation>
     <v-dialog v-model="registerDialog" persistent max-width="800">
@@ -419,9 +423,6 @@ export default {
     }
   },
   data: () => ({
-    snackbar: false,
-    snackbarColor: 'green darken-3',
-    snackbarText: '',
     sheet: false,
     welcomeText: '',
     switchAvailable: false,
@@ -442,7 +443,8 @@ export default {
   computed: mapGetters({
     read: 'messages/Read',
     profile: 'profile/getProfile',
-    notifications: 'notifications/getNotifications'
+    notifications: 'notifications/getNotifications',
+    newMessages: 'messages/getNewMessages'
   }),
   watch: {
     notifications () {
@@ -459,13 +461,9 @@ export default {
     switchAvailable () {
       if (this.switchAvailable) {
         this.$axios.$post('account/edit', { user_metadata: { available: true } }).then(() => {
-          this.snackbarText = 'Available for hire.'
-          this.snackbar = true
         })
       } else {
         this.$axios.$post('account/edit', { user_metadata: { available: false } }).then(() => {
-          this.snackbarText = 'Not available for hire.'
-          this.snackbar = true
         })
       }
     },
