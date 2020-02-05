@@ -62,8 +62,21 @@
         </v-flex>
         <v-flex :xs6="$vuetify.breakpoint.width <450" :xs4="$vuetify.breakpoint.width >450" :offset-4="$vuetify.breakpoint.width >450" :offset-3="$vuetify.breakpoint.width <450" text-center>
           <v-card class="mb-4">
+            <!-- if own project different icon -->
             <v-btn
-              v-if="project.files && project.files.length > 0 || ownProject"
+              v-if="ownProject"
+              color="amber lighten-5"
+              ripple
+              icon
+              large
+              @click="dialogFile = !dialogFile"
+            >
+              <v-icon>
+                mdi-file-document-box-plus-outline
+              </v-icon>
+            </v-btn>
+            <v-btn
+              v-if="project.files && project.files.length > 0 && !ownProject"
               color="amber lighten-5"
               ripple
               icon
@@ -74,8 +87,21 @@
                 mdi-file-document-box-outline
               </v-icon>
             </v-btn>
+            <!-- if own porject different icon -->
             <v-btn
-              v-if="project.photos && project.photos.length > 0 || ownProject"
+              v-if="ownProject"
+              color="amber lighten-5"
+              icon
+              large
+              ripple
+              @click="dialogPhoto = !dialogPhoto"
+            >
+              <v-icon>
+                mdi-camera-plus-outline
+              </v-icon>
+            </v-btn>
+            <v-btn
+              v-if="project.photos && project.photos.length > 0 && !ownProject"
               color="amber lighten-5"
               icon
               large
