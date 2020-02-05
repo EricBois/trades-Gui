@@ -419,22 +419,25 @@
               md3
               class="pa-4"
             >
-              <v-card>
+              <v-card color="grey darken-2" class="pa-2">
                 <v-btn
                   v-if="ownProject"
-                  color="orange darken-2
-"
-                  text
+                  color="amber darken-3"
+                  class="mb-2"
+                  small
+                  outlined
                   @click="deleteFile(img,'image')"
                 >
                   <v-icon>mdi-delete-outline</v-icon>
                 </v-btn>
-                <expandable-image
-                  class="image"
-                  :src="img"
-                  max-width="400"
-                  contain
-                />
+                <v-card shaped>
+                  <expandable-image
+                    class="image"
+                    :src="img"
+                    max-width="400"
+                    contain
+                  />
+                </v-card>
               </v-card>
             </v-flex>
           </v-layout>
