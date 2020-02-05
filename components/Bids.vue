@@ -130,7 +130,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogProfile" persistent max-width="800">
+    <v-dialog v-model="dialogProfile" max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogProfile = false">

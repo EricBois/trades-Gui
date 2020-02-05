@@ -363,7 +363,7 @@
         </v-icon>
       </v-btn>
     </v-bottom-navigation>
-    <v-dialog v-model="registerDialog" persistent max-width="800">
+    <v-dialog v-model="registerDialog" max-width="800">
       <v-card class="px-3">
         <v-toolbar height="50" dark color="blue">
           <v-btn icon dark @click="registerDialog = false">

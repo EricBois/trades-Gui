@@ -87,7 +87,7 @@
         Confirm Changes
       </v-btn>
     </v-flex>
-    <v-dialog v-model="dialogConfirm" persistent max-width="800">
+    <v-dialog v-model="dialogConfirm" max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogConfirm = false">

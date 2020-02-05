@@ -63,7 +63,7 @@
         </v-flex>
       </v-layout>
     </v-card>
-    <v-dialog v-model="dialogTeam" persistent max-width="800">
+    <v-dialog v-model="dialogTeam"  max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogTeam = false">

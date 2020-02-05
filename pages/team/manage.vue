@@ -108,7 +108,7 @@
         </v-flex>
       </v-layout>
     </v-card>
-    <v-dialog v-model="dialogProfile" persistent max-width="800">
+    <v-dialog v-model="dialogProfile" max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogProfile = false">
@@ -121,7 +121,7 @@
         <v-divider />
       </v-card>
     </v-dialog>
-    <v-dialog v-model="searchDialog" persistent max-width="600">
+    <v-dialog v-model="searchDialog" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="searchDialog = false">
@@ -174,7 +174,7 @@
         </v-layout>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogMessage" persistent max-width="600">
+    <v-dialog v-model="dialogMessage" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogMessage = false">

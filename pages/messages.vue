@@ -244,7 +244,7 @@
         </v-card>
       </v-flex>
     </v-card>
-    <v-dialog ref="chat" v-model="dialogMessage" persistent max-width="600">
+    <v-dialog ref="chat" v-model="dialogMessage" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogMessage = false">
@@ -307,7 +307,7 @@
         <v-divider />
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogMassMessage" persistent max-width="600">
+    <v-dialog v-model="dialogMassMessage" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogMassMessage = false">

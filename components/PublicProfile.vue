@@ -93,7 +93,7 @@
         </v-layout>
       </v-container>
     </v-layout>
-    <v-dialog v-model="dialogMessage" persistent max-width="600">
+    <v-dialog v-model="dialogMessage" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogMessage = false">

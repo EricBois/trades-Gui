@@ -278,7 +278,7 @@
         </h3>
       </v-flex>
     </v-card>
-    <v-dialog v-model="dialogBid" persistent max-width="600px">
+    <v-dialog v-model="dialogBid" max-width="600px">
       <v-card>
         <v-card-title>
           <span class="headline">Place Bid</span>
@@ -352,7 +352,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogFile" persistent max-width="600px" transition="dialog-bottom-transition">
+    <v-dialog v-model="dialogFile" max-width="600px" transition="dialog-bottom-transition">
       <v-card>
         <v-card-title>
           <span class="headline">Files</span>
@@ -441,7 +441,7 @@
         </v-container>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogBidApproval" persistent max-width="600">
+    <v-dialog v-model="dialogBidApproval" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="green">
           <v-btn icon dark @click="dialogBidApproval = false">
@@ -454,7 +454,7 @@
         <v-divider />
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogMessage" persistent max-width="600">
+    <v-dialog v-model="dialogMessage" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogMessage = false">
@@ -467,7 +467,7 @@
         <v-divider />
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogProfile" persistent max-width="800">
+    <v-dialog v-model="dialogProfile" max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogProfile = false">

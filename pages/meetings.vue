@@ -112,7 +112,7 @@
         </v-list>
       </v-flex>
     </v-card>
-    <v-dialog v-model="dialogMeeting" persistent max-width="800">
+    <v-dialog v-model="dialogMeeting" max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogMeeting = false">

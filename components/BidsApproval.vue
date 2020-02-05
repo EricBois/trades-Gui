@@ -56,7 +56,7 @@
         </v-btn>
       </v-flex>
     </v-layout>
-    <v-dialog v-model="dialogMeeting" persistent max-width="400">
+    <v-dialog v-model="dialogMeeting" max-width="400">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-btn icon dark @click="dialogMeeting = false">
