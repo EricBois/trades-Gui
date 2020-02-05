@@ -44,7 +44,7 @@
     </v-flex>
     <v-flex xs12 class="my-6" />
     <!-- job posting -->
-    <v-flex xs12 sm6 text-center class="pa-2">
+    <v-flex xs12 text-center class="pa-2">
       <v-card max-width="750" class="mx-auto pa-4">
         <v-chip label>
           <h2 class="sub">
@@ -66,7 +66,7 @@
       </v-card>
     </v-flex>
     <!-- Latest news -->
-    <v-flex xs12 sm6 text-center class="pa-2">
+    <v-flex xs12 text-center class="pa-2">
       <v-card max-width="750" class="mx-auto pa-4">
         <v-chip label>
           <h2 class="sub">
@@ -87,7 +87,6 @@
         </v-chip>
       </v-card>
     </v-flex>
-    <v-flex xs12 class="my-6" />
     <!-- Important Messages -->
     <v-flex xs12 text-center class="pa-2">
       <v-card max-width="750" class="mx-auto pa-4">
