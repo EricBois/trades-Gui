@@ -429,7 +429,7 @@ export default {
     addBtnShow: 'none',
     overflow: true,
     contentClick: true,
-    drawer: false,
+    drawer: true,
     picture: '',
     mini: false,
     notificationColor: 'blue-grey darken-1',
