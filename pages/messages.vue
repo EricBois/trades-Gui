@@ -15,7 +15,7 @@
     <v-card flat color="#303030">
       <v-flex
         v-if="team.length >= 1"
-        class="my-6"
+        class="mb-12"
         xs12
         sm8
         offset-sm-2
@@ -86,11 +86,16 @@
           </v-expand-transition>
         </v-card>
       </v-flex>
-      <v-flex v-if="newMessages.length >= 1" xs12 sm8 offset-sm-2>
+      <v-flex xs12 sm8 offset-sm-2>
         <v-card subheader dense color="grey darken-3">
           <v-subheader class="justify-center sub">
             <b>New Messages</b>
           </v-subheader>
+          <v-flex v-if="newMessages.length < 1">
+            <v-subheader class="justify-center">
+              <span class="font-italic font-weight-thin grey--text text--lighten-5 mr-2">No new Messages!</span>
+            </v-subheader>
+          </v-flex>
           <v-flex
             v-for="item in newMessages"
             :key="item._id"
@@ -123,11 +128,29 @@
         </v-card>
         <v-divider />
       </v-flex>
-      <v-flex xs12 sm8 offset-sm-2>
+      <v-flex class="mb-2 mt-12" xs12 text-center>
+        <v-divider class="my-4 mx-12" />
+        <h3 class="ibm mb-2">
+          <v-icon class="mr-2">
+            mdi-axis-y-arrow
+          </v-icon>
+          Show older Messages
+          <v-icon class="ml-2">
+            mdi-axis-x-arrow
+          </v-icon>
+        </h3>
+        <v-btn color="green darken-3" small @click="showRead = !showRead">
+          all
+        </v-btn>
+        <v-btn color="blue darken-3" small @click="showSent = !showSent">
+          Sent
+        </v-btn>
+      </v-flex>
+      <v-flex v-if="showRead || showSent" xs12 sm8 offset-sm-2>
         <v-card subheader dense color="grey darken-3">
           <v-subheader class="justify-center sub">
             <v-flex xs12 text-center>
-              <b>Inbox</b>
+              <b>Messages</b>
             </v-flex>
           </v-subheader>
           <v-flex v-if="sentMessages.length <= 0 && readMessages.length <= 0">
@@ -138,23 +161,17 @@
             </v-subheader>
           </v-flex>
           <!-- Read Messages -->
-          <v-subheader v-if="readMessages.length > 0" class="justify-center read mt-5" @click="showRead = !showRead">
-            <v-flex xs1 text-left>
-              <v-btn
-                icon
-              >
-                <v-icon>{{ showRead ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-              </v-btn>
-            </v-flex>
-            <v-flex xs11 text-center class="mr-6">
-              <v-chip label small>
-                All Messages
-              </v-chip>
-              <v-divider />
-            </v-flex>
-          </v-subheader>
           <v-expand-transition>
             <div v-show="showRead">
+              <v-subheader v-if="readMessages.length > 0" class="justify-center read mt-5">
+                <v-flex xs12 text-center class="mr-6">
+                  <v-chip label small>
+                    All Messages
+                  </v-chip>
+                  <v-divider />
+                </v-flex>
+              </v-subheader>
+
               <v-flex
                 v-for="item in readMessages"
                 :key="item._id"
@@ -190,23 +207,17 @@
             </div>
           </v-expand-transition>
           <!-- Sent Messages -->
-          <v-subheader v-if="sentMessages.length > 0" class="justify-center read mt-5" @click="showSent = !showSent">
-            <v-flex xs1 text-left>
-              <v-btn
-                icon
-              >
-                <v-icon>{{ showSent ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-              </v-btn>
-            </v-flex>
-            <v-flex xs11 text-center class="mr-6">
-              <v-chip label small>
-                Message Sent
-              </v-chip>
-              <v-divider />
-            </v-flex>
-          </v-subheader>
           <v-expand-transition>
             <div v-show="showSent">
+              <v-subheader v-if="sentMessages.length > 0" class="justify-center read mt-5">
+                <v-flex xs12 text-center class="mr-6">
+                  <v-chip label small>
+                    Message Sent
+                  </v-chip>
+                  <v-divider />
+                </v-flex>
+              </v-subheader>
+
               <v-flex
                 v-for="item in sentMessages"
                 :key="item._id"
