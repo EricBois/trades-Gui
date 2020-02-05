@@ -3,7 +3,7 @@
     <!-- job posting -->
     <v-flex xs12 text-center class="pa-2">
       <v-card max-width="750" class="mx-auto pa-4">
-        <v-chip label>
+        <v-chip class="mb-2" label>
           <h2 class="sub">
             Recent job postings
           </h2>
@@ -24,7 +24,7 @@
     <!-- Latest news -->
     <v-flex xs12 text-center class="pa-2">
       <v-card max-width="750" class="mx-auto pa-4">
-        <v-chip label>
+        <v-chip class="mb-2" label>
           <h2 class="sub">
             Your Latest News
           </h2>
@@ -45,7 +45,7 @@
     <!-- Important Messages -->
     <v-flex xs12 text-center class="pa-2">
       <v-card max-width="750" class="mx-auto pa-4">
-        <v-chip label>
+        <v-chip class="mb-2" label>
           <h2 class="sub">
             Important messages
           </h2>
