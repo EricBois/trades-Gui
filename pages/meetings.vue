@@ -16,16 +16,11 @@
       <!-- meetings -->
       <v-flex xs12 sm8 offset-sm-2>
         <v-list subheader dense color="blue-grey darken-3">
-          <v-subheader v-if="meetings.length >= 1" class="justify-center sub">
-            <b>Meeting Invites</b>
-          </v-subheader>
-          <v-subheader v-if="meetings.concat(meetingSent).length < 1" class="justify-center sub">
-            <b>No Meeting Yet!</b>&nbsp;<v-icon small>
-              mdi-emoticon-sad-outline
-            </v-icon>
+          <v-subheader v-if="meetingNew.length >= 1" class="justify-center sub">
+            <b>New meeting activity</b>
           </v-subheader>
           <v-flex
-            v-for="item in meetings"
+            v-for="item in meetingNew"
             :key="item.id"
           >
             <v-list-item>
@@ -42,11 +37,8 @@
                         &nbsp;
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed with <br v-if="$vuetify.breakpoint.xsOnly"><v-chip class="ml-1" x-small label outlined>{{ item.contractor }}</v-chip></i></small>
                   <small v-if="!item.confirm.status && !item.change.status"><i class="awaiting">New Meeting request from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip class="ml-1" x-small label outlined>{{ item.contractor }}</v-chip></i></small>
                   <small v-if="item.change.status && $auth.user.sub !== item.change.uid"><v-icon class="mr-2 change" small>mdi-alert-outline</v-icon><i class="change">Please review the changes</i></small>
-                  <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon class="mr-2 awaitConfirm" small>mdi-clock-outline</v-icon><i class="awaitConfirm">Awaiting Confirmation from <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip class="ml-1" x-small label outlined>{{ item.contractor }}</v-chip></i></small>
-                  <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip class="ml-1" x-small label outlined>{{ item.createdBy }}</v-chip></i></small>
                 </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-icon>
@@ -66,11 +58,11 @@
             </v-list-item>
             <v-divider class="my-1" />
           </v-flex>
-          <v-subheader v-if="meetingSent.length >= 1" class="justify-center sub">
-            <b>Meeting Request</b>
+          <v-subheader v-if="meetingAwait.length >= 1" class="justify-center sub">
+            <b>Awaiting Confirmation</b>
           </v-subheader>
           <v-flex
-            v-for="item in meetingSent"
+            v-for="item in meetingAwait"
             :key="item.id"
           >
             <v-list-item>
@@ -84,12 +76,52 @@
                   <v-chip color="grey blue lighten-1" label outlined>
                     {{ item.projectName }}
                   </v-chip>
+                        &nbsp;
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed with <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip class="ml-1" x-small label outlined>{{ item.createdBy }}</v-chip></i></small>
-                  <small v-if="item.change.status && $auth.user.sub !== item.change.uid"><v-icon class="mr-2 change" small>mdi-alert-outline</v-icon><i class="change">Please review the changes</i></small>
-                  <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon class="mr-2 awaitConfirm" small>mdi-clock-outline</v-icon><i class="awaitConfirm">Awaiting Confirmation from <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip class="ml-1" x-small label outlined>{{ item.createdBy }}</v-chip></i></small>
-                  <small v-if="!item.confirm.status && item.host == $auth.user.sub"><v-icon class="mr-2 awaiting" small>mdi-clock-outline</v-icon><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip class="ml-1" x-small label outlined>{{ item.createdBy }}</v-chip></i></small>
+                  <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon class="mr-2 awaitConfirm" small>mdi-clock-outline</v-icon><i class="awaitConfirm">Awaiting Confirmation from <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip class="ml-1" x-small label outlined>{{ (item.host !== $auth.user.sub) ? item.contractor : item.createdBy }}</v-chip></i></small>
+                  <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip class="ml-1" x-small label outlined>{{ (item.host !== $auth.user.sub) ? item.contractor : item.createdBy }}</v-chip></i></small>
+                </v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-icon>
+                <v-icon v-if="item.confirm.status && !item.change.status" class="confirmed">
+                  mdi-calendar-check
+                </v-icon>
+                <v-icon v-else-if="item.change.status && $auth.user.sub !== item.change.uid" class="change">
+                  mdi-calendar-edit
+                </v-icon>
+                <v-icon v-else-if="item.change.status && $auth.user.sub === item.change.uid" class="awaitConfirm">
+                  mdi-clock-outline
+                </v-icon>
+                <v-icon v-else-if="!item.confirm.status && item.host == $auth.user.sub" class="awaiting">
+                  mdi-clock-outline
+                </v-icon>
+              </v-list-item-icon>
+            </v-list-item>
+            <v-divider class="my-1" />
+          </v-flex>
+          <v-subheader v-if="meetingConfirmed.length >= 1" class="justify-center sub">
+            <b>Confirmed Meetings</b>
+          </v-subheader>
+          <v-flex
+            v-for="item in meetingConfirmed"
+            :key="item.id"
+          >
+            <v-list-item>
+              <v-list-item-icon v-if="!$vuetify.breakpoint.xsOnly">
+                <v-icon>
+                  mdi-account-multiple
+                </v-icon>
+              </v-list-item-icon>
+              <v-list-item-content @click="meetingPicker(item)">
+                <v-list-item-title>
+                  <v-chip color="grey blue lighten-1" label outlined>
+                    {{ item.projectName }}
+                  </v-chip>
+                        &nbsp;
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  <small v-if="item.confirm.status && !item.change.status"><i class="confirmed">Confirmed with <br v-if="$vuetify.breakpoint.xsOnly"><v-chip class="ml-1" x-small label outlined>{{ (item.host !== $auth.user.sub) ? item.contractor : item.createdBy }}</v-chip></i></small>
                 </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-icon>
@@ -165,12 +197,20 @@ export default {
       meetings: [],
       meetingSent: [],
       meetingIds: [],
+      meetingNew: [],
+      meetingAwait: [],
+      meetingConfirmed: [],
       interval: null
     }
   },
   computed: mapGetters({
     profile: 'profile/getProfile'
   }),
+  watch: {
+    selectedMeeting () {
+      this.getMeetings()
+    }
+  },
   mounted () {
     this.getMeetings()
     this.interval = setInterval(
@@ -188,15 +228,19 @@ export default {
   methods: {
     async getMeetings () {
       await this.$axios.$get(`bid/getMeetings`).then((res) => {
-        this.meetings = []
-        this.meetingSent = []
+        this.meetingNew = []
+        this.meetingConfirmed = []
+        this.meetingAwait = []
         this.meetingIds = []
-        res.forEach((element) => {
-          this.meetingIds.push(element._id)
-          if (element.meeting.host === this.$auth.user.sub) {
-            this.meetingSent.push(element)
+        res.forEach((item) => {
+          this.meetingIds.push(item._id)
+          // check for new meeting request or changes
+          if ((item.change.status && this.$auth.user.sub !== item.change.uid)) {
+            this.meetingNew.push(item)
+          } else if (item.confirm.status && !item.change.status) {
+            this.meetingConfirmed.push(item)
           } else {
-            this.meetings.push(element)
+            this.meetingAwait.push(item)
           }
         })
       })

@@ -83,7 +83,7 @@
       <v-btn v-else color="orange" @click="confirmed">
         Reschedule meeting
       </v-btn>
-      <v-btn v-if="meeting.change.status && $auth.user.sub !== meeting.change.uid" color="green" @click="confirmed(true)">
+      <v-btn v-if="meeting.change.status && $auth.user.sub !== meeting.change.uid" color="green" @click="confirmed('done')">
         Confirm Changes
       </v-btn>
     </v-flex>
@@ -106,10 +106,10 @@
           <v-btn color="orange darken-3" @click="dialogConfirm = false">
             Cancel
           </v-btn>
-          <v-btn v-if="!confirmedTrue" color="green darken-3" @click="confirmed('yes')">
+          <v-btn v-if="!confirmedTrue" color="green darken-3" @click="confirmed('change')">
             Confirm
           </v-btn>
-          <v-btn v-else color="green darken-3" @click="confirmed(true)">
+          <v-btn v-else color="green darken-3" @click="confirmed('confirm')">
             Confirm
           </v-btn>
         </v-flex>
@@ -176,22 +176,27 @@ export default {
         return val
       }
     },
-    confirmed (ok) {
-      if (ok === true) { this.confirmedTrue = true }
+    confirmed (status) {
+      // Set it ready to be confirmed
+      if (status === 'done') { this.confirmedTrue = true }
+      // dialog
       this.dialogConfirm = true
-      if (ok === 'yes' || ok === true) {
+      // check any of 2 option
+      if (status === 'change' || status === 'confirm') {
+        // check if dates provided
         if (this.dates.length >= 1) {
           this.meeting.meeting.dates = this.dates
         }
         this.meeting.confirm.date = this.date
+        // first step to confirm meeting, change confirm status to true
         if (!this.selectedMeeting.confirm.status && this.selectedMeeting.user === this.$auth.user.sub) {
           this.meeting.confirm.status = true
         }
-        // confirm meeting
-        if (this.selectedMeeting.change.status && ok === true) {
+        // confirm meeting set change status false if confirm status is true and confirm btn pressed
+        if (this.selectedMeeting.change.status && status === 'confirm') {
           this.meeting.change.status = false
           this.meeting.change.uid = ''
-        // meeting changes
+        // meeting changes requested, change status to true and uid to user
         } else if (this.selectedMeeting.confirm.status) {
           this.meeting.change.status = true
           this.meeting.change.uid = this.$auth.user.sub
