@@ -78,7 +78,7 @@
         </v-flex>
         <v-divider />
         <v-flex xs12 text-center>
-          <v-btn color="orange" large class="my-5" @click="dates = []">
+          <v-btn color="orange" large class="my-5" @click="meeting.dates = []">
             Clear
           </v-btn>
           <v-btn color="green" large class="my-5" @click="setMeeting">
