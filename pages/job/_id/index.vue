@@ -842,7 +842,6 @@ export default {
           this.snackbar = true
           this.loading = false
         })
-      this.loading = false
     },
     bidsToggle () {
       if (this.bidding) {
