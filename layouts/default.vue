@@ -162,7 +162,18 @@
         </v-list-item>
         <v-list-item to="/meetings">
           <v-list-item-action>
-            <v-icon>mdi-handshake</v-icon>
+            <v-badge
+              color="green darken-3"
+              overlap
+              right
+            >
+              <template v-slot:badge>
+                <span v-if="notifMeetings.length > 0">{{ notifMeetings.length }}</span>
+              </template>
+              <v-icon>
+                mdi-handshake
+              </v-icon>
+            </v-badge>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
@@ -449,14 +460,14 @@ export default {
   watch: {
     notifications () {
       if (this.notifications.length > 0) {
-        this.notifMessages = this.notifications.filter(notification => notification.activity === 'Message')
-        this.notifMeetings = this.notifications.filter(notification => notification.activity === 'Meeting')
-        this.notifBids = this.notifications.filter(notification => notification.activity === 'Bid')
-        this.notifBidRequest = this.notifications.filter(notification => notification.activity === 'bidRequest')
         this.notificationColor = 'green darken-3'
       } else {
         this.notificationColor = 'blue-grey darken-1'
       }
+      this.notifMessages = this.notifications.filter(notification => notification.activity === 'Message')
+      this.notifMeetings = this.notifications.filter(notification => notification.activity === 'Meeting')
+      this.notifBids = this.notifications.filter(notification => notification.activity === 'Bid')
+      this.notifBidRequest = this.notifications.filter(notification => notification.activity === 'bidRequest')
     },
     switchAvailable () {
       if (this.switchAvailable) {
