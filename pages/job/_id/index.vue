@@ -833,7 +833,6 @@ export default {
       this.$axios
         .$post(`job/upload/${this.$route.params.id}`, formData)
         .then((res) => {
-          //  direct to jobs page
           this.project = res
           this.loading = false
         })
