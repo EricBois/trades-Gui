@@ -48,12 +48,6 @@
                 <v-icon v-else-if="item.change.status && $auth.user.sub !== item.change.uid" class="change">
                   mdi-calendar-edit
                 </v-icon>
-                <v-icon v-else-if="item.change.status && $auth.user.sub === item.change.uid" class="awaitConfirm">
-                  mdi-clock-outline
-                </v-icon>
-                <v-icon v-else-if="!item.confirm.status && item.host == $auth.user.sub" class="awaiting">
-                  mdi-clock-outline
-                </v-icon>
               </v-list-item-icon>
             </v-list-item>
             <v-divider class="my-1" />
@@ -84,13 +78,7 @@
                 </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-icon>
-                <v-icon v-if="item.confirm.status && !item.change.status" class="confirmed">
-                  mdi-calendar-check
-                </v-icon>
-                <v-icon v-else-if="item.change.status && $auth.user.sub !== item.change.uid" class="change">
-                  mdi-calendar-edit
-                </v-icon>
-                <v-icon v-else-if="item.change.status && $auth.user.sub === item.change.uid" class="awaitConfirm">
+                <v-icon v-if="item.change.status && $auth.user.sub === item.change.uid" class="awaitConfirm">
                   mdi-clock-outline
                 </v-icon>
                 <v-icon v-else-if="!item.confirm.status && item.host == $auth.user.sub" class="awaiting">
@@ -127,15 +115,6 @@
               <v-list-item-icon>
                 <v-icon v-if="item.confirm.status && !item.change.status" class="confirmed">
                   mdi-calendar-check
-                </v-icon>
-                <v-icon v-else-if="item.change.status && $auth.user.sub !== item.change.uid" class="change">
-                  mdi-calendar-edit
-                </v-icon>
-                <v-icon v-else-if="item.change.status && $auth.user.sub === item.change.uid" class="awaitConfirm">
-                  mdi-clock-outline
-                </v-icon>
-                <v-icon v-else-if="!item.confirm.status && item.host == $auth.user.sub" class="awaiting">
-                  mdi-clock-outline
                 </v-icon>
               </v-list-item-icon>
             </v-list-item>
