@@ -1,5 +1,18 @@
 <template>
   <v-app id="inspire">
+    <v-snackbar
+      v-model="snackbar"
+      bottom
+      :color="snackbarColor"
+    >
+      {{ snackbarText }}
+      <v-icon v-if="snackbarColor.includes('red')">
+        mdi-alert-outline
+      </v-icon>
+      <v-icon v-else>
+        mdi-check-circle-outline
+      </v-icon>
+    </v-snackbar>
     <v-navigation-drawer
       v-if="this.$auth.loggedIn"
       v-model="drawer"
@@ -374,15 +387,15 @@
         </v-icon>
       </v-btn>
     </v-bottom-navigation>
-    <v-dialog v-model="registerDialog" max-width="800">
+    <v-dialog v-model="registerDialog" max-width="800" persistent transition="dialog-bottom-transition">
       <v-card class="px-3">
         <v-toolbar height="50" dark color="blue">
           <v-btn icon dark @click="registerDialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Register an account</v-toolbar-title>
+          <v-toolbar-title>Apply for an account</v-toolbar-title>
         </v-toolbar>
-        <Register />
+        <Register :register-dialog.sync="registerDialog" :snackbar.sync="snackbar" :snackbar-text.sync="snackbarText" />
         <v-divider />
       </v-card>
     </v-dialog>
@@ -434,6 +447,9 @@ export default {
     }
   },
   data: () => ({
+    snackbar: false,
+    snackbarColor: 'green darken-3',
+    snackbarText: '',
     sheet: false,
     welcomeText: '',
     switchAvailable: false,
