@@ -12,6 +12,16 @@
     >
       {{ alertText }}
     </v-alert>
+    <v-snackbar
+      v-model="snackbar"
+      bottom
+      :color="snackbarColor"
+    >
+      {{ snackbarText }}
+      <v-icon>
+        mdi-check-circle-outline
+      </v-icon>
+    </v-snackbar>
     <v-card flat color="#303030">
       <v-flex
         v-if="team.length >= 1"
