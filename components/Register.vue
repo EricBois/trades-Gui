@@ -57,6 +57,7 @@
             </v-flex>
             <v-flex v-if="!validated" xs12>
               <v-select
+                v-model="status"
                 :items="employment"
                 filled
                 label="You are"
@@ -122,7 +123,7 @@
               <v-btn v-if="validated" color="green darken-3" @click="register()">
                 Register!
               </v-btn>
-              <v-btn v-else color="blue darken-3">
+              <v-btn v-else color="blue darken-3" @click="register()">
                 Apply
               </v-btn>
             </v-flex>
@@ -154,6 +155,7 @@ export default {
   data () {
     return {
       employment: ['Employed', 'Self Employed', 'Contractor', 'Company 5+ employee', 'Company 50+ employee'],
+      status: '',
       experience: '',
       skills: '',
       references: '',
@@ -213,10 +215,36 @@ export default {
             this.info.email = ''
             this.info.password = ''
             this.repeatPassword = ''
+            if (this.info.user_metadata && this.info.user_metadata.phone) {
+              this.info.user_metadata.phone = ''
+            }
+          }
+        })
+      } else if (!this.validated) {
+        this.$axios.$post('account/inquire', {
+          name: this.info.name,
+          email: this.info.email,
+          phone: this.info.user_metadata.phone,
+          status: this.status,
+          experience: this.experience,
+          skills: this.skills,
+          references: this.references
+        }).then((res) => {
+          this.$emit('update:snackbar', true)
+          this.$emit('update:snackbarColor', 'green darken-3')
+          this.$emit('update:snackbarText', 'Your application will be processed shortly! Keep an eye on your email.')
+          this.$emit('update:registerDialog', false)
+          this.info.name = ''
+          this.info.email = ''
+          this.status = ''
+          this.experience = ''
+          this.skills = ''
+          this.references = ''
+          if (this.info.user_metadata && this.info.user_metadata.phone) {
+            this.info.user_metadata.phone = ''
           }
         })
       }
-      // else if code is not good, send application to email for further processing
     },
     verify () {
       this.alert = false
