@@ -85,6 +85,7 @@ export default {
     // 'vue-sweetalert2/nuxt',
     '@nuxtjs/onesignal',
     '@nuxtjs/pwa',
+    'nuxt-clipboard2',
     'nuxt-material-design-icons'
   ],
   oneSignal: {
@@ -141,7 +142,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    /* baseURL: "http://localhost:3000/v1/" */
+    // baseURL: "http://localhost:3000/v1/"
     baseURL: "https://sub-hub.ca/api/"
   },
   router: {

@@ -28,6 +28,14 @@
                 </template>
               </v-toolbar>
             </template>
+            <template v-slot:item.code="{ item }">
+              <v-chip label dark @click="copy(item.code)">
+                <v-icon class="mr-2">
+                  mdi-content-copy
+                </v-icon>
+                {{ item.code }}
+              </v-chip>
+            </template>
             <template v-slot:item.used="{ item }">
               <v-btn v-if="item.used" icon large color="green ligthen-1" dark>
                 <v-icon>mdi-check-circle-outline</v-icon>
@@ -91,6 +99,13 @@ export default {
       this.$axios.$post('account/genCode', { name: this.$auth.user.name }).then((res) => {
         this.getCodes()
       })
+    },
+    async copy (text) {
+      try {
+        await this.$copyText(text)
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 }
