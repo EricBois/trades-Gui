@@ -399,6 +399,9 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      snackbar: false,
+      snackbarColor: 'green darken-3',
+      snackbarText: '',
       showSent: false,
       showRead: false,
       show: false,
