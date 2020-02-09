@@ -24,7 +24,7 @@
               <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Your Name*" />
             </v-flex>
             <v-flex xs12 text-center>
-              <v-text-field v-model="info.email" class="purple-input" label="Your Email*" />
+              <v-text-field v-model="info.email" :rules="emailRules" class="purple-input" label="Your Email*" />
             </v-flex>
             <v-flex xs12>
               <v-text-field v-model="info.user_metadata.phone" class="purple-input" label="Your phone number" />
@@ -87,6 +87,9 @@ export default {
       nameRule: [
         v => !!v || 'The name is required',
         v => (v || '').length <= 40 || 'Name should be 40 characters or less '
+      ],
+      emailRules: [
+        v => !v || /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
       ],
       passwordRule: [
         value => !!value || 'Required.',
