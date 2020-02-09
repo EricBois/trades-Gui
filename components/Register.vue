@@ -180,6 +180,7 @@ export default {
       this.alert = false
       this.validated = false
       this.passwd = false
+      this.info.code = this.info.code.toLowerCase()
       this.$axios.$post('account/verifyCode', { code: this.info.code }).then((res) => {
         this.passwd = true
         this.validated = true
