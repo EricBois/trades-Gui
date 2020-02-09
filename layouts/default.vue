@@ -196,6 +196,20 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-divider v-if="admin" class="my-6" />
+        <v-list-item v-if="admin" to="/management">
+          <v-list-item-action>
+            <v-icon>mdi-alpha-p-box</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              <v-chip outlined>
+                Manage Codes
+              </v-chip>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
         <v-list-item class=" mt-5 justify-center">
           <v-switch v-model="switchAvailable" label="Available for work" color="green" inset />
         </v-list-item>
@@ -395,7 +409,7 @@
           </v-btn>
           <v-toolbar-title>Apply for an account</v-toolbar-title>
         </v-toolbar>
-        <Register :register-dialog.sync="registerDialog" :snackbar.sync="snackbar" :snackbar-text.sync="snackbarText" />
+        <Register :register-dialog.sync="registerDialog" :snackbar.sync="snackbar" :snackbar-text.sync="snackbarText" :snackbar-color.sync="snackbarColor" />
         <v-divider />
       </v-card>
     </v-dialog>
@@ -447,6 +461,7 @@ export default {
     }
   },
   data: () => ({
+    admin: false,
     snackbar: false,
     snackbarColor: 'green darken-3',
     snackbarText: '',
@@ -496,6 +511,9 @@ export default {
     },
     profile () {
       this.switchAvailable = this.profile.user_metadata.available
+      if (this.profile && this.profile.app_metadata && this.profile.app_metadata.admin === true) {
+        this.admin = true
+      }
       if (this.profile.user_metadata && !this.profile.user_metadata.welcome) {
         this.welcomeText = process.env.welcome
         this.sheet = true

@@ -16,9 +16,36 @@
           laz
         >
           <v-layout wrap>
-            <v-flex xs12>
+            <v-flex v-if="alert" xs12>
+              <v-alert
+                v-model="alert"
+                icon="mdi-information-outline"
+                prominent
+                dense
+                dismissible
+                transition="scale-transition"
+                text
+                type="error"
+              >
+                {{ errorMsg }}
+              </v-alert>
+            </v-flex>
+            <v-flex xs12 text-center>
               <span class="caption"><span class="blue--text mr-1 underline">Got an invite code ?</span> Enter it for instant approval!</span>
-              <v-text-field v-model="code" class="purple-input" label="Your invite Code" />
+              <v-text-field v-model="info.code" class="purple-input" label="Your invite Code">
+                <template v-slot:append>
+                  <v-btn
+                    depressed
+                    tile
+                    small
+                    color="primary"
+                    class="ma-0"
+                    @click="verify"
+                  >
+                    Validate
+                  </v-btn>
+                </template>
+              </v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Your Name*" />
@@ -79,10 +106,17 @@ export default {
     snackbarText: {
       type: String,
       default: ''
+    },
+    snackbarColor: {
+      type: String,
+      default: ''
     }
   },
   data () {
     return {
+      alert: false,
+      errorMsg: '',
+      validated: false,
       show: false,
       nameRule: [
         v => !!v || 'The name is required',
@@ -103,9 +137,9 @@ export default {
       ],
       companyNameRule: [v => (v || '').length <= 40 || 'Name should be 40 characters or less '],
       passwd: false,
-      code: '',
       repeatPassword: '',
       info: {
+        code: '',
         user_metadata: {
           phone: ''
 
@@ -117,29 +151,44 @@ export default {
       }
     }
   },
-  watch: {
-    code () {
-      this.passwd = false
-      // implement verify code from db
-      if (this.code === '1234') {
-        this.passwd = true
-      }
-    }
-  },
   methods: {
     register () {
-      // TODO
+      this.alert = false
+      this.errorMsg = ''
       // if code is good and form validate, send to api for instant registration
-      if (this.code === '1234' && this.$refs.form.validate()) {
+      if (this.validated && this.$refs.form.validate()) {
         this.$axios.$post('account/create', this.info).then((res) => {
-          // TODO snackbar to wait for email confirmation
-          this.$emit('update:snackbar', true)
-          this.$emit('update:snackbarColor', 'green darken-3')
-          this.$emit('update:snackbarText', 'Please verify your email to confirm your account before login.')
-          this.$emit('update:registerDialog', false)
+          if (res.statusCode === 409) {
+            this.alert = true
+            this.errorMsg = res.message
+          } else {
+            this.$emit('update:snackbar', true)
+            this.$emit('update:snackbarColor', 'green darken-3')
+            this.$emit('update:snackbarText', 'Please verify your email to confirm your account before login.')
+            this.$emit('update:registerDialog', false)
+            this.info.code = ''
+            this.info.name = ''
+            this.info.email = ''
+            this.info.password = ''
+            this.repeatPassword = ''
+          }
         })
       }
-      // else if code is not good, send application in db for further processing
+      // else if code is not good, send application to email for further processing
+    },
+    verify () {
+      this.alert = false
+      this.validated = false
+      this.passwd = false
+      this.$axios.$post('account/verifyCode', { code: this.info.code }).then((res) => {
+        this.passwd = true
+        this.validated = true
+      }).catch((e) => {
+        if (e.response.data.code === 404) {
+          this.alert = true
+          this.errorMsg = 'Code is Invalid'
+        }
+      })
     }
   }
 }
