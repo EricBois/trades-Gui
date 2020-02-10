@@ -49,6 +49,11 @@
                 {{ item.code }}
               </v-chip>
             </template>
+            <template v-slot:item.created="{ item }">
+              <v-chip color="amber lighten-3" outlined label>
+                {{ fromNow(item.created) }}
+              </v-chip>
+            </template>
             <template v-slot:item.user="{ item }">
               <v-chip dark>
                 {{ item.user }}
@@ -109,6 +114,8 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 export default {
   data () {
     return {
@@ -128,6 +135,7 @@ export default {
           value: 'code'
         },
         { text: 'Created By', value: 'user' },
+        { text: 'Created', value: 'created' },
         { text: 'Used', value: 'used' },
         { text: 'Sent', value: 'action', sortable: false }
       ]
@@ -137,6 +145,7 @@ export default {
     profile: 'profile/getProfile'
   }),
   mounted () {
+    dayjs.extend(relativeTime)
     if (this.profile && (!this.profile.app_metadata || !this.profile.app_metadata.admin === true)) {
       this.$router.push('/')
     } else {
@@ -144,6 +153,9 @@ export default {
     }
   },
   methods: {
+    fromNow (date) {
+      return dayjs(date).fromNow()
+    },
     makeSure (code) {
       this.dialog = true
       this.currentCode = code
