@@ -42,7 +42,10 @@
               </v-toolbar>
             </template>
             <template v-slot:item.code="{ item }">
-              <v-chip label color="blue darken-3" @click="copy(item.code)">
+              <v-chip v-if="!item.used" label color="blue darken-3">
+                *****
+              </v-chip>
+              <v-chip v-else label color="blue darken-3" @click="copy(item.code)">
                 <v-icon class="mr-2">
                   mdi-content-copy
                 </v-icon>
@@ -69,7 +72,7 @@
                 <v-icon class="mr-2">
                   mdi-cursor-default-click
                 </v-icon>
-                Used Code
+                Use This Code
               </v-chip>
             </template>
           </v-data-table>
@@ -86,7 +89,7 @@
         </v-card-title>
 
         <v-card-text>
-          Did you use or gave this code away ?
+          Are you going to use or give this code away ?
         </v-card-text>
 
         <v-card-actions>
@@ -105,7 +108,7 @@
             text
             @click="used(currentCode)"
           >
-            Yes, i did!
+            Yes, i will!
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -136,8 +139,8 @@ export default {
         },
         { text: 'Created By', value: 'user' },
         { text: 'Created', value: 'created' },
-        { text: 'Used', value: 'used' },
-        { text: 'Sent', value: 'action', sortable: false }
+        { text: 'Already Used', value: 'used' },
+        { text: 'Action', value: 'action', sortable: false }
       ]
     }
   },
