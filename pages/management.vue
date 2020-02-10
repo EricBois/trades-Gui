@@ -15,12 +15,15 @@
         </v-icon>
       </v-snackbar>
       <v-flex xs12 text-center>
-        <v-card class="mx-auto" max-width="800">
+        <v-card class="mx-auto" max-width="900">
           <v-data-table
             :headers="headers"
             :items="codes"
             sort-by="created[-1]"
             class="elevation-1"
+            item-key="code"
+            show-expand
+            :expanded.sync="expanded"
           >
             <template v-slot:top>
               <v-toolbar flat color="dark">
@@ -67,6 +70,11 @@
                 <v-icon>mdi-check-circle-outline</v-icon>
               </v-btn>
             </template>
+            <template v-slot:expanded-item="{ item, headers }">
+              <td :colspan="headers.length">
+                {{ item.note }}
+              </td>
+            </template>
             <template v-slot:item.action="{ item }">
               <v-chip v-if="!item.used" color="blue-grey darken-2" label @click="makeSure(item.code)">
                 <v-icon class="mr-2">
@@ -90,6 +98,7 @@
 
         <v-card-text>
           Are you going to use or give this code away ?
+          <v-text-field v-model="note" class="mt-2" label="Who is the recipient ? " />
         </v-card-text>
 
         <v-card-actions>
@@ -122,6 +131,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 export default {
   data () {
     return {
+      expanded: [],
       dialog: false,
       currentCode: '',
       snackbar: false,
@@ -130,6 +140,7 @@ export default {
       alert: false,
       errorMsg: '',
       codes: [],
+      note: '',
       headers: [
         {
           text: 'Codes',
@@ -164,7 +175,7 @@ export default {
       this.currentCode = code
     },
     used () {
-      this.$axios.$post('account/usedCode', { code: this.currentCode }).then((res) => {
+      this.$axios.$post('account/usedCode', { code: this.currentCode, note: this.note }).then((res) => {
         this.getCodes()
         this.dialog = false
       })
