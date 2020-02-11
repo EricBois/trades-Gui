@@ -23,6 +23,7 @@
             class="elevation-1"
             item-key="code"
             show-expand
+            single-expand
             :expanded.sync="expanded"
           >
             <template v-slot:top>
@@ -56,7 +57,7 @@
               </v-chip>
             </template>
             <template v-slot:item.created="{ item }">
-              <v-chip color="amber lighten-3" outlined label>
+              <v-chip small color="amber lighten-3" outlined label>
                 {{ fromNow(item.created) }}
               </v-chip>
             </template>
@@ -71,8 +72,24 @@
               </v-btn>
             </template>
             <template v-slot:expanded-item="{ item, headers }">
-              <td :colspan="headers.length">
-                {{ item.note }}
+              <td colspan="2">
+                <v-card v-if="item.note" flat>
+                  <v-list-item two-line>
+                    <v-list-item-content>
+                      <v-list-item-title class="body-2 mb-1">
+                        <u>Recipient</u>
+                      </v-list-item-title>
+                      <v-list-item-subtitle class="caption">
+                        {{ item.note }}
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-card>
+              </td>
+              <td colspan="3">
+                <v-btn small color="red darken-3" @click="deleteCode(item.code)">
+                  Delete
+                </v-btn>
               </td>
             </template>
             <template v-slot:item.action="{ item }">
@@ -183,6 +200,11 @@ export default {
     getCodes () {
       this.$axios.$get('account/codes').then((res) => {
         this.codes = res
+      })
+    },
+    deleteCode (code) {
+      this.$axios.$post('account/delCode', { code }).then((res) => {
+        this.getCodes()
       })
     },
     gencode () {
