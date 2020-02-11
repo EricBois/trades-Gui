@@ -115,7 +115,7 @@
 
         <v-card-text>
           Are you going to use or give this code away ?
-          <v-text-field v-model="note" class="mt-2" label="Who is the recipient ? " />
+          <v-text-field v-model="note" class="mt-2" label="Recipient name? " />
         </v-card-text>
 
         <v-card-actions>
