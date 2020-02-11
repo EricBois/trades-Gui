@@ -90,6 +90,22 @@
               </div>
             </v-flex>
           </v-card>
+          <v-flex v-if="wonBid(project.bids)" xs12 text-center>
+            <v-btn class="mt-2" x-small color="green darken-3">
+              <v-icon small class="mr-2">
+                mdi-party-popper
+              </v-icon>
+              You Won the bid !
+            </v-btn>
+          </v-flex>
+          <v-flex v-if="!project.bidding" xs12 text-center>
+            <v-btn class="mt-2" x-small color="orange darken-4">
+              <v-icon small class="mr-2">
+                mdi-alert-octagon-outline
+              </v-icon>
+              Bidding is over
+            </v-btn>
+          </v-flex>
         </v-flex>
         <v-flex xs12 mt-3>
           <v-chip
@@ -243,6 +259,15 @@ export default {
     this.trades = process.env.trades.split(',')
   },
   methods: {
+    wonBid (bids) {
+      let won = false
+      bids.forEach((bid) => {
+        if (bid.user === this.$auth.user.sub && bid.notified) {
+          won = true
+        }
+      })
+      return won
+    },
     setPages () {
       this.pages = Math.ceil(this.jobs.length / this.perPage)
     },

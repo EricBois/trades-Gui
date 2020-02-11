@@ -3,20 +3,27 @@
     <v-card
       v-for="bid in bids"
       :key="bid.id"
-      color="grey darken-2"
+      :color="(bid.notified && bid.user === $auth.user.sub) ? 'grey darken-2':'grey darken-3'"
       class="mt-2 pa-1 pr-4"
       raised
+      outlined
       shaped
     >
       <v-layout wrap>
         <v-flex v-if="ownProject" xs1 sm1 class="mt-n5 mb-n6">
-          <v-checkbox v-model="selectedBids" :value="bid" />
+          <v-checkbox v-model="selectedBids" color="white" :value="bid" />
         </v-flex>
-        <v-flex :xs8="!ownProject" :xs7="ownProject" sm4 class="pl-2" @click.self="open(bid)">
+        <v-flex v-if="bid.notified && bid.user === $auth.user.sub" xs1 sm1>
+          <v-icon color="amber darken-1">
+            mdi-crown-outline
+          </v-icon>
+        </v-flex>
+        <v-flex :xs8="!ownProject" :xs7="ownProject || bid.notified && bid.user === $auth.user.sub" sm4 class="pl-2" @click.self="open(bid)">
           <v-chip
             v-if="$vuetify.breakpoint.width >= 375"
             color="orange accent-1"
             outlined
+            class="ma-1"
             small
             label
             @click="profile(bid.user)"
@@ -37,8 +44,9 @@
           <v-chip
             v-for="trade in bid.trade.split(', ')"
             :key="trade.id"
-            color="grey-blue darken-3"
+            color="orange accent-1"
             class="ml-1 ma-1"
+            outlined
             small
             label
           >
@@ -46,7 +54,7 @@
           </v-chip>
         </v-flex>
         <v-flex xs4 sm2 text-center @click.stop="open(bid)">
-          <v-chip small color="orange accent-1" label outlined>
+          <v-chip small class="ma-1" color="orange accent-1" label outlined>
             ${{ bid.price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }}
           </v-chip>
         </v-flex>
