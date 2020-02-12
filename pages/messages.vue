@@ -138,7 +138,7 @@
         </v-card>
         <v-divider />
       </v-flex>
-      <v-flex class="mb-2 mt-12" xs12 text-center>
+      <v-flex v-if="sentMessages.length > 0 || readMessages.length > 0" class="mb-2 mt-12" xs12 text-center>
         <v-divider class="my-4 mx-12" />
         <h3 class="ibm mb-2">
           <v-icon class="mr-2">
