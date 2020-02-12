@@ -17,6 +17,7 @@
       v-if="this.$auth.loggedIn"
       v-model="drawer"
       app
+      floating
       clipped
     >
       <v-list-item to="/profile">
