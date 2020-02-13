@@ -147,7 +147,7 @@
                     v-model="info.user_metadata.skills"
                     :items="itemSkills"
                     chips
-                    label="Skills"
+                    label="Your Skills"
                     multiple
                   />
                 </v-flex>
@@ -156,7 +156,7 @@
                     v-model="info.user_metadata.tickets"
                     :items="itemTickets"
                     chips
-                    label="Tickets"
+                    label="Your Tickets"
                     multiple
                   />
                 </v-flex>
