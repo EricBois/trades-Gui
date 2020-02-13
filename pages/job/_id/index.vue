@@ -42,7 +42,17 @@
             {{ project.name }} &nbsp; <a :href="url" rel="noreferrer" target="_blank"><v-icon v-if="url !== ''">mdi-google-maps</v-icon></a>
             <div v-if="project.createdBy" class="caption grey--text">
               Project by:
-              <v-chip color="blue-grey lighten-4" class="ibm" outlined x-small @click="profile(project.user)">
+              <v-chip
+                color="blue-grey lighten-4"
+                class="ibm"
+                outlined
+                label
+                small
+                @click="profile(project.user)"
+              >
+                <v-icon small class="mr-1">
+                  mdi-information-outline
+                </v-icon>
                 {{ project.createdBy }}
               </v-chip>
             </div>
