@@ -60,7 +60,7 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item to="/user/create">
+        <v-list-item @click="create = !create">
           <v-list-item-action>
             <v-icon color="green lighten-3">
               mdi-file-plus-outline
@@ -430,6 +430,19 @@
         </v-btn>
       </v-sheet>
     </v-bottom-sheet>
+    <v-dialog v-model="create" persistent max-width="850">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="create = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Create Project</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <CreateProject />
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 <style scoped>
@@ -450,10 +463,12 @@ a {
 <script>
 import { mapGetters } from 'vuex'
 import Register from '../components/Register'
+import CreateProject from '../components/CreateProject'
 export default {
   middleware: ['profile', 'notifications'],
   components: {
-    Register
+    Register,
+    CreateProject
   },
   props: {
     source: {
@@ -462,6 +477,7 @@ export default {
     }
   },
   data: () => ({
+    create: false,
     admin: false,
     snackbar: false,
     snackbarColor: 'green darken-3',
