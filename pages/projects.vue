@@ -1,20 +1,29 @@
 <template>
   <v-container>
-    <v-alert
-      v-model="alert"
-      icon="mdi-information-outline"
-      prominent
-      dense
-      dismissible
-      transition="scale-transition"
-      text
-      :type="alertInfo"
-    >
-      {{ alertText }}
-    </v-alert>
     <v-card flat color="#303030">
       <Jobs :jobs="jobsPublic" :cities="citiesPublic" />
     </v-card>
+    <v-dialog v-model="alert" persistent max-width="500">
+      <v-card>
+        <v-flex xs12>
+          <v-alert
+            icon="mdi-information-outline"
+            prominent
+            transition="scale-transition"
+            text
+            :type="alertInfo"
+          >
+            {{ alertText }}
+          </v-alert>
+        </v-flex>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="green darken-1" text @click="alert = false">
+            Ok !
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>

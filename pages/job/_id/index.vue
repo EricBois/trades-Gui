@@ -1,17 +1,5 @@
 <template>
   <v-container>
-    <v-alert
-      v-model="alert"
-      icon="mdi-information-outline"
-      prominent
-      dense
-      dismissible
-      transition="scale-transition"
-      text
-      :type="alertInfo"
-    >
-      {{ alertText }}
-    </v-alert>
     <v-snackbar
       v-model="snackbar"
       top
@@ -268,18 +256,6 @@
         <h2 v-if="ownProject" class="mb-n4">
           Project Bids / Offers
         </h2>
-      </v-flex>
-      <v-flex v-if="alert2" class="mt-4 mb-n4">
-        <v-alert
-          v-model="alert2"
-          border="top"
-          dense
-          dismissible
-          color="blue-grey darken-3"
-          transition="scale-transition"
-        >
-          {{ alertText2 }}
-        </v-alert>
       </v-flex>
       <v-flex xs12>
         <Bids :bids.sync="bids" :own-project="ownProject" :selected.sync="selected" />
@@ -548,6 +524,47 @@
         Accept Bid(s)
       </v-btn>
     </v-flex>
+    <v-dialog v-model="alert" persistent max-width="650">
+      <v-card>
+        <v-flex xs12>
+          <v-alert
+            icon="mdi-information-outline"
+            prominent
+            transition="scale-transition"
+            text
+            :type="alertInfo"
+          >
+            {{ alertText }}
+          </v-alert>
+        </v-flex>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="green darken-1" text @click="alert = false">
+            Ok !
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="alert2" persistent max-width="800">
+      <v-card>
+        <v-flex xs12>
+          <v-alert
+            border="top"
+            color="blue-grey darken-3"
+            transition="scale-transition"
+          >
+            {{ alertText2 }}
+          </v-alert>
+        </v-flex>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="green darken-1" text @click="alert2 = false">
+            Ok !
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -666,7 +683,7 @@ export default {
     if (this.myProfile.user_metadata && !this.myProfile.user_metadata.welcomeJob) {
       this.alertText = process.env.welcomeJob
       this.alert = true
-      return this.$axios.$post('account/edit', { user_metadata: { welcomeJob: true } }).then((res) => {
+      this.$axios.$post('account/edit', { user_metadata: { welcomeJob: true } }).then((res) => {
         this.$store.commit('profile/updateProfile', res) // for the profile store
         this.$auth.fetchUser()
       })

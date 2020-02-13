@@ -1,17 +1,5 @@
 <template>
   <v-container>
-    <v-alert
-      v-model="alert"
-      icon="mdi-information-outline"
-      prominent
-      dense
-      dismissible
-      transition="scale-transition"
-      text
-      :type="alertInfo"
-    >
-      {{ alertText }}
-    </v-alert>
     <v-card flat color="#303030">
       <!-- meetings -->
       <v-flex xs12 sm8 offset-sm-2>
@@ -134,6 +122,27 @@
         </v-toolbar>
         <DatePicker :dialog-meeting.sync="dialogMeeting" :selected-meeting.sync="selectedMeeting" />
         <v-divider />
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="alert" persistent max-width="500">
+      <v-card>
+        <v-flex xs12>
+          <v-alert
+            icon="mdi-information-outline"
+            prominent
+            transition="scale-transition"
+            text
+            :type="alertInfo"
+          >
+            {{ alertText }}
+          </v-alert>
+        </v-flex>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="green darken-1" text @click="alert = false">
+            Ok !
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-container>
