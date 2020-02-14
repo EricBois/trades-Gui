@@ -1,5 +1,15 @@
 <template>
   <v-container>
+    <v-flex class="mb-6" xs12 text-center>
+      <v-btn depressed class="mr-n4" fab color="green darken-3" @click="create = !create">
+        <v-icon large>
+          mdi-plus-circle-outline
+        </v-icon>
+      </v-btn>
+      <v-btn depressed color="green darken-3" @click="create = !create">
+        Create Project
+      </v-btn>
+    </v-flex>
     <v-card flat color="#303030">
       <Jobs :jobs="jobsPublic" :cities="citiesPublic" />
     </v-card>
@@ -24,17 +34,33 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="create" persistent max-width="850">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="create = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Create Project</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <CreateProject />
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import Jobs from '../components/Jobs.vue'
+import CreateProject from '../components/CreateProject'
 export default {
   components: {
-    Jobs
+    Jobs,
+    CreateProject
   },
   data () {
     return {
+      create: false,
       alert: false,
       alertInfo: 'info',
       alertText: '',

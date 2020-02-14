@@ -29,7 +29,7 @@
             @click="profile(bid.user)"
           >
             <v-icon color="green" small>
-              mdi-information-variant
+              mdi-information-outline
             </v-icon>&nbsp;
             {{ bid.createdBy }}
           </v-chip>

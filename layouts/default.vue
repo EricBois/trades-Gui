@@ -46,16 +46,17 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-divider class="my-2" />
         <v-list-item to="/projects">
           <v-list-item-action>
             <v-icon color="amber lighten-3">
-              mdi-alpha-p-box
+              mdi-currency-usd
             </v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
               <v-chip color="amber lighten-3" outlined label>
-                Project Listings
+                Projects Bidding
               </v-chip>
             </v-list-item-title>
           </v-list-item-content>
@@ -70,6 +71,21 @@
             <v-list-item-title>
               <v-chip color="green lighten-3" outlined label>
                 Create Project
+              </v-chip>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider class="my-2" />
+        <v-list-item>
+          <v-list-item-action>
+            <v-icon color="teal lighten-3">
+              mdi-format-list-text
+            </v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              <v-chip color="teal lighten-3" outlined label>
+                Jobs Posting
               </v-chip>
             </v-list-item-title>
           </v-list-item-content>
@@ -103,7 +119,7 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group> -->
-        <v-divider class="my-5" />
+        <v-divider class="my-2" />
         <v-list-group prepend-icon="mdi-account-group" no-action>
           <template v-slot:activator>
             <v-list-item-content>
