@@ -24,33 +24,17 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="create" persistent max-width="850">
-      <v-card class="px-3">
-        <v-toolbar dark color="blue">
-          <v-btn icon dark @click="create = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-          <v-toolbar-title>Create Project</v-toolbar-title>
-          <div class="flex-grow-1" />
-        </v-toolbar>
-        <CreateProject />
-        <v-divider />
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import Jobs from '../components/Jobs.vue'
-import CreateProject from '../components/CreateProject'
 export default {
   components: {
-    Jobs,
-    CreateProject
+    Jobs
   },
   data () {
     return {
-      create: false,
       alert: false,
       alertInfo: 'info',
       alertText: '',

@@ -68,16 +68,16 @@
           </v-list-item-icon>
         </v-list-item>
         <v-divider class="my-2" />
-        <v-list-item>
+        <v-list-item to="/hiring">
           <v-list-item-action>
-            <v-icon color="teal lighten-3">
-              mdi-format-list-text
+            <v-icon color="blue lighten-2">
+              mdi-help-circle
             </v-icon>
           </v-list-item-action>
           <v-list-item-content class="ml-n4">
             <v-list-item-title>
-              <v-chip color="teal lighten-3" outlined label>
-                Who's Hiring
+              <v-chip color="blue lighten-2" outlined label>
+                Who's Hiring Now
               </v-chip>
             </v-list-item-title>
           </v-list-item-content>
@@ -220,7 +220,7 @@
         </v-list-item>
 
         <v-list-item class=" mt-5 justify-center">
-          <v-switch v-model="switchAvailable" label="Available for work" color="green" inset />
+          <v-switch v-model="switchAvailable" label="Looking for work" color="green" inset />
         </v-list-item>
         <v-list-item class="mt-5 justify-center">
           <v-btn v-if="this.$auth.loggedIn" color="amber darken-4" small @click="logout">
