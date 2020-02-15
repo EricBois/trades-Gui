@@ -61,20 +61,6 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="create = !create">
-          <v-list-item-action>
-            <v-icon color="green lighten-3">
-              mdi-file-plus-outline
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              <v-chip color="green lighten-3" outlined label>
-                Create Project
-              </v-chip>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
         <v-divider class="my-2" />
         <v-list-item>
           <v-list-item-action>
@@ -85,7 +71,7 @@
           <v-list-item-content>
             <v-list-item-title>
               <v-chip color="teal lighten-3" outlined label>
-                Jobs Posting
+                Who's Hiring
               </v-chip>
             </v-list-item-title>
           </v-list-item-content>
