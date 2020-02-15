@@ -86,7 +86,21 @@
                   </v-list-item>
                 </v-card>
               </td>
-              <td colspan="3">
+              <td colspan="2">
+                <v-card v-if="item.userType" flat>
+                  <v-list-item two-line>
+                    <v-list-item-content>
+                      <v-list-item-title class="body-2 mb-1">
+                        <u>User Type</u>
+                      </v-list-item-title>
+                      <v-list-item-subtitle class="caption">
+                        {{ item.userType }}
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-card>
+              </td>
+              <td colspan="1">
                 <v-btn small color="red darken-3" @click="deleteCode(item.code)">
                   Delete
                 </v-btn>
@@ -116,6 +130,12 @@
         <v-card-text>
           Are you going to use or give this code away ?
           <v-text-field v-model="note" class="mt-2" label="Recipient name? " />
+          <v-select
+            v-model="userType"
+            :items="userTypes"
+            label="User type"
+            outlined
+          />
         </v-card-text>
 
         <v-card-actions>
@@ -158,6 +178,8 @@ export default {
       errorMsg: '',
       codes: [],
       note: '',
+      userType: '',
+      userTypes: ['User', 'Company', 'Ambassador'],
       headers: [
         {
           text: 'Codes',
@@ -192,7 +214,7 @@ export default {
       this.currentCode = code
     },
     used () {
-      this.$axios.$post('account/usedCode', { code: this.currentCode, note: this.note }).then((res) => {
+      this.$axios.$post('account/usedCode', { code: this.currentCode, note: this.note, userType: this.userType }).then((res) => {
         this.getCodes()
         this.dialog = false
       })
