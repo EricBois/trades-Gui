@@ -38,7 +38,7 @@
           <v-list-item-action>
             <v-icon>mdi-view-dashboard</v-icon>
           </v-list-item-action>
-          <v-list-item-content>
+          <v-list-item-content class="ml-n4">
             <v-list-item-title>
               <v-chip outlined label>
                 Dashboard
@@ -47,19 +47,25 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider class="my-2" />
-        <v-list-item to="/projects">
-          <v-list-item-action>
+        <v-list-item v-ripple>
+          <v-list-item-action @click="$router.push('/projects')">
             <v-icon color="amber lighten-3">
               mdi-currency-usd
             </v-icon>
           </v-list-item-action>
-          <v-list-item-content>
+          <v-list-item-content class="ml-n4" @click="$router.push('/projects')">
             <v-list-item-title>
               <v-chip color="amber lighten-3" outlined label>
                 Projects Bidding
               </v-chip>
             </v-list-item-title>
           </v-list-item-content>
+          <v-divider class="mr-n2" vertical />
+          <v-list-item-icon @click="create = !create">
+            <v-icon color="blue darken-2" large>
+              mdi-file-document-box-plus
+            </v-icon>
+          </v-list-item-icon>
         </v-list-item>
         <v-divider class="my-2" />
         <v-list-item>
@@ -68,7 +74,7 @@
               mdi-format-list-text
             </v-icon>
           </v-list-item-action>
-          <v-list-item-content>
+          <v-list-item-content class="ml-n4">
             <v-list-item-title>
               <v-chip color="teal lighten-3" outlined label>
                 Who's Hiring

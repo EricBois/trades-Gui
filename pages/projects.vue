@@ -1,15 +1,5 @@
 <template>
   <v-container>
-    <v-flex class="mb-6" xs12 text-center>
-      <v-btn depressed class="mr-n4" fab color="green darken-3" @click="create = !create">
-        <v-icon large>
-          mdi-plus-circle-outline
-        </v-icon>
-      </v-btn>
-      <v-btn depressed color="green darken-3" @click="create = !create">
-        Create Project
-      </v-btn>
-    </v-flex>
     <v-card flat color="#303030">
       <Jobs :jobs="jobsPublic" :cities="citiesPublic" />
     </v-card>
