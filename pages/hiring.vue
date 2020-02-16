@@ -24,7 +24,7 @@
         <v-layout wrap>
           <v-flex xs12 text-left class="pa-1">
             <v-chip small color="amber lighten-3" outlined label>
-              Posted {{ fromNow(job.Created) }}
+              Posted {{ fromNow(job.created) }}
             </v-chip>
           </v-flex>
           <v-flex xs12 text-center>
