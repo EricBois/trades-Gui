@@ -63,7 +63,7 @@
           <v-divider class="mr-n2" vertical />
           <v-list-item-icon @click="create = !create">
             <v-icon color="green darken-2" large>
-              mdi-file-document-box-plus
+              mdi-file-document-box-plus-outline
             </v-icon>
           </v-list-item-icon>
         </v-list-item>
