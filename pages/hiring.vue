@@ -20,7 +20,7 @@
     </v-card>
 
     <v-flex v-for="job in jobs" :key="job.id" xs12 my-2>
-      <v-card ripple max-width="650" class="mx-auto" outlined>
+      <v-card max-width="650" class="mx-auto" outlined>
         <v-layout wrap>
           <v-flex xs12 text-left class="pa-1">
             <v-chip small color="amber lighten-3" outlined label>
@@ -28,7 +28,7 @@
             </v-chip>
           </v-flex>
           <v-flex xs12 text-center>
-            <v-chip large class="mt-1" outlined label>
+            <v-chip large class="mt-1" outlined label @click="showProfile(job.profile)">
               {{ job.company }}
             </v-chip>
           </v-flex>
@@ -138,6 +138,19 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogProfile" max-width="800">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogProfile = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Profile</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <PublicProfile :user="currentUser" />
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -152,9 +165,15 @@
 import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import PublicProfile from '../components/PublicProfile.vue'
 export default {
+  components: {
+    PublicProfile
+  },
   data () {
     return {
+      dialogProfile: false,
+      currentUser: {},
       jobs: [],
       create: false,
       itemSkills: [],
@@ -178,6 +197,10 @@ export default {
     dayjs.extend(relativeTime)
   },
   methods: {
+    showProfile (currentprofile) {
+      this.currentUser = currentprofile
+      this.dialogProfile = true
+    },
     post () {
       this.posting.company = this.$auth.user.name
       this.posting.profile = this.profile
