@@ -9,16 +9,16 @@
           {{ user.name }}
         </div>
         <div class="mt-2">
-          <a v-if="user.metadata.facebook" :href="user.metadata.facebook" target="_blank"><v-icon class="circle-icon" color="blue darken-1">mdi-facebook-box mdi-36px</v-icon></a>
-          <a v-if="user.metadata.instagram" :href="user.metadata.instagram" target="_blank"><v-icon class="instagram">mdi-instagram mdi-36px</v-icon></a>
+          <a v-if="user.metadata && user.metadata.facebook" :href="user.metadata.facebook" target="_blank"><v-icon class="circle-icon" color="blue darken-1">mdi-facebook-box mdi-36px</v-icon></a>
+          <a v-if="user.metadata && user.metadata.instagram" :href="user.metadata.instagram" target="_blank"><v-icon class="instagram">mdi-instagram mdi-36px</v-icon></a>
           <v-icon class="circle-icon" color="blue darken-1" @click="dialogMessage = !dialogMessage">
             mdi-message-text mdi-36px
           </v-icon>
-          <a v-if="user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon class="circle-icon" color="green">mdi-web mdi-36px</v-icon></a>
-          <a v-if="user.metadata.phone" :href="phone"><v-icon class="circle-icon" color="teal">mdi-phone-classic mdi-36px</v-icon></a>
+          <a v-if="user.metadata && user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon class="circle-icon" color="green">mdi-web mdi-36px</v-icon></a>
+          <a v-if="user.metadata && user.metadata.phone" :href="phone"><v-icon class="circle-icon" color="teal">mdi-phone-classic mdi-36px</v-icon></a>
         </div>
       </v-flex>
-      <v-flex v-if="user.metadata.skills && user.metadata.skills.length > 0" xs12 sm6 text-center>
+      <v-flex v-if="user.metadata && user.metadata.skills && user.metadata.skills.length > 0" xs12 sm6 text-center>
         <div class="sub">
           Skills
           <v-divider class="mx-10 pt-1" />
@@ -35,7 +35,7 @@
           {{ item }}
         </v-chip>
       </v-flex>
-      <v-flex v-if="user.metadata.tickets" xs12 sm6 text-center>
+      <v-flex v-if="user.metadata && user.metadata.tickets" xs12 sm6 text-center>
         <div class="sub">
           Tickets
           <v-divider class="mx-10 pt-1" />
@@ -53,18 +53,18 @@
         </v-chip>
       </v-flex>
       <v-flex xs12 text-center>
-        <v-chip v-if="user.metadata.wcb" small>
+        <v-chip v-if="user.metadata && user.metadata.wcb" small>
           <v-icon small color="green">
             mdi-check-decagram
           </v-icon>&nbsp; Wcb Coverage
         </v-chip>
-        <v-chip v-if="user.metadata.liability" small>
+        <v-chip v-if="user.metadata && user.metadata.liability" small>
           <v-icon small color="green">
             mdi-check-decagram
           </v-icon>&nbsp; Liability Insurance
         </v-chip>
       </v-flex>
-      <v-flex xs12 class="mt-n4" text-center>
+      <v-flex v-if="user.metadata && user.metadata.description" xs12 class="mt-n4" text-center>
         <p class=" pa-1 elevation-2 description">
           {{ user.metadata.description }}
         </p>
@@ -222,7 +222,7 @@ export default {
     }
   },
   created () {
-    if (this.user.metadata.phone) {
+    if (this.user.metadata && this.user.metadata.phone) {
       this.phone = `tel:${this.user.metadata.phone}`
     }
     if (this.team) {
