@@ -70,7 +70,7 @@
         </p>
       </v-flex>
       <v-flex xs12 text-center>
-        <v-btn v-if="user.uid !== $auth.user.sub && !alreadyInTeam" class="mt-n6" color="blue darken-4" @click="addToTeam()">
+        <v-btn v-if="user.uid !== $auth.user.sub && !alreadyInTeam " class="mt-n6" color="blue darken-4" @click="addToTeam()">
           <v-icon class="mr-2">
             mdi-account-plus-outline
           </v-icon> Team
@@ -224,6 +224,10 @@ export default {
   created () {
     if (this.user.metadata && this.user.metadata.phone) {
       this.phone = `tel:${this.user.metadata.phone}`
+    }
+    if (this.user.user_metadata) {
+      this.user.metadata = this.user.user_metadata
+      this.user.uid = this.user.user_id
     }
     if (this.team) {
       // make sure user isn't in team already
