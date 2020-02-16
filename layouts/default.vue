@@ -67,21 +67,7 @@
             </v-icon>
           </v-list-item-icon>
         </v-list-item>
-        <v-divider class="my-2" />
-        <v-list-item to="/hiring">
-          <v-list-item-action>
-            <v-icon color="blue lighten-2">
-              mdi-help-circle
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-content class="ml-n4">
-            <v-list-item-title>
-              <v-chip color="blue lighten-2" outlined label>
-                Who's Hiring Now
-              </v-chip>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+
         <!-- <v-list-group prepend-icon="mdi-alpha-p-box" no-action>
           <template v-slot:activator>
             <v-list-item-content>
@@ -218,7 +204,21 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
+        <v-divider class="my-2" />
+        <v-list-item to="/hiring">
+          <v-list-item-action>
+            <v-icon color="blue-grey lighten-3">
+              mdi-help-circle
+            </v-icon>
+          </v-list-item-action>
+          <v-list-item-content class="ml-n4">
+            <v-list-item-title>
+              <v-chip color="blue-grey lighten-3" outlined label>
+                Who's Hiring Now
+              </v-chip>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item class=" mt-5 justify-center">
           <v-switch v-model="switchAvailable" label="Looking for work" color="green" inset />
         </v-list-item>

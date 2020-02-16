@@ -222,12 +222,12 @@ export default {
     }
   },
   created () {
-    if (this.user.metadata && this.user.metadata.phone) {
-      this.phone = `tel:${this.user.metadata.phone}`
-    }
     if (this.user.user_metadata) {
       this.user.metadata = this.user.user_metadata
       this.user.uid = this.user.user_id
+    }
+    if (this.user.metadata && this.user.metadata.phone) {
+      this.phone = `tel:${this.user.metadata.phone}`
     }
     if (this.team) {
       // make sure user isn't in team already
