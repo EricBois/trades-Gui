@@ -243,6 +243,11 @@ export default {
           if (this.info.user_metadata && this.info.user_metadata.phone) {
             this.info.user_metadata.phone = ''
           }
+        }).catch((e) => {
+          if (e.response.data.code === 409) {
+            this.alert = true
+            this.errorMsg = 'Email is already in use'
+          }
         })
       }
     },
