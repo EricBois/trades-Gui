@@ -150,6 +150,7 @@
                 v-model="posting.skills"
                 :items="itemSkills"
                 chips
+                dense
                 label="Required Skills"
                 multiple
               />
@@ -159,6 +160,7 @@
                 v-model="posting.tickets"
                 :items="itemTickets"
                 chips
+                dense
                 label="Required Tickets"
                 multiple
               />
@@ -248,6 +250,7 @@
                 v-model="posting.skills"
                 :items="itemSkills"
                 chips
+                dense
                 label="Required Skills"
                 multiple
               />
@@ -257,6 +260,7 @@
                 v-model="posting.tickets"
                 :items="itemTickets"
                 chips
+                dense
                 label="Required Tickets"
                 multiple
               />
