@@ -207,13 +207,13 @@
         <v-divider class="my-2" />
         <v-list-item to="/hiring">
           <v-list-item-action>
-            <v-icon color="blue-grey lighten-3">
+            <v-icon color="deep-orange accent-1">
               mdi-help-circle
             </v-icon>
           </v-list-item-action>
           <v-list-item-content class="ml-n4">
             <v-list-item-title>
-              <v-chip color="blue-grey lighten-3" outlined label>
+              <v-chip color="deep-orange accent-1" outlined label>
                 Who's Hiring Now
               </v-chip>
             </v-list-item-title>
