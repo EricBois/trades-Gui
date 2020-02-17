@@ -204,6 +204,8 @@
                     v-model="employment.skills"
                     :items="itemSkills"
                     chips
+                    dense
+                    clearable
                     label="Looking for work in"
                     multiple
                   />
@@ -213,7 +215,29 @@
                     v-model="employment.location"
                     :items="locations"
                     chips
+                    dense
+                    clearable
                     label="In which area ?"
+                    multiple
+                  />
+                </v-flex>
+                <v-flex xs12 md4>
+                  <v-text-field
+                    v-model="employment.hourly"
+                    label="Your Wage expectation"
+                    class="purple-input mt-3"
+                    prefix="$"
+                    type="number"
+                  />
+                </v-flex>
+                <v-flex xs12 md6 offset-md-2>
+                  <v-select
+                    v-model="employment.employment"
+                    :items="employType"
+                    chips
+                    dense
+                    label="Employment Type ?"
+                    clearable
                     multiple
                   />
                 </v-flex>
@@ -233,15 +257,6 @@
                     solo
                     outlined
                     class="purple-input"
-                  />
-                </v-flex>
-                <v-flex xs12 md3>
-                  <v-text-field
-                    v-model="employment.hourly"
-                    label="Your Wage expectation"
-                    class="purple-input"
-                    prefix="$"
-                    type="number"
                   />
                 </v-flex>
                 <v-flex xs12 md3 text-center>
@@ -418,7 +433,9 @@ export default {
       itemTickets: [],
       locations: ['Calgary', 'Edmonton'],
       name: '',
+      employType: ['Full Time', 'Part Time', 'Contract', 'Side Jobs'],
       employment: {
+        employment: [],
         hourly: '',
         available: false,
         experience: '',
@@ -530,6 +547,7 @@ export default {
       this.employment.reference = res.reference
       this.employment.skills = res.skills
       this.employment.location = res.location
+      this.employment.employment = res.employment
       if (res.available) {
         this.switch1 = true
       }
@@ -670,6 +688,9 @@ export default {
         this.employment.reference = res.reference
         this.employment.skills = res.skills
         this.employment.location = res.location
+        this.employment.employment = res.employment
+        this.snackbarText = 'Successfully Updated!'
+        this.snackbar = true
       })
     }
   }

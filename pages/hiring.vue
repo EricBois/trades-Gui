@@ -13,7 +13,13 @@
             <v-icon class="mr-1">
               mdi-new-box
             </v-icon>
-            Posting
+            Job Posting
+          </v-btn>
+          <v-btn color="blue darken-3" small @click="getContractors()">
+            <v-icon class="mr-1">
+              mdi-account-group
+            </v-icon>
+            Looking for work
           </v-btn>
         </v-flex>
       </v-layout>
@@ -286,6 +292,44 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogLfw" max-width="600">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-btn icon dark @click="dialogLfw = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Looking for work</v-toolbar-title>
+          <div class="flex-grow-1" />
+        </v-toolbar>
+        <v-card>
+          <v-flex xs12>
+            <v-card
+              v-for="contractor in contractors"
+              :key="contractor.id"
+              outlined
+              ripple
+              hover
+              max-width="800"
+              class="mx-auto mt-5 ma-2"
+            >
+              <v-layout wrap>
+                <v-flex xs6 class="pa-1">
+                  <v-chip small color="amber lighten-3" label outlined>
+                    {{ contractor.name }}
+                  </v-chip>
+                </v-flex>
+                <v-flex xs6 class="pa-1">
+                  <v-chip v-for="skill in contractor.skills" :key="skill.id" small outlined label>
+                    {{ skill }}
+                  </v-chip>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+        </v-card>
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -317,11 +361,13 @@ export default {
       dialogDelete: false,
       dialogProfile: false,
       dialogEdit: false,
+      dialogLfw: false,
       currentUser: {},
       jobs: [],
       create: false,
       itemSkills: [],
       itemTickets: [],
+      contractors: [],
       posting: {
         company: '',
         description: '',
@@ -410,6 +456,12 @@ export default {
           this.create = false
         })
       }
+    },
+    async getContractors () {
+      await this.$axios.$get('hiring/getContractors').then((res) => {
+        this.contractors = res
+      })
+      this.dialogLfw = true
     }
   }
 }
