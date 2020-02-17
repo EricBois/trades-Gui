@@ -19,6 +19,7 @@
       color="white"
     >
       <v-tab>My Profile</v-tab>
+      <v-tab>Employment</v-tab>
       <v-tab>Settings</v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab" class="mt-8 mb-4">
@@ -160,18 +161,7 @@
                     multiple
                   />
                 </v-flex>
-                <v-flex xs12 md3 pr-sm-4 pt-4>
-                  <v-text-field
-                    v-model="info.user_metadata.hourly"
-                    label="Hourly"
-                    class="purple-input"
-                    prefix="$"
-                    type="number"
-                  />
-                </v-flex>
-                <v-flex xs12 md4 pt-4>
-                  <v-switch v-model="switch1" label="Available for work" color="green" inset />
-                </v-flex>
+
                 <v-flex xs6 class="justify-center text-center">
                   <v-btn class="ma-1" small @click="dialogPhoto = !dialogPhoto">
                     <v-icon>mdi-image</v-icon>&nbsp;
@@ -197,6 +187,75 @@
                 </v-flex>
               </v-layout>
             </v-form>
+          </v-card>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat color="#303030">
+          <v-card elevation="22" max-width="844" class="mx-auto pa-2">
+            <v-flex xs12 sm-4 offset-sm-4 pa-4>
+              <v-switch v-model="switch1" label="Available for work" color="green" inset />
+            </v-flex>
+            <v-flex xs4 />
+            <v-card v-if="employment.available">
+              <v-layout wrap class="pa-2">
+                <v-flex xs12 md6 class="pr-2">
+                  <v-select
+                    v-model="employment.skills"
+                    :items="itemSkills"
+                    chips
+                    label="Looking for work in"
+                    multiple
+                  />
+                </v-flex>
+                <v-flex xs12 md6>
+                  <v-select
+                    v-model="employment.location"
+                    :items="locations"
+                    chips
+                    label="In which area ?"
+                    multiple
+                  />
+                </v-flex>
+                <v-flex xs12>
+                  <v-textarea
+                    v-model="employment.experience"
+                    label="What's your experience ?"
+                    solo
+                    outlined
+                    class="purple-input"
+                  />
+                </v-flex>
+                <v-flex xs12>
+                  <v-textarea
+                    v-model="employment.reference"
+                    label="Any references ?"
+                    solo
+                    outlined
+                    class="purple-input"
+                  />
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-text-field
+                    v-model="employment.hourly"
+                    label="Your Wage expectation"
+                    class="purple-input"
+                    prefix="$"
+                    type="number"
+                  />
+                </v-flex>
+                <v-flex xs12 md3 text-center>
+                  <v-btn
+                    class="ibm mt-4"
+                    color="green darken-3"
+                    @click="saveHire()"
+                  >
+                    <v-icon>mdi-content-save-outline</v-icon>&nbsp;
+                    Save
+                  </v-btn>
+                </v-flex>
+              </v-layout>
+            </v-card>
           </v-card>
         </v-card>
       </v-tab-item>
@@ -231,6 +290,7 @@
           </v-card>
         </v-card>
       </v-tab-item>
+      </v-tabs-item>
     </v-tabs-items>
     <v-dialog v-model="dialogPhoto" transition="dialog-bottom-transition" max-width="900">
       <v-card class="px-3">
@@ -305,6 +365,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    </v-tabs-items>
   </v-container>
 </template>
 <style>
@@ -355,18 +416,26 @@ export default {
       filename: '',
       itemSkills: [],
       itemTickets: [],
+      locations: ['Calgary', 'Edmonton'],
       name: '',
+      employment: {
+        hourly: '',
+        available: false,
+        experience: '',
+        skills: '',
+        location: [],
+        reference: ''
+      },
       info: {
         user_metadata: {
           instagram: '',
           facebook: '',
           phone: '',
           description: '',
-          hourly: '',
-          available: false,
           skills: [],
           tickets: [],
           wcb: '',
+          available: false,
           liability: '',
           lat: '',
           lng: '',
@@ -417,9 +486,10 @@ export default {
     },
     switch1 () {
       if (this.switch1) {
-        this.info.user_metadata.available = true
+        this.employment.available = true
       } else {
-        this.info.user_metadata.available = false
+        this.employment.available = false
+        this.saveHire()
       }
     },
     profile () {
@@ -432,7 +502,6 @@ export default {
         this.info.user_metadata.description = this.profile.user_metadata.description
         this.info.user_metadata.hourly = this.profile.user_metadata.hourly
         this.info.user_metadata.address = this.profile.user_metadata.address
-        this.info.user_metadata.available = this.profile.user_metadata.available
         this.info.user_metadata.smsNotification = this.profile.user_metadata.smsNotification
         this.info.user_metadata.emailNotification = this.profile.user_metadata.emailNotification
         this.info.user_metadata.wcb = this.profile.user_metadata.wcb
@@ -440,9 +509,6 @@ export default {
         this.info.user_metadata.skills = this.profile.user_metadata.skills
         this.info.user_metadata.tickets = this.profile.user_metadata.tickets
         this.info.user_metadata.web = this.profile.user_metadata.web
-        if (this.info.user_metadata.available) {
-          this.switch1 = true
-        }
         if (this.info.user_metadata.smsNotification) {
           this.sms = true
         }
@@ -457,6 +523,18 @@ export default {
   },
   created () {
     // Welcome profile
+    this.$axios.$get('hiring/getProfile').then((res) => {
+      this.employment.available = res.available
+      this.employment.hourly = res.hourly
+      this.employment.experience = res.experience
+      this.employment.reference = res.reference
+      this.employment.skills = res.skills
+      this.employment.location = res.location
+      if (res.available) {
+        this.switch1 = true
+      }
+      console.log(res)
+    })
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeProfile) {
       this.alertText = process.env.welcomeProfile
       this.alert = true
@@ -472,7 +550,6 @@ export default {
       this.info.user_metadata.phone = this.profile.user_metadata.phone
       this.info.user_metadata.description = this.profile.user_metadata.description
       this.info.user_metadata.hourly = this.profile.user_metadata.hourly
-      this.info.user_metadata.available = this.profile.user_metadata.available
       this.info.user_metadata.smsNotification = this.profile.user_metadata.smsNotification
       this.info.user_metadata.emailNotification = this.profile.user_metadata.emailNotification
       this.info.user_metadata.wcb = this.profile.user_metadata.wcb
@@ -490,7 +567,7 @@ export default {
       if (this.info.user_metadata.emailNotification) {
         this.email = true
       }
-      if (this.info.user_metadata.available) {
+      if (this.employment.available) {
         this.switch1 = true
       } else {
         this.switch1 = false
@@ -520,7 +597,7 @@ export default {
         this.photo = null
         this.hasImage = false
         this.filename = ''
-        if (this.info.user_metadata.available) {
+        if (this.employment.available) {
           this.switch1 = true
         } else {
           this.switch1 = false
@@ -583,6 +660,18 @@ export default {
           this.info.user_metadata.country = info.name
         }
       }
+    },
+    saveHire () {
+      this.employment.name = this.$auth.user.name
+      this.employment.tickets = this.info.user_metadata.tickets
+      this.$axios.$post(`hiring/profile`, this.employment).then((res) => {
+        this.employment.available = res.available
+        this.employment.hourly = res.hourly
+        this.employment.experience = res.experience
+        this.employment.reference = res.reference
+        this.employment.skills = res.skills
+        this.employment.location = res.location
+      })
     }
   }
 }
