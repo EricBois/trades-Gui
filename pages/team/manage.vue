@@ -55,6 +55,9 @@
             Advanced search
           </v-btn>
         </v-flex>
+        <v-flex xs12 text-center>
+          <span class="caption">*Drag & Drop name as close to the top as possible</span>
+        </v-flex>
         <v-flex
           xs6
           sm3
@@ -66,7 +69,7 @@
         >
           <v-card color="blue-grey darken-1">
             <v-divider />
-            <h3>Available users</h3>
+            <h3>Users</h3>
             <v-divider />
           </v-card>
           <v-card v-if="users.length > 0" class="pb-3 scroll mb-5" height="320">
@@ -319,7 +322,7 @@ export default {
     this.$axios.$get('team/fetch').then((res) => {
       this.team = res.team
       this.$axios
-        .$get('account/public').then((res) => {
+        .$post('account/public', { name: '*' }).then((res) => {
           const arr = res
           // filter users and team for duplicates and remove ourself
           this.users = arr.filter(val => !this.team.find(({ uid }) => val.uid === uid) && val.uid !== this.$auth.user.sub)
