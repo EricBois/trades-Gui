@@ -533,7 +533,6 @@ export default {
       if (res.available) {
         this.switch1 = true
       }
-      console.log(res)
     })
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeProfile) {
       this.alertText = process.env.welcomeProfile
