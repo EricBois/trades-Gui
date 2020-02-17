@@ -102,7 +102,7 @@
             </v-btn>
           </v-flex>
           <v-flex xs8 class="pa-2">
-            <span class="caption mr-2">Got hired?</span>
+            <span class="caption mr-2">Still hiring?</span>
             <span v-if="job.hired">
               {{ job.hired.length }}
             </span>
