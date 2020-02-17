@@ -219,9 +219,10 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item class=" mt-5 justify-center">
+        <v-divider class="my-2" />
+        <!-- <v-list-item class=" mt-5 justify-center">
           <v-switch v-model="switchAvailable" label="Looking for work" color="green" inset />
-        </v-list-item>
+        </v-list-item> -->
         <v-list-item class="mt-5 justify-center">
           <v-btn v-if="this.$auth.loggedIn" color="amber darken-4" small @click="logout">
             <v-icon class="mr-1">
@@ -525,15 +526,15 @@ export default {
       this.notifBids = this.notifications.filter(notification => notification.activity === 'Bid')
       this.notifBidRequest = this.notifications.filter(notification => notification.activity === 'bidRequest')
     },
-    switchAvailable () {
-      if (this.switchAvailable) {
-        this.$axios.$post('account/edit', { user_metadata: { available: true } }).then(() => {
-        })
-      } else {
-        this.$axios.$post('account/edit', { user_metadata: { available: false } }).then(() => {
-        })
-      }
-    },
+    // switchAvailable () {
+    //   if (this.switchAvailable) {
+    //     this.$axios.$post('account/edit', { user_metadata: { available: true } }).then(() => {
+    //     })
+    //   } else {
+    //     this.$axios.$post('account/edit', { user_metadata: { available: false } }).then(() => {
+    //     })
+    //   }
+    // },
     profile () {
       this.switchAvailable = this.profile.user_metadata.available
       if (this.profile && this.profile.app_metadata && this.profile.app_metadata.admin === true) {
