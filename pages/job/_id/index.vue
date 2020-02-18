@@ -458,12 +458,14 @@
     </v-dialog>
     <v-dialog v-model="dialogBidApproval" max-width="600">
       <v-card class="px-3">
-        <v-toolbar dark color="green">
+        <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Select user(s) and option
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogBidApproval = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Select user(s) and option</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <BidsApproval :bids.sync="selected" />
         <v-divider />

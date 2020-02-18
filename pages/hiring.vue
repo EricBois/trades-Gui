@@ -296,7 +296,9 @@
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-spacer />
-          <v-toolbar-title>Looking for work</v-toolbar-title>
+          <v-toolbar-title class="body-1">
+            Looking for work
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogLfw = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
