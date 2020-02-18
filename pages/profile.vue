@@ -309,12 +309,14 @@
     </v-tabs-items>
     <v-dialog v-model="dialogPhoto" transition="dialog-bottom-transition" max-width="900">
       <v-card class="px-3">
-        <v-toolbar dark color="primary">
+        <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Photos
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogPhoto = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Photos</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <v-flex xs12 text-center>
           <client-only>

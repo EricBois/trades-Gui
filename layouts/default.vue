@@ -414,10 +414,13 @@
     <v-dialog v-model="registerDialog" max-width="800" persistent transition="dialog-bottom-transition">
       <v-card class="px-3">
         <v-toolbar height="50" dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Apply for an account
+          </v-toolbar-title>
           <v-btn icon dark @click="registerDialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Apply for an account</v-toolbar-title>
         </v-toolbar>
         <Register :register-dialog.sync="registerDialog" :snackbar.sync="snackbar" :snackbar-text.sync="snackbarText" :snackbar-color.sync="snackbarColor" />
         <v-divider />
@@ -442,11 +445,13 @@
     <v-dialog v-model="create" persistent max-width="850">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Create Project
+          </v-toolbar-title>
           <v-btn icon dark @click="create = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Create Project</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <CreateProject />
         <v-divider />

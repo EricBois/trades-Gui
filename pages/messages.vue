@@ -256,13 +256,13 @@
     <v-dialog ref="chat" v-model="dialogMessage" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title v-if="selectedMessage.names" class="body-1">
+            Message(s) with {{ (selectedMessage.names.from === $auth.user.name) ? selectedMessage.names.to : selectedMessage.names.from }}
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogMessage = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title v-if="selectedMessage.names">
-            Message(s) with {{ (selectedMessage.names.from === $auth.user.name) ? selectedMessage.names.to : selectedMessage.names.from }}
-          </v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <v-container fluid>
           <v-layout>
@@ -319,11 +319,13 @@
     <v-dialog v-model="dialogMassMessage" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Message
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogMassMessage = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Message</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <v-flex xs12 class="my-4">
           <span class="mr-2 mt-1 ibm">Sending to:</span>

@@ -96,11 +96,13 @@
     <v-dialog v-model="dialogMessage" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Messages
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogMessage = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Messages</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <Message :dialog-message.sync="dialogMessage" :user="user" />
         <v-divider />

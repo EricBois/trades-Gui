@@ -90,13 +90,13 @@
     <v-dialog v-model="dialogConfirm" max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Confirm Meeting ?
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogConfirm = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title class="ibm">
-            Confirm Meeting ?
-          </v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <v-flex class="ma-6" text-center>
           The contractor will be notified, be sure to include a time and to pick a day

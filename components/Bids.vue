@@ -141,11 +141,13 @@
     <v-dialog v-model="dialogProfile" max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Profile
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogProfile = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Profile</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <PublicProfile :user="user" />
         <v-divider />

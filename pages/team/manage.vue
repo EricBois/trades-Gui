@@ -114,11 +114,13 @@
     <v-dialog v-model="dialogProfile" max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Profile
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogProfile = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Profile</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <PublicProfile :user="currentUser" />
         <v-divider />
@@ -127,10 +129,13 @@
     <v-dialog v-model="searchDialog" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Search By
+          </v-toolbar-title>
           <v-btn icon dark @click="searchDialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Search By</v-toolbar-title>
         </v-toolbar>
         <v-layout row wrap class="mx-4 mb-5">
           <v-flex xs6 class="pr-3">
@@ -180,11 +185,13 @@
     <v-dialog v-model="dialogMessage" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Message Team
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogMessage = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Message Team</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <v-form ref="form" lazy-validation class="mt-5">
           <v-textarea

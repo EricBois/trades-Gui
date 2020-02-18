@@ -59,11 +59,13 @@
     <v-dialog v-model="dialogMeeting" max-width="400">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Schedule a Meeting
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogMeeting = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Schedule a Meeting</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <v-flex xs12 text-center class="desc">
           <h1><b>Your Availability</b></h1>
