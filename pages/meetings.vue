@@ -62,7 +62,7 @@
                 </v-list-item-title>
                 <v-list-item-subtitle>
                   <small v-if="item.change.status && $auth.user.sub === item.change.uid"><v-icon class="mr-2 awaitConfirm" small>mdi-clock-outline</v-icon><i class="awaitConfirm">Awaiting Confirmation from <br v-if="$vuetify.breakpoint.xsOnly"> <v-chip class="ml-1" x-small label outlined>{{ (item.host !== $auth.user.sub) ? item.contractor : item.createdBy }}</v-chip></i></small>
-                  <small v-if="!item.confirm.status && item.host == $auth.user.sub"><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip class="ml-1" x-small label outlined>{{ (item.host !== $auth.user.sub) ? item.contractor : item.createdBy }}</v-chip></i></small>
+                  <small v-if="!item.confirm.status && item.host === $auth.user.sub"><i class="awaiting">Awaiting Response from <br v-if="$vuetify.breakpoint.xsOnly"><v-chip class="ml-1" x-small label outlined>{{ (item.host !== $auth.user.sub) ? item.contractor : item.createdBy }}</v-chip></i></small>
                 </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-icon>
@@ -224,8 +224,9 @@ export default {
         this.meetingIds = []
         res.forEach((item) => {
           this.meetingIds.push(item._id)
+
           // check for new meeting request or changes
-          if ((item.change.status && this.$auth.user.sub !== item.change.uid)) {
+          if ((item.change.status && this.$auth.user.sub !== item.change.uid) || (!item.confirm.status && item.host !== this.$auth.user.sub)) {
             this.meetingNew.push(item)
           } else if (item.confirm.status && !item.change.status) {
             this.meetingConfirmed.push(item)
