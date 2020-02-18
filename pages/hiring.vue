@@ -304,19 +304,20 @@
           </v-btn>
         </v-toolbar>
         <v-card>
-          <v-flex xs12>
+          <v-flex xs12 class="mt-4">
             <v-card
               v-for="contractor in contractors"
               :key="contractor.id"
               outlined
-              ripple
-              hover
               max-width="800"
-              class="mx-auto mt-5 ma-2"
+              class="mx-auto mt-2 ma-2"
             >
               <v-layout wrap>
                 <v-flex xs6 class="pa-1">
-                  <v-chip small color="amber lighten-3" label outlined>
+                  <v-chip small color="amber lighten-3" label outlined @click="showProfile(contractor.user)">
+                    <v-icon small class="mr-1">
+                      mdi-information-outline
+                    </v-icon>
                     {{ contractor.name }}
                   </v-chip>
                 </v-flex>
