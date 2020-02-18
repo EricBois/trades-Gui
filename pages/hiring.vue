@@ -52,7 +52,6 @@
               </v-icon>
               {{ job.company }}
             </v-chip>
-            {{ job.profile }}
           </v-flex>
           <v-flex class="mt-2" xs12 text-center>
             <v-card class="pa-2" elevation="4" tile>
