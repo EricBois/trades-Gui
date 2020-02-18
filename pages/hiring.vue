@@ -295,11 +295,11 @@
     <v-dialog v-model="dialogLfw" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title>Looking for work</v-toolbar-title>
           <v-btn icon dark @click="dialogLfw = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Looking for work</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <v-card>
           <v-flex xs12>
