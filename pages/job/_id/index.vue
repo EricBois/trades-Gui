@@ -474,11 +474,13 @@
     <v-dialog v-model="dialogMessage" max-width="600">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Messages
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogMessage = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Messages</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <Message :dialog-message.sync="dialogMessage" :project="project" :snackbar.sync="snackbar" :snackbar-color.sync="snackbarColor" :snackbar-text.sync="snackbarText" />
         <v-divider />
@@ -487,11 +489,13 @@
     <v-dialog v-model="dialogProfile" max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Profile
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogProfile = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Profile</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <PublicProfile :user="user" />
         <v-divider />
