@@ -45,13 +45,14 @@
               color="blue-grey lighten-5"
               outlined
               label
-              @click="showProfile(job.profile)"
+              @click="showProfile(job.user)"
             >
               <v-icon class="mr-2">
                 mdi-information-outline
               </v-icon>
               {{ job.company }}
             </v-chip>
+            {{ job.profile }}
           </v-flex>
           <v-flex class="mt-2" xs12 text-center>
             <v-card class="pa-2" elevation="4" tile>
@@ -394,9 +395,15 @@ export default {
     dayjs.extend(relativeTime)
   },
   methods: {
-    showProfile (currentprofile) {
-      this.currentUser = currentprofile
-      this.dialogProfile = true
+    showProfile (id) {
+      this.$axios.$get(`account/getProfile/${id}`).then((res) => {
+        this.currentUser = res
+        if (!this.currentUser.photos) {
+          this.currentUser.photos = []
+        }
+      }).then(() => {
+        this.dialogProfile = true
+      })
     },
     askDelete (id) {
       this.currentId = id
@@ -422,9 +429,9 @@ export default {
         })
       }
     },
-    getJobs () {
-      this.$axios.$get('hiring/get').then((res) => {
-        this.jobs = []
+    async getJobs () {
+      this.jobs = []
+      await this.$axios.$get('hiring/get').then((res) => {
         res.forEach((obj, i) => {
           this.jobs.push(obj)
         })
