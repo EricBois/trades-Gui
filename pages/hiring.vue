@@ -99,7 +99,7 @@
               small
               color="blue-grey darken-2
 "
-              @click="showProfile(job.profile)"
+              @click="showProfile(job.user)"
             >
               <v-icon small class="mr-1">
                 mdi-account-box
@@ -344,7 +344,6 @@
 }
 </style>
 <script>
-import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import PublicProfile from '../components/PublicProfile.vue'
@@ -377,9 +376,6 @@ export default {
       }
     }
   },
-  computed: mapGetters({
-    profile: 'profile/getProfile'
-  }),
   watch: {
     currentUser () {
       if (this.currentUser.user_metadata && this.currentUser.user_metadata.phone) {
@@ -418,7 +414,6 @@ export default {
     post () {
       if (this.$refs.form.validate()) {
         this.posting.company = this.$auth.user.name
-        this.posting.profile = this.profile
         this.$axios.$post('hiring/create', this.posting).then((res) => {
           this.getJobs()
           this.create = false
@@ -456,7 +451,6 @@ export default {
     edit (id) {
       if (this.$refs.form.validate()) {
         this.posting.company = this.$auth.user.name
-        this.posting.profile = this.profile
         this.$axios.$post(`hiring/edit/${id}`, this.posting).then((res) => {
           this.getJobs()
           this.create = false
