@@ -289,7 +289,7 @@
           </v-btn>
         </template>
         <v-list v-if="notifications.length > 0">
-          <v-list-item v-if="notifMessages.length > 0" to="messages">
+          <v-list-item v-if="notifMessages.length > 0" to="../messages">
             <v-list-item-action>
               <v-badge
                 color="primary"
