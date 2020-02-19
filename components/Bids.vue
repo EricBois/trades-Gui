@@ -42,20 +42,28 @@
         </v-flex>
         <v-flex v-if="$vuetify.breakpoint.smAndUp" sm5 text-center @click.stop="open(bid)">
           <v-chip
-            v-for="trade in bid.trade.split(', ')"
-            :key="trade.id"
+            v-for="item in bid.items"
+            :key="item.id"
             color="orange accent-1"
             class="ml-1 ma-1"
             outlined
             small
             label
           >
-            {{ trade }}
+            {{ item.trade }}
           </v-chip>
         </v-flex>
         <v-flex xs4 sm2 text-center @click.stop="open(bid)">
-          <v-chip small class="ma-1" color="orange accent-1" label outlined>
-            ${{ bid.price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }}
+          <v-chip
+
+            small
+            class="ma-1"
+            color="orange accent-1"
+            label
+            outlined
+          >
+            <!-- ${{ bid.items[0].price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }} -->
+            {{ price(bid.items) }}
           </v-chip>
         </v-flex>
       </v-layout>
@@ -75,21 +83,29 @@
           <v-flex xs12>
             <span class="ml-12">
               Bid On: <v-chip
-                v-for="trade in trades"
-                :key="trade.id"
-                color="grey ligthen-2"
+                v-for="item in currentBid.items"
+                :key="item.id"
+                color="grey darken-2"
                 class="ml-1"
                 x-small
+
                 label
-              >{{ trade }}</v-chip>
+              >{{ item.trade }}</v-chip>
             </span>
             <v-divider class="ma-2" />
           </v-flex>
           <v-flex xs12>
             <span class="ml-12">
-              Price: <v-chip color="amber ligthen-4" class="ml-6" small outlined label>
-                ${{ currentBid.price }}
-              </v-chip>
+              <center class="mt-n4">Price Breakdown</center>
+              <div v-for="item in currentBid.items" :key="item.id">
+                <v-chip color="blue-grey darken-1" class="ml-6 mt-2" small label>
+                  {{ item.trade }}
+                </v-chip>
+                <v-icon small class="mt-2">mdi-chevron-right</v-icon>
+                <v-chip small class="mt-2" label>${{ item.price }}
+                </v-chip>
+
+              </div>
             </span>
             <v-divider class="ma-2" />
           </v-flex>
@@ -215,6 +231,10 @@ export default {
     ownProject: {
       type: Boolean,
       default: false
+    },
+    hourly: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -233,7 +253,7 @@ export default {
       this.$emit('update:selected', this.selectedBids)
     },
     currentBid () {
-      this.trades = this.currentBid.trade.split(', ')
+      // this.trades = this.currentBid.trade.split(', ')
     }
   },
   created () {
@@ -277,6 +297,16 @@ export default {
           this.dialog = false
           this.dialogDeleteBid = false
         })
+    },
+    price (items) {
+      if (items.length > 1 && this.hourly) {
+        return 'Prices'
+      }
+      let price = 0
+      items.forEach((item) => {
+        price += parseInt(item.price, 10)
+      })
+      return price
     }
   }
 }

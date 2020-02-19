@@ -268,7 +268,7 @@
         </h2>
       </v-flex>
       <v-flex xs12>
-        <Bids :bids.sync="bids" :own-project="ownProject" :selected.sync="selected" />
+        <Bids :bids.sync="bids" :own-project="ownProject" :selected.sync="selected" :hourly="hourly" />
       </v-flex>
     </v-card>
     <v-card v-else max-width="844" class="mx-auto" raised>
@@ -292,21 +292,30 @@
     </v-card>
     <v-dialog v-model="dialogBid" max-width="600px">
       <v-card>
-        <v-card-title>
-          <span class="headline">Place Bid</span>
-        </v-card-title>
+        <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Place a Bid
+          </v-toolbar-title>
+          <v-spacer />
+          <v-btn icon dark @click="dialogBid = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
         <v-card-text>
           <v-container>
+            <span class="caption">*Add at least 1 item</span>
             <v-form ref="form" lazy-validation>
               <v-layout wrap>
                 <v-flex xs12 sm4 class="pr-5">
                   <v-autocomplete
                     v-if="!project.oneBid"
-                    v-model="infobid.trade"
+                    v-model="addItem.trade"
                     placeholder="Pick one or many"
                     :items="merged"
-                    label="Trade"
-                    multiple
+                    dense
+                    class="mt-3"
+                    label="Item"
                   />
                   <h2 v-if="project.oneBid" class="mt-5">
                     Whole Project
@@ -314,7 +323,7 @@
                 </v-flex>
                 <v-flex xs12 sm4 class="pr-5 pt-2">
                   <v-text-field
-                    v-model="infobid.description"
+                    v-model="addItem.description"
                     label="Description"
                     placeholder="(Optional)"
                   />
@@ -322,22 +331,25 @@
                 <v-flex xs12 sm4 class="pr-5 pt-2">
                   <v-text-field
                     v-if="project.jobType === 'Contract'"
-                    v-model="infobid.price"
-                    :rules="priceRule"
+                    v-model="addItem.price"
                     type="text"
                     prepend-inner-icon="mdi-currency-usd"
                     label="Price"
                   />
                   <v-text-field
                     v-else
-                    v-model="infobid.price"
-                    :rules="priceRule"
+                    v-model="addItem.price"
                     type="text"
                     prepend-inner-icon="mdi-currency-usd"
                     label="Price"
                     placeholder="Hourly"
                     append-outer-icon="mdi-clock-outline"
                   />
+                </v-flex>
+                <v-flex xs12 text-right>
+                  <v-btn color="blue darken-3" @click="addToBid()">
+                    Add item
+                  </v-btn>
                 </v-flex>
                 <v-flex xs12 sm6 class="pr-5 pt-2">
                   <v-text-field
@@ -358,7 +370,7 @@
           <v-btn color="blue darken-1" text @click="dialogBid = false">
             Close
           </v-btn>
-          <v-btn color="blue darken-1" text @click="postBid()">
+          <v-btn v-if="infobid.items.length >= 1" color="blue darken-1" text @click="postBid()">
             Save
           </v-btn>
         </v-card-actions>
@@ -630,6 +642,7 @@ export default {
   },
   data () {
     return {
+      hourly: false,
       snackbar: false,
       snackbarColor: 'red darken-3',
       snackbarText: '',
@@ -651,16 +664,15 @@ export default {
       dialogFile: false,
       loading: false,
       doc: null,
-      priceRule: [
-        v => !!v || 'The price is required',
-        v => /^(\d+(?:[.,]\d{2,3})?)$/.test(v) || 'Only numbers & commas allowed. ( 1000 , 1,000 , 10,34 ..)'
-      ],
+      addItem: {
+        trade: '',
+        description: '',
+        price: ''
+      },
       infobid: {
+        items: [],
         phone: '',
         email: '',
-        trade: [],
-        description: '',
-        price: '',
         project: '',
         createdBy: '',
         projectName: '',
@@ -670,7 +682,7 @@ export default {
       ownProject: false,
       dialogBid: false,
       merged: [],
-      trades: ['Whole Project'],
+      trades: ['Whole Project', 'Material', 'Hours'],
       selected: [],
       bid: false,
       project: {},
@@ -709,6 +721,9 @@ export default {
       .$get(`job/view/${this.$route.params.id}`)
       .then((res) => {
         this.project = res
+        if (this.project.jobType === 'Hourly') {
+          this.hourly = true
+        }
         this.phone = this.$auth.user['https://subhub.com/user_metadata'].phone
         if (this.project.location.url) {
           this.url = this.project.location.url
@@ -726,7 +741,7 @@ export default {
         for (const key in res.bids) {
           const bid = res.bids[key]
           bid._id = key
-          bid.trade = bid.trade.toString().replace(/,/g, ', ')
+          // bid.trade = bid.trade.toString().replace(/,/g, ', ')
           if (!this.ownProject) {
             // show own bids only if bidding on other projects
             if (bid.user === this.$auth.user.sub) {
@@ -754,6 +769,16 @@ export default {
       })
   },
   methods: {
+    addToBid () {
+      this.infobid.items.push({
+        trade: this.addItem.trade,
+        description: this.addItem.description,
+        price: this.addItem.price
+      })
+      this.addItem.trade = ''
+      this.addItem.description = ''
+      this.addItem.price = ''
+    },
     profile (id) {
       this.$axios.$get(`account/getProfile/${id}`).then((res) => {
         this.user = res
@@ -778,19 +803,13 @@ export default {
         })
     },
     postBid () {
-      if (this.$refs.form.validate()) {
+      if (this.infobid.items.length >= 1) {
         this.infobid.createdBy = this.$auth.user.name
         if (this.phone) {
           this.infobid.phone = this.phone
         }
         if (this.$auth.user.email) {
           this.infobid.email = this.$auth.user.email
-        }
-        if (this.project.oneBid) {
-          this.infobid.trade = 'Whole Project'
-        }
-        if (!this.infobid.trade.length > 0) {
-          this.infobid.trade = 'Whole Project'
         }
         this.infobid.project = this.project.id
         this.infobid.projectName = this.project.name
@@ -803,12 +822,10 @@ export default {
           .then((res) => {
             this.bidsTotal = this.bidsTotal + 1
             // make a sweetalert2
-            res.trade = res.trade.toString().replace(/,/g, ', ')
+            // res.trade = res.trade.toString().replace(/,/g, ', ')
             this.bids.push(res)
             this.dialogBid = false
-            this.infobid.trade = []
-            this.infobid.price = ''
-            this.infobid.description = ''
+            this.infobid.items = []
             // notify owner of project of new bid
             this.$store.dispatch('notifications/createNotification',
               {
