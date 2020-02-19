@@ -330,20 +330,10 @@
                 </v-flex>
                 <v-flex xs12 sm4 class="pr-5 pt-2">
                   <v-text-field
-                    v-if="project.jobType === 'Contract'"
                     v-model="addItem.price"
                     type="text"
                     prepend-inner-icon="mdi-currency-usd"
                     label="Price"
-                  />
-                  <v-text-field
-                    v-else
-                    v-model="addItem.price"
-                    type="text"
-                    prepend-inner-icon="mdi-currency-usd"
-                    label="Price"
-                    placeholder="Hourly"
-                    append-outer-icon="mdi-clock-outline"
                   />
                 </v-flex>
                 <v-flex xs12 text-right>
