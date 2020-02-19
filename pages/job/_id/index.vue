@@ -760,6 +760,9 @@ export default {
   },
   methods: {
     addToBid () {
+      if (this.addItem.trade.length < 1) {
+        this.addItem.trade = 'Whole Project'
+      }
       this.infobid.items.push({
         trade: this.addItem.trade,
         description: this.addItem.description,
