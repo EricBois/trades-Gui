@@ -80,23 +80,16 @@
             </span>
             <v-divider class="mt-2" />
           </v-flex>
-          <v-flex xs12>
-            <span class="ml-12">
-              Bid On: <v-chip
-                v-for="item in currentBid.items"
-                :key="item.id"
-                color="grey darken-2"
-                class="ml-1"
-                x-small
-
-                label
-              >{{ item.trade }}</v-chip>
+          <v-flex v-if="currentBid.notes" xs12 text-center>
+            <h4>Notes</h4>
+            <span class="ma-2" text-left>
+              {{ currentBid.notes }}
             </span>
             <v-divider class="ma-2" />
           </v-flex>
           <v-flex xs12>
             <span class="ml-12">
-              <center class="mt-n4">Price Breakdown</center>
+              <center class="mt-n4">Bid Details</center>
               <div v-for="item in currentBid.items" :key="item.id">
                 <v-chip color="blue-grey darken-1" class="ml-6 mt-2" small label>
                   {{ item.trade }}
@@ -104,17 +97,17 @@
                 <v-icon small class="mt-2">mdi-chevron-right</v-icon>
                 <v-chip small class="mt-2" label>${{ item.price }}
                 </v-chip>
+                <br v-if="item.description">
+                <span v-if="item.description" class="caption ml-6">{{ item.description }}</span>
 
               </div>
             </span>
             <v-divider class="ma-2" />
           </v-flex>
-          <v-flex v-if="currentBid.description" xs12 text-center>
-            <h4>Description</h4>
-            <span class="ma-2" text-left>
-              {{ currentBid.description }}
-            </span>
-            <v-divider class="ma-2" />
+          <v-flex v-if="currentBid.items" xs12 text-center>
+            <span class="ibm">Total <v-icon small>mdi-chevron-right</v-icon></span> <v-chip small label>
+              {{ price(currentBid.items, dialog) }}
+            </v-chip>
           </v-flex>
         </v-layout>
 
@@ -212,6 +205,10 @@
   font-weight: bold;
   font-size: 1.0em;
 }
+.ibm {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: italic;
+}
 </style>
 <script>
 import PublicProfile from './PublicProfile.vue'
@@ -298,15 +295,15 @@ export default {
           this.dialogDeleteBid = false
         })
     },
-    price (items) {
-      if (items.length > 1 && this.hourly) {
+    price (items, dialog) {
+      if (items.length > 1 && this.hourly && !dialog) {
         return 'Prices'
       }
       let price = 0
       items.forEach((item) => {
         price += parseInt(item.price, 10)
       })
-      price = price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+      price = '$' + price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
       return price
     }
   }

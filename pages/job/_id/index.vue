@@ -311,7 +311,7 @@
                   <v-autocomplete
                     v-if="!project.oneBid"
                     v-model="addItem.trade"
-                    placeholder="Pick one or many"
+                    placeholder="Pick one"
                     :items="merged"
                     dense
                     class="mt-3"
@@ -336,10 +336,48 @@
                     label="Price"
                   />
                 </v-flex>
-                <v-flex xs12 text-right>
-                  <v-btn color="blue darken-3" @click="addToBid()">
-                    Add item
+                <v-flex v-if="addItem.price" xs12 text-right class="mt-n2">
+                  <v-btn color="green darken-3" @click="addToBid()">
+                    <v-icon class="mr-1">
+                      mdi-plus-box
+                    </v-icon>
+                    item
                   </v-btn>
+                </v-flex>
+                <v-flex v-if="infobid.items.length >= 1" xs12>
+                  <v-card v-for="item in infobid.items" :key="item.id" class="mt-2 pa-1" outlined>
+                    <v-flex class="mb-n5" xs12 text-right>
+                      <v-icon color="red darken-1" class="mr-n1" @click="removeBid(item)">
+                        mdi-delete
+                      </v-icon>
+                    </v-flex>
+                    <v-chip color="blue-grey lighten-4" small label>
+                      {{ item.trade }}
+                    </v-chip>
+                    <v-icon class="mr-n1" small>
+                      mdi-chevron-right
+                    </v-icon>
+                    <v-chip color="blue-grey lighten-2" small label>
+                      ${{ item.price }}
+                    </v-chip>
+                    <v-flex>
+                      <span v-if="item.description" class="caption ml-2">{{ item.description }}</span>
+                    </v-flex>
+                  </v-card>
+                  <v-flex xs12 text-center class="mt-2">
+                    <span class="ibm mr-n2">Total Items<v-icon small>mdi-chevron-right</v-icon></span> <v-chip color="blue-grey lighten-4" small label>
+                      {{ price(infobid.items) }}
+                    </v-chip>
+                  </v-flex>
+                </v-flex>
+                <v-flex class="mt-4" xs12>
+                  <v-textarea
+                    v-model="infobid.notes"
+                    label="Notes"
+                    solo
+                    outlined
+                    class="purple-input"
+                  />
                 </v-flex>
                 <v-flex xs12 sm6 class="pr-5 pt-2">
                   <v-text-field
@@ -660,6 +698,7 @@ export default {
         price: ''
       },
       infobid: {
+        notes: '',
         items: [],
         phone: '',
         email: '',
@@ -672,7 +711,7 @@ export default {
       ownProject: false,
       dialogBid: false,
       merged: [],
-      trades: ['Whole Project', 'Material', 'Hours'],
+      trades: ['Whole Project', 'Material'],
       selected: [],
       bid: false,
       project: {},
@@ -819,6 +858,7 @@ export default {
             this.bids.push(res)
             this.dialogBid = false
             this.infobid.items = []
+            this.infobid.notes = ''
             // notify owner of project of new bid
             this.$store.dispatch('notifications/createNotification',
               {
@@ -898,6 +938,18 @@ export default {
         this.snackbar = true
       }
       this.$axios.$post(`job/edit/${this.$route.params.id}`, { bidding: this.bidding })
+    },
+    price (items) {
+      let price = 0
+      items.forEach((item) => {
+        price += parseInt(item.price, 10)
+      })
+      price = '$' + price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+      return price
+    },
+    // remove bid from create dialog
+    removeBid (bid) {
+      this.infobid.items.splice(this.infobid.items.indexOf(bid), 1)
     }
   }
 }
