@@ -290,9 +290,9 @@
         </h3>
       </v-flex>
     </v-card>
-    <v-dialog v-model="dialogBid" max-width="600px">
+    <v-dialog v-model="dialogBid" persistent max-width="600px">
       <v-card>
-        <v-toolbar dark color="blue">
+        <v-toolbar short dense dark color="blue">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Place a Bid
@@ -308,10 +308,10 @@
             <v-form ref="form" lazy-validation>
               <v-layout wrap>
                 <v-flex xs12 sm4 class="pr-5">
-                  <v-autocomplete
+                  <v-combobox
                     v-if="!project.oneBid"
                     v-model="addItem.trade"
-                    placeholder="Pick one"
+                    placeholder="Name"
                     :items="merged"
                     dense
                     class="mt-3"
@@ -373,8 +373,10 @@
                 <v-flex class="mt-4" xs12>
                   <v-textarea
                     v-model="infobid.notes"
-                    label="Notes"
+                    label="General Notes"
                     solo
+                    auto-grow
+
                     outlined
                     class="purple-input"
                   />
@@ -799,7 +801,7 @@ export default {
   },
   methods: {
     addToBid () {
-      if (this.addItem.trade.length < 1) {
+      if (this.addItem.trade !== null && this.addItem.trade.length < 1) {
         this.addItem.trade = 'Whole Project'
       }
       this.infobid.items.push({
