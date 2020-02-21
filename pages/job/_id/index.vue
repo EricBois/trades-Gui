@@ -381,7 +381,10 @@
                     class="purple-input"
                   />
                 </v-flex>
-                <v-flex xs12 sm6 class="pr-5 pt-2">
+                <v-flex xs12 sm6>
+                  <v-file-input v-model="doc" accept="application/pdf" :loading="loading" show-size label="Document Upload" />
+                </v-flex>
+                <v-flex xs12 sm6 class="pl-5">
                   <v-text-field
                     v-model="phone"
                     type="text"
@@ -801,7 +804,7 @@ export default {
   },
   methods: {
     addToBid () {
-      if (this.addItem.trade !== null && this.addItem.trade.length < 1) {
+      if (this.addItem.trade === null || this.addItem.trade.length < 1) {
         this.addItem.trade = 'Whole Project'
       }
       this.infobid.items.push({
@@ -857,10 +860,28 @@ export default {
             this.bidsTotal = this.bidsTotal + 1
             // make a sweetalert2
             // res.trade = res.trade.toString().replace(/,/g, ', ')
-            this.bids.push(res)
+
             this.dialogBid = false
             this.infobid.items = []
             this.infobid.notes = ''
+            if (this.doc) {
+              const formData = new FormData()
+              formData.append('file', this.doc)
+              this.$axios
+                .$post(`bid/upload/${res._id}`, formData)
+                .then((res) => {
+                  this.loading = false
+                  this.doc = null
+                  this.bids.push(res)
+                })
+                .catch((error) => {
+                  this.snackbarText = `${error}`
+                  this.snackbar = true
+                  this.loading = false
+                })
+            } else {
+              this.bids.push(res)
+            }
             // notify owner of project of new bid
             this.$store.dispatch('notifications/createNotification',
               {
@@ -876,22 +897,6 @@ export default {
             this.snackbar = true
           })
       }
-    },
-    deleteBid (id) {
-      this.$axios
-        .$post('bid/delete', { id })
-        .then((res) => {
-          for (const key in this.bids) {
-            const bid = this.bids[key]
-            if (id === bid.id) {
-              this.bids.splice(key, 1)
-            }
-          }
-        })
-        .catch((error) => {
-          this.snackbarText = `${error}`
-          this.snackbar = true
-        })
     },
     deleteFile (file, type) {
       this.loading = true

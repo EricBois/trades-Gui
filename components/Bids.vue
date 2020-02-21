@@ -89,7 +89,7 @@
           </v-flex>
           <v-flex xs12>
             <span class="ml-12">
-              <center class="mt-n4">Bid Details</center>
+              <center class="mt-n4 ibm">Bid Details</center>
               <div v-for="item in currentBid.items" :key="item.id">
                 <v-chip color="blue-grey darken-1" class="ml-6 mt-2" small label>
                   {{ item.trade }}
@@ -108,6 +108,24 @@
             <span class="ibm">Total <v-icon small>mdi-chevron-right</v-icon></span> <v-chip small label>
               {{ price(currentBid.items, dialog) }}
             </v-chip>
+          </v-flex>
+          <v-flex v-if="currentBid.files && currentBid.files.length >= 1" xs12>
+            <v-divider class="my-2" />
+            <span class="ibm"><center>Documents</center></span>
+            <div v-for="file in currentBid.files" :key="file">
+              <v-btn class="mb-2" color="blue-grey darken-2" :href="file" small>
+                <v-icon>mdi-link-box-outline</v-icon>
+                &nbsp;{{ file.split("/").pop() }}
+              </v-btn>
+              <v-icon
+                v-if="currentBid.user === $auth.user.sub"
+                class="mb-2"
+                color="red"
+                @click="deleteFile(file, 'file')"
+              >
+                mdi-close-box
+              </v-icon>
+            </div>
           </v-flex>
         </v-layout>
 
@@ -287,6 +305,10 @@ export default {
           for (const key in this.bids) {
             const bid = this.bids[key]
             if (id === bid.id) {
+              for (const file in bid.files) {
+                console.log(bid.files[file])
+                this.deleteFile(bid.files[file], 'file')
+              }
               this.updatedBids.splice(key, 1)
             }
           }
@@ -294,6 +316,24 @@ export default {
           this.dialog = false
           this.dialogDeleteBid = false
         })
+    },
+    deleteFile (file, type) {
+      this.loading = true
+      if (file) {
+        const name = file.split('/').pop()
+        this.$axios
+          .$post(`bid/deleteFile/${name}/${this.currentBid.id}/${type}`, {
+            file
+          })
+          .then((res) => {
+            this.loading = false
+            this.currentBid = res
+          })
+          .catch((error) => {
+            this.snackbarText = `${error}`
+            this.snackbar = true
+          })
+      }
     },
     price (items, dialog) {
       if (items.length > 1 && this.hourly && !dialog) {
