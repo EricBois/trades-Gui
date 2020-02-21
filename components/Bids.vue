@@ -306,7 +306,6 @@ export default {
             const bid = this.bids[key]
             if (id === bid.id) {
               for (const file in bid.files) {
-                console.log(bid.files[file])
                 this.deleteFile(bid.files[file], 'file')
               }
               this.updatedBids.splice(key, 1)
