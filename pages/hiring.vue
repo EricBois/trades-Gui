@@ -95,8 +95,9 @@
         <v-toolbar dark color="blue">
           <v-spacer />
           <v-toolbar-title class="body-1">
-            Looking for work
+            People actively looking for work
           </v-toolbar-title>
+          <v-spacer />
           <v-btn icon dark @click="dialogLfw = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -122,7 +123,7 @@
             >
               <v-layout wrap>
                 <v-flex xs8 class="pa-1" @click.self="dialogUser = !dialogUser">
-                  <v-chip small color="amber lighten-3" label outlined @click="showProfile(contractor.user)">
+                  <v-chip small color="blue lighten-3" label outlined @click="showProfile(contractor.user)">
                     <v-icon small class="mr-1">
                       mdi-information-outline
                     </v-icon>
@@ -130,7 +131,7 @@
                   </v-chip>
                 </v-flex>
                 <v-flex xs4 class="pa-1">
-                  <v-btn color="blue darken-3" small @click="showDetails(contractor)">
+                  <v-btn color="blue lighten-3" outlined small @click="showDetails(contractor)">
                     Details
                   </v-btn>
                 </v-flex>
