@@ -386,7 +386,7 @@
     <v-bottom-navigation
       v-if="this.$auth.loggedIn && !drawer"
       dark
-      shift
+      grow
       app
     >
       <v-btn to="/projects">
