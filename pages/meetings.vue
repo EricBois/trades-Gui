@@ -4,9 +4,12 @@
       <!-- meetings -->
       <v-flex xs12 sm8 offset-sm-2>
         <v-list subheader dense color="blue-grey darken-3">
-          <v-subheader v-if="meetingNew.length >= 1" class="justify-center sub">
+          <v-subheader class="justify-center sub">
             <b>New meeting activity</b>
           </v-subheader>
+          <v-flex v-if="meetingNew.length < 1" text-center class="ibm">
+            <span>No new meeting activity</span>
+          </v-flex>
           <v-flex
             v-for="item in meetingNew"
             :key="item.id"

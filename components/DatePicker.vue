@@ -77,6 +77,9 @@
       </div>
     </v-flex>
     <v-flex xs12 text-center text-sm-right mt-5 mr-10>
+      <v-btn v-if="$auth.user.sub === selectedMeeting.meeting.host" color="red darken-3" @click="dialogDelMeeting = true">
+        Delete Meeting
+      </v-btn>
       <v-btn v-if="!meeting.confirm.status && selectedMeeting.meeting.host !== $auth.user.sub" color="green" @click="confirmed">
         Confirm Meeting
       </v-btn>
@@ -115,6 +118,40 @@
         </v-flex>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="dialogDelMeeting"
+      max-width="400"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Please Confirm
+        </v-card-title>
+
+        <v-card-text>
+          Are you sure you want to delete this meeting ?
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            color="orange darken-3"
+            text
+            @click="dialogDelMeeting = false"
+          >
+            No
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteMeeting()"
+          >
+            Yes, Let's Go!
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 <script>
@@ -131,6 +168,7 @@ export default {
   },
   data () {
     return {
+      dialogDelMeeting: false,
       snackbar: false,
       snackbarColor: 'green darken-3',
       snackbarText: '',
@@ -175,6 +213,12 @@ export default {
       if (this.selectedMeeting.meeting.dates.includes(val)) {
         return val
       }
+    },
+    deleteMeeting () {
+      this.$axios.$post('bid/delMeeting', { id: this.selectedMeeting.id }).then((res) => {
+        this.$emit('update:selectedMeeting', res)
+        this.$emit('update:dialogMeeting', false)
+      })
     },
     confirmed (status) {
       // Set it ready to be confirmed
