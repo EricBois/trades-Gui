@@ -4,12 +4,15 @@
       v-model="tab"
       background-color="transparent"
       centered
+      next-icon="mdi-arrow-right-bold-box-outline"
+      prev-icon="mdi-arrow-left-bold-box-outline"
       show-arrows
       color="white"
     >
       <v-tab>Your Listing</v-tab>
       <v-tab>Private Bidding</v-tab>
       <v-tab>Placed Bids</v-tab>
+      <v-tab>Your job listing</v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab" class="mt-8">
       <v-tab-item>
@@ -38,7 +41,17 @@
           </v-flex>
         </v-card>
       </v-tab-item>
+      <v-tab-item>
+        <v-card flat color="#303030">
+          <JobPosting :jobs.sync="jobsOffer" />
+          <v-flex v-if="jobsOffer.length < 1" xs12 text-center>
+            <h2>You didn't place any bid yet!</h2>
+            <span class="ibm">*Once you create a job offer it will appear here.*</span>
+          </v-flex>
+        </v-card>
+      </v-tab-item>
     </v-tabs-items>
+
     <v-dialog v-model="alert" persistent max-width="500">
       <v-card>
         <v-flex xs12>
@@ -65,9 +78,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import Jobs from '../components/Jobs.vue'
+import JobPosting from '../components/JobPosting.vue'
 export default {
   components: {
-    Jobs
+    Jobs,
+    JobPosting
   },
   data () {
     return {
@@ -80,7 +95,8 @@ export default {
       citiesPrivate: [],
       tab: null,
       citiesPlacedBids: [],
-      placedBids: []
+      placedBids: [],
+      jobsOffer: []
     }
   },
   computed: mapGetters({
@@ -88,6 +104,15 @@ export default {
   }),
   watch: {
     async tab () {
+      if (this.tab === 3 && this.jobsOffer.length <= 0) {
+        await this.$axios.$get('hiring/get').then((res) => {
+          res.forEach((offer) => {
+            if (offer.user === this.$auth.user.sub) {
+              this.jobsOffer.push(offer)
+            }
+          })
+        })
+      }
       if (this.tab === 2 && this.placedBids.length <= 0) {
         this.$nuxt.$loading.start()
         await this.$axios.$get('job/get').then((res) => {
