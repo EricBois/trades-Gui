@@ -47,6 +47,42 @@
         </span>
       </div>
       <v-divider class="my-4" />
+      <div>
+        <h3 class="mb-n4">
+          <b><u>Time</u></b>
+        </h3>
+        <v-dialog
+          ref="dialog"
+          v-model="dialogTime"
+          :return-value.sync="meeting.meeting.time"
+          persistent
+          width="290px"
+        >
+          <template v-slot:activator="{ on }">
+            <v-text-field
+              v-model="meeting.meeting.time"
+              label="Pick a time"
+              prepend-icon="access_time"
+              readonly
+              v-on="on"
+            />
+          </template>
+          <v-time-picker
+            v-if="dialogTime"
+            v-model="meeting.meeting.time"
+            full-width
+          >
+            <v-spacer />
+            <v-btn text color="primary" @click="dialogTime = false">
+              Cancel
+            </v-btn>
+            <v-btn text color="primary" @click="$refs.dialog.save(meeting.meeting.time)">
+              OK
+            </v-btn>
+          </v-time-picker>
+        </v-dialog>
+      </div>
+      <v-divider class="mb-4" />
       <div v-if="selectedMeeting.meeting.host !== $auth.user.sub">
         <h3 class="mb-5">
           <b><u>Details</u></b>
@@ -168,6 +204,8 @@ export default {
   },
   data () {
     return {
+      dialogTime: false,
+      time: '',
       dialogDelMeeting: false,
       snackbar: false,
       snackbarColor: 'green darken-3',
@@ -185,7 +223,8 @@ export default {
         },
         meeting: {
           description: '',
-          dates: []
+          dates: [],
+          time: ''
         },
         change: {
           status: false,
