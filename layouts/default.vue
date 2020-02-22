@@ -263,10 +263,11 @@
       <v-menu
         v-if="this.$auth.loggedIn"
         transition="scale-transition"
-        class="mx-1"
+        class="mx-1 scroll"
         :close-on-content-click="contentClick"
         offset-x
         :offset-overflow="overflow"
+        max-height="400"
       >
         <template v-slot:activator="{ on: menu }">
           <v-btn
@@ -361,11 +362,20 @@
               <v-divider />
             </v-flex>
           </v-layout>
-          <v-flex class="my-3" text-center>
-            <v-btn v-if="notifications.length > 0" small @click="clearNotifications">
-              Clear
-            </v-btn>
-          </v-flex>
+
+          <v-btn
+            v-if="notifications.length > 0"
+            top
+            right
+            absolute
+            class="mt-5"
+            x-small
+            color="red darken-3"
+            fab
+            @click="clearNotifications"
+          >
+            <v-icon>mdi-autorenew</v-icon>
+          </v-btn>
         </v-list>
         <v-list v-else>
           <v-list-item>
@@ -472,6 +482,9 @@ a {
 }
 .rounded {
   border-radius: 10px;
+}
+.scroll {
+  overflow-y: auto;
 }
 </style>
 <script>
