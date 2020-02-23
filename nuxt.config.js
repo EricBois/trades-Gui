@@ -98,7 +98,7 @@ export default {
       autoResubscribe: true,
       cdn: true,
       notifyButton: {
-        enable: true,
+        enable: false,
         size: 'small',
         offset: {
           bottom: '25px',
