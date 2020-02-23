@@ -239,7 +239,7 @@
     </v-navigation-drawer>
 
     <v-app-bar
-      :max-width="(this.$auth.loggedIn)?'':'250'"
+      :max-width="barLength"
       app
       clipped-left
       dense
@@ -248,7 +248,7 @@
     >
       <v-app-bar-nav-icon v-if="this.$auth.loggedIn" @click.stop="drawer = !drawer" />
       <v-btn
-        v-if="!this.$auth.loggedIn"
+        v-if="!this.$auth.loggedIn && !mobile"
         color="green"
         class="mr-2"
         small
@@ -257,7 +257,7 @@
       >
         <v-icon>mdi-login</v-icon> Login
       </v-btn>
-      <v-btn v-if="!this.$auth.loggedIn" color="blue darken-3" small label @click="registerDialog = !registerDialog">
+      <v-btn v-if="!this.$auth.loggedIn && !mobile" color="blue darken-3" small label @click="registerDialog = !registerDialog">
         <v-icon>mdi-content-save</v-icon> Register
       </v-btn>
       <v-menu
@@ -532,6 +532,7 @@ export default {
     create: false,
     admin: false,
     snackbar: false,
+    barLength: '0',
     snackbarColor: 'green darken-3',
     snackbarText: '',
     sheet: false,
@@ -549,7 +550,8 @@ export default {
     notifBidRequest: [],
     notifBids: [],
     deferredPrompt: '',
-    registerDialog: false
+    registerDialog: false,
+    mobile: true
   }),
   computed: {
     ...mapGetters({
@@ -651,11 +653,16 @@ export default {
     }
   },
   mounted () {
-    if (this.$vuetify.breakpoint.mdAndUp) {
+    if (this.$vuetify.breakpoint.smAndUp) {
       this.drawer = true
+      this.mobile = false
+      if (!this.$auth.loggedIn) {
+        this.barLength = '250'
+      }
     }
     this.$vuetify.theme.dark = true
     if (this.$auth.loggedIn) {
+      this.barLength = ''
       // Notifications onesignal
       this.$OneSignal.push(() => {
         /* In milliseconds, time to wait before prompting user. This time is relative to right after the user presses <ENTER> on the address bar and navigates to your page */

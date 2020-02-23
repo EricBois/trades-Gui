@@ -220,7 +220,7 @@ export default {
             }
           }
         })
-      } else if (!this.validated) {
+      } else if (!this.validated && this.info.name.length > 3 && this.info.email.length > 5) {
         this.$axios.$post('account/inquire', {
           name: this.info.name,
           email: this.info.email,
