@@ -650,10 +650,8 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$vuetify.breakpoint.xs)
     if (this.$vuetify.breakpoint.mdAndUp) {
       this.drawer = true
-      console.log('jambon')
     }
     this.$vuetify.theme.dark = true
     if (this.$auth.loggedIn) {
