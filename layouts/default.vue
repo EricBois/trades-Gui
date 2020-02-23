@@ -560,6 +560,7 @@ export default {
     })
   },
   watch: {
+    // Dynamic bottom menu
     $route (to, from) {
       switch (to.name) {
         case 'home':
