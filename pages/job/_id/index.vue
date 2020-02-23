@@ -320,6 +320,7 @@
                     dense
                     class="mt-3"
                     label="Item"
+                    autocomplete
                   />
                   <h2 v-if="project.oneBid" class="mt-5">
                     Whole Project
