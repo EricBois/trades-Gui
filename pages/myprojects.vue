@@ -4,9 +4,10 @@
       v-model="tab"
       background-color="transparent"
       centered
-      next-icon="mdi-arrow-right-bold-box-outline"
-      prev-icon="mdi-arrow-left-bold-box-outline"
+      next-icon="mdi-arrow-right-bold-box-outline mdi-48px"
+      prev-icon="mdi-arrow-left-bold-box-outline mdi-48px"
       show-arrows
+      center-active
       color="white"
     >
       <v-tab>Your Listing</v-tab>
