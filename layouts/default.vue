@@ -551,12 +551,14 @@ export default {
     deferredPrompt: '',
     registerDialog: false
   }),
-  computed: mapGetters({
-    read: 'messages/Read',
-    profile: 'profile/getProfile',
-    notifications: 'notifications/getNotifications',
-    newMessages: 'messages/getNewMessages'
-  }),
+  computed: {
+    ...mapGetters({
+      read: 'messages/Read',
+      profile: 'profile/getProfile',
+      notifications: 'notifications/getNotifications',
+      newMessages: 'messages/getNewMessages'
+    })
+  },
   watch: {
     $route (to, from) {
       switch (to.path) {
