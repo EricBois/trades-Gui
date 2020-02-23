@@ -540,7 +540,7 @@ export default {
     addBtnShow: 'none',
     overflow: true,
     contentClick: true,
-    drawer: true,
+    drawer: false,
     picture: '',
     mini: false,
     notificationColor: 'blue-grey darken-1',
@@ -561,8 +561,8 @@ export default {
   },
   watch: {
     $route (to, from) {
-      switch (to.path) {
-        case '/home':
+      switch (to.name) {
+        case 'home':
           this.btn1.icon = 'mdi-post'
           this.btn1.name = 'Listings'
           this.btn1.link = '/projects'
@@ -573,7 +573,7 @@ export default {
           this.btn3.name = 'My Projects'
           this.btn3.link = '/myprojects'
           break
-        case '/projects':
+        case 'projects':
           this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
           this.btn1.name = 'Back'
           this.btn1.link = '/home'
@@ -581,16 +581,49 @@ export default {
           this.btn2.name = 'Create'
           this.btn2.link = ''
           break
-        case '/team/projects':
+        case 'team-projects':
           this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
           this.btn1.name = 'Back'
           this.btn1.link = '/home'
           this.btn2.icon = 'mdi-account-group'
-          this.btn2.name = 'Team Projects'
+          this.btn2.name = 'Projects'
           this.btn2.link = '/team/projects'
           this.btn3.icon = 'mdi-account-multiple-plus'
           this.btn3.name = 'Manage Team'
           this.btn3.link = '/team/manage'
+          break
+        case 'job-id':
+          this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
+          this.btn1.name = 'Back'
+          this.btn1.link = from.path
+          this.btn2.icon = 'mdi-account-group'
+          this.btn2.name = 'Team'
+          this.btn2.link = '/team/projects'
+          this.btn3.icon = 'mdi-alpha-p-box'
+          this.btn3.name = 'My Projects'
+          this.btn3.link = '/myprojects'
+          break
+        case 'hiring':
+          this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
+          this.btn1.name = 'Back'
+          this.btn1.link = '/home'
+          this.btn2.icon = 'mdi-account-group'
+          this.btn2.name = 'Team'
+          this.btn2.link = '/team/projects'
+          this.btn3.icon = 'mdi-alpha-p-box'
+          this.btn3.name = 'My Projects'
+          this.btn3.link = '/myprojects'
+          break
+        case 'myprojects':
+          this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
+          this.btn1.name = 'Back'
+          this.btn1.link = '/home'
+          this.btn2.icon = 'mdi-account-group'
+          this.btn2.name = 'Team'
+          this.btn2.link = '/team/projects'
+          this.btn3.icon = 'mdi-alpha-p-box'
+          this.btn3.name = 'My Projects'
+          this.btn3.link = '/myprojects'
           break
       }
     },
@@ -617,6 +650,11 @@ export default {
     }
   },
   mounted () {
+    console.log(this.$vuetify.breakpoint.xs)
+    if (this.$vuetify.breakpoint.mdAndUp) {
+      this.drawer = true
+      console.log('jambon')
+    }
     this.$vuetify.theme.dark = true
     if (this.$auth.loggedIn) {
       // Notifications onesignal
