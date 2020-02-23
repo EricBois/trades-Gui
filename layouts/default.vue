@@ -398,29 +398,31 @@
     <v-bottom-navigation
       v-if="this.$auth.loggedIn && !drawer"
       dark
-      grow
       app
     >
-      <v-btn to="/projects">
-        <span>Listings</span>
-        <v-icon>mdi-post</v-icon>
+      <v-btn :to="btn1.link">
+        <span>{{ btn1.name }}</span>
+        <v-icon>{{ btn1.icon }}</v-icon>
       </v-btn>
 
-      <v-btn to="/team/projects">
-        <span>Team Projects</span>
-        <v-icon>mdi-account-group</v-icon>
+      <v-btn v-if="btn2.link" :to="btn2.link">
+        <span>{{ btn2.name }}</span>
+        <v-icon>{{ btn2.icon }}</v-icon>
       </v-btn>
 
-      <v-btn to="/meetings">
-        <span>Meetings</span>
-        <v-icon>mdi-handshake</v-icon>
+      <v-btn v-else @click="clicker()">
+        <span>{{ btn2.name }}</span>
+        <v-icon>{{ btn2.icon }}</v-icon>
       </v-btn>
 
-      <v-btn to="/messages">
-        <span>Messages</span>
-        <v-icon>
-          mdi-message
-        </v-icon>
+      <v-btn :to="btn3.link">
+        <span>{{ btn3.name }}</span>
+        <v-icon>{{ btn3.icon }}</v-icon>
+      </v-btn>
+
+      <v-btn :to="btn4.link">
+        <span>{{ btn4.name }}</span>
+        <v-icon>{{ btn4.icon }}</v-icon>
       </v-btn>
     </v-bottom-navigation>
     <v-dialog v-model="registerDialog" max-width="800" persistent transition="dialog-bottom-transition">
@@ -454,18 +456,19 @@
         </v-btn>
       </v-sheet>
     </v-bottom-sheet>
-    <v-dialog v-model="create" persistent max-width="850">
-      <v-card class="px-3">
+    <v-dialog v-model="create" persistent fullscreen max-width="850">
+      <v-card>
         <v-toolbar dark color="blue">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Create Project
           </v-toolbar-title>
+          <v-spacer />
           <v-btn icon dark @click="create = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
-        <CreateProject />
+        <CreateProject :close.sync="create" />
         <v-divider />
       </v-card>
     </v-dialog>
@@ -506,6 +509,26 @@ export default {
     }
   },
   data: () => ({
+    btn1: {
+      name: 'Listings',
+      link: '/projects',
+      icon: 'mdi-post'
+    },
+    btn2: {
+      name: 'Team Projects',
+      link: '/team/projects',
+      icon: 'mdi-account-group'
+    },
+    btn3: {
+      name: 'My Projects',
+      link: '/myprojects',
+      icon: 'mdi-alpha-p-box'
+    },
+    btn4: {
+      name: 'Hiring',
+      link: '/hiring',
+      icon: 'mdi-help-circle'
+    },
     create: false,
     admin: false,
     snackbar: false,
@@ -535,6 +558,41 @@ export default {
     newMessages: 'messages/getNewMessages'
   }),
   watch: {
+    $route (to, from) {
+      console.log(to, from)
+      switch (to.path) {
+        case '/home':
+          this.btn1.icon = 'mdi-post'
+          this.btn1.name = 'Listings'
+          this.btn1.link = '/projects'
+          this.btn2.icon = 'mdi-account-group'
+          this.btn2.name = 'Team'
+          this.btn2.link = '/team/projects'
+          this.btn3.icon = 'mdi-alpha-p-box'
+          this.btn3.name = 'My Projects'
+          this.btn3.link = '/myprojects'
+          break
+        case '/projects':
+          this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
+          this.btn1.name = 'Back'
+          this.btn1.link = '/home'
+          this.btn2.icon = 'mdi-file-document-box-plus-outline'
+          this.btn2.name = 'Create'
+          this.btn2.link = ''
+          break
+        case '/team/projects':
+          this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
+          this.btn1.name = 'Back'
+          this.btn1.link = '/home'
+          this.btn2.icon = 'mdi-account-group'
+          this.btn2.name = 'Team Projects'
+          this.btn2.link = '/team/projects'
+          this.btn3.icon = 'mdi-account-multiple-plus'
+          this.btn3.name = 'Manage Team'
+          this.btn3.link = '/team/manage'
+          break
+      }
+    },
     notifications () {
       if (this.notifications.length > 0) {
         this.notificationColor = 'green darken-3'
@@ -546,15 +604,6 @@ export default {
       this.notifBids = this.notifications.filter(notification => notification.activity === 'Bid')
       this.notifBidRequest = this.notifications.filter(notification => notification.activity === 'bidRequest')
     },
-    // switchAvailable () {
-    //   if (this.switchAvailable) {
-    //     this.$axios.$post('account/edit', { user_metadata: { available: true } }).then(() => {
-    //     })
-    //   } else {
-    //     this.$axios.$post('account/edit', { user_metadata: { available: false } }).then(() => {
-    //     })
-    //   }
-    // },
     profile () {
       this.switchAvailable = this.profile.user_metadata.available
       if (this.profile && this.profile.app_metadata && this.profile.app_metadata.admin === true) {
@@ -593,6 +642,9 @@ export default {
     }
   },
   methods: {
+    clicker () {
+      this.create = true
+    },
     promptAndSubscribeUser () {
       this.$OneSignal.isPushNotificationsEnabled(function (isEnabled) {
         if (!isEnabled) {
