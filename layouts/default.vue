@@ -289,7 +289,7 @@
             </v-badge>
           </v-btn>
         </template>
-        <v-list v-if="notifications.length > 0">
+        <v-list v-if="notifications.length > 0" class="pa-4">
           <v-list-item v-if="notifMessages.length > 0" to="../messages">
             <v-list-item-action>
               <v-badge
@@ -324,7 +324,7 @@
           <v-flex v-if="notifMeetings.length > 0" xs12 my-2>
             <v-divider />
           </v-flex>
-          <v-flex v-if="notifBids.length > 0" xs12 class="ibm" text-center>
+          <v-flex v-if="notifBids.length > 0" xs12 class="ibm my-2" text-center>
             <v-chip label>
               Bids Received
             </v-chip>
@@ -368,13 +368,15 @@
             top
             right
             absolute
-            class="mt-5"
-            x-small
+            class="mt-6"
+            small
             color="red darken-3"
             fab
             @click="clearNotifications"
           >
-            <v-icon>mdi-autorenew</v-icon>
+            <v-icon large>
+              mdi-delete-circle-outline
+            </v-icon>
           </v-btn>
         </v-list>
         <v-list v-else>
