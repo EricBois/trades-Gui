@@ -237,6 +237,9 @@
       <v-flex v-if="project.user !== this.$auth.user.sub && !bidding" xs12 text-center>
         <small class="red--text">*Bids have been disabled</small>
       </v-flex>
+      <v-flex v-if="!ownProject && project.oneBid && bidding" xs12 text-center>
+        <span class="amber--text caption ma-2">*Only 1 bid per user allowed</span>
+      </v-flex>
     </v-flex>
     <v-flex class="mt-5" />
     <v-card v-if="bids.length > 0" max-width="844" class="mx-auto" raised>
@@ -260,9 +263,10 @@
         </div>
       </v-flex>
       <v-flex xs12 text-center>
-        <h2 v-if="!ownProject" class="mb-n4">
+        <h2 v-if="!ownProject" class="mb-n4 ibm">
           Your Placed Bids
         </h2>
+
         <h2 v-if="ownProject" class="mb-n4">
           Project Bids / Offers
         </h2>
@@ -841,61 +845,76 @@ export default {
     },
     postBid () {
       if (this.infobid.items.length >= 1) {
-        this.infobid.createdBy = this.$auth.user.name
-        if (this.phone) {
-          this.infobid.phone = this.phone
-        }
-        if (this.$auth.user.email) {
-          this.infobid.email = this.$auth.user.email
-        }
-        this.infobid.project = this.project.id
-        this.infobid.projectName = this.project.name
-        if (this.project.location.address) {
-          this.infobid.address = this.project.location.address
-          this.infobid.addressUrl = this.project.location.url
-        }
-        this.$axios
-          .$post('bid/create', this.infobid)
-          .then((res) => {
-            this.bidsTotal = this.bidsTotal + 1
-            // make a sweetalert2
-            // res.trade = res.trade.toString().replace(/,/g, ', ')
-
-            this.dialogBid = false
-            this.infobid.items = []
-            this.infobid.notes = ''
-            if (this.doc) {
-              const formData = new FormData()
-              formData.append('file', this.doc)
-              this.$axios
-                .$post(`bid/upload/${res._id}`, formData)
-                .then((res) => {
-                  this.loading = false
-                  this.doc = null
-                  this.bids.push(res)
-                })
-                .catch((error) => {
-                  this.snackbarText = `${error}`
-                  this.snackbar = true
-                  this.loading = false
-                })
-            } else {
-              this.bids.push(res)
+        let currentBids = 0
+        this.bids.forEach((bid) => {
+          if (bid.user === this.$auth.user.sub) {
+            currentBids += 1
+          }
+        })
+        if (this.project.oneBid && currentBids >= 1) {
+          this.bids.forEach((bid) => {
+            if (bid.user === this.$auth.user.sub) {
+              this.snackbarText = 'Sorry 1 bid per user allowed'
+              this.snackbar = true
             }
-            // notify owner of project of new bid
-            this.$store.dispatch('notifications/createNotification',
-              {
-                senderId: this.$auth.user.sub,
-                recipientId: this.project.user,
-                activity: 'Bid',
-                activityDesc: `${this.$auth.user.name} placed a bid on ${this.project.name}`,
-                link: this.project.id
-              })
           })
-          .catch((error) => {
-            this.snackbarText = `${error}`
-            this.snackbar = true
-          })
+        } else {
+          this.infobid.createdBy = this.$auth.user.name
+          if (this.phone) {
+            this.infobid.phone = this.phone
+          }
+          if (this.$auth.user.email) {
+            this.infobid.email = this.$auth.user.email
+          }
+          this.infobid.project = this.project.id
+          this.infobid.projectName = this.project.name
+          if (this.project.location.address) {
+            this.infobid.address = this.project.location.address
+            this.infobid.addressUrl = this.project.location.url
+          }
+          this.$axios
+            .$post('bid/create', this.infobid)
+            .then((res) => {
+              this.bidsTotal = this.bidsTotal + 1
+              // make a sweetalert2
+              // res.trade = res.trade.toString().replace(/,/g, ', ')
+
+              this.dialogBid = false
+              this.infobid.items = []
+              this.infobid.notes = ''
+              if (this.doc) {
+                const formData = new FormData()
+                formData.append('file', this.doc)
+                this.$axios
+                  .$post(`bid/upload/${res._id}`, formData)
+                  .then((res) => {
+                    this.loading = false
+                    this.doc = null
+                    this.bids.push(res)
+                  })
+                  .catch((error) => {
+                    this.snackbarText = `${error}`
+                    this.snackbar = true
+                    this.loading = false
+                  })
+              } else {
+                this.bids.push(res)
+              }
+              // notify owner of project of new bid
+              this.$store.dispatch('notifications/createNotification',
+                {
+                  senderId: this.$auth.user.sub,
+                  recipientId: this.project.user,
+                  activity: 'Bid',
+                  activityDesc: `${this.$auth.user.name} bidded on ${this.project.name}`,
+                  link: this.project.id
+                })
+            })
+            .catch((error) => {
+              this.snackbarText = `${error}`
+              this.snackbar = true
+            })
+        }
       }
     },
     deleteFile (file, type) {
