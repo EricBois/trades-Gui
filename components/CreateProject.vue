@@ -10,134 +10,122 @@
         mdi-check-circle-outline
       </v-icon>
     </v-snackbar>
-    <v-layout column>
-      <v-card
-        elevation="22"
-        max-width="850"
-        class="mx-auto"
-      >
-        <v-card raised>
-          <v-row
-            class="mx-5"
-          >
-            <v-form
-              ref="form"
-              lazy-validation
-            >
-              <v-row
-                class="py-4 pl-4"
-              >
-                <v-layout wrap>
-                  <v-flex xs10>
-                    <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Project Title" counter="40" />
-                  </v-flex>
-                  <v-flex xs10 sm5 pb-5>
-                    <v-select
-                      v-model="info.jobType"
-                      :rules="projectRule"
-                      :items="job_type"
-                      :menu-props="{ top: true, offsetY: true }"
-                      label="Project Type"
-                    />
-                  </v-flex>
-                  <v-flex xs10 sm5 pb-5 pl-sm-5>
-                    <!-- <v-select
-                      v-model="info.location"
-                      :rules="locationRule"
-                      :items="locations"
-                      :menu-props="{ top: true, offsetY: true }"
-                      label="Location"
-                    /> -->
-                    <gmap-autocomplete
-                      class="gmap v-input__slot v-text-field"
-                      :value="info.location.address"
-                      :select-first-on-enter="true"
-                      placeholder="Project Location"
-                      @place_changed="setPlace"
-                    />
-                  </v-flex>
-                  <v-flex xs10>
-                    <v-textarea
-                      v-model="info.description"
-                      :rules="descRule"
-                      label="Project Description"
-                      solo
-                      outlined
-                      class="purple-input"
-                      counter="400"
-                    />
-                  </v-flex>
-                  <v-flex xs10 md5 mr-12>
-                    <v-checkbox
-                      v-model="checkWcb"
-                      label="Wcb Required"
-                      color="orange darken-3"
-                    />
-                  </v-flex>
-                  <v-flex xs10 md5 mr-12>
-                    <v-checkbox
-                      v-model="checkLiability"
-                      color="orange darken-3"
-                      label="Liability Insurance Required"
-                    />
-                  </v-flex>
-                  <v-flex xs10 md5 pt-5>
-                    <v-select
-                      v-model="info.skills"
-                      :items="itemSkills"
-                      chips
-                      label="Required Skills"
-                      multiple
-                    />
-                  </v-flex>
-                  <v-flex xs10 md5 pl-md-5 pt-5>
-                    <v-select
-                      v-model="info.tickets"
-                      :items="itemTickets"
-                      chips
-                      label="Required Tickets"
-                      multiple
-                    />
-                  </v-flex>
-                  <v-flex xs10 md2 mr-12 pt-4>
-                    <v-text-field
-                      v-model="info.budget"
-                      label="Budget"
-                      class="purple-input"
-                      prefix="$"
-                      :rules="budgetRule"
-                      type="text"
-                    />
-                  </v-flex>
-                  <v-flex xs6 md3 pt-4>
-                    <v-switch v-model="switch1" label="Assign To Team" color="white" inset />
-                  </v-flex>
-                  <v-flex xs6 md3 pt-4>
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on }">
-                        <v-switch v-model="switch2" label="Bid whole project" color="white" inset v-on="on" />
-                      </template>
-                      <span>Only 1 bid per user will be allowed on whole project.</span>
-                    </v-tooltip>
-                  </v-flex>
-                  <v-flex xs10 md5 pt-4 pr-5>
-                    <v-text-field v-model="info.phone" class="purple-input" label="Contact Phone Number" />
-                  </v-flex>
-                  <v-flex xs10 md5 pt-4>
-                    <v-text-field v-model="info.email" class="purple-input" label="Contact Email" />
-                  </v-flex>
-                  <v-card-actions>
-                    <v-btn class="mx-0 font-weight-light" color="primary" @click="create">
-                      Create Project
-                    </v-btn>
-                  </v-card-actions>
-                </v-layout>
-              </v-row>
-            </v-form>
-          </v-row>
-        </v-card>
+    <v-card>
+      <v-card class="pa-2">
+        <v-form
+          ref="form"
+          lazy-validation
+        >
+          <v-layout wrap>
+            <v-flex xs12>
+              <v-text-field v-model="info.name" :rules="nameRule" class="purple-input" label="Project Title" counter="40" />
+            </v-flex>
+            <v-flex xs12 sm5 pb-5>
+              <v-select
+                v-model="info.jobType"
+                :rules="projectRule"
+                :items="job_type"
+                :menu-props="{ top: true, offsetY: true }"
+                label="Project Type"
+              />
+            </v-flex>
+            <v-flex xs12 sm5 pb-5 pl-sm-5>
+              <gmap-autocomplete
+                class="gmap v-input__slot v-text-field"
+                :value="info.location.address"
+                :select-first-on-enter="true"
+                placeholder="Project Location"
+                @place_changed="setPlace"
+              />
+            </v-flex>
+            <v-flex xs12>
+              <v-textarea
+                v-model="info.description"
+                :rules="descRule"
+                label="Project Description"
+                solo
+                outlined
+                class="purple-input"
+                counter="400"
+              />
+            </v-flex>
+            <v-flex xs12 md6 mr-12>
+              <v-checkbox
+                v-model="checkWcb"
+                label="Wcb Required"
+                color="orange darken-3"
+              />
+            </v-flex>
+            <v-flex xs12 md6 mr-12>
+              <v-checkbox
+                v-model="checkLiability"
+                color="orange darken-3"
+                label="Liability Insurance Required"
+              />
+            </v-flex>
+            <v-flex xs12 md6 pt-5>
+              <v-combobox
+                v-model="info.skills"
+                :items="itemSkills"
+                chips
+                dense
+                label="Required Skills"
+                multiple
+                autocomplete
+              />
+            </v-flex>
+            <v-flex xs12 md6 pl-md-5 pt-5>
+              <v-combobox
+                v-model="info.tickets"
+                :items="itemTickets"
+                chips
+                dense
+                label="Required Tickets"
+                multiple
+                autocomplete
+              />
+            </v-flex>
+            <v-flex xs12 md3 pr-12 pt-4>
+              <v-text-field
+                v-model="info.budget"
+                label="Budget"
+                class="purple-input"
+                prefix="$"
+                :rules="budgetRule"
+                type="text"
+              />
+            </v-flex>
+            <v-flex xs6 md4 pt-4>
+              <v-switch v-model="switch1" label="Assign To Team" color="white" inset />
+            </v-flex>
+            <v-flex xs6 md5 pt-4>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-switch v-model="switch2" label="Bid whole project" color="white" inset v-on="on" />
+                </template>
+                <span>Only 1 bid per user will be allowed on whole project.</span>
+              </v-tooltip>
+            </v-flex>
+            <v-flex xs12 md6 pt-4 pr-5>
+              <v-text-field v-model="info.phone" class="purple-input" label="Contact Phone Number" />
+            </v-flex>
+            <v-flex xs12 md6 pt-4>
+              <v-text-field v-model="info.email" class="purple-input" label="Contact Email" />
+            </v-flex>
+            <v-flex class="mt-6 mb-3" xs6 text-center>
+              <v-btn class="mx-0 font-weight-light" outlined @click="closeDialog()">
+                Cancel
+              </v-btn>
+            </v-flex>
+            <v-flex class="mt-6 mb-3" xs6 text-center>
+              <v-btn class="mx-0 font-weight-light" color="primary" @click="create">
+                Create Project
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-form>
       </v-card>
-    </v-layout>
+    </v-card>
   </v-container>
 </template>
 <style>
@@ -152,6 +140,12 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
+  props: {
+    close: {
+      type: Boolean,
+      required: true
+    }
+  },
   data () {
     return {
       snackbar: false,
@@ -294,6 +288,9 @@ export default {
           this.info.location.country = info.name
         }
       }
+    },
+    closeDialog () {
+      this.$emit('update:close', false)
     }
   }
 }
