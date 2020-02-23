@@ -53,9 +53,11 @@ export default {
     }
     this.$axios.$get('job/get').then((res) => {
       res.forEach((obj, i) => {
-        this.jobsPublic.push(obj)
-        if (obj.location.city.length > 0) {
-          this.citiesPublic.push(obj.location.city)
+        if (obj.user !== this.$auth.user.sub) {
+          this.jobsPublic.push(obj)
+          if (obj.location.city.length > 0) {
+            this.citiesPublic.push(obj.location.city)
+          }
         }
       })
     })
