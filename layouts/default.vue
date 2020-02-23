@@ -559,7 +559,6 @@ export default {
   }),
   watch: {
     $route (to, from) {
-      console.log(to, from)
       switch (to.path) {
         case '/home':
           this.btn1.icon = 'mdi-post'
