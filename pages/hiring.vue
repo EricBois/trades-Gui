@@ -60,7 +60,6 @@
               <v-textarea
                 v-model="posting.description"
                 label="Job Description"
-                solo
                 outlined
                 :rules="descRule"
                 class="purple-input"
@@ -74,19 +73,6 @@
             </v-flex>
           </v-layout>
         </v-form>
-        <v-divider />
-      </v-card>
-    </v-dialog>
-    <v-dialog v-model="dialogProfile" max-width="800">
-      <v-card class="px-3">
-        <v-toolbar dark color="blue">
-          <v-btn icon dark @click="dialogProfile = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-          <v-toolbar-title>Profile</v-toolbar-title>
-          <div class="flex-grow-1" />
-        </v-toolbar>
-        <PublicProfile :user="currentUser" />
         <v-divider />
       </v-card>
     </v-dialog>
@@ -213,11 +199,9 @@
 }
 </style>
 <script>
-import PublicProfile from '../components/PublicProfile.vue'
 import JobPosting from '../components/JobPosting.vue'
 export default {
   components: {
-    PublicProfile,
     JobPosting
   },
   data () {

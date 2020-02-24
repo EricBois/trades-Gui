@@ -67,19 +67,30 @@
               {{ item }}
             </v-chip>
           </v-flex>
-
-          <v-flex xs12 class="mt-2" text-center>
+          <v-flex v-if="job.user !== $auth.user.sub" xs12 class="mt-2" text-center>
             <v-btn
+              v-if="job.applicants.map(applicant => applicant.uid).includes($auth.user.sub)"
               class="ma-2"
               small
-              color="blue-grey darken-2
-"
-              @click="showProfile(job.user)"
+              color="orange darken-2"
+              @click="askWithdraw(job)"
+            >
+              <v-icon small class="mr-1">
+                mdi-cancel
+              </v-icon>
+              Withdraw Application
+            </v-btn>
+            <v-btn
+              v-else
+              class="ma-2"
+              small
+              color="green darken-3"
+              @click="askApply(job)"
             >
               <v-icon small class="mr-1">
                 mdi-account-box
               </v-icon>
-              Information
+              Apply
             </v-btn>
           </v-flex>
           <v-flex xs8 class="pa-2">
@@ -117,11 +128,13 @@
     <v-dialog v-model="dialogProfile" max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Profile
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogProfile = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Profile</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <PublicProfile :user="currentUser" />
         <v-divider />
@@ -165,11 +178,13 @@
     <v-dialog v-model="dialogEdit" persistent max-width="450">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Edit Job Posting
+          </v-toolbar-title>
           <v-btn icon dark @click="dialogEdit = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Edit Job Posting</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <v-form ref="form">
           <v-layout wrap class="pa-6">
@@ -197,7 +212,6 @@
               <v-textarea
                 v-model="posting.description"
                 label="Job Description"
-                solo
                 outlined
                 :rules="descRule"
                 class="purple-input"
@@ -214,10 +228,119 @@
         <v-divider />
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="dialogApply" persistent max-width="450">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Application Form
+          </v-toolbar-title>
+          <v-btn icon dark @click="dialogApply = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-form ref="form">
+          <v-layout wrap class="pa-6">
+            <v-flex xs12>
+              <v-combobox
+                v-model="application.skills"
+                :items="itemSkills"
+                chips
+                dense
+                label="Your Skills"
+                multiple
+                autocomplete
+              />
+            </v-flex>
+            <v-flex xs12>
+              <v-combobox
+                v-model="application.tickets"
+                :items="itemTickets"
+                chips
+                dense
+                label="Your Tickets"
+                multiple
+                autocomplete
+              />
+            </v-flex>
+            <v-flex xs12>
+              <v-text-field
+                v-model="application.wage"
+                label="Wage expectation"
+                placeholder="*optional"
+                class="purple-input"
+                prefix="$"
+                type="text"
+              />
+            </v-flex>
+            <v-flex xs12>
+              <v-textarea
+                v-model="application.experience"
+                label="What's your experience?"
+                outlined
+                :rules="descRule"
+                class="purple-input"
+                counter="400"
+              />
+            </v-flex>
+            <v-flex xs12>
+              <v-textarea
+                v-model="application.references"
+                label="List any references"
+                outlined
+                class="purple-input"
+              />
+            </v-flex>
+            <v-flex xs12 text-center>
+              <v-btn color="green darken-3" @click="apply(currentId)">
+                Apply
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-form>
+        <v-divider />
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="dialogWithdraw"
+      max-width="400"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Please Confirm
+        </v-card-title>
+
+        <v-card-text>
+          Are you sure you want to withdraw your application ?
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            color="orange darken-3"
+            text
+            @click="dialogWithdraw = false"
+          >
+            No
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="withdraw(currentId)"
+          >
+            Yes!
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import PublicProfile from '../components/PublicProfile.vue'
@@ -237,6 +360,8 @@ export default {
         v => !!v || 'The description is required',
         v => (v || '').length <= 400 || 'Description should be 400 characters or less '
       ],
+      dialogWithdraw: false,
+      dialogApply: false,
       dialogDelete: false,
       dialogProfile: false,
       dialogEdit: false,
@@ -251,8 +376,21 @@ export default {
         skills: [],
         tickets: [],
         profile: {}
+      },
+      application: {
+        name: '',
+        experience: '',
+        references: '',
+        wage: '',
+        skills: [],
+        tickets: []
       }
     }
+  },
+  computed: {
+    ...mapGetters({
+      profile: 'profile/getProfile'
+    })
   },
   watch: {
     currentUser () {
@@ -267,6 +405,24 @@ export default {
     dayjs.extend(relativeTime)
   },
   methods: {
+    withdraw (id) {
+      this.$axios.$post(`hiring/withdraw/${id}`).then((res) => {
+        this.getJobs()
+        this.dialogWithdraw = false
+      })
+    },
+    apply (id) {
+      if (this.$refs.form.validate()) {
+        this.application.name = this.$auth.user.name
+        this.$axios.$post(`hiring/apply/${id}`, this.application).then((res) => {
+          this.experience = ''
+          this.references = ''
+          this.wage = ''
+          this.getJobs()
+          this.dialogApply = false
+        })
+      }
+    },
     showProfile (id) {
       this.$axios.$get(`account/getProfile/${id}`).then((res) => {
         this.currentUser = res
@@ -280,6 +436,16 @@ export default {
     askDelete (id) {
       this.currentId = id
       this.dialogDelete = true
+    },
+    askWithdraw (job) {
+      this.currentId = job._id
+      this.dialogWithdraw = true
+    },
+    askApply (job) {
+      this.currentId = job._id
+      this.application.skills = this.profile.user_metadata.skills
+      this.application.tickets = this.profile.user_metadata.tickets
+      this.dialogApply = true
     },
     askEdit (job) {
       this.currentId = job._id
