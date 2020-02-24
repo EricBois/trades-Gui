@@ -245,7 +245,6 @@
                   <v-textarea
                     v-model="employment.experience"
                     label="What's your experience ?"
-                    solo
                     outlined
                     class="purple-input"
                   />
@@ -254,7 +253,6 @@
                   <v-textarea
                     v-model="employment.reference"
                     label="Any references ?"
-                    solo
                     outlined
                     class="purple-input"
                   />
