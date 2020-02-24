@@ -93,6 +93,19 @@
               Apply
             </v-btn>
           </v-flex>
+          <v-flex v-if="job.user === $auth.user.sub" xs12 class="mt-2" text-center>
+            <v-btn
+              class="ma-2"
+              small
+              color="blue-grey darken-2"
+              @click="applications(job)"
+            >
+              <v-icon small class="mr-1">
+                mdi-account-group
+              </v-icon>
+              Applications
+            </v-btn>
+          </v-flex>
           <v-flex xs8 class="pa-2">
             <span class="caption mr-2">Still hiring?</span>
             <span v-if="job.hired">
@@ -125,6 +138,103 @@
         </v-layout>
       </v-card>
     </v-flex>
+    <v-dialog v-model="dialogApplications" max-width="600">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Applications
+          </v-toolbar-title>
+          <v-spacer />
+          <v-btn icon dark @click="dialogApplications = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-card>
+          <v-flex xs12 class="mt-4">
+            <v-card
+              v-if="currentJob.applicants && currentJob.applicants.length < 1"
+              outlined
+              max-width="800"
+              class="mx-auto mt-2 ma-2"
+            >
+              <v-flex class="ibm body-2" text-center>
+                No one applied at the moment
+              </v-flex>
+            </v-card>
+            <v-card
+              v-for="applicant in currentJob.applicants"
+              :key="applicant.id"
+              outlined
+              max-width="800"
+              class="mx-auto mt-2 ma-2"
+            >
+              <v-layout wrap>
+                <v-flex xs8 class="pa-1">
+                  <v-chip small color="blue lighten-3" label outlined @click="showProfile(applicant.uid)">
+                    <v-icon small class="mr-1">
+                      mdi-information-outline
+                    </v-icon>
+                    {{ applicant.name }}
+                  </v-chip>
+                </v-flex>
+                <v-flex xs4 class="pa-1">
+                  <v-btn color="blue lighten-3" outlined small @click="showDetails(applicant)">
+                    Details
+                  </v-btn>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+        </v-card>
+        <v-divider />
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogApplied" max-width="600">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            User details
+          </v-toolbar-title>
+          <v-btn icon dark @click="dialogApplied = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-layout class="pa-2" wrap>
+          <v-flex xs12 text-center>
+            <v-chip large outlined label>
+              {{ currentUser.name }}
+            </v-chip>
+          </v-flex>
+          <v-flex v-if="currentUser.wage" xs12>
+            Expected wage: <v-chip class="ma-1" label small>
+              {{ currentUser.wage }}
+            </v-chip>
+          </v-flex>
+          <v-flex v-if="currentUser.experience" xs12>
+            Experience: &nbsp;
+            {{ currentUser.experience }}
+          </v-flex>
+          <v-flex v-if="currentUser.references" xs12>
+            References: &nbsp;
+            {{ currentUser.references }}
+          </v-flex>
+          <v-flex xs12>
+            Skills:
+            <v-chip v-for="loc in currentUser.skills" :key="loc.id" small class="ma-1" label>
+              {{ loc }}
+            </v-chip>
+          </v-flex>
+          <v-flex xs12>
+            Tickets:
+            <v-chip v-for="loc in currentUser.tickets" :key="loc.id" small class="ma-1" label>
+              {{ loc }}
+            </v-chip>
+          </v-flex>
+        </v-layout>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialogProfile" max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
@@ -365,6 +475,9 @@ export default {
       dialogDelete: false,
       dialogProfile: false,
       dialogEdit: false,
+      dialogApplications: false,
+      dialogApplied: false,
+      currentJob: {},
       currentUser: {},
       itemSkills: [],
       itemTickets: [],
@@ -405,6 +518,10 @@ export default {
     dayjs.extend(relativeTime)
   },
   methods: {
+    applications (job) {
+      this.currentJob = job
+      this.dialogApplications = true
+    },
     withdraw (id) {
       this.$axios.$post(`hiring/withdraw/${id}`).then((res) => {
         this.getJobs()
@@ -485,6 +602,10 @@ export default {
           this.getJobs()
         })
       }
+    },
+    showDetails (contractor) {
+      this.currentUser = contractor
+      this.dialogApplied = true
     }
   }
 }

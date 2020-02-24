@@ -108,7 +108,7 @@
               class="mx-auto mt-2 ma-2"
             >
               <v-layout wrap>
-                <v-flex xs8 class="pa-1" @click.self="dialogUser = !dialogUser">
+                <v-flex xs8 class="pa-1">
                   <v-chip small color="blue lighten-3" label outlined @click="showProfile(contractor.user)">
                     <v-icon small class="mr-1">
                       mdi-information-outline
