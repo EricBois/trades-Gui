@@ -43,7 +43,6 @@
                 v-model="info.description"
                 :rules="descRule"
                 label="Project Description"
-                solo
                 outlined
                 class="purple-input"
                 counter="400"
