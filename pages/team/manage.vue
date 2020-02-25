@@ -32,85 +32,170 @@
           <v-icon>mdi-axis-y-arrow</v-icon>
           <v-divider class="my-5" />
         </v-flex>
-        <v-flex xs12 sm6 offset-sm-3 text-center>
-          <v-text-field
-            v-model="search"
-            placeholder="Search by Name.."
-            class="purple-input center"
-            solo
-            clearable
-            dense
-          />
-          <v-btn
-            v-if="search.length > 0 || city.length > 0 || trade.length > 0 || wcb || liability || ticket.length > 0"
-            small
-            rounded
-            class="mt-n12"
-            color="orange darken-4"
-            @click="clearFilters"
-          >
-            Clear filters
-          </v-btn>
-          <v-btn rounded color="teal darken-4" small class="mt-n12" @click="searchDialog = !searchDialog">
-            Advanced search
-          </v-btn>
-        </v-flex>
+
         <v-flex xs12 text-center>
-          <span class="caption">*Drag & Drop name as close to the top as possible</span>
-        </v-flex>
-        <v-flex
-          xs6
-          sm3
-          offset-sm-2
-          offset-xl-3
-          xl2
-          class="pr-3"
-          text-center
-        >
-          <v-card color="blue-grey darken-1">
-            <v-divider />
-            <h3>Users</h3>
-            <v-divider />
-          </v-card>
-          <v-card v-if="users.length > 0" class="pb-3 scroll mb-5" height="320">
-            <draggable class="list-group" :list="users" group="team" @change="save">
-              <v-card
-                v-for="user in filteredList"
-                :key="user.id"
-                flat
-                outlined
-                shaped
-                class="bg ma-2"
-                @click="dialog2(user)"
-              >
-                {{ user.name }} <v-divider />
-              </v-card>
-            </draggable>
-          </v-card>
-          <v-card v-else class="mb-5" height="320">
-            <draggable class="list-group" :list="users" group="team" @change="save" />
-            No users available
-          </v-card>
-        </v-flex>
-        <v-flex xs6 sm3 offset-sm-2 xl2 text-center>
-          <v-card color="blue-grey darken-1">
+          <v-card max-width="400" class="mx-auto mb-n4" color="blue-grey darken-1">
             <v-divider />
             <h3>My Team</h3>
             <v-divider />
+            <v-text-field
+              v-model="search"
+              placeholder="Search by Name.."
+              class="purple-input center"
+              solo
+              dense
+            />
+            <v-btn
+              v-if="search.length > 0 || city.length > 0 || trade.length > 0 || wcb || liability || ticket.length > 0"
+              small
+              rounded
+              class="mt-n12"
+              color="orange darken-4"
+              @click="clearFilters"
+            >
+              Clear filters
+            </v-btn>
+            <v-btn rounded color="teal darken-4" small class="mt-n12" @click="searchDialog = !searchDialog">
+              Advanced search
+            </v-btn>
           </v-card>
-          <v-card class="scroll" height="320px">
-            <draggable class="list-group" :list="team" group="team">
-              <v-card v-for="user in filteredTeam" :key="user.id" shaped class="bg ma-2" @click="dialog2(user)">
-                {{ user.name }} <v-divider />
-              </v-card>
-            </draggable>
+          <v-card max-width="400" class="scroll mx-auto" max-height="800px">
+            <!-- <draggable class="list-group" :list="team" group="team"> -->
+            <v-card v-for="user in filteredTeam" :key="user.id" shaped class="bg ma-2">
+              <v-layout wrap>
+                <v-flex xs8 text-left class="pa-1">
+                  <v-chip small color="grey lighten-3" label outlined @click="showProfile(user.uid)">
+                    <v-icon color="green accent-2" small class="mr-1">
+                      mdi-information-outline
+                    </v-icon>
+                    {{ user.name }}
+                  </v-chip>
+                </v-flex>
+                <v-flex class="pa-1" xs2>
+                  <v-btn color="blue-grey lighten-4" fab outlined x-small>
+                    <v-icon>
+                      mdi-account-cog-outline
+                    </v-icon>
+                  </v-btn>
+                </v-flex>
+                <v-flex class="pa-1" xs2>
+                  <v-btn
+                    ripple
+                    color="red darken-1"
+                    class="pa-1"
+                    icon
+                    outlined
+                    x-small
+                    @click="askDelete(user)"
+                  >
+                    <v-icon large>
+                      mdi-delete-circle
+                    </v-icon>
+                  </v-btn>
+                </v-flex>
+              </v-layout>
+            </v-card>
+            <!-- </draggable> -->
           </v-card>
-          <v-btn color="primary" class="mt-n5" small fab @click="dialogMessage = !dialogMessage">
-            <v-icon>mdi-message-text</v-icon>
-          </v-btn>
+          <div :class="(team.length >= 1)? '':'mt-4'">
+            <v-btn small color="green darken-3" fab class="mt-n5" @click="dialogUsers = !dialogUsers">
+              <v-icon>mdi-account-multiple-plus</v-icon>
+            </v-btn>
+            <v-btn color="primary" class="mt-n5" small fab @click="dialogMessage = !dialogMessage">
+              <v-icon>mdi-message-text</v-icon>
+            </v-btn>
+          </div>
         </v-flex>
       </v-layout>
     </v-card>
+    <v-dialog v-model="dialogUsers" fullscreen>
+      <v-card class="px-3" color="grey darken-4">
+        <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Search Users
+          </v-toolbar-title>
+          <v-spacer />
+          <v-btn icon dark @click="dialogUsers = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-flex xs12 text-center>
+          <v-divider class="mb-5" />
+          <v-icon>mdi-axis-x-arrow</v-icon>
+          <span class="mainTitle">Search Users</span>
+          <v-icon>mdi-axis-y-arrow</v-icon>
+          <v-divider class="my-5" />
+        </v-flex>
+        <v-flex
+          xs12
+          class="mt-5"
+          text-center
+        >
+          <v-card max-width="400" class="mx-auto mb-n4" color="blue-grey darken-1">
+            <v-divider />
+            <h3>Users</h3>
+            <v-divider />
+            <v-text-field
+              v-model="search"
+              placeholder="Search by Name.."
+              class="purple-input center"
+              solo
+              dense
+            />
+            <v-btn
+              v-if="search.length > 0 || city.length > 0 || trade.length > 0 || wcb || liability || ticket.length > 0"
+              small
+              rounded
+              class="mt-n12"
+              color="orange darken-4"
+              @click="clearFilters"
+            >
+              Clear filters
+            </v-btn>
+            <v-btn rounded color="teal darken-4" small class="mt-n12" @click="searchDialog = !searchDialog">
+              Advanced search
+            </v-btn>
+          </v-card>
+          <v-card v-if="users.length > 0" max-width="400" class="pb-3 mx-auto scroll mb-5">
+            <!-- <draggable class="list-group" :list="users" group="team" @change="save"> -->
+            <v-card
+              v-for="user in filteredList"
+              :key="user.id"
+              flat
+              outlined
+              shaped
+              class="bg ma-2"
+            >
+              <v-layout wrap>
+                <v-flex xs9 text-left class="pa-1">
+                  <v-chip small color="grey lighten-3" label outlined @click="showProfile(user.uid)">
+                    <v-icon color="green accent-2" small class="mr-1">
+                      mdi-information-outline
+                    </v-icon>
+                    {{ user.name }}
+                  </v-chip>
+                </v-flex>
+                <v-flex class="pa-1" xs3>
+                  <v-btn color="blue-grey lighten-4" fab outlined x-small @click="addToTeam(user)">
+                    <v-icon>
+                      mdi-account-multiple-plus
+                    </v-icon>
+                  </v-btn>
+                </v-flex>
+              </v-layout>
+            </v-card>
+            <!-- </draggable> -->
+          </v-card>
+          <v-card v-else max-width="400" class="mb-5" max-height="800">
+            <!-- <draggable class="list-group" :list="users" group="team" @change="save" /> -->
+            No users available
+          </v-card>
+        </v-flex>
+        <v-divider />
+      </v-card>
+    </v-dialog>
+
     <v-dialog v-model="dialogProfile" max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
@@ -210,11 +295,45 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="dialogDelete"
+      max-width="400"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Please Confirm
+        </v-card-title>
+
+        <v-card-text>
+          Delete this user from your team ?
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            color="orange darken-3"
+            text
+            @click="dialogDelete = false"
+          >
+            No
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteMember(currentId)"
+          >
+            Yes!
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
 .bg {
-  background-color: #EF6C00;
+  background-color: darkslategray;
 }
 .scroll {
   overflow-y: auto;
@@ -230,15 +349,15 @@
 </style>
 <script>
 import { mapGetters } from 'vuex'
-import draggable from 'vuedraggable'
 import PublicProfile from '../../components/PublicProfile.vue'
 export default {
   components: {
-    draggable,
     PublicProfile
   },
   data () {
     return {
+      dialogDelete: false,
+      dialogUsers: false,
       dialogMessage: false,
       message: {
         to: '',
@@ -252,6 +371,8 @@ export default {
           name: ''
         }
       },
+      currentUser: {},
+      currentId: '',
       snackbar: false,
       snackbarColor: 'green darken-3',
       snackbarText: '',
@@ -270,8 +391,7 @@ export default {
       liability: false,
       dialogProfile: false,
       team: [],
-      users: [],
-      currentUser: ''
+      users: []
     }
   },
   computed: {
@@ -323,6 +443,11 @@ export default {
       return filtered
     }
   },
+  watch: {
+    dialogUsers () {
+      this.search = ''
+    }
+  },
   created () {
     this.trades = process.env.trades.split(',')
     this.tickets = process.env.tickets.split(',')
@@ -347,6 +472,33 @@ export default {
     }
   },
   methods: {
+    addToTeam (user) {
+      this.team.push(user)
+      const index = this.users.indexOf(user)
+      this.users.splice(index, 1)
+      this.save()
+    },
+    askDelete (user) {
+      this.currentId = this.team.indexOf(user)
+      this.currentUser = user
+      this.dialogDelete = true
+    },
+    deleteMember (id) {
+      this.team.splice(id, 1)
+      this.users.push(this.currentUser)
+      this.dialogDelete = false
+      this.save()
+    },
+    showProfile (id) {
+      this.$axios.$get(`account/getProfile/${id}`).then((res) => {
+        this.currentUser = res
+        if (!this.currentUser.photos) {
+          this.currentUser.photos = []
+        }
+      }).then(() => {
+        this.dialogProfile = true
+      })
+    },
     clearFilters () {
       this.city = []
       this.search = ''
@@ -354,10 +506,6 @@ export default {
       this.ticket = []
       this.wcb = false
       this.liability = false
-    },
-    dialog2 (item) {
-      this.currentUser = item
-      this.dialogProfile = !this.dialogProfile
     },
     save () {
       setTimeout(() => {
