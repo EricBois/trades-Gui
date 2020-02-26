@@ -46,6 +46,9 @@ export default {
     profile: 'profile/getProfile'
   }),
   mounted () {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()
+    })
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeJobs) {
       this.alertText = process.env.welcomeJobs
       this.alert = true
@@ -60,6 +63,7 @@ export default {
           }
         }
       })
+      this.$nuxt.$loading.finish()
     })
   }
 }

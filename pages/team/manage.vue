@@ -70,7 +70,7 @@
                   </v-chip>
                 </v-flex>
                 <v-flex class="pa-1" xs2>
-                  <v-btn color="blue-grey lighten-4" fab outlined x-small @click="userSetting(user)">
+                  <v-btn color="blue-grey lighten-5" fab outlined x-small @click="userSetting(user)">
                     <v-icon>
                       mdi-account-cog-outline
                     </v-icon>
@@ -327,12 +327,12 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogSetting" max-width="600">
+    <v-dialog v-model="dialogSetting" max-width="500">
       <v-card class="px-3">
         <v-toolbar dark color="blue">
           <v-spacer />
           <v-toolbar-title class="body-1">
-            Setting for {{ currentUser.name }}
+            Settings for {{ currentUser.name }}
           </v-toolbar-title>
           <v-spacer />
           <v-btn icon dark @click="dialogSetting = false">
@@ -340,16 +340,10 @@
           </v-btn>
         </v-toolbar>
         <v-layout wrap>
-          <v-flex xs12 class="pa-2" text-center>
-            <v-switch v-model="featured" label="Favorite" color="green darken-3" inset />
+          <v-flex xs12 sm6 class="pa-2" text-center>
+            <v-switch v-model="featured" label="Featured" color="green darken-3" inset />
           </v-flex>
-          <v-flex class="pa-2 mb-6" xs12>
-            <v-textarea
-              v-model="notes"
-              label="Notes"
-              outlined
-              class="purple-input"
-            />
+          <v-flex xs12 sm6>
             <v-combobox
               v-model="tags"
               :items="trades"
@@ -360,11 +354,21 @@
               autocomplete
             />
           </v-flex>
+          <v-flex class="pa-2 mb-6" xs12>
+            <v-textarea
+              v-model="notes"
+              label="Notes"
+              outlined
+              class="purple-input"
+            />
+          </v-flex>
+          <v-flex xs12 text-right class="ma-2">
+            <v-btn large color="blue darken-3" @click="saveUser()">
+              save
+            </v-btn>
+          </v-flex>
         </v-layout>
       </v-card>
-      <v-btn large color="green darken-3" @click="saveUser()">
-        save User
-      </v-btn>
     </v-dialog>
   </v-container>
 </template>
