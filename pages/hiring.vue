@@ -1,29 +1,23 @@
 <template>
   <v-container>
-    <v-card
-      color="grey darken-3"
-      flat
-      max-width="650"
-      class="mx-auto"
-      tile
-    >
-      <v-layout wrap>
-        <v-flex class="ma-2" xs12 text-center>
-          <v-btn color="green darken-3" small @click="create = !create">
-            <v-icon class="mr-1">
-              mdi-new-box
-            </v-icon>
-            Job Posting
-          </v-btn>
-          <v-btn color="blue darken-3" small @click="getContractors()">
-            <v-icon class="mr-1">
-              mdi-account-group
-            </v-icon>
-            Looking for work
-          </v-btn>
-        </v-flex>
-      </v-layout>
-    </v-card>
+    <v-layout wrap>
+      <v-flex xs6 text-center>
+        <v-btn color="green darken-3" small @click="create = !create">
+          <v-icon class="mr-1">
+            mdi-new-box
+          </v-icon>
+          Posting
+        </v-btn>
+      </v-flex>
+      <v-flex xs6 text-center>
+        <v-btn color="blue darken-3" small @click="getContractors()">
+          <v-icon class="mr-1">
+            mdi-account-group
+          </v-icon>
+          Available Today
+        </v-btn>
+      </v-flex>
+    </v-layout>
     <JobPosting :jobs.sync="jobs" />
     <v-dialog v-model="create" persistent max-width="450">
       <v-card class="px-3">
@@ -37,23 +31,25 @@
         <v-form ref="form">
           <v-layout wrap class="pa-6">
             <v-flex xs12>
-              <v-select
+              <v-combobox
                 v-model="posting.skills"
                 :items="itemSkills"
                 chips
                 dense
                 label="Required Skills"
                 multiple
+                autocomplete
               />
             </v-flex>
             <v-flex xs12>
-              <v-select
+              <v-combobox
                 v-model="posting.tickets"
                 :items="itemTickets"
                 chips
                 dense
                 label="Required Tickets"
                 multiple
+                autocomplete
               />
             </v-flex>
             <v-flex xs12>
