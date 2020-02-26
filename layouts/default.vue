@@ -564,6 +564,7 @@ export default {
   watch: {
     // Dynamic bottom menu
     $route (to, from) {
+      console.log(to, from)
       switch (to.name) {
         case 'home':
           this.btn1.icon = 'mdi-post'
@@ -596,9 +597,16 @@ export default {
           this.btn3.link = '/team/manage'
           break
         case 'job-id':
-          this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
-          this.btn1.name = 'Back'
-          this.btn1.link = from.path
+          if (from.name !== 'job-id-edit') {
+            this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
+            this.btn1.name = 'Back'
+            this.btn1.link = from.path
+          } else {
+            this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
+            this.btn1.name = 'Back'
+            this.btn1.link = '/projects'
+          }
+
           this.btn2.icon = 'mdi-account-group'
           this.btn2.name = 'Team'
           this.btn2.link = '/team/projects'
