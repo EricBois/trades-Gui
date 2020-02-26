@@ -14,7 +14,7 @@
     </v-alert>
     <v-snackbar
       v-model="snackbar"
-      top
+      bottom
       :color="snackbarColor"
       right
     >
@@ -35,9 +35,7 @@
 
         <v-flex xs12 text-center>
           <v-card max-width="400" class="mx-auto mb-n4" color="blue-grey darken-1">
-            <v-divider />
             <h3>My Team</h3>
-            <v-divider />
             <v-text-field
               v-model="search"
               placeholder="Search by Name.."
@@ -72,7 +70,7 @@
                   </v-chip>
                 </v-flex>
                 <v-flex class="pa-1" xs2>
-                  <v-btn color="blue-grey lighten-4" fab outlined x-small>
+                  <v-btn color="blue-grey lighten-4" fab outlined x-small @click="userSetting(user)">
                     <v-icon>
                       mdi-account-cog-outline
                     </v-icon>
@@ -329,6 +327,45 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogSetting" max-width="600">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Setting for {{ currentUser.name }}
+          </v-toolbar-title>
+          <v-spacer />
+          <v-btn icon dark @click="dialogSetting = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-layout wrap>
+          <v-flex xs12 class="pa-2" text-center>
+            <v-switch v-model="featured" label="Favorite" color="green darken-3" inset />
+          </v-flex>
+          <v-flex class="pa-2 mb-6" xs12>
+            <v-textarea
+              v-model="notes"
+              label="Notes"
+              outlined
+              class="purple-input"
+            />
+            <v-combobox
+              v-model="tags"
+              :items="trades"
+              chips
+              dense
+              label="Tags"
+              multiple
+              autocomplete
+            />
+          </v-flex>
+        </v-layout>
+      </v-card>
+      <v-btn large color="green darken-3" @click="saveUser()">
+        save User
+      </v-btn>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -356,6 +393,9 @@ export default {
   },
   data () {
     return {
+      featured: false,
+      notes: '',
+      dialogSetting: false,
       dialogDelete: false,
       dialogUsers: false,
       dialogMessage: false,
@@ -371,6 +411,7 @@ export default {
           name: ''
         }
       },
+      tags: [],
       currentUser: {},
       currentId: '',
       snackbar: false,
@@ -440,12 +481,19 @@ export default {
       if (this.ticket.length > 0) {
         filtered = filtered.filter(user => this.ticket.some(el => user.metadata.tickets && user.metadata.tickets.includes(el)))
       }
-      return filtered
+      return filtered.sort((x, y) => y.featured - x.featured)
     }
   },
   watch: {
     dialogUsers () {
       this.search = ''
+    },
+    featured () {
+      if (this.featured) {
+        this.featured = true
+      } else {
+        this.featured = false
+      }
     }
   },
   created () {
@@ -472,6 +520,23 @@ export default {
     }
   },
   methods: {
+    userSetting (user) {
+      this.currentUser = user
+      this.tags = user.tags
+      this.notes = user.notes
+      this.featured = user.featured
+      this.dialogSetting = true
+    },
+    saveUser () {
+      this.currentUser.tags = this.tags
+      this.currentUser.notes = this.notes
+      this.currentUser.featured = this.featured
+      this.team.splice(this.team.indexOf(this.currentUser), 1)
+      this.team.push(this.currentUser)
+      this.team.sort((x, y) => y.featured - x.featured)
+      this.dialogSetting = false
+      this.save()
+    },
     addToTeam (user) {
       this.team.push(user)
       const index = this.users.indexOf(user)
