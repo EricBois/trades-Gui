@@ -239,9 +239,6 @@
             <v-btn small color="blue-grey darken-2" @click="askInfo(currentUser)">
               Contact info
             </v-btn>
-            <v-btn small color="blue darken-3">
-              Request a call
-            </v-btn>
           </v-flex>
         </v-layout>
       </v-card>
