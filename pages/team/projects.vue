@@ -57,7 +57,7 @@
     </v-card>
     <v-dialog v-model="dialogTeam" max-width="800">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Project Team

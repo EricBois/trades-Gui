@@ -255,7 +255,7 @@
     </v-card>
     <v-dialog ref="chat" v-model="dialogMessage" max-width="600">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title v-if="selectedMessage.names" class="body-1">
             Message(s) with {{ (selectedMessage.names.from === $auth.user.name) ? selectedMessage.names.to : selectedMessage.names.from }}
@@ -318,7 +318,7 @@
     </v-dialog>
     <v-dialog v-model="dialogMassMessage" max-width="600">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Message

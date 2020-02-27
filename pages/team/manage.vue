@@ -108,7 +108,7 @@
     </v-card>
     <v-dialog v-model="dialogUsers" fullscreen>
       <v-card class="px-3" color="grey darken-4">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Search Users
@@ -196,7 +196,7 @@
 
     <v-dialog v-model="dialogProfile" max-width="800">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Profile
@@ -211,7 +211,7 @@
     </v-dialog>
     <v-dialog v-model="searchDialog" max-width="600">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Search By
@@ -267,7 +267,7 @@
     </v-dialog>
     <v-dialog v-model="dialogMessage" max-width="600">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Message Team
@@ -329,7 +329,7 @@
     </v-dialog>
     <v-dialog v-model="dialogSetting" max-width="500">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Settings for {{ currentUser.name }}

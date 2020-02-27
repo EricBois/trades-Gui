@@ -21,7 +21,7 @@
     <JobPosting :jobs.sync="jobs" />
     <v-dialog v-model="create" persistent max-width="450">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-btn icon dark @click="create = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -74,7 +74,7 @@
     </v-dialog>
     <v-dialog v-model="dialogLfw" max-width="600">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             People actively looking for work
@@ -126,7 +126,7 @@
     </v-dialog>
     <v-dialog v-model="dialogUser" max-width="600">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             User details

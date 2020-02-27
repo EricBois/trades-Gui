@@ -140,7 +140,7 @@
     </v-flex>
     <v-dialog v-model="dialogApplications" max-width="600">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Applications
@@ -192,7 +192,7 @@
     </v-dialog>
     <v-dialog v-model="dialogApplied" max-width="600">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             User details
@@ -232,12 +232,17 @@
               {{ loc }}
             </v-chip>
           </v-flex>
+          <v-flex xs12 text-right>
+            <v-btn small color="blue darken-3">
+              Contact
+            </v-btn>
+          </v-flex>
         </v-layout>
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogProfile" max-width="800">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Profile
@@ -287,7 +292,7 @@
 
     <v-dialog v-model="dialogEdit" persistent max-width="450">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Edit Job Posting
@@ -341,7 +346,7 @@
 
     <v-dialog v-model="dialogApply" persistent max-width="450">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Application Form

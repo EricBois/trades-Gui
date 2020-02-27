@@ -458,7 +458,7 @@
     </v-bottom-sheet>
     <v-dialog v-model="create" persistent fullscreen max-width="850">
       <v-card>
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Create Project
@@ -564,7 +564,6 @@ export default {
   watch: {
     // Dynamic bottom menu
     $route (to, from) {
-      console.log(to, from)
       switch (to.name) {
         case 'home':
           this.btn1.icon = 'mdi-post'

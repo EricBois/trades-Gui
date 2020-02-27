@@ -154,7 +154,7 @@
     </v-layout>
     <v-dialog v-model="dialogMessage" max-width="600">
       <v-card class="px-3">
-        <v-toolbar dark color="blue">
+        <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Message Project Team
