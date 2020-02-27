@@ -203,7 +203,10 @@
         </v-toolbar>
         <v-layout class="pa-2" wrap>
           <v-flex xs12 text-center>
-            <v-chip large outlined label>
+            <v-chip large outlined label @click="showProfile(currentUser.uid)">
+              <v-icon color="green accent-2" small class="mr-1">
+                mdi-information-outline
+              </v-icon>
               {{ currentUser.name }}
             </v-chip>
           </v-flex>
@@ -232,9 +235,12 @@
               {{ loc }}
             </v-chip>
           </v-flex>
-          <v-flex xs12 text-right>
+          <v-flex class="mt-3 ma-1 " xs12 text-right>
+            <v-btn small color="blue-grey darken-2" @click="askInfo(currentUser)">
+              Contact info
+            </v-btn>
             <v-btn small color="blue darken-3">
-              Contact
+              Request a call
             </v-btn>
           </v-flex>
         </v-layout>
@@ -408,6 +414,23 @@
               />
             </v-flex>
             <v-flex xs12 text-center>
+              <h3>Your contact info</h3>
+              <small>*Will be shared with the other party. </small>
+              <v-divider />
+              <v-text-field
+                v-model="application.contact.phone"
+                label="Phone number"
+                class="purple-input"
+                type="text"
+              />
+              <v-text-field
+                v-model="application.contact.email"
+                label="Email"
+                class="purple-input"
+                type="text"
+              />
+            </v-flex>
+            <v-flex xs12 text-center>
               <v-btn color="green darken-3" @click="apply(currentId)">
                 Apply
               </v-btn>
@@ -451,8 +474,42 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="dialogInfo"
+      max-width="400"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Contact Info
+        </v-card-title>
+
+        <v-flex v-if="currentUser.contact && currentUser.contact.phone" text-center xs12>
+          Phone: <a :href="'tel:'+currentUser.contact.phone">{{ currentUser.contact.phone }}</a>
+        </v-flex>
+        <v-flex v-if="currentUser.contact && currentUser.contact.email" text-center xs12>
+          Email: <a :href="'mailto:'+currentUser.contact.email">{{ currentUser.contact.email }}</a>
+        </v-flex>
+
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            color="blue darken-3"
+            text
+            @click="dialogInfo = false"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
+<style scoped>
+a:link {
+  color: darkgray;
+}
+</style>
 
 <script>
 import { mapGetters } from 'vuex'
@@ -482,6 +539,7 @@ export default {
       dialogEdit: false,
       dialogApplications: false,
       dialogApplied: false,
+      dialogInfo: false,
       currentJob: {},
       currentUser: {},
       itemSkills: [],
@@ -501,7 +559,11 @@ export default {
         references: '',
         wage: '',
         skills: [],
-        tickets: []
+        tickets: [],
+        contact: {
+          phone: '',
+          email: ''
+        }
       }
     }
   },
@@ -523,6 +585,10 @@ export default {
     dayjs.extend(relativeTime)
   },
   methods: {
+    askInfo (user) {
+      this.currentUser = user
+      this.dialogInfo = true
+    },
     applications (job) {
       this.currentJob = job
       this.dialogApplications = true
@@ -565,6 +631,12 @@ export default {
     },
     askApply (job) {
       this.currentId = job._id
+      if (this.profile.user_metadata && this.profile.user_metadata.phone) {
+        this.application.contact.phone = this.profile.user_metadata.phone
+      }
+      if (this.profile.email) {
+        this.application.contact.email = this.profile.email
+      }
       this.application.skills = this.profile.user_metadata.skills
       this.application.tickets = this.profile.user_metadata.tickets
       this.dialogApply = true
