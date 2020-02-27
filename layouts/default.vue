@@ -67,36 +67,20 @@
             </v-icon>
           </v-list-item-icon>
         </v-list-item>
-
-        <!-- <v-list-group prepend-icon="mdi-alpha-p-box" no-action>
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>
-                <v-chip outlined>
-                  Projects
-                </v-chip>
-              </v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <v-list-item to="/projects">
-            <v-list-item-content>
-              <v-list-item-title>
-                <v-chip outlined>
-                  <v-icon>mdi-post</v-icon>&nbsp;Project Listings
-                </v-chip>
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item to="/user/create">
-            <v-list-item-content>
-              <v-list-item-title>
-                <v-chip outlined>
-                  <v-icon>mdi-plus-box-outline</v-icon>&nbsp; Create Project
-                </v-chip>
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group> -->
+        <v-list-item @click="dialogAssist = !dialogAssist">
+          <v-list-item-action>
+            <v-icon color="green accent-3">
+              mdi-auto-fix
+            </v-icon>
+          </v-list-item-action>
+          <v-list-item-content class="ml-n4">
+            <v-list-item-title>
+              <v-chip color="green accent-3" outlined label>
+                Assistant
+              </v-chip>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-divider class="my-2" />
         <v-list-group prepend-icon="mdi-account-group" no-action>
           <template v-slot:activator>
@@ -191,7 +175,7 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-divider v-if="admin" class="my-6" />
+        <v-divider v-if="admin" class="my-3" />
         <v-list-item v-if="admin" to="/management">
           <v-list-item-action>
             <v-icon>mdi-alpha-p-box</v-icon>
@@ -472,6 +456,48 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogAssist" persistent max-width="350">
+      <v-card>
+        <v-toolbar dark color="blue darken-3">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Your Assistant
+          </v-toolbar-title>
+          <v-spacer />
+          <v-btn icon dark @click="assistant('home')">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-flex class="pa-4" xs12>
+          <h3>How can i help ?</h3>
+        </v-flex>
+        <v-flex xs12>
+          <div v-if="step1">
+            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="assistant('find')">
+              Find contractors for my project
+            </v-btn>
+            <v-btn class="ma-2 ml-12" color="cyan darken-3" small>
+              I need to hire people
+            </v-btn>
+            <v-btn class="ma-2 ml-12" color="teal darken-3" small>
+              Build my team
+            </v-btn>
+          </div>
+          <div v-if="step2 && contractor">
+            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small>
+              I'm looking for bids
+            </v-btn>
+            <v-btn class="ma-2 ml-12" color="cyan darken-3" small>
+              I'm out of time i need them ASAP
+            </v-btn>
+            <v-btn class="ma-2 ml-12" color="teal darken-3" small>
+              Request bidding from my team
+            </v-btn>
+          </div>
+        </v-flex>
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 <style scoped>
@@ -509,6 +535,11 @@ export default {
     }
   },
   data: () => ({
+    contractor: false,
+    step1: true,
+    step2: false,
+    step3: false,
+    dialogAssist: false,
     btn1: {
       name: 'Listings',
       link: '/projects',
@@ -694,6 +725,23 @@ export default {
     }
   },
   methods: {
+    assistant (status) {
+      switch (status) {
+        case 'find': {
+          this.step1 = false
+          this.step2 = true
+          this.contractor = true
+          break
+        }
+        case 'home': {
+          this.step1 = true
+          this.step2 = false
+          this.contractor = false
+          this.dialogAssist = false
+          break
+        }
+      }
+    },
     clicker () {
       this.create = true
     },
