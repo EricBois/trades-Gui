@@ -837,7 +837,7 @@ export default {
         .then((res) => {
           //  direct to jobs page
           this.dialogDeleteProject = false
-          this.$router.push(`../projects`)
+          this.$router.push(`../myprojects`)
         })
         .catch((error) => {
           this.snackbarText = `${error}`
