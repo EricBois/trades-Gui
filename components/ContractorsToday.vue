@@ -113,10 +113,9 @@
   </v-container>
 </template>
 <script>
-import PublicProfile from '../components/PublicProfile.vue'
 export default {
   components: {
-    PublicProfile
+    PublicProfile: () => import('../components/PublicProfile.vue')
   },
   data () {
     return {
