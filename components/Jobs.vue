@@ -14,21 +14,25 @@
           </v-text-field>
         </v-flex>
         <v-flex xs4 class="px-3">
-          <v-select
+          <v-combobox
             v-model="city"
             :items="cities"
+            chips
+            dense
             label="City"
             multiple
-            chips
+            autocomplete
           />
         </v-flex>
         <v-flex xs4>
-          <v-select
+          <v-combobox
             v-model="trade"
             :items="trades"
+            chips
+            dense
             label="Skills"
             multiple
-            chips
+            autocomplete
           />
         </v-flex>
       </v-layout>
@@ -219,6 +223,10 @@ export default {
     cities: {
       type: Array,
       default: null
+    },
+    trades: {
+      type: Array,
+      default: null
     }
   },
   data () {
@@ -226,7 +234,6 @@ export default {
       job: '../job/',
       search: '',
       city: [],
-      trades: [],
       trade: [],
       page: 1,
       perPage: 4,
@@ -256,7 +263,6 @@ export default {
   },
   created () {
     dayjs.extend(relativeTime)
-    this.trades = process.env.trades.split(',')
   },
   methods: {
     wonBid (bids) {
