@@ -183,7 +183,7 @@
           <v-list-item-content>
             <v-list-item-title>
               <v-chip outlined>
-                Manage Codes
+                Manage invite Codes
               </v-chip>
             </v-list-item-title>
           </v-list-item-content>
@@ -404,7 +404,7 @@
         <v-icon>{{ btn3.icon }}</v-icon>
       </v-btn>
 
-      <v-btn :to="btn4.link">
+      <v-btn @click="dialogAssist = !dialogAssist">
         <span>{{ btn4.name }}</span>
         <v-icon>{{ btn4.icon }}</v-icon>
       </v-btn>
@@ -629,9 +629,8 @@ export default {
       icon: 'mdi-alpha-p-box'
     },
     btn4: {
-      name: 'Hiring',
-      link: '/hiring',
-      icon: 'mdi-help-circle'
+      name: 'Assistant',
+      icon: 'mdi-auto-fix'
     },
     create: false,
     admin: false,
