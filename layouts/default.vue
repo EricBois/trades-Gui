@@ -20,28 +20,34 @@
       floating
       clipped
     >
+      <v-list-item>
+        <v-img src="https://subhub01.s3.amazonaws.com/app/Logo-03.png" />
+      </v-list-item>
+      <v-divider />
       <v-list-item to="/profile">
-        <v-list-item-avatar tile>
-          <v-img class="rounded" :src="picture" />
+        <v-list-item-avatar tile size="50">
+          <v-img class="rounded mt-n1" :src="picture" />
         </v-list-item-avatar>
 
-        <v-list-item-title>
-          {{ this.$auth.user.name }}
-          <v-icon color="green" class="ml-1">
-            mdi-tune
-          </v-icon>
+        <v-list-item-title class="ml-n1">
+          <v-chip class="ibm pl-2" label>
+            {{ this.$auth.user.name }}
+            <v-icon color="green" class="pl-2">
+              mdi-tune
+            </v-icon>
+          </v-chip>
         </v-list-item-title>
       </v-list-item>
       <v-divider />
       <v-list dense>
         <v-list-item to="/">
           <v-list-item-action>
-            <v-icon>mdi-view-dashboard</v-icon>
+            <v-icon>mdi-home</v-icon>
           </v-list-item-action>
           <v-list-item-content class="ml-n4">
             <v-list-item-title>
               <v-chip outlined label>
-                Dashboard
+                Home
               </v-chip>
             </v-list-item-title>
           </v-list-item-content>
@@ -67,6 +73,7 @@
             </v-icon>
           </v-list-item-icon>
         </v-list-item>
+        <v-divider />
         <v-list-item @click="dialogAssist = !dialogAssist">
           <v-list-item-action>
             <v-icon color="green accent-3">

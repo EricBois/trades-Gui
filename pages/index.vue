@@ -28,11 +28,15 @@
       </v-alert>
     </v-flex>
     <v-flex xs12 text-center>
-      <v-card max-width="650" class="mx-auto pa-6">
-        <v-card max-width="600" min-height="100" class="mx-auto" elevation="15" shaped>
-          <h1>Sub Hub community</h1>
-          <span class="sub">Where contractors meet</span>
+      <v-card max-width="450" class="mx-auto pa-6">
+        <h1 class="sub">
+          Welcome in
+        </h1>
+        <v-divider />
+        <v-card max-width="400" min-height="100" class="mx-auto" elevation="20" shaped>
+          <v-img class="ma-4" src="https://subhub01.s3.amazonaws.com/app/Logo-03.png" />
         </v-card>
+
         <v-flex v-if="mobile" class="mt-5" xs12 text-center>
           <v-btn
             v-if="!this.$auth.loggedIn"
@@ -45,7 +49,7 @@
             <v-icon>mdi-login</v-icon> Login
           </v-btn>
           <br>
-          <v-card ripple class="mx-auto pa-1" outlined width="180">
+          <v-card ripple class="mx-auto pa-1 mt-4" outlined width="180">
             <small class="amber--text" color="blue darken-3" @click="registerDialog = !registerDialog"><v-icon class="mr-2 mt-n1">mdi-account-circle</v-icon>Not registered yet ?</small>
           </v-card>
 
