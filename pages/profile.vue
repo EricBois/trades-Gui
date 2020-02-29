@@ -144,21 +144,25 @@
                   />
                 </v-flex>
                 <v-flex xs12 md6 pt-5>
-                  <v-select
+                  <v-combobox
                     v-model="info.user_metadata.skills"
                     :items="itemSkills"
                     chips
+                    dense
                     label="Your Skills"
                     multiple
+                    autocomplete
                   />
                 </v-flex>
                 <v-flex xs12 md6 pl-md-5 pt-5>
-                  <v-select
+                  <v-combobox
                     v-model="info.user_metadata.tickets"
                     :items="itemTickets"
                     chips
+                    dense
                     label="Your Tickets"
                     multiple
+                    autocomplete
                   />
                 </v-flex>
 
@@ -599,6 +603,16 @@ export default {
     },
     edit () {
       if (this.$refs.form.validate()) {
+        if (this.info.user_metadata.skills.length >= 1) {
+          this.info.user_metadata.skills.forEach(function (part, index) {
+            this[index] = this[index].trim().charAt(0).toUpperCase() + this[index].slice(1)
+          }, this.info.user_metadata.skills)
+        }
+        if (this.info.user_metadata.tickets.length >= 1) {
+          this.info.user_metadata.tickets.forEach(function (part, index) {
+            this[index] = this[index].trim().charAt(0).toUpperCase() + this[index].slice(1)
+          }, this.info.user_metadata.tickets)
+        }
         this.$axios.$post('account/edit', this.info).then((res) => {
           this.$store.commit('profile/updateProfile', res) // for the profile store
           this.$auth.fetchUser() // fetch tokenID
@@ -679,6 +693,16 @@ export default {
       }
     },
     saveHire () {
+      if (this.employment.skills.length >= 1) {
+        this.employment.skills.forEach(function (part, index) {
+          this[index] = this[index].trim().charAt(0).toUpperCase() + this[index].slice(1)
+        }, this.employment.skills)
+      }
+      if (this.employment.tickets.length >= 1) {
+        this.info.employment.tickets.forEach(function (part, index) {
+          this[index] = this[index].trim().charAt(0).toUpperCase() + this[index].slice(1)
+        }, this.info.employment.tickets)
+      }
       this.employment.name = this.$auth.user.name
       this.employment.tickets = this.info.user_metadata.tickets
       this.$axios.$post(`hiring/profile`, this.employment).then((res) => {

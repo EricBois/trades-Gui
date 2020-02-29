@@ -121,6 +121,16 @@ export default {
   methods: {
     post () {
       if (this.$refs.form.validate()) {
+        if (this.posting.skills.length >= 1) {
+          this.posting.skills.forEach(function (part, index) {
+            this[index] = this[index].trim().charAt(0).toUpperCase() + this[index].slice(1)
+          }, this.posting.skills)
+        }
+        if (this.posting.tickets.length >= 1) {
+          this.posting.tickets.forEach(function (part, index) {
+            this[index] = this[index].trim().charAt(0).toUpperCase() + this[index].slice(1)
+          }, this.posting.tickets)
+        }
         this.posting.company = this.$auth.user.name
         this.$axios.$post('hiring/create', this.posting).then((res) => {
           this.getJobs()
