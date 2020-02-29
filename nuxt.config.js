@@ -108,6 +108,9 @@ export default {
     }
   },
   pwa: {
+    icon: {
+      iconSrc: 'static/icon.png'
+    },
     manifest: {
       name: 'Sub-Hub',
       lang: 'en-US'
