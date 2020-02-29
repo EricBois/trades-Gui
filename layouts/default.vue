@@ -469,33 +469,51 @@
           </v-btn>
         </v-toolbar>
         <v-flex class="pa-4" xs12>
-          <h3>How can i help ?</h3>
+          <h3>{{ assistantTitle }}</h3>
         </v-flex>
         <v-flex xs12>
           <div v-if="step1">
             <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="assistant('find')">
               Find contractors for my project
             </v-btn>
+            <br>
             <v-btn class="ma-2 ml-12" color="cyan darken-3" small>
-              I need to hire people
+              Hire tradesman
             </v-btn>
+            <br>
             <v-btn class="ma-2 ml-12" color="teal darken-3" small>
               Build my team
             </v-btn>
+            <br>
+            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small>
+              Find a job
+            </v-btn>
           </div>
           <div v-if="step2 && contractor">
-            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small>
-              I'm looking for bids
+            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="create = !create">
+              Get bids on my project
             </v-btn>
-            <v-btn class="ma-2 ml-12" color="cyan darken-3" small>
-              I'm out of time i need them ASAP
-            </v-btn>
-            <v-btn class="ma-2 ml-12" color="teal darken-3" small>
-              Request bidding from my team
+            <v-btn class="ma-2 ml-12" color="cyan darken-3" small @click="dialogLfw = !dialogLfw">
+              I'm out of time i need someone TODAY
             </v-btn>
           </div>
         </v-flex>
         <v-divider />
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogLfw" max-width="600">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue darken-3">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            People actively looking for work
+          </v-toolbar-title>
+          <v-spacer />
+          <v-btn icon dark @click="dialogLfw = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <contractors-today />
       </v-card>
     </v-dialog>
   </v-app>
@@ -522,11 +540,13 @@ a {
 import { mapGetters } from 'vuex'
 import Register from '../components/Register'
 import CreateProject from '../components/CreateProject'
+import ContractorsToday from '../components/ContractorsToday.vue'
 export default {
   middleware: ['profile', 'notifications'],
   components: {
     Register,
-    CreateProject
+    CreateProject,
+    ContractorsToday
   },
   props: {
     source: {
@@ -535,6 +555,8 @@ export default {
     }
   },
   data: () => ({
+    dialogLfw: false,
+    assistantTitle: 'I want to ..',
     contractor: false,
     step1: true,
     step2: false,
@@ -668,6 +690,11 @@ export default {
           break
       }
     },
+    create () {
+      if (this.dialogAssist === true) {
+        this.dialogAssist = false
+      }
+    },
     notifications () {
       if (this.notifications.length > 0) {
         this.notificationColor = 'green darken-3'
@@ -727,17 +754,19 @@ export default {
   methods: {
     assistant (status) {
       switch (status) {
-        case 'find': {
-          this.step1 = false
-          this.step2 = true
-          this.contractor = true
-          break
-        }
+        // step 1 ( main )
         case 'home': {
+          this.assistantTitle = 'I want to ..'
           this.step1 = true
           this.step2 = false
           this.contractor = false
           this.dialogAssist = false
+          break
+        }
+        case 'find': {
+          this.step1 = false
+          this.step2 = true
+          this.contractor = true
           break
         }
       }

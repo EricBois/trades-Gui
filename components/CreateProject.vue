@@ -263,8 +263,10 @@ export default {
           //  direct to jobs page
           if (res.private) {
             this.$router.push(`../../team`)
+            this.$emit('update:close', false)
           } else {
             this.$router.push(`../../job/${res._id}`)
+            this.$emit('update:close', false)
           }
         })
       }
