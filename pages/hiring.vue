@@ -1,32 +1,35 @@
 <template>
   <v-container>
     <v-layout wrap>
-      <v-flex xs6 text-center>
-        <v-btn color="green darken-3" small @click="create = !create">
-          <v-icon class="mr-1">
-            mdi-new-box
+      <v-flex xs12 text-center>
+        <v-btn
+          top
+          right
+          absolute
+          color="green darken-3"
+          fab
+          @click="create = !create"
+        >
+          <v-icon large class="mt-n1">
+            mdi-newspaper-plus
           </v-icon>
-          Posting
-        </v-btn>
-      </v-flex>
-      <v-flex xs6 text-center>
-        <v-btn color="blue darken-3" small @click="dialogLfw = !dialogLfw">
-          <v-icon class="mr-1">
-            mdi-account-group
-          </v-icon>
-          Available Today
         </v-btn>
       </v-flex>
     </v-layout>
     <JobPosting :jobs.sync="jobs" />
     <v-dialog v-model="create" persistent max-width="450">
-      <v-card class="px-3">
+      <v-card>
         <v-toolbar dark color="blue darken-3">
+          <v-spacer />
+          <v-toolbar-title>
+            <v-icon large>
+              mdi-new-box
+            </v-icon> Job Listing
+          </v-toolbar-title>
+          <v-spacer />
           <v-btn icon dark @click="create = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Job Posting</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <v-form ref="form">
           <v-layout wrap class="pa-6">
@@ -72,21 +75,6 @@
         <v-divider />
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogLfw" max-width="600">
-      <v-card class="px-3">
-        <v-toolbar dark color="blue darken-3">
-          <v-spacer />
-          <v-toolbar-title class="body-1">
-            People actively looking for work
-          </v-toolbar-title>
-          <v-spacer />
-          <v-btn icon dark @click="dialogLfw = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <contractors-today />
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -102,11 +90,9 @@
 </style>
 <script>
 import JobPosting from '../components/JobPosting.vue'
-import ContractorsToday from '../components/ContractorsToday.vue'
 export default {
   components: {
-    JobPosting,
-    ContractorsToday
+    JobPosting
   },
   data () {
     return {
@@ -114,7 +100,6 @@ export default {
         v => !!v || 'The description is required',
         v => (v || '').length <= 400 || 'Description should be 400 characters or less '
       ],
-      dialogLfw: false,
       jobs: [],
       create: false,
       itemSkills: [],
