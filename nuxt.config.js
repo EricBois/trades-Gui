@@ -142,8 +142,8 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: "http://localhost:3000/v1/"
-    // baseURL: "https://sub-hub.ca/api/"
+    // baseURL: "http://localhost:3000/v1/"
+    baseURL: "https://sub-hub.ca/api/"
   },
   router: {
     middleware: ['auth']
