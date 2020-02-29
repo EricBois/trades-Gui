@@ -200,25 +200,25 @@
             <v-card v-if="employment.available">
               <v-layout wrap class="pa-2">
                 <v-flex xs12 md6 class="pr-2">
-                  <v-select
+                  <v-combobox
                     v-model="employment.skills"
                     :items="itemSkills"
                     chips
                     dense
-                    clearable
                     label="Looking for work in"
                     multiple
+                    autocomplete
                   />
                 </v-flex>
                 <v-flex xs12 md6>
-                  <v-select
+                  <v-combobox
                     v-model="employment.location"
                     :items="locations"
                     chips
                     dense
-                    clearable
                     label="In which area ?"
                     multiple
+                    autocomplete
                   />
                 </v-flex>
                 <v-flex xs12 md4>
