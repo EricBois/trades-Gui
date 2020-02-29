@@ -1,5 +1,42 @@
 <template>
   <v-container>
+    <v-card
+      max-width="650"
+      class="mx-auto"
+    >
+      <v-layout row wrap class="mx-4 mb-5">
+        <v-flex xs12 text-center class="my-n6">
+          <span class="mainTitle2 grey--text"><u>Filter by</u></span>
+        </v-flex>
+        <v-flex xs4>
+          <v-text-field v-model="search" placeholder="name.." class="mt-3">
+            Search
+          </v-text-field>
+        </v-flex>
+        <v-flex xs4 class="px-3">
+          <v-combobox
+            v-model="city"
+            :items="cities"
+            chips
+            dense
+            label="City"
+            multiple
+            autocomplete
+          />
+        </v-flex>
+        <v-flex xs4>
+          <v-combobox
+            v-model="trade"
+            :items="trades"
+            chips
+            dense
+            label="Skills"
+            multiple
+            autocomplete
+          />
+        </v-flex>
+      </v-layout>
+    </v-card>
     <v-flex v-for="job in jobs" :key="job.id" xs12 my-2>
       <v-card max-width="650" class="mx-auto mt-4" outlined>
         <v-layout wrap>
@@ -13,10 +50,18 @@
               <v-icon>mdi-pencil-outline</v-icon>
             </v-btn>
           </v-flex>
+          <v-flex v-else xs3 class="pa-1" text-right>
+            <v-chip v-if="job.location && job.location.city" color="amber lighten-3" small label outlined>
+              <v-icon class="mr-1">
+                mdi-city
+              </v-icon>
+              {{ job.location.city }}
+            </v-chip>
+          </v-flex>
           <v-flex xs12 text-center>
             <v-chip
               large
-              class="mt-1"
+              class="mt-1 mr-2"
               color="blue-grey lighten-5"
               outlined
               label
@@ -27,6 +72,9 @@
               </v-icon>
               {{ job.company }}
             </v-chip>
+            <span v-if="job.location && job.location.url && job.location.url.length >= 1">
+              <a :href="job.location.url" rel="noreferrer" target="_blank"><v-icon>mdi-google-maps</v-icon></a>
+            </span>
           </v-flex>
           <v-flex class="mt-2" xs12 text-center>
             <v-card class="pa-2" elevation="4" tile>
@@ -326,6 +374,15 @@
                 multiple
               />
             </v-flex>
+            <v-flex class="mb-4" xs12>
+              <gmap-autocomplete
+                class="gmap v-input__slot v-text-field"
+                :value="posting.location.address"
+                :select-first-on-enter="true"
+                placeholder="Location"
+                @place_changed="setPlace"
+              />
+            </v-flex>
             <v-flex xs12>
               <v-textarea
                 v-model="posting.description"
@@ -506,16 +563,21 @@
 a:link {
   color: darkgray;
 }
+.mainTitle2 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1.7em;
+      font-weight: bold;
+      font-style: italic;
+    }
 </style>
 
 <script>
 import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import PublicProfile from '../components/PublicProfile.vue'
 export default {
   components: {
-    PublicProfile
+    PublicProfile: () => import('../components/PublicProfile.vue')
   },
   props: {
     jobs: {
@@ -525,6 +587,11 @@ export default {
   },
   data () {
     return {
+      city: '',
+      cities: [],
+      trade: '',
+      trades: [],
+      search: '',
       descRule: [
         v => !!v || 'The description is required',
         v => (v || '').length <= 400 || 'Description should be 400 characters or less '
@@ -548,7 +615,16 @@ export default {
         description: '',
         skills: [],
         tickets: [],
-        profile: {}
+        profile: {},
+        location: {
+          lat: '',
+          lng: '',
+          address: '',
+          country: '',
+          city: '',
+          province: '',
+          url: ''
+        }
       },
       application: {
         name: '',
@@ -680,6 +756,25 @@ export default {
     showDetails (contractor) {
       this.currentUser = contractor
       this.dialogApplied = true
+    },
+    setPlace (place) {
+      this.posting.location.address = place.formatted_address
+      this.posting.location.lat = place.geometry.location.lat()
+      this.posting.location.lng = place.geometry.location.lng()
+      this.posting.location.url = place.url
+      const address = place.address_components.map(address => ({ type: address.types, name: address.long_name }))
+      for (const key in address) {
+        const posting = address[key]
+        if (posting.type.includes('administrative_area_level_1')) {
+          this.posting.location.province = posting.name
+        }
+        if (posting.type.includes('locality')) {
+          this.posting.location.city = posting.name
+        }
+        if (posting.type.includes('country')) {
+          this.posting.location.country = posting.name
+        }
+      }
     }
   }
 }

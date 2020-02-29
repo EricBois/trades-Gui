@@ -55,6 +55,15 @@
                 autocomplete
               />
             </v-flex>
+            <v-flex class="mb-4" xs12>
+              <gmap-autocomplete
+                class="gmap v-input__slot v-text-field"
+                :value="posting.location.address"
+                :select-first-on-enter="true"
+                placeholder="Location"
+                @place_changed="setPlace"
+              />
+            </v-flex>
             <v-flex xs12>
               <v-textarea
                 v-model="posting.description"
@@ -109,7 +118,16 @@ export default {
         description: '',
         skills: [],
         tickets: [],
-        profile: {}
+        profile: {},
+        location: {
+          lat: '',
+          lng: '',
+          address: '',
+          country: '',
+          city: '',
+          province: '',
+          url: ''
+        }
       }
     }
   },
@@ -148,6 +166,25 @@ export default {
           this.jobs.push(obj)
         })
       })
+    },
+    setPlace (place) {
+      this.posting.location.address = place.formatted_address
+      this.posting.location.lat = place.geometry.location.lat()
+      this.posting.location.lng = place.geometry.location.lng()
+      this.posting.location.url = place.url
+      const address = place.address_components.map(address => ({ type: address.types, name: address.long_name }))
+      for (const key in address) {
+        const posting = address[key]
+        if (posting.type.includes('administrative_area_level_1')) {
+          this.posting.location.province = posting.name
+        }
+        if (posting.type.includes('locality')) {
+          this.posting.location.city = posting.name
+        }
+        if (posting.type.includes('country')) {
+          this.posting.location.country = posting.name
+        }
+      }
     }
   }
 }
