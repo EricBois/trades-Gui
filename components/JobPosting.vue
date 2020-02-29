@@ -37,7 +37,7 @@
         </v-flex>
       </v-layout>
     </v-card>
-    <v-flex v-for="job in jobs" :key="job.id" xs12 my-2>
+    <v-flex v-for="job in filteredList" :key="job.id" xs12 my-2>
       <v-card max-width="650" class="mx-auto mt-4" outlined>
         <v-layout wrap>
           <v-flex xs9 text-left class="pa-1">
@@ -557,6 +557,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-card
+      v-if="pages > 1"
+      max-width="650"
+      class="mx-auto mt-4"
+    >
+      <v-pagination
+        v-model="page"
+        :length="pages"
+      />
+    </v-card>
   </v-container>
 </template>
 <style scoped>
@@ -626,6 +636,9 @@ export default {
           url: ''
         }
       },
+      page: 1,
+      perPage: 10,
+      pages: [],
       application: {
         name: '',
         experience: '',
@@ -643,13 +656,42 @@ export default {
   computed: {
     ...mapGetters({
       profile: 'profile/getProfile'
-    })
+    }),
+    filteredList () {
+      let filtered = this.jobs
+      if (this.search.length > 0) {
+        filtered = this.jobs.filter(job => job.company.toLowerCase().includes(this.search))
+      }
+      if (this.city.length > 0) {
+        filtered = filtered.filter(job => this.city.includes(job.location.city))
+      }
+      if (this.trade.length > 0) {
+        // filtered = filtered.filter(job => new RegExp(job.skills.join('|')).test(this.trade))
+        filtered = filtered.filter(job => this.trade.some(el => job.skills.includes(el)))
+      }
+      return this.paginate(filtered)
+    }
   },
   watch: {
     currentUser () {
       if (this.currentUser.user_metadata && this.currentUser.user_metadata.phone) {
         this.phone = `tel:${this.currentUser.user_metadata.phone}`
       }
+    },
+    filteredList () {
+      this.setPages()
+    },
+    jobs () {
+      this.jobs.forEach((job) => {
+        if (!this.cities.includes(job.location.city)) {
+          this.cities.push(job.location.city)
+        }
+        job.skills.forEach((skill) => {
+          if (!this.trades.includes(skill)) {
+            this.trades.push(skill)
+          }
+        })
+      })
     }
   },
   created () {
@@ -658,6 +700,16 @@ export default {
     dayjs.extend(relativeTime)
   },
   methods: {
+    setPages () {
+      this.pages = Math.ceil(this.jobs.length / this.perPage)
+    },
+    paginate (jobs) {
+      const page = this.page
+      const perPage = this.perPage
+      const from = (page * perPage) - perPage
+      const to = (page * perPage)
+      return jobs.slice(from, to)
+    },
     askInfo (user) {
       this.currentUser = user
       this.dialogInfo = true
@@ -719,6 +771,7 @@ export default {
       this.posting.description = job.description
       this.posting.skills = job.skills
       this.posting.tickets = job.tickets
+      this.posting.location = job.location
       this.dialogEdit = true
     },
     async getJobs () {
