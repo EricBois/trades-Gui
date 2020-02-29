@@ -82,49 +82,14 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider class="my-2" />
-        <v-list-group prepend-icon="mdi-account-group" no-action>
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>
-                <v-chip outlined>
-                  My Team
-                </v-chip>
-              </v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <v-list-item to="/team/manage">
-            <v-list-item-content>
-              <v-list-item-title>
-                <v-chip outlined>
-                  <v-icon class="mr-2">
-                    mdi-account-multiple-plus
-                  </v-icon>
-                  <span>Manage Team</span>
-                </v-chip>
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item to="/team/projects">
-            <v-list-item-content>
-              <v-list-item-title>
-                <v-chip outlined>
-                  <v-icon class="mr-2">
-                    mdi-pencil-outline
-                  </v-icon>
-                  <span>Manage Projects</span>
-                </v-chip>
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
         <v-list-item to="/myprojects">
           <v-list-item-action>
-            <v-icon>mdi-alpha-p-box</v-icon>
+            <v-icon>mdi-alpha-m-box</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
               <v-chip outlined>
-                My Projects
+                Manage Listings
               </v-chip>
             </v-list-item-title>
           </v-list-item-content>
@@ -175,6 +140,41 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-group prepend-icon="mdi-account-group" no-action>
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>
+                <v-chip outlined>
+                  My Team
+                </v-chip>
+              </v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item to="/team/manage">
+            <v-list-item-content>
+              <v-list-item-title>
+                <v-chip outlined>
+                  <v-icon class="mr-2">
+                    mdi-account-multiple-plus
+                  </v-icon>
+                  <span>Manage Team</span>
+                </v-chip>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item to="/team/projects">
+            <v-list-item-content>
+              <v-list-item-title>
+                <v-chip outlined>
+                  <v-icon class="mr-2">
+                    mdi-pencil-outline
+                  </v-icon>
+                  <span>Manage Projects</span>
+                </v-chip>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
         <v-divider v-if="admin" class="my-3" />
         <v-list-item v-if="admin" to="/management">
           <v-list-item-action>
@@ -426,17 +426,18 @@
     </v-dialog>
     <v-bottom-sheet v-model="sheet" persistent>
       <v-sheet class="text-center" height="200px">
-        <h2>Welcome to Sub-Hub !</h2>
+        <h2>{{ sheetTitle }}</h2>
         <div class="ma-2">
           {{ welcomeText }}
         </div>
         <v-btn
           class="mt-6"
-          flat
-          color="error"
+          color="blue lighten-3"
+          large
+          outlined
           @click="letsGo()"
         >
-          Go !
+          Ok !
         </v-btn>
       </v-sheet>
     </v-bottom-sheet>
@@ -477,15 +478,15 @@
               Find contractors for my project
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" color="cyan darken-3" small>
+            <v-btn class="ma-2 ml-12" color="cyan darken-3" small @click="assistant('hire')">
               Hire tradesman
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" color="teal darken-3" small>
-              Build my team
+            <v-btn class="ma-2 ml-12" color="teal darken-3" small @click="assistant('team')">
+              Manage my team
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small>
+            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="assistant('job')">
               Find a job
             </v-btn>
           </div>
@@ -493,8 +494,55 @@
             <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="create = !create">
               Get bids on my project
             </v-btn>
+            <br>
             <v-btn class="ma-2 ml-12" color="cyan darken-3" small @click="dialogLfw = !dialogLfw">
               I'm out of time i need someone TODAY
+            </v-btn>
+            <br>
+            <v-btn class="ma-2 ml-12" small @click="assistant('back')">
+              go back
+            </v-btn>
+          </div>
+          <div v-if="step2 && hireTradesman">
+            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="assistant('post')">
+              post an ads
+            </v-btn>
+            <br>
+            <v-btn class="ma-2 ml-12" color="cyan darken-3" small @click="dialogLfw = !dialogLfw">
+              see who's available today
+            </v-btn>
+            <br>
+            <v-btn class="ma-2 ml-12" small @click="assistant('back')">
+              go back
+            </v-btn>
+          </div>
+          <div v-if="step2 && team">
+            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="assistant('members')">
+              Add or edit members
+            </v-btn>
+            <br>
+            <v-btn class="ma-2 ml-12" color="cyan darken-3" small @click="assistant('projects')">
+              manage my team projects
+            </v-btn>
+            <br>
+            <v-btn class="ma-2 ml-12" small @click="assistant('back')">
+              go back
+            </v-btn>
+          </div>
+          <div v-if="step2 && job">
+            <v-btn class="ma-2 ml-12" color="cyan darken-3" small @click="assistant('bid')">
+              place some bids
+            </v-btn>
+            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="assistant('profile')">
+              Make myself available to work
+            </v-btn>
+            <br>
+            <v-btn class="ma-2 ml-12" color="teal darken-3" small @click="assistant('listings')">
+              look at the job listing
+            </v-btn>
+            <br>
+            <v-btn class="ma-2 ml-12" small @click="assistant('back')">
+              go back
             </v-btn>
           </div>
         </v-flex>
@@ -506,7 +554,7 @@
         <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
-            People actively looking for work
+            Tradesman available today
           </v-toolbar-title>
           <v-spacer />
           <v-btn icon dark @click="dialogLfw = false">
@@ -557,6 +605,9 @@ export default {
   data: () => ({
     dialogLfw: false,
     assistantTitle: 'I want to ..',
+    job: false,
+    team: false,
+    hireTradesman: false,
     contractor: false,
     step1: true,
     step2: false,
@@ -589,6 +640,7 @@ export default {
     snackbarColor: 'green darken-3',
     snackbarText: '',
     sheet: false,
+    sheetTitle: 'Welcome to Sub-Hub !',
     welcomeText: '',
     switchAvailable: false,
     addBtnShow: 'none',
@@ -691,6 +743,7 @@ export default {
       }
     },
     create () {
+      // close dialog when create pronect is open
       if (this.dialogAssist === true) {
         this.dialogAssist = false
       }
@@ -760,13 +813,113 @@ export default {
           this.step1 = true
           this.step2 = false
           this.contractor = false
+          this.hireTradesman = false
+          this.team = false
+          this.job = false
           this.dialogAssist = false
+          break
+        }
+        case 'back': {
+          this.assistantTitle = 'I want to ..'
+          this.step1 = true
+          this.step2 = false
+          this.contractor = false
+          this.hireTradesman = false
+          this.job = false
+          this.team = false
           break
         }
         case 'find': {
           this.step1 = false
           this.step2 = true
           this.contractor = true
+          break
+        }
+        case 'hire': {
+          this.step1 = false
+          this.step2 = true
+          this.hireTradesman = true
+          break
+        }
+        case 'post': {
+          this.$router.push('../hiring')
+          this.step1 = true
+          this.step2 = false
+          this.contractor = false
+          this.hireTradesman = false
+          this.team = false
+          this.job = false
+          this.dialogAssist = false
+          break
+        }
+        case 'team': {
+          this.step1 = false
+          this.step2 = true
+          this.team = true
+          break
+        }
+        case 'members': {
+          this.$router.push('../team/manage')
+          this.step1 = true
+          this.step2 = false
+          this.contractor = false
+          this.hireTradesman = false
+          this.team = false
+          this.job = false
+          this.dialogAssist = false
+          break
+        }
+        case 'projects': {
+          this.$router.push('../team/projects')
+          this.step1 = true
+          this.step2 = false
+          this.contractor = false
+          this.hireTradesman = false
+          this.team = false
+          this.job = false
+          this.dialogAssist = false
+          break
+        }
+        case 'job': {
+          this.step1 = false
+          this.step2 = true
+          this.job = true
+          break
+        }
+        case 'bid': {
+          this.$router.push('../projects')
+          this.step1 = true
+          this.step2 = false
+          this.contractor = false
+          this.hireTradesman = false
+          this.team = false
+          this.job = false
+          this.dialogAssist = false
+          break
+        }
+        case 'listings': {
+          this.$router.push('../hiring')
+          this.step1 = true
+          this.step2 = false
+          this.contractor = false
+          this.hireTradesman = false
+          this.team = false
+          this.job = false
+          this.dialogAssist = false
+          break
+        }
+        case 'profile': {
+          this.$router.push('../profile')
+          this.step1 = true
+          this.step2 = false
+          this.contractor = false
+          this.hireTradesman = false
+          this.team = false
+          this.job = false
+          this.dialogAssist = false
+          this.sheetTitle = 'Get working today !'
+          this.welcomeText = 'Complete your profile and click on the tab labeled "Employment" at the top to make yourself available to companies for 48 hours.'
+          this.sheet = true
           break
         }
       }
