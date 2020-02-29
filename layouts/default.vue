@@ -687,6 +687,17 @@ export default {
           this.btn3.name = 'My Projects'
           this.btn3.link = '/myprojects'
           break
+        case 'profile':
+          this.btn1.icon = 'mdi-post'
+          this.btn1.name = 'Listings'
+          this.btn1.link = '/projects'
+          this.btn2.icon = 'mdi-account-group'
+          this.btn2.name = 'Team'
+          this.btn2.link = '/team/projects'
+          this.btn3.icon = 'mdi-alpha-p-box'
+          this.btn3.name = 'My Projects'
+          this.btn3.link = '/myprojects'
+          break
         case 'projects':
           this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
           this.btn1.name = 'Back'
