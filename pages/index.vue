@@ -30,7 +30,7 @@
     <v-flex xs12 text-center>
       <v-card max-width="450" class="mx-auto pa-6">
         <h1 class="sub">
-          Welcome in
+          Welcome to
         </h1>
         <v-divider />
         <v-card max-width="400" min-height="100" class="mx-auto" elevation="20" shaped>
