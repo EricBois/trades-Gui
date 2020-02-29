@@ -258,6 +258,16 @@ export default {
   methods: {
     create () {
       if (this.$refs.form.validate()) {
+        if (this.info.skills.length >= 1) {
+          this.info.skills.forEach(function (part, index) {
+            this[index] = this[index].trim().charAt(0).toUpperCase() + this[index].slice(1)
+          }, this.info.skills)
+        }
+        if (this.info.tickets.length >= 1) {
+          this.info.tickets.forEach(function (part, index) {
+            this[index] = this[index].trim().charAt(0).toUpperCase() + this[index].slice(1)
+          }, this.info.tickets)
+        }
         this.info.createdBy = this.$auth.user.name
         this.$axios.$post('job/create', this.info).then((res) => {
           //  direct to jobs page
