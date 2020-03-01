@@ -261,7 +261,13 @@
                     class="purple-input"
                   />
                 </v-flex>
-                <v-flex xs12 md3 text-center>
+                <v-flex xs12 md6 pt-4 pr-5>
+                  <v-text-field v-model="employment.contact.phone" class="purple-input" label="Contact Phone Number" />
+                </v-flex>
+                <v-flex xs12 md6 pt-4>
+                  <v-text-field v-model="employment.contact.email" class="purple-input" label="Contact Email" />
+                </v-flex>
+                <v-flex xs12 text-center>
                   <v-btn
                     class="ibm mt-4"
                     color="green darken-3"
@@ -445,7 +451,11 @@ export default {
         experience: '',
         skills: '',
         location: [],
-        reference: ''
+        reference: '',
+        contact: {
+          phone: '',
+          email: ''
+        }
       },
       info: {
         user_metadata: {
@@ -536,6 +546,12 @@ export default {
         if (this.info.user_metadata.emailNotification) {
           this.email = true
         }
+        if (this.employment.contact && this.employment.contact.phone.length < 1) {
+          this.employment.contact.phone = this.info.user_metadata.phone
+        }
+        if (this.employment.contact && this.employment.contact.email.length < 1) {
+          this.employment.contact.email = this.profile.email
+        }
       }
     },
     profilePhotos () {
@@ -552,6 +568,11 @@ export default {
       this.employment.skills = res.skills
       this.employment.location = res.location
       this.employment.employment = res.employment
+      if (res.contact) {
+        this.employment.contact.phone = res.contact.phone
+        this.employment.contact.email = res.contact.email
+      }
+
       if (res.available) {
         this.switch1 = true
       }
@@ -718,6 +739,10 @@ export default {
         this.employment.skills = res.skills
         this.employment.location = res.location
         this.employment.employment = res.employment
+        if (res.contact) {
+          this.employment.contact.phone = res.contact.phone
+          this.employment.contact.email = res.contact.email
+        }
         this.snackbarText = 'Successfully Updated!'
         this.snackbar = true
       })
