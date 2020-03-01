@@ -593,15 +593,12 @@ a {
 </style>
 <script>
 import { mapGetters } from 'vuex'
-import Register from '../components/Register'
-import CreateProject from '../components/CreateProject'
-import ContractorsToday from '../components/ContractorsToday.vue'
 export default {
   middleware: ['profile', 'notifications'],
   components: {
-    Register,
-    CreateProject,
-    ContractorsToday
+    Register: () => import('../components/Register.vue'),
+    CreateProject: () => import('../components/CreateProject.vue'),
+    ContractorsToday: () => import('../components/ContractorsToday.vue')
   },
   props: {
     source: {
