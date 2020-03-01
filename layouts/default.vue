@@ -55,13 +55,13 @@
         <v-divider class="my-2" />
         <v-list-item v-ripple>
           <v-list-item-action @click="$router.push('/projects')">
-            <v-icon color="amber lighten-3">
+            <v-icon color="yellow lighten-1">
               mdi-currency-usd
             </v-icon>
           </v-list-item-action>
           <v-list-item-content class="ml-n4" @click="$router.push('/projects')">
             <v-list-item-title>
-              <v-chip color="amber lighten-3" outlined label>
+              <v-chip color="yellow lighten-1" outlined label>
                 Projects Bidding
               </v-chip>
             </v-list-item-title>
@@ -76,14 +76,14 @@
         <v-divider />
         <v-list-item @click="dialogAssist = !dialogAssist">
           <v-list-item-action>
-            <v-icon color="green accent-3">
+            <v-icon color="blue accent-1">
               mdi-auto-fix
             </v-icon>
           </v-list-item-action>
           <v-list-item-content class="ml-n4">
             <v-list-item-title>
-              <v-chip color="green accent-3" outlined label>
-                Assistant
+              <v-chip color="blue accent-1" outlined label>
+                Your Assistant
               </v-chip>
             </v-list-item-title>
           </v-list-item-content>
@@ -198,13 +198,13 @@
         <v-divider class="my-2" />
         <v-list-item to="/hiring">
           <v-list-item-action>
-            <v-icon color="deep-orange accent-2">
+            <v-icon color="cyan accent-3">
               mdi-help-circle
             </v-icon>
           </v-list-item-action>
           <v-list-item-content class="ml-n4">
             <v-list-item-title>
-              <v-chip color="deep-orange accent-2" outlined label>
+              <v-chip color="cyan accent-3" outlined label>
                 Who's Hiring Now
               </v-chip>
             </v-list-item-title>
