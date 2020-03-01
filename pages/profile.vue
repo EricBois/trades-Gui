@@ -693,15 +693,20 @@ export default {
       }
     },
     saveHire () {
-      if (this.employment.skills.length >= 1) {
+      if (this.employment.skills && this.employment.skills.length >= 1) {
         this.employment.skills.forEach(function (part, index) {
           this[index] = this[index].trim().charAt(0).toUpperCase() + this[index].slice(1)
         }, this.employment.skills)
       }
-      if (this.employment.tickets.length >= 1) {
+      if (this.employment.tickets && this.employment.tickets.length >= 1) {
         this.info.employment.tickets.forEach(function (part, index) {
           this[index] = this[index].trim().charAt(0).toUpperCase() + this[index].slice(1)
         }, this.info.employment.tickets)
+      }
+      if (this.employment.location && this.employment.location.length >= 1) {
+        this.employment.location.forEach(function (part, index) {
+          this[index] = this[index].trim().charAt(0).toUpperCase() + this[index].slice(1)
+        }, this.employment.location)
       }
       this.employment.name = this.$auth.user.name
       this.employment.tickets = this.info.user_metadata.tickets
