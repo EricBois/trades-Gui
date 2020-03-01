@@ -216,10 +216,9 @@
 </style>
 <script>
 import { mapGetters } from 'vuex'
-import draggable from 'vuedraggable'
 export default {
   components: {
-    draggable
+    draggable: () => import('vuedraggable')
   },
   props: {
     team: {
