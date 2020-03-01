@@ -123,15 +123,18 @@ export default {
           res.forEach((obj, i) => {
             obj.bids.forEach((bid, i) => {
               if (bid.user === this.$auth.user.sub) {
-                this.placedBids.push(obj)
-                if (obj.location.city.length > 0 && !this.citiesPlacedBids.includes(obj.location.city)) {
-                  this.citiesPlacedBids.push(obj.location.city)
-                }
-                if (obj.skills.length > 0) {
+                // if placedBids doesnt have 1 bid on this project push otherwise ignore
+                if (!this.placedBids.map(x => x._id).includes(bid.project)) {
+                  this.placedBids.push(obj)
+                  if (obj.location.city.length > 0 && !this.citiesPlacedBids.includes(obj.location.city)) {
+                    this.citiesPlacedBids.push(obj.location.city)
+                  }
                   if (obj.skills.length > 0) {
-                    obj.skills.forEach((skill) => {
-                      if (!this.tradesBids.includes(skill)) { this.tradesBids.push(skill) }
-                    })
+                    if (obj.skills.length > 0) {
+                      obj.skills.forEach((skill) => {
+                        if (!this.tradesBids.includes(skill)) { this.tradesBids.push(skill) }
+                      })
+                    }
                   }
                 }
               }
