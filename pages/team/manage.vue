@@ -392,7 +392,7 @@
 import { mapGetters } from 'vuex'
 export default {
   components: {
-    PublicProfile: () => import('../components/PublicProfile.vue')
+    PublicProfile: () => import('../../components/PublicProfile.vue')
   },
   data () {
     return {
