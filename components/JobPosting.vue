@@ -143,6 +143,7 @@
           </v-flex>
           <v-flex v-if="job.user === $auth.user.sub" xs12 class="mt-2" text-center>
             <v-btn
+              v-if="job.applicants && job.applicants.length >= 1"
               class="ma-2"
               small
               color="blue-grey darken-2"
@@ -151,7 +152,19 @@
               <v-icon small class="mr-1">
                 mdi-account-group
               </v-icon>
-              Applications
+              {{ job.applicants.length }}
+              <span v-if="job.applicants.length <= 1">
+                Application
+              </span>
+              <span v-else>
+                Applications
+              </span>
+            </v-btn>
+            <v-btn v-else outlined disabled>
+              <v-icon small class="mr-1">
+                mdi-account-group
+              </v-icon>
+              No applications
             </v-btn>
           </v-flex>
           <v-flex xs8 class="pa-2">
