@@ -76,13 +76,13 @@
         <v-divider />
         <v-list-item @click="dialogAssist = !dialogAssist">
           <v-list-item-action>
-            <v-icon color="blue accent-1">
+            <v-icon color="teal accent-3">
               mdi-auto-fix
             </v-icon>
           </v-list-item-action>
           <v-list-item-content class="ml-n4">
             <v-list-item-title>
-              <v-chip color="blue accent-1" outlined label>
+              <v-chip color="teal accent-3" outlined label>
                 Your Assistant
               </v-chip>
             </v-list-item-title>
