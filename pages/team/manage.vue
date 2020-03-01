@@ -390,10 +390,9 @@
 </style>
 <script>
 import { mapGetters } from 'vuex'
-import PublicProfile from '../../components/PublicProfile.vue'
 export default {
   components: {
-    PublicProfile
+    PublicProfile: () => import('../components/PublicProfile.vue')
   },
   data () {
     return {

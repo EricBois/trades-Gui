@@ -229,10 +229,9 @@
 }
 </style>
 <script>
-import PublicProfile from './PublicProfile.vue'
 export default {
   components: {
-    PublicProfile
+    PublicProfile: () => import('../components/PublicProfile.vue')
   },
   props: {
     bids: {

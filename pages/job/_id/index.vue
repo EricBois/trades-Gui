@@ -667,7 +667,6 @@ import BidsApproval from '../../../components/BidsApproval'
 import ExpandableImage from '../../../components/ExpandableImage'
 import photoUpload from '../../../components/PhotoUpload.vue'
 import Message from '../../../components/Message.vue'
-import PublicProfile from '../../../components/PublicProfile.vue'
 import Bids from '../../../components/Bids.vue'
 export default {
   components: {
@@ -675,7 +674,7 @@ export default {
     ExpandableImage,
     BidsApproval,
     Message,
-    PublicProfile,
+    PublicProfile: () => import('../components/PublicProfile.vue'),
     Bids
   },
   data () {
