@@ -663,17 +663,13 @@
 </style>
 <script>
 import { mapGetters } from 'vuex'
-import BidsApproval from '../../../components/BidsApproval'
-import ExpandableImage from '../../../components/ExpandableImage'
-import photoUpload from '../../../components/PhotoUpload.vue'
-import Message from '../../../components/Message.vue'
 import Bids from '../../../components/Bids.vue'
 export default {
   components: {
-    photoUpload,
-    ExpandableImage,
-    BidsApproval,
-    Message,
+    photoUpload: () => import('../../../components/PhotoUpload.vue'),
+    ExpandableImage: () => import('../../../components/ExpandableImage.vue'),
+    BidsApproval: () => import('../../../components/BidsApproval.vue'),
+    Message: () => import('../../../components/Message.vue'),
     PublicProfile: () => import('../../../components/PublicProfile.vue'),
     Bids
   },

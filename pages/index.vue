@@ -84,10 +84,10 @@
 </style>
 <script>
 
-import Register from '../components/Register'
 export default {
   components: {
-    Register
+    Register: () => import('../components/Register.vue')
+
   },
   data () {
     return {

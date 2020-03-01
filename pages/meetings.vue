@@ -175,10 +175,9 @@
 </style>
 <script>
 import { mapGetters } from 'vuex'
-import DatePicker from '../components/DatePicker.vue'
 export default {
   components: {
-    DatePicker
+    DatePicker: () => import('../components/DatePicker.vue')
   },
   data () {
     return {

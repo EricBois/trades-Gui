@@ -422,10 +422,9 @@
 </style>
 <script>
 import { mapGetters } from 'vuex'
-import ExpandableImage from '../components/ExpandableImage'
 export default {
   components: {
-    ExpandableImage
+    ExpandableImage: () => import('../components/ExpandableImage.vue')
   },
   data () {
     return {
