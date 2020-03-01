@@ -674,7 +674,7 @@ export default {
     ExpandableImage,
     BidsApproval,
     Message,
-    PublicProfile: () => import('../../components/PublicProfile.vue'),
+    PublicProfile: () => import('../../../components/PublicProfile.vue'),
     Bids
   },
   data () {
