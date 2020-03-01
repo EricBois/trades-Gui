@@ -137,7 +137,7 @@
           </v-flex>
 
           <v-flex v-if="currentUser.contact && currentUser.contact.email" class="pa-2" xs12 sm6 text-center>
-            <v-btn :href="'mailto:'+currentUser.contact.email" small color="teal darken-3">
+            <v-btn :href="'mailto:'+currentUser.contact.email" target="_blank" small color="teal darken-3">
               <v-icon class="mr-2">
                 mdi-email
               </v-icon>
@@ -145,7 +145,7 @@
             </v-btn>
           </v-flex>
           <v-flex v-if="currentUser.contact && currentUser.contact.phone" class="pa-2" xs12 sm6 text-center>
-            <v-btn :href="'tel:'+currentUser.contact.phone" small color="teal darken-3">
+            <v-btn :href="'tel:'+currentUser.contact.phone" target="_blank" small color="teal darken-3">
               <v-icon class="mr-2">
                 mdi-phone
               </v-icon>
