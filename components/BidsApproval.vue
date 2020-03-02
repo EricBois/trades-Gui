@@ -52,7 +52,9 @@
           <v-icon>mdi-check-decagram</v-icon>&nbsp; Approve bid(s)
         </v-btn>
         <v-btn v-else color="green darken-3" class="mt-3 ml-2 mt-sm-0" small disabled>
-          <v-icon>mdi-check-decagram</v-icon>&nbsp; Approve bid(s)
+          <v-icon>
+            mdi-check-decagram
+          </v-icon>&nbsp; Bid(s) Approved
         </v-btn>
       </v-flex>
     </v-layout>
