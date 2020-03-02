@@ -18,6 +18,7 @@
           <a v-if="user.metadata && user.metadata.phone" :href="phone"><v-icon class="circle-icon" color="teal">mdi-phone-classic mdi-36px</v-icon></a>
         </div>
       </v-flex>
+
       <v-flex v-if="user.metadata && user.metadata.skills && user.metadata.skills.length > 0" xs12 sm6 text-center>
         <div class="sub">
           Skills
@@ -68,6 +69,27 @@
         <p class=" pa-1 elevation-2 description">
           {{ user.metadata.description }}
         </p>
+      </v-flex>
+      <v-flex xs12 text-center>
+        <v-card min-height="150" shaped>
+          <v-chip label class=" mt-n4 py-6 name">
+            Reviews
+          </v-chip>
+          <br>
+          <v-chip large class="sub mt-1" label>
+            <v-rating
+              v-model="rating"
+              color="yellow darken-3"
+              background-color="grey darken-1"
+              empty-icon="mdi-star-outline"
+              half-icon="mdi-star-half"
+              half-increments
+              hover
+              large
+              readonly
+            />
+          </v-chip>
+        </v-card>
       </v-flex>
       <v-flex xs12 text-center>
         <v-btn v-if="user.uid !== $auth.user.sub && !alreadyInTeam " class="mt-n6" color="blue darken-4" @click="addToTeam()">
@@ -193,6 +215,7 @@ export default {
   },
   data () {
     return {
+      rating: 2.5,
       alreadyInTeam: false,
       dialogMessage: false,
       phone: ''
