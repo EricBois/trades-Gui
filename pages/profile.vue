@@ -313,7 +313,6 @@
           </v-card>
         </v-card>
       </v-tab-item>
-      </v-tabs-item>
     </v-tabs-items>
     <v-dialog v-model="dialogPhoto" transition="dialog-bottom-transition" max-width="900">
       <v-card class="px-3">
@@ -390,7 +389,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    </v-tabs-items>
   </v-container>
 </template>
 <style>
