@@ -3,7 +3,7 @@
     <v-card
       v-for="bid in bids"
       :key="bid.id"
-      :color="(bid.notified && bid.user === $auth.user.sub) ? 'grey darken-2':'grey darken-3'"
+      :color="(bid.notified && bid.user !== $auth.user.sub) ? 'blue-grey darken-3':'grey darken-3'"
       class="mt-2 pa-1 pr-4"
       raised
       outlined
