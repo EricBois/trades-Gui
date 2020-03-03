@@ -3,7 +3,7 @@
     <v-card
       v-for="bid in bids"
       :key="bid.id"
-      :color="(bid.notified && bid.user !== $auth.user.sub) ? 'blue-grey darken-3':'grey darken-3'"
+      :color="(bid.notified && bid.user !== $auth.user.sub) ? 'teal darken-3':'grey darken-3'"
       class="mt-2 pa-1 pr-4"
       raised
       outlined
@@ -16,14 +16,14 @@
         <v-flex :xs8="!ownProject" :xs7="ownProject" sm4 class="pl-2" @click.self="open(bid)">
           <v-chip
             v-if="$vuetify.breakpoint.width >= 375"
-            :color="(bid.notified && bid.user === $auth.user.sub) ? 'yellow accent-3':'orange accent-1'"
+            :color="(bid.notified && bid.user === $auth.user.sub) ? 'orange accent-1':'grey lighten-4'"
             outlined
-            class="ma-1"
+            class="my-1"
             small
             label
             @click="profile(bid.user)"
           >
-            <v-icon v-if="bid.notified && bid.user === $auth.user.sub" class="mr-1" small color="amber darken-1">
+            <v-icon v-if="bid.notified " class="mr-1" small color="amber darken-1">
               mdi-crown-outline
             </v-icon>
             <v-icon color="green" small>
@@ -42,8 +42,8 @@
           <v-chip
             v-for="item in bid.items"
             :key="item.id"
-            :color="(bid.notified && bid.user === $auth.user.sub) ? 'yellow accent-3':'orange accent-1'"
-            class="ml-1 ma-1"
+            :color="(bid.notified && bid.user === $auth.user.sub) ? 'orange accent-1':'grey lighten-4'"
+            class="ml-1 my-1"
             outlined
             small
             label
@@ -55,8 +55,8 @@
           <v-chip
 
             small
-            class="ma-1"
-            :color="(bid.notified && bid.user === $auth.user.sub) ? 'yellow accent-3':'orange accent-1'"
+            class="my-1"
+            :color="(bid.notified && bid.user === $auth.user.sub) ? 'orange accent-1':'grey lighten-4'"
             label
             outlined
           >
