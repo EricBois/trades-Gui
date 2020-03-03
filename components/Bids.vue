@@ -271,7 +271,7 @@
               />
             </v-flex>
             <v-flex xs12 text-center>
-              <span class="ratings">Communication</span>
+              <span class="ratings">Reliability</span>
               <v-divider />
               <v-rating
                 v-model="ratingE"
