@@ -31,7 +31,10 @@
             </v-icon>&nbsp;
             {{ bid.createdBy }}
           </v-chip>
-          <span v-else @click="profile(bid.user)">
+          <span v-else :class="(bid.notified) ? 'orange--text text--accent-1':''" @click="profile(bid.user)">
+            <v-icon v-if="bid.notified " small color="amber darken-1">
+              mdi-crown-outline
+            </v-icon>
             <v-icon color="green" small>
               mdi-information-variant
             </v-icon>&nbsp;
