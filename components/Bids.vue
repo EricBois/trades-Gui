@@ -13,27 +13,25 @@
         <v-flex v-if="ownProject" xs1 sm1 class="mt-n5 mb-n6">
           <v-checkbox v-model="selectedBids" color="white" :value="bid" />
         </v-flex>
-        <v-flex v-if="bid.notified && bid.user === $auth.user.sub" xs1 sm1>
-          <v-icon color="amber darken-1">
-            mdi-crown-outline
-          </v-icon>
-        </v-flex>
-        <v-flex :xs8="!ownProject" :xs7="ownProject || bid.notified && bid.user === $auth.user.sub" sm4 class="pl-2" @click.self="open(bid)">
+        <v-flex :xs8="!ownProject" :xs7="ownProject" sm4 class="pl-2" @click.self="open(bid)">
           <v-chip
             v-if="$vuetify.breakpoint.width >= 375"
-            color="orange accent-1"
+            :color="(bid.notified && bid.user === $auth.user.sub) ? 'yellow accent-3':'orange accent-1'"
             outlined
             class="ma-1"
             small
             label
             @click="profile(bid.user)"
           >
+            <v-icon v-if="bid.notified && bid.user === $auth.user.sub" class="mr-1" small color="amber darken-1">
+              mdi-crown-outline
+            </v-icon>
             <v-icon color="green" small>
               mdi-information-outline
             </v-icon>&nbsp;
             {{ bid.createdBy }}
           </v-chip>
-          <span v-else color="orange accent-1" @click="profile(bid.user)">
+          <span v-else @click="profile(bid.user)">
             <v-icon color="green" small>
               mdi-information-variant
             </v-icon>&nbsp;
@@ -44,7 +42,7 @@
           <v-chip
             v-for="item in bid.items"
             :key="item.id"
-            color="orange accent-1"
+            :color="(bid.notified && bid.user === $auth.user.sub) ? 'yellow accent-3':'orange accent-1'"
             class="ml-1 ma-1"
             outlined
             small
@@ -58,7 +56,7 @@
 
             small
             class="ma-1"
-            color="orange accent-1"
+            :color="(bid.notified && bid.user === $auth.user.sub) ? 'yellow accent-3':'orange accent-1'"
             label
             outlined
           >
