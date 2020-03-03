@@ -8,13 +8,12 @@
       raised
       outlined
       shaped
-      @click="open(bid)"
     >
       <v-layout wrap>
         <v-flex v-if="ownProject" xs1 sm1 class="mt-n5 mb-n6">
           <v-checkbox v-model="selectedBids" color="white" :value="bid" />
         </v-flex>
-        <v-flex :xs12="!ownProject" :xs11="ownProject" sm4 class="pl-2">
+        <v-flex :xs12="!ownProject" :xs11="ownProject" sm4 class="pl-2" @click.stop="open(bid)">
           <v-chip
             :color="(bid.notified && bid.user === $auth.user.sub) ? 'orange accent-1':'grey lighten-4'"
             outlined
@@ -32,7 +31,7 @@
             {{ bid.createdBy }}
           </v-chip>
         </v-flex>
-        <v-flex v-if="$vuetify.breakpoint.smAndUp" sm5 text-center>
+        <v-flex v-if="$vuetify.breakpoint.smAndUp" sm5 text-center @click="open(bid)">
           <v-chip
             v-for="item in bid.items"
             :key="item.id"
@@ -45,7 +44,7 @@
             {{ item.trade }}
           </v-chip>
         </v-flex>
-        <v-flex xs12 :class="($vuetify.breakpoint.width >= 375)? 'mt-n8 mr-6' : 'mr-6'" text-right>
+        <v-flex xs12 :class="($vuetify.breakpoint.width >= 375)? 'mt-n8 mr-6' : 'mr-6'" text-right @click="open(bid)">
           <v-chip
 
             small
@@ -58,9 +57,11 @@
             {{ price(bid.items) }}
           </v-chip>
         </v-flex>
-        <v-flex v-if="bid.notified && bid.user === $auth.user.sub" xs12 class="mt-n8" text-right>
-          <v-btn color="green darken-4" fab class="mr-n10" small>
-            <v-icon>mdi-check-outline</v-icon>
+        <v-flex v-if="bid.notified && bid.user !== $auth.user.sub" xs2 offset-10 class="mt-n8" text-right>
+          <v-btn color="green darken-4" fab class="mr-n10" small @click="askReview(bid)">
+            <v-icon color="green lighten-5" large>
+              mdi-check-circle
+            </v-icon>
           </v-btn>
         </v-flex>
       </v-layout>
@@ -212,6 +213,42 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="dialogReview"
+      max-width="400"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          <v-flex xs12>
+            Mark Project as Completed
+            <v-divider />
+          </v-flex>
+
+          <v-card-text>
+            Please review the contractor
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer />
+
+            <v-btn
+              color="orange darken-3"
+              text
+              @click="dialogReview = false"
+            >
+              No
+            </v-btn>
+
+            <v-btn
+              color="green darken-1"
+              text
+            >
+              Yes, Let's Go!
+            </v-btn>
+          </v-card-actions>
+        </v-card-title>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style scoped>
@@ -251,6 +288,7 @@ export default {
   },
   data () {
     return {
+      dialogReview: false,
       dialogDeleteBid: false,
       dialogProfile: false,
       currentBid: {},
@@ -272,6 +310,10 @@ export default {
     this.selectedBids = this.selected
   },
   methods: {
+    askReview (bid) {
+      this.currentBid = bid
+      this.dialogReview = true
+    },
     profile (id) {
       this.$axios.$get(`account/getProfile/${id}`).then((res) => {
         this.dialog = false
