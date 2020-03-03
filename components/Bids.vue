@@ -8,14 +8,14 @@
       raised
       outlined
       shaped
+      @click="open(bid)"
     >
       <v-layout wrap>
         <v-flex v-if="ownProject" xs1 sm1 class="mt-n5 mb-n6">
           <v-checkbox v-model="selectedBids" color="white" :value="bid" />
         </v-flex>
-        <v-flex :xs8="!ownProject" :xs7="ownProject" sm4 class="pl-2" @click.self="open(bid)">
+        <v-flex :xs12="!ownProject" :xs11="ownProject" sm4 class="pl-2">
           <v-chip
-            v-if="$vuetify.breakpoint.width >= 375"
             :color="(bid.notified && bid.user === $auth.user.sub) ? 'orange accent-1':'grey lighten-4'"
             outlined
             class="my-1"
@@ -31,17 +31,8 @@
             </v-icon>&nbsp;
             {{ bid.createdBy }}
           </v-chip>
-          <span v-else :class="(bid.notified) ? 'orange--text text--accent-1':''" @click="profile(bid.user)">
-            <v-icon v-if="bid.notified " small color="amber darken-1">
-              mdi-crown-outline
-            </v-icon>
-            <v-icon color="green" small>
-              mdi-information-variant
-            </v-icon>&nbsp;
-            {{ bid.createdBy }}
-          </span>
         </v-flex>
-        <v-flex v-if="$vuetify.breakpoint.smAndUp" sm5 text-center @click.stop="open(bid)">
+        <v-flex v-if="$vuetify.breakpoint.smAndUp" sm5 text-center>
           <v-chip
             v-for="item in bid.items"
             :key="item.id"
@@ -54,7 +45,7 @@
             {{ item.trade }}
           </v-chip>
         </v-flex>
-        <v-flex xs4 sm2 text-center @click.stop="open(bid)">
+        <v-flex xs12 :class="($vuetify.breakpoint.width >= 375)? 'mt-n8 mr-6' : 'mr-6'" text-right>
           <v-chip
 
             small
@@ -67,7 +58,13 @@
             {{ price(bid.items) }}
           </v-chip>
         </v-flex>
+        <v-flex v-if="bid.notified && bid.user === $auth.user.sub" xs12 class="mt-n8" text-right>
+          <v-btn color="green darken-4" fab class="mr-n10" small>
+            <v-icon>mdi-check-outline</v-icon>
+          </v-btn>
+        </v-flex>
       </v-layout>
+      </v-layoutwrap>
     </v-card>
     <v-dialog
       v-model="dialog"
@@ -277,6 +274,7 @@ export default {
   methods: {
     profile (id) {
       this.$axios.$get(`account/getProfile/${id}`).then((res) => {
+        this.dialog = false
         this.user = res
         if (!this.user.photos) {
           this.user.photos = []
