@@ -218,35 +218,87 @@
       max-width="400"
     >
       <v-card>
-        <v-card-title class="headline">
-          <v-flex xs12>
-            Mark Project as Completed
-            <v-divider />
-          </v-flex>
+        <v-flex xs12 class="pa-3" text-center>
+          <h3 class="ibm">
+            Please review <span class="green--text"><u>{{ currentBid.createdBy }}</u></span>
+          </h3>
+          <v-divider />
+        </v-flex>
+        <v-card shaped class="ma-2">
+          <v-layout wrap>
+            <v-flex xs12 text-center>
+              <span class="ratings">Quality of work</span>
+              <v-divider />
+              <v-rating
+                v-model="ratingA"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                hover
+              />
+            </v-flex>
+            <v-flex xs12 text-center>
+              <span class="ratings">Timeliness</span>
+              <v-divider />
+              <v-rating
+                v-model="ratingB"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                hover
+              />
+            </v-flex>
+            <v-flex xs12 text-center>
+              <span class="ratings">Cleanliness</span>
+              <v-divider />
+              <v-rating
+                v-model="ratingC"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                hover
+              />
+            </v-flex>
+            <v-flex xs12 text-center>
+              <span class="ratings">Budget</span>
+              <v-divider />
+              <v-rating
+                v-model="ratingD"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                hover
+              />
+            </v-flex>
+            <v-flex xs12 text-center>
+              <span class="ratings">Communication</span>
+              <v-divider />
+              <v-rating
+                v-model="ratingE"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                hover
+              />
+            </v-flex>
+            <v-flex class="my-4" text-right>
+              <v-btn
+                color="orange darken-3"
+                text
+                @click="dialogReview = false"
+              >
+                Cancel
+              </v-btn>
 
-          <v-card-text>
-            Please review the contractor
-          </v-card-text>
-
-          <v-card-actions>
-            <v-spacer />
-
-            <v-btn
-              color="orange darken-3"
-              text
-              @click="dialogReview = false"
-            >
-              No
-            </v-btn>
-
-            <v-btn
-              color="green darken-1"
-              text
-            >
-              Yes, Let's Go!
-            </v-btn>
-          </v-card-actions>
-        </v-card-title>
+              <v-btn
+                color="green darken-1"
+                text
+              >
+                Save!
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-card>
       </v-card>
     </v-dialog>
   </v-container>
@@ -261,6 +313,11 @@
 .ibm {
   font-family: 'IBM Plex Sans', sans-serif;
   font-style: italic;
+}
+.ratings {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: italic;
+  font-size: 0.8em;
 }
 </style>
 <script>
@@ -288,6 +345,11 @@ export default {
   },
   data () {
     return {
+      ratingA: 0,
+      ratingB: 0,
+      ratingC: 0,
+      ratingD: 0,
+      ratingE: 0,
       dialogReview: false,
       dialogDeleteBid: false,
       dialogProfile: false,
