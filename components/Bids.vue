@@ -58,7 +58,14 @@
           </v-chip>
         </v-flex>
         <v-flex v-if="bid.notified && bid.user !== $auth.user.sub" xs2 offset-10 class="mt-n8" text-right>
-          <v-btn color="green darken-4" fab class="mr-n10" small @click="askReview(bid)">
+          <v-btn
+            v-if="!bid.reviewed"
+            color="green darken-4"
+            fab
+            class="mr-n10"
+            small
+            @click="askReview(bid)"
+          >
             <v-icon color="green lighten-5" large>
               mdi-check-circle
             </v-icon>
@@ -230,7 +237,7 @@
               <span class="ratings">Quality of work</span>
               <v-divider />
               <v-rating
-                v-model="ratingA"
+                v-model="review.ratingA"
                 color="yellow darken-3"
                 background-color="grey darken-1"
                 empty-icon="mdi-star-outline"
@@ -241,7 +248,7 @@
               <span class="ratings">Timeliness</span>
               <v-divider />
               <v-rating
-                v-model="ratingB"
+                v-model="review.ratingB"
                 color="yellow darken-3"
                 background-color="grey darken-1"
                 empty-icon="mdi-star-outline"
@@ -252,7 +259,7 @@
               <span class="ratings">Cleanliness</span>
               <v-divider />
               <v-rating
-                v-model="ratingC"
+                v-model="review.ratingC"
                 color="yellow darken-3"
                 background-color="grey darken-1"
                 empty-icon="mdi-star-outline"
@@ -263,7 +270,7 @@
               <span class="ratings">Budget</span>
               <v-divider />
               <v-rating
-                v-model="ratingD"
+                v-model="review.ratingD"
                 color="yellow darken-3"
                 background-color="grey darken-1"
                 empty-icon="mdi-star-outline"
@@ -274,11 +281,22 @@
               <span class="ratings">Reliability</span>
               <v-divider />
               <v-rating
-                v-model="ratingE"
+                v-model="review.ratingE"
                 color="yellow darken-3"
                 background-color="grey darken-1"
                 empty-icon="mdi-star-outline"
                 hover
+              />
+              <v-divider class="my-2" />
+            </v-flex>
+            <v-flex class="ma-2" xs12>
+              <v-textarea
+                v-model="review.description"
+                :rules="descRule"
+                label="How was your experience ?"
+                outlined
+                class="purple-input"
+                counter="400"
               />
             </v-flex>
             <v-flex class="my-4" text-right>
@@ -293,6 +311,7 @@
               <v-btn
                 color="green darken-1"
                 text
+                @click="saveReview()"
               >
                 Save!
               </v-btn>
@@ -317,7 +336,7 @@
 .ratings {
   font-family: 'IBM Plex Sans', sans-serif;
   font-style: italic;
-  font-size: 0.8em;
+  font-size: 1em;
 }
 </style>
 <script>
@@ -345,11 +364,18 @@ export default {
   },
   data () {
     return {
-      ratingA: 0,
-      ratingB: 0,
-      ratingC: 0,
-      ratingD: 0,
-      ratingE: 0,
+      descRule: [
+        v => !!v || 'The description is required',
+        v => (v || '').length <= 400 || 'Description should be 400 characters or less '
+      ],
+      review: {
+        ratingA: 0,
+        ratingB: 0,
+        ratingC: 0,
+        ratingD: 0,
+        ratingE: 0,
+        description: ''
+      },
       dialogReview: false,
       dialogDeleteBid: false,
       dialogProfile: false,
@@ -363,9 +389,6 @@ export default {
   watch: {
     selectedBids () {
       this.$emit('update:selected', this.selectedBids)
-    },
-    currentBid () {
-      // this.trades = this.currentBid.trade.split(', ')
     }
   },
   created () {
@@ -375,6 +398,23 @@ export default {
     askReview (bid) {
       this.currentBid = bid
       this.dialogReview = true
+    },
+    saveReview () {
+      this.review.reviewerName = this.$auth.user.name
+      this.review.user = this.currentBid.user
+      this.review.project = this.currentBid.project
+      this.review.bid = this.currentBid.id
+      this.$axios.$post(`review/create`, this.review).then((res) => {
+        // update bids
+        const index = this.bids.indexOf(this.currentBid)
+        const newBids = this.bids
+        newBids.splice(index, 1)
+        newBids.unshift(res)
+        this.$emit('updated:bids', newBids)
+        // bug whitout it because of the watch
+        this.selectedBids = []
+        this.dialogReview = false
+      })
     },
     profile (id) {
       this.$axios.$get(`account/getProfile/${id}`).then((res) => {
@@ -429,10 +469,6 @@ export default {
           .then((res) => {
             this.loading = false
             this.currentBid = res
-          })
-          .catch((error) => {
-            this.snackbarText = `${error}`
-            this.snackbar = true
           })
       }
     },
