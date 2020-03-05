@@ -342,16 +342,18 @@ export default {
     }
     this.$axios.get(`review/get/${this.user.uid}`).then((res) => {
       res.data.forEach((review) => {
+        // convert Str to Int
         review.ratingA = parseInt(review.ratingA)
         review.ratingB = parseInt(review.ratingB)
         review.ratingC = parseInt(review.ratingC)
         review.ratingD = parseInt(review.ratingD)
         review.ratingE = parseInt(review.ratingE)
+        // Get sum
         this.sum += review.ratingA + review.ratingB + review.ratingC + review.ratingD + review.ratingE
       })
       this.reviews = res.data
+      // calculate average of reviews score
       this.rating = (this.sum / 5)
-      console.log(this.rating)
     })
     if (this.team) {
       // make sure user isn't in team already
