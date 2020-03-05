@@ -77,6 +77,9 @@
           </v-chip>
           <br>
           <v-chip large class="sub mt-1" label>
+            <v-chip color="grey darken-3" large>
+              {{ rating }}
+            </v-chip>
             <v-rating
               v-model="rating"
               color="yellow darken-3"
@@ -89,6 +92,87 @@
               readonly
             />
           </v-chip>
+        </v-card>
+        <v-card v-for="review in reviews" :key="review.id" class="pa-8 mt-n6" elevation="18">
+          <v-layout wrap>
+            <v-flex class="mt-n5" xs12 text-left>
+              <v-chip label>
+                {{ review.reviewerName }}
+              </v-chip>
+              <v-divider />
+            </v-flex>
+            <v-flex :class="($vuetify.breakpoint.width <= 600)? 'mt-n4': ''" xs12 sm4 :text-left="($vuetify.breakpoint.width > 600)? true: false">
+              <span>Quality of work</span>
+              <v-rating
+                v-model="review.ratingA"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                half-icon="mdi-star-half"
+                half-increments
+                hover
+                small
+                readonly
+              />
+              <span>Timeliness</span>
+              <v-rating
+                v-model="review.ratingB"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                half-icon="mdi-star-half"
+                half-increments
+                hover
+                small
+                readonly
+              />
+            </v-flex>
+            <v-flex :class="($vuetify.breakpoint.width <= 600)? 'mt-n4': ''" xs12 sm4 :text-left="($vuetify.breakpoint.width > 600)? true: false">
+              <span>Cleanliness</span>
+              <v-rating
+                v-model="review.ratingC"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                half-icon="mdi-star-half"
+                half-increments
+                hover
+                small
+                readonly
+              />
+              <span>Budget</span>
+              <v-rating
+                v-model="review.ratingD"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                half-icon="mdi-star-half"
+                half-increments
+                hover
+                small
+                readonly
+              />
+            </v-flex>
+            <v-flex :class="($vuetify.breakpoint.width <= 600)? 'mt-n4': ''" xs12 sm4 :text-left="($vuetify.breakpoint.width > 600)? true: false">
+              <span>Reliability</span>
+              <v-rating
+                v-model="review.ratingE"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                half-icon="mdi-star-half"
+                half-increments
+                hover
+                small
+                readonly
+              />
+            </v-flex>
+            <v-flex xs12>
+              <v-card class="pa-2" elevation="18">
+                {{ review.description }}
+              </v-card>
+            </v-flex>
+          </v-layout>
         </v-card>
       </v-flex>
       <v-flex xs12 text-center>
@@ -215,6 +299,8 @@ export default {
   },
   data () {
     return {
+      sum: 0,
+      reviews: [],
       rating: 2.5,
       alreadyInTeam: false,
       dialogMessage: false,
@@ -254,6 +340,19 @@ export default {
     if (this.user.metadata && this.user.metadata.phone) {
       this.phone = `tel:${this.user.metadata.phone}`
     }
+    this.$axios.get(`review/get/${this.user.uid}`).then((res) => {
+      res.data.forEach((review) => {
+        review.ratingA = parseInt(review.ratingA)
+        review.ratingB = parseInt(review.ratingB)
+        review.ratingC = parseInt(review.ratingC)
+        review.ratingD = parseInt(review.ratingD)
+        review.ratingE = parseInt(review.ratingE)
+        this.sum += review.ratingA + review.ratingB + review.ratingC + review.ratingD + review.ratingE
+      })
+      this.reviews = res.data
+      this.rating = (this.sum / 5)
+      console.log(this.rating)
+    })
     if (this.team) {
       // make sure user isn't in team already
       this.team.forEach((member) => {
