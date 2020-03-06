@@ -60,19 +60,29 @@
         <v-flex v-if="bid.notified && bid.user !== $auth.user.sub" xs2 offset-10 class="mt-n8" text-right>
           <v-btn
             v-if="!bid.reviewed"
-            color="green darken-4"
+            color="orange darken-3"
             fab
             class="mr-n10"
             small
             @click="askReview(bid)"
           >
+            <v-icon large>
+              mdi-star-circle
+            </v-icon>
+          </v-btn>
+          <v-btn
+            v-else
+            color="green darken-4"
+            fab
+            class="mr-n10"
+            small
+          >
             <v-icon color="green lighten-5" large>
-              mdi-check-circle
+              mdi-star-circle
             </v-icon>
           </v-btn>
         </v-flex>
       </v-layout>
-      </v-layoutwrap>
     </v-card>
     <v-dialog
       v-model="dialog"
@@ -404,6 +414,7 @@ export default {
       this.review.user = this.currentBid.user
       this.review.project = this.currentBid.project
       this.review.bid = this.currentBid.id
+      this.review.projectName = this.currentBid.projectName
       this.$axios.$post(`review/create`, this.review).then((res) => {
         // update bids
         const index = this.bids.indexOf(this.currentBid)
