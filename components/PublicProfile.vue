@@ -99,6 +99,11 @@
               <v-chip label>
                 {{ review.reviewerName }}
               </v-chip>
+            </v-flex>
+            <v-flex xs12 class="mt-n7" text-right>
+              <v-chip small outlined color="blue-grey lighten-4" label>
+                {{ review.projectName }}
+              </v-chip>
               <v-divider />
             </v-flex>
             <v-flex :class="($vuetify.breakpoint.width <= 600)? 'mt-n4': ''" xs12 sm4 :text-left="($vuetify.breakpoint.width > 600)? true: false">
