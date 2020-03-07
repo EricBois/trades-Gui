@@ -71,9 +71,15 @@
         </p>
       </v-flex>
       <v-flex xs12 text-center>
-        <v-card min-height="150" shaped>
+        <v-card v-if="rating >= 1" min-height="150" shaped>
           <v-chip label class=" mt-n4 py-6 name">
+            <v-icon class="mr-1">
+              mdi-star-four-points
+            </v-icon>
             Reviews
+            <v-icon class="ml-1">
+              mdi-star-four-points
+            </v-icon>
           </v-chip>
           <br>
           <v-chip large class="sub mt-1" label>
@@ -91,6 +97,17 @@
               large
               readonly
             />
+          </v-chip>
+        </v-card>
+        <v-card v-else min-height="80" shaped>
+          <v-chip label class=" mt-n4 py-6 name">
+            <v-icon class="mr-1">
+              mdi-star-four-points
+            </v-icon>
+            No Reviews
+            <v-icon class="ml-1">
+              mdi-star-four-points
+            </v-icon>
           </v-chip>
         </v-card>
         <v-card v-for="review in reviews" :key="review.id" class="pa-8 mt-n6" elevation="18">
