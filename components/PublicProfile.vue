@@ -76,16 +76,17 @@
             <v-icon class="mr-1">
               mdi-star-four-points
             </v-icon>
-            Reviews
+            {{ reviews.length }}
+            Review(s)
             <v-icon class="ml-1">
               mdi-star-four-points
             </v-icon>
           </v-chip>
           <br>
           <v-chip large class="sub mt-1" label>
-            <v-chip color="grey darken-3" large>
-              {{ rating }}
-            </v-chip>
+            <v-btn color="grey darken-3" fab>
+              <span class="rating">{{ rating }}</span>
+            </v-btn>
             <v-rating
               v-model="rating"
               color="yellow darken-3"
@@ -117,8 +118,16 @@
                 {{ review.reviewerName }}
               </v-chip>
             </v-flex>
+            <v-flex v-if="review.reviewerUid === $auth.user.sub" class="mt-n12 mb-2" xs12 text-right>
+              <v-btn class="mt-n4" x-small fab color="yellow darken-3" @click="editReview(review)">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn class="mr-n2 mt-n4" x-small fab color="red darken-4" @click="deleteReview(review)">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-flex>
             <v-flex xs12 class="mt-n7" text-right>
-              <v-chip small outlined color="blue-grey lighten-4" label>
+              <v-chip x-small outlined color="blue-grey lighten-4" label>
                 {{ review.projectName }}
               </v-chip>
               <v-divider />
@@ -236,6 +245,143 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="dialogReview"
+      max-width="400"
+    >
+      <v-card>
+        <v-flex xs12 class="pa-3" text-center>
+          <h3 class="ibm">
+            Edit review <span class="green--text"><u>{{ currentReview.projectName }}</u></span>
+          </h3>
+          <v-divider />
+        </v-flex>
+        <v-card shaped class="ma-2">
+          <v-layout wrap>
+            <v-flex xs12 text-center>
+              <span class="ratings">Quality of work</span>
+              <v-divider />
+              <v-rating
+                v-model="newReview.ratingA"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                hover
+              />
+            </v-flex>
+            <v-flex xs12 text-center>
+              <span class="ratings">Timeliness</span>
+              <v-divider />
+              <v-rating
+                v-model="newReview.ratingB"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                hover
+              />
+            </v-flex>
+            <v-flex xs12 text-center>
+              <span class="ratings">Cleanliness</span>
+              <v-divider />
+              <v-rating
+                v-model="newReview.ratingC"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                hover
+              />
+            </v-flex>
+            <v-flex xs12 text-center>
+              <span class="ratings">Budget</span>
+              <v-divider />
+              <v-rating
+                v-model="newReview.ratingD"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                hover
+              />
+            </v-flex>
+            <v-flex xs12 text-center>
+              <span class="ratings">Reliability</span>
+              <v-divider />
+              <v-rating
+                v-model="newReview.ratingE"
+                color="yellow darken-3"
+                background-color="grey darken-1"
+                empty-icon="mdi-star-outline"
+                hover
+              />
+              <v-divider class="my-2" />
+            </v-flex>
+            <v-flex class="ma-2" xs12>
+              <v-textarea
+                v-model="newReview.description"
+                :rules="descRule"
+                label="How was your experience ?"
+                outlined
+                class="purple-input"
+                counter="400"
+              />
+            </v-flex>
+            <v-flex class="my-4" text-right>
+              <v-btn
+                color="orange darken-3"
+                text
+                @click="dialogReview = false"
+              >
+                Cancel
+              </v-btn>
+
+              <v-btn
+                color="green darken-1"
+                text
+                @click="saveReview()"
+              >
+                Save Changes!
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="dialogDelete"
+      max-width="400"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Please Confirm
+        </v-card-title>
+
+        <v-card-text>
+          Delete this review:
+          <v-chip class="ml-2" label>
+            {{ currentReview.projectName }}
+          </v-chip>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            color="orange darken-3"
+            text
+            @click="dialogDelete = false"
+          >
+            No
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="confirmDelete()"
+          >
+            Yes!
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -302,6 +448,9 @@ a:link {
 .container {
   max-width: 1200px;
 }
+.rating {
+  font-size: 1.9em;
+}
 </style>
 
 <script>
@@ -321,18 +470,51 @@ export default {
   },
   data () {
     return {
+      descRule: [
+        v => !!v || 'The description is required',
+        v => (v || '').length <= 400 || 'Description should be 400 characters or less '
+      ],
       sum: 0,
       reviews: [],
       rating: 0,
       alreadyInTeam: false,
       dialogMessage: false,
-      phone: ''
+      dialogReview: false,
+      dialogDelete: false,
+      phone: '',
+      currentReview: {},
+      newReview: {
+        ratingA: 0,
+        ratingB: 0,
+        ratingC: 0,
+        ratingD: 0,
+        ratingE: 0,
+        description: ''
+      }
     }
   },
   computed: mapGetters({
     team: 'team/getTeam'
   }),
   watch: {
+    reviews () {
+      this.rating = 0
+      this.sum = 0
+      this.reviews.forEach((review) => {
+        // convert Str to Int
+        review.ratingA = parseInt(review.ratingA)
+        review.ratingB = parseInt(review.ratingB)
+        review.ratingC = parseInt(review.ratingC)
+        review.ratingD = parseInt(review.ratingD)
+        review.ratingE = parseInt(review.ratingE)
+        // Get sum
+        this.sum += review.ratingA + review.ratingB + review.ratingC + review.ratingD + review.ratingE
+      })
+      if (this.reviews.length >= 1) {
+        // calculate average of reviews score
+        this.rating = (this.sum / this.reviews.length / 5)
+      }
+    },
     user () {
       this.alreadyInTeam = false
       // make sure user isn't in team already
@@ -341,6 +523,7 @@ export default {
           this.alreadyInTeam = true
         }
       })
+      this.rating = 0
       this.sum = 0
       this.$axios.get(`review/get/${this.user.uid}`).then((res) => {
         res.data.forEach((review) => {
@@ -407,6 +590,43 @@ export default {
     }
   },
   methods: {
+    editReview (review) {
+      this.currentReview = review
+      // set saved data for editing and convert to integer
+      this.newReview.ratingA = parseInt(review.ratingA)
+      this.newReview.ratingB = parseInt(review.ratingB)
+      this.newReview.ratingC = parseInt(review.ratingC)
+      this.newReview.ratingD = parseInt(review.ratingD)
+      this.newReview.ratingE = parseInt(review.ratingE)
+      this.newReview.description = review.description
+      this.dialogReview = true
+    },
+    deleteReview (review) {
+      this.currentReview = review
+      this.dialogDelete = true
+    },
+    confirmDelete () {
+      this.$axios.$post(`review/delete/${this.currentReview.bid}/${this.currentReview.reviewerUid}`).then((res) => {
+        // update review
+        const index = this.reviews.indexOf(this.currentReview)
+        this.reviews.splice(index, 1)
+        this.dialogDelete = false
+      })
+    },
+    saveReview () {
+      this.newReview.reviewerName = this.$auth.user.name
+      this.newReview.user = this.currentReview.user
+      this.newReview.project = this.currentReview.project
+      this.newReview.bid = this.currentReview.bid
+      this.newReview.projectName = this.currentReview.projectName
+      this.$axios.$post(`review/edit/${this.currentReview.bid}`, this.newReview).then((res) => {
+        // update review
+        const index = this.reviews.indexOf(this.currentReview)
+        this.reviews.splice(index, 1)
+        this.reviews.unshift(res.review)
+        this.dialogReview = false
+      })
+    },
     addToTeam () {
       this.$store.commit('team/addMember', {
         uid: this.user.uid, // ID

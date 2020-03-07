@@ -70,18 +70,6 @@
               mdi-star-circle
             </v-icon>
           </v-btn>
-          <v-btn
-            v-else
-            color="green darken-4"
-            fab
-            class="mr-n10"
-            small
-            @click="editReview(bid)"
-          >
-            <v-icon color="green lighten-5" large>
-              mdi-star-circle
-            </v-icon>
-          </v-btn>
         </v-flex>
       </v-layout>
     </v-card>
@@ -320,21 +308,11 @@
               </v-btn>
 
               <v-btn
-                v-if="!editing"
                 color="green darken-1"
                 text
                 @click="saveReview()"
               >
                 Save!
-              </v-btn>
-              <!-- edit set to true -->
-              <v-btn
-                v-else
-                color="green darken-1"
-                text
-                @click="saveReview(true)"
-              >
-                Save Changes!
               </v-btn>
             </v-flex>
           </v-layout>
@@ -397,7 +375,6 @@ export default {
         ratingE: 0,
         description: ''
       },
-      editing: false,
       dialogReview: false,
       dialogDeleteBid: false,
       dialogProfile: false,
@@ -417,60 +394,27 @@ export default {
     this.selectedBids = this.selected
   },
   methods: {
-    editReview (bid) {
-      this.currentBid = bid
-      // set edit mode for dialog btn
-      this.editing = true
-      if (bid.review) {
-        // get our current review
-        const review = bid.review[0]
-        // set saved data for editing and convert to integer
-        this.review.ratingA = parseInt(review.ratingA)
-        this.review.ratingB = parseInt(review.ratingB)
-        this.review.ratingC = parseInt(review.ratingC)
-        this.review.ratingD = parseInt(review.ratingD)
-        this.review.ratingE = parseInt(review.ratingE)
-        this.review.description = review.description
-      }
-      this.dialogReview = true
-    },
     askReview (bid) {
-      this.editing = false
       this.currentBid = bid
       this.dialogReview = true
     },
-    saveReview (edit) {
+    saveReview () {
       this.review.reviewerName = this.$auth.user.name
       this.review.user = this.currentBid.user
       this.review.project = this.currentBid.project
       this.review.bid = this.currentBid.id
       this.review.projectName = this.currentBid.projectName
-      if (!edit) {
-        this.$axios.$post(`review/create`, this.review).then((res) => {
+      this.$axios.$post(`review/create`, this.review).then((res) => {
         // update bids
-          const index = this.bids.indexOf(this.currentBid)
-          const newBids = this.bids
-          newBids.splice(index, 1)
-          newBids.unshift(res)
-          this.$emit('updated:bids', newBids)
-          // bug whitout it because of the watch
-          this.selectedBids = []
-          this.dialogReview = false
-        })
-      } else if (edit) {
-        this.$axios.$post(`review/edit/${this.currentBid.id}`, this.review).then((res) => {
-          // update bids
-          const index = this.bids.indexOf(this.currentBid)
-          const newBids = this.bids
-          newBids.splice(index, 1)
-          newBids.unshift(res)
-          this.$emit('updated:bids', newBids)
-          // bug whitout it because of the watch
-          this.selectedBids = []
-          this.dialogReview = false
-          this.editing = false
-        })
-      }
+        const index = this.bids.indexOf(this.currentBid)
+        const newBids = this.bids
+        newBids.splice(index, 1)
+        newBids.unshift(res)
+        this.$emit('updated:bids', newBids)
+        // bug whitout it because of the watch
+        this.selectedBids = []
+        this.dialogReview = false
+      })
     },
     profile (id) {
       this.$axios.$get(`account/getProfile/${id}`).then((res) => {
