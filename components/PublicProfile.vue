@@ -306,7 +306,7 @@ export default {
     return {
       sum: 0,
       reviews: [],
-      rating: 2.5,
+      rating: 0,
       alreadyInTeam: false,
       dialogMessage: false,
       phone: ''
@@ -322,6 +322,24 @@ export default {
       this.team.forEach((member) => {
         if (member.uid === this.user.uid) {
           this.alreadyInTeam = true
+        }
+      })
+      this.sum = 0
+      this.$axios.get(`review/get/${this.user.uid}`).then((res) => {
+        res.data.forEach((review) => {
+        // convert Str to Int
+          review.ratingA = parseInt(review.ratingA)
+          review.ratingB = parseInt(review.ratingB)
+          review.ratingC = parseInt(review.ratingC)
+          review.ratingD = parseInt(review.ratingD)
+          review.ratingE = parseInt(review.ratingE)
+          // Get sum
+          this.sum += review.ratingA + review.ratingB + review.ratingC + review.ratingD + review.ratingE
+        })
+        this.reviews = res.data
+        if (this.reviews.length >= 1) {
+        // calculate average of reviews score
+          this.rating = (this.sum / this.reviews.length / 5)
         }
       })
     },
@@ -357,8 +375,10 @@ export default {
         this.sum += review.ratingA + review.ratingB + review.ratingC + review.ratingD + review.ratingE
       })
       this.reviews = res.data
-      // calculate average of reviews score
-      this.rating = (this.sum / 5)
+      if (this.reviews.length >= 1) {
+        // calculate average of reviews score
+        this.rating = (this.sum / this.reviews.length / 5)
+      }
     })
     if (this.team) {
       // make sure user isn't in team already

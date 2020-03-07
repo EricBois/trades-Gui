@@ -13,7 +13,7 @@
         <v-flex v-if="ownProject" xs1 sm1 class="mt-n5 mb-n6">
           <v-checkbox v-model="selectedBids" color="white" :value="bid" />
         </v-flex>
-        <v-flex :xs12="!ownProject" :xs11="ownProject" sm4 class="pl-2" @click.stop="open(bid)">
+        <v-flex :xs12="!ownProject" :xs11="ownProject" sm4 class="pl-2" @click.self="open(bid)">
           <v-chip
             :color="(bid.notified && bid.user === $auth.user.sub) ? 'orange accent-1':'grey lighten-4'"
             outlined
@@ -76,6 +76,7 @@
             fab
             class="mr-n10"
             small
+            @click="editReview(bid)"
           >
             <v-icon color="green lighten-5" large>
               mdi-star-circle
@@ -319,11 +320,21 @@
               </v-btn>
 
               <v-btn
+                v-if="!editing"
                 color="green darken-1"
                 text
                 @click="saveReview()"
               >
                 Save!
+              </v-btn>
+              <!-- edit set to true -->
+              <v-btn
+                v-else
+                color="green darken-1"
+                text
+                @click="saveReview(true)"
+              >
+                Save Changes!
               </v-btn>
             </v-flex>
           </v-layout>
@@ -386,6 +397,7 @@ export default {
         ratingE: 0,
         description: ''
       },
+      editing: false,
       dialogReview: false,
       dialogDeleteBid: false,
       dialogProfile: false,
@@ -405,27 +417,60 @@ export default {
     this.selectedBids = this.selected
   },
   methods: {
+    editReview (bid) {
+      this.currentBid = bid
+      // set edit mode for dialog btn
+      this.editing = true
+      if (bid.review) {
+        // get our current review
+        const review = bid.review[0]
+        // set saved data for editing and convert to integer
+        this.review.ratingA = parseInt(review.ratingA)
+        this.review.ratingB = parseInt(review.ratingB)
+        this.review.ratingC = parseInt(review.ratingC)
+        this.review.ratingD = parseInt(review.ratingD)
+        this.review.ratingE = parseInt(review.ratingE)
+        this.review.description = review.description
+      }
+      this.dialogReview = true
+    },
     askReview (bid) {
+      this.editing = false
       this.currentBid = bid
       this.dialogReview = true
     },
-    saveReview () {
+    saveReview (edit) {
       this.review.reviewerName = this.$auth.user.name
       this.review.user = this.currentBid.user
       this.review.project = this.currentBid.project
       this.review.bid = this.currentBid.id
       this.review.projectName = this.currentBid.projectName
-      this.$axios.$post(`review/create`, this.review).then((res) => {
+      if (!edit) {
+        this.$axios.$post(`review/create`, this.review).then((res) => {
         // update bids
-        const index = this.bids.indexOf(this.currentBid)
-        const newBids = this.bids
-        newBids.splice(index, 1)
-        newBids.unshift(res)
-        this.$emit('updated:bids', newBids)
-        // bug whitout it because of the watch
-        this.selectedBids = []
-        this.dialogReview = false
-      })
+          const index = this.bids.indexOf(this.currentBid)
+          const newBids = this.bids
+          newBids.splice(index, 1)
+          newBids.unshift(res)
+          this.$emit('updated:bids', newBids)
+          // bug whitout it because of the watch
+          this.selectedBids = []
+          this.dialogReview = false
+        })
+      } else if (edit) {
+        this.$axios.$post(`review/edit/${this.currentBid.id}`, this.review).then((res) => {
+          // update bids
+          const index = this.bids.indexOf(this.currentBid)
+          const newBids = this.bids
+          newBids.splice(index, 1)
+          newBids.unshift(res)
+          this.$emit('updated:bids', newBids)
+          // bug whitout it because of the watch
+          this.selectedBids = []
+          this.dialogReview = false
+          this.editing = false
+        })
+      }
     },
     profile (id) {
       this.$axios.$get(`account/getProfile/${id}`).then((res) => {
@@ -484,14 +529,17 @@ export default {
       }
     },
     price (items, dialog) {
-      if (items.length > 1 && this.hourly && !dialog) {
+      if (items && items.length > 1 && this.hourly && !dialog) {
         return 'Prices'
       }
       let price = 0
-      items.forEach((item) => {
-        price += parseInt(item.price, 10)
-      })
-      price = '$' + price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+      if (items) {
+        items.forEach((item) => {
+          price += parseInt(item.price, 10)
+        })
+        price = '$' + price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+      }
+
       return price
     }
   }
