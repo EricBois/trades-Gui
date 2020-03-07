@@ -332,7 +332,6 @@
               :preview="false"
               :max-width="700"
               :class-name="['photos', { 'fileinput--loaded': hasImage }]"
-              capture="camera"
               accept="image/*"
               :debug="1"
               do-not-resize="gif"
