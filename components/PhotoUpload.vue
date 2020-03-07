@@ -16,7 +16,6 @@
         :preview="false"
         :max-width="700"
         :class-name="['fileinput', { 'fileinput--loaded': hasImage }]"
-        capture="environment"
         :debug="1"
         do-not-resize="gif"
         :auto-rotate="true"
