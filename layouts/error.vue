@@ -64,6 +64,7 @@ export default {
       font-size: 2.3em;
       font-weight: bold;
       font-style: italic;
+      font-display: swap;
     }
 h1 {
   font-size: 20px;

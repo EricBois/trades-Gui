@@ -188,6 +188,7 @@
       font-size: 1.7em;
       font-weight: bold;
       font-style: italic;
+      font-display: swap;
     }
 </style>
 <script>

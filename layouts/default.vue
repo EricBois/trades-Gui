@@ -576,6 +576,7 @@
 <style scoped>
 .ibm {
   font-family: 'IBM Plex Sans', sans-serif;
+  font-display: swap;
 }
 a {
   text-decoration: none;

@@ -327,15 +327,18 @@
   font-style: italic;
   font-weight: bold;
   font-size: 1.0em;
+  font-display: swap;
 }
 .ibm {
   font-family: 'IBM Plex Sans', sans-serif;
   font-style: italic;
+  font-display: swap;
 }
 .ratings {
   font-family: 'IBM Plex Sans', sans-serif;
   font-style: italic;
   font-size: 1em;
+  font-display: swap;
 }
 </style>
 <script>

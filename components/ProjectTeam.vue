@@ -198,20 +198,24 @@
   font-size: 1.7em;
   font-style: italic;
   font-weight: bold;
+  font-display: swap;
 }
 .controls {
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 1.3em;
   font-weight: bold;
+  font-display: swap;
 }
 .sub {
   transform: rotate(359deg);
   margin: 0 auto;
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: bold;
+  font-display: swap;
 }
 .ibm {
   font-family: 'IBM Plex Sans', sans-serif;
+  font-display: swap;
 }
 </style>
 <script>

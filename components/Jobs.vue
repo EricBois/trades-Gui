@@ -173,28 +173,34 @@
       font-size: 1.4em;
       font-weight: bold;
       font-style: italic;
+      font-display: swap;
     }
     .mainTitle2 {
       font-family: 'IBM Plex Sans', sans-serif;
       font-size: 1.7em;
       font-weight: bold;
       font-style: italic;
+      font-display: swap;
     }
     .ibm {
       font-family: 'IBM Plex Sans', sans-serif;
+      font-display: swap;
     }
     .ibm2 {
       font-family: 'IBM Plex Sans', sans-serif;
       font-size: 0.8em;
+      font-display: swap;
     }
     .description {
       font-family: 'IBM Plex Sans', sans-serif;
       font-size: 0.8em;
       font-style: semi-bold;
+      font-display: swap;
     }
     .jobtype {
       font-family: 'IBM Plex Sans', sans-serif;
       font-weight: bold;
+      font-display: swap;
     }
     /* .container {
         background-color: rgb(94, 104, 117)

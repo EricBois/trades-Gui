@@ -400,6 +400,7 @@
 }
 .ibm {
   font-family: 'IBM Plex Sans', sans-serif;
+  font-display: swap;
 }
 .name {
   font-size: 24px;

@@ -428,6 +428,7 @@ a:link {
 .name {
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 2.3em;
+  font-display: swap;
   transform: rotate(358deg);
   background-color: rgb(87, 88, 88);
   box-shadow: -1px 5px 14px 5px rgba(0,0,0,0.36);
@@ -439,11 +440,13 @@ a:link {
   margin: 0 auto;
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: bold;
+  font-display: swap;
 }
 .description {
   color: white;
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 0.8em;
+  font-display: swap;
 }
 .container {
   max-width: 1200px;

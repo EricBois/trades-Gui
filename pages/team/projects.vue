@@ -105,9 +105,11 @@
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 2em;
   font-weight: bold;
+  font-display: swap;
 }
 .ibm {
   font-family: 'IBM Plex Sans', sans-serif;
+  font-display: swap;
 }
 </style>
 <script>

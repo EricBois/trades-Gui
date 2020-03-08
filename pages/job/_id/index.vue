@@ -643,22 +643,26 @@
   font-style: italic;
   font-weight: bold;
   font-size: 1.5em;
+  font-display: swap;
 }
 .sub {
   transform: rotate(359deg);
   margin: 0 auto;
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: bold;
+  font-display: swap;
 }
 .ibm {
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: bold;
+  font-display: swap;
 }
 .subBid {
   font-family: 'IBM Plex Sans', sans-serif;
   font-style: italic;
   font-weight: bold;
   font-size: 0.7em;
+  font-display: swap;
 }
 </style>
 <script>

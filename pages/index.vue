@@ -80,6 +80,7 @@
 .sub {
   font-family: 'IBM Plex Sans', sans-serif;
   font-style: italic;
+  font-display: swap;
 }
 </style>
 <script>
