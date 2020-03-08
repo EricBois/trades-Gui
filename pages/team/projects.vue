@@ -139,15 +139,16 @@ export default {
     this.$nextTick(() => {
       this.$nuxt.$loading.start()
       this.tickets = process.env.tickets.split(',')
-      this.$axios.$get('team/fetch').then((res) => {
-        this.team = res.team
-      })
       this.$axios.$get('job/private').then((res) => {
         res.forEach((obj, i) => {
           this.jobs.push(obj)
           this.$nuxt.$loading.finish()
         })
-      })
+      }).then(
+        this.$axios.$get('team/fetch').then((res) => {
+          this.team = res.team
+        })
+      )
       if (this.profile.user_metadata && !this.profile.user_metadata.welcomeTeamProjects) {
         this.alertText = process.env.welcomeTeamProjects
         this.alert = true
