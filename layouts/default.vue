@@ -334,6 +334,25 @@
               <v-divider />
             </v-flex>
           </v-layout>
+          <v-flex v-if="notifReviews.length > 0" xs12 class="ibm my-2" text-center>
+            <v-chip label>
+              Reviews
+            </v-chip>
+            <v-divider my-2 />
+          </v-flex>
+          <v-layout v-for="review in notifReviews" :key="review._id" wrap>
+            <v-flex v-if="$vuetify.breakpoint.smAndUp" xs1 px-sm-1>
+              <v-icon>mdi-star-circle</v-icon>
+            </v-flex>
+            <v-flex class="pl-4 ibm" xs11>
+              <span to="/profile/reviews">
+                {{ review.activityDesc }}
+              </span>
+            </v-flex>
+            <v-flex xs12 my-2>
+              <v-divider />
+            </v-flex>
+          </v-layout>
           <v-flex v-if="notifBidRequest.length > 0" xs12 class="ibm" text-center>
             <v-chip label>
               Bids Invite
@@ -658,6 +677,7 @@ export default {
     notifMeetings: [],
     notifBidRequest: [],
     notifBids: [],
+    notifReviews: [],
     deferredPrompt: '',
     registerDialog: false,
     mobile: true
@@ -773,6 +793,7 @@ export default {
       this.notifMeetings = this.notifications.filter(notification => notification.activity === 'Meeting')
       this.notifBids = this.notifications.filter(notification => notification.activity === 'Bid')
       this.notifBidRequest = this.notifications.filter(notification => notification.activity === 'bidRequest')
+      this.notifReviews = this.notifications.filter(notification => notification.activity === 'Review')
     },
     profile () {
       this.switchAvailable = this.profile.user_metadata.available
