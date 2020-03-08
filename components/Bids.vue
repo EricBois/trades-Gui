@@ -1,5 +1,18 @@
 <template>
   <v-container>
+    <v-snackbar
+      v-model="snackbar"
+      bottom
+      :color="snackbarColor"
+    >
+      {{ snackbarText }}
+      <v-icon v-if="snackbarColor.includes('red')">
+        mdi-alert-outline
+      </v-icon>
+      <v-icon v-else>
+        mdi-check-circle-outline
+      </v-icon>
+    </v-snackbar>
     <v-card
       v-for="bid in bids"
       :key="bid.id"
@@ -136,7 +149,8 @@
 
         <v-card-actions>
           <v-spacer />
-          <v-btn v-if="!ownProject" color="red ligthen-3" small text @click="dialogDeleteBid = true">
+          <!-- Can't delete bid if won -->
+          <v-btn v-if="!ownProject && !currentBid.notified" color="red ligthen-3" small text @click="dialogDeleteBid = true">
             Delete
           </v-btn>
           <v-btn
@@ -366,6 +380,9 @@ export default {
   },
   data () {
     return {
+      snackbar: false,
+      snackbarColor: 'green darken-3',
+      snackbarText: '',
       descRule: [
         v => !!v || 'The description is required',
         v => (v || '').length <= 400 || 'Description should be 400 characters or less '
@@ -417,6 +434,8 @@ export default {
         // bug whitout it because of the watch
         this.selectedBids = []
         this.dialogReview = false
+        this.snackbarText = `Successfully reviewed ${this.currentBid.createdBy}`
+        this.snackbar = true
       })
     },
     profile (id) {
