@@ -345,9 +345,9 @@
               <v-icon>mdi-star-circle</v-icon>
             </v-flex>
             <v-flex class="pl-4 ibm" xs11>
-              <span to="/profile/reviews">
+              <nuxt-link to="/profile/reviews">
                 {{ review.activityDesc }}
-              </span>
+              </nuxt-link>
             </v-flex>
             <v-flex xs12 my-2>
               <v-divider />
