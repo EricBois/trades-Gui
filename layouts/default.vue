@@ -214,8 +214,8 @@
         <!-- <v-list-item class=" mt-5 justify-center">
           <v-switch v-model="switchAvailable" label="Looking for work" color="green" inset />
         </v-list-item> -->
-        <v-list-item class="mt-5 justify-center">
-          <v-btn v-if="this.$auth.loggedIn" color="amber darken-4" small @click="logout">
+        <v-list-item class="mt-10 justify-center">
+          <v-btn v-if="this.$auth.loggedIn" text color="amber darken-4" large @click="logout">
             <v-icon class="mr-1">
               mdi-logout
             </v-icon>

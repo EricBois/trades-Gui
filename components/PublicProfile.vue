@@ -1,5 +1,18 @@
 <template>
   <v-container fill-height fluid grid-list-xl>
+    <v-snackbar
+      v-model="snackbar"
+      bottom
+      :color="snackbarColor"
+    >
+      {{ snackbarText }}
+      <v-icon v-if="snackbarColor.includes('red')">
+        mdi-alert-outline
+      </v-icon>
+      <v-icon v-else>
+        mdi-check-circle-outline
+      </v-icon>
+    </v-snackbar>
     <v-layout justify-center wrap elevation-6>
       <v-flex xs12 text-center>
         <v-avatar v-if="user.picture" size="170">
@@ -16,6 +29,11 @@
           </v-icon>
           <a v-if="user.metadata && user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon class="circle-icon" color="green">mdi-web mdi-36px</v-icon></a>
           <a v-if="user.metadata && user.metadata.phone" :href="phone"><v-icon class="circle-icon" color="teal">mdi-phone-classic mdi-36px</v-icon></a>
+          <v-btn v-if="user.uid !== $auth.user.sub && !alreadyInTeam " fab color="blue darken-3" @click="addToTeam()">
+            <v-icon large>
+              mdi-account-multiple-plus
+            </v-icon>
+          </v-btn>
         </div>
       </v-flex>
 
@@ -70,9 +88,35 @@
           {{ user.metadata.description }}
         </p>
       </v-flex>
+      <v-container v-if="user.photos" class="mx-5 photo">
+        <v-layout row wrap class="pa-3">
+          <v-flex
+            v-for="img in user.photos.photos"
+            :key="img.id"
+            xs12
+            sm4
+            md3
+            class="pa-4"
+          >
+            <v-card>
+              <ExpandableImage class="image" :src="img" max-width="400" contain />
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
       <v-flex xs12 text-center>
         <v-card v-if="rating >= 1" min-height="150" shaped>
-          <v-chip label class=" mt-n4 py-6 name">
+          <v-chip v-if="$vuetify.breakpoint.width >= 372" label class=" mt-n4 py-6 name">
+            <v-icon class="mr-1">
+              mdi-star-four-points
+            </v-icon>
+            {{ reviews.length }}
+            Review(s)
+            <v-icon class="ml-1">
+              mdi-star-four-points
+            </v-icon>
+          </v-chip>
+          <v-chip v-else label class=" mt-n4 py-6 mobile">
             <v-icon class="mr-1">
               mdi-star-four-points
             </v-icon>
@@ -83,7 +127,7 @@
             </v-icon>
           </v-chip>
           <br>
-          <v-chip large class="sub mt-1" label>
+          <v-chip v-if="$vuetify.breakpoint.width >= 372" large class="sub mt-1" label>
             <v-btn color="grey darken-3" fab>
               <span class="rating">{{ rating }}</span>
             </v-btn>
@@ -95,7 +139,23 @@
               half-icon="mdi-star-half"
               half-increments
               hover
-              large
+
+              readonly
+            />
+          </v-chip>
+          <v-chip v-else large class="sub mt-1" label>
+            <v-btn color="grey darken-3" fab>
+              <span class="rating">{{ rating }}</span>
+            </v-btn>
+            <v-rating
+              v-model="rating"
+              color="yellow darken-3"
+              background-color="grey darken-1"
+              empty-icon="mdi-star-outline"
+              half-icon="mdi-star-half"
+              half-increments
+              hover
+              small
               readonly
             />
           </v-chip>
@@ -206,29 +266,6 @@
           </v-layout>
         </v-card>
       </v-flex>
-      <v-flex xs12 text-center>
-        <v-btn v-if="user.uid !== $auth.user.sub && !alreadyInTeam " class="mt-n6" color="blue darken-4" @click="addToTeam()">
-          <v-icon class="mr-2">
-            mdi-account-plus-outline
-          </v-icon> Team
-        </v-btn>
-      </v-flex>
-      <v-container v-if="user.photos" class="mx-5 photo">
-        <v-layout row wrap class="pa-3">
-          <v-flex
-            v-for="img in user.photos.photos"
-            :key="img.id"
-            xs12
-            sm4
-            md3
-            class="pa-4"
-          >
-            <v-card>
-              <ExpandableImage class="image" :src="img" max-width="400" contain />
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
     </v-layout>
     <v-dialog v-model="dialogMessage" max-width="600">
       <v-card class="px-3">
@@ -440,6 +477,16 @@ a:link {
   max-width: 400px;
   margin: 0 auto;
 }
+.mobile {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 1.5em;
+  font-display: swap;
+  transform: rotate(358deg);
+  background-color: rgb(87, 88, 88);
+  box-shadow: -1px 5px 14px 5px rgba(0,0,0,0.36);
+  max-width: 400px;
+  margin: 0 auto;
+}
 .sub {
   transform: rotate(359deg);
   margin: 0 auto;
@@ -478,6 +525,9 @@ export default {
   },
   data () {
     return {
+      snackbar: false,
+      snackbarColor: 'green darken-3',
+      snackbarText: '',
       descRule: [
         v => !!v || 'The description is required',
         v => (v || '').length <= 400 || 'Description should be 400 characters or less '
@@ -645,6 +695,8 @@ export default {
         metadata: this.user.metadata
       })
       this.$store.dispatch('team/saveTeam')
+      this.snackbarText = `Successfully added ${this.user.name} to team`
+      this.snackbar = true
     }
   }
 }
