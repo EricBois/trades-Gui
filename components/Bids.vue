@@ -436,6 +436,13 @@ export default {
         this.dialogReview = false
         this.snackbarText = `Successfully reviewed ${this.currentBid.createdBy}`
         this.snackbar = true
+        this.$store.dispatch('notifications/createNotification',
+          {
+            senderId: this.$auth.user.sub,
+            recipientId: this.currentBid.user,
+            activity: 'Review',
+            activityDesc: `${this.$auth.user.name} left a review for ${this.currentBid.projectName}`
+          })
       })
     },
     profile (id) {
