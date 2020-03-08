@@ -245,91 +245,96 @@
           <v-divider />
         </v-flex>
         <v-card shaped class="ma-2">
-          <v-layout wrap>
-            <v-flex xs12 text-center>
-              <span class="ratings">Quality of work</span>
-              <v-divider />
-              <v-rating
-                v-model="review.ratingA"
-                color="yellow darken-3"
-                background-color="grey darken-1"
-                empty-icon="mdi-star-outline"
-                hover
-              />
-            </v-flex>
-            <v-flex xs12 text-center>
-              <span class="ratings">Timeliness</span>
-              <v-divider />
-              <v-rating
-                v-model="review.ratingB"
-                color="yellow darken-3"
-                background-color="grey darken-1"
-                empty-icon="mdi-star-outline"
-                hover
-              />
-            </v-flex>
-            <v-flex xs12 text-center>
-              <span class="ratings">Cleanliness</span>
-              <v-divider />
-              <v-rating
-                v-model="review.ratingC"
-                color="yellow darken-3"
-                background-color="grey darken-1"
-                empty-icon="mdi-star-outline"
-                hover
-              />
-            </v-flex>
-            <v-flex xs12 text-center>
-              <span class="ratings">Budget</span>
-              <v-divider />
-              <v-rating
-                v-model="review.ratingD"
-                color="yellow darken-3"
-                background-color="grey darken-1"
-                empty-icon="mdi-star-outline"
-                hover
-              />
-            </v-flex>
-            <v-flex xs12 text-center>
-              <span class="ratings">Reliability</span>
-              <v-divider />
-              <v-rating
-                v-model="review.ratingE"
-                color="yellow darken-3"
-                background-color="grey darken-1"
-                empty-icon="mdi-star-outline"
-                hover
-              />
-              <v-divider class="my-2" />
-            </v-flex>
-            <v-flex class="ma-2" xs12>
-              <v-textarea
-                v-model="review.description"
-                :rules="descRule"
-                label="How was your experience ?"
-                outlined
-                class="purple-input"
-                counter="400"
-              />
-            </v-flex>
-            <v-flex class="my-4" text-right>
-              <v-btn
-                color="orange darken-3"
-                text
-                @click="dialogReview = false"
-              >
-                Cancel
-              </v-btn>
+          <v-form
+            ref="form"
+            lazy-validation
+          >
+            <v-layout wrap>
+              <v-flex xs12 text-center>
+                <span class="ratings">Quality of work</span>
+                <v-divider />
+                <v-rating
+                  v-model="review.ratingA"
+                  color="yellow darken-3"
+                  background-color="grey darken-1"
+                  empty-icon="mdi-star-outline"
+                  hover
+                />
+              </v-flex>
+              <v-flex xs12 text-center>
+                <span class="ratings">Timeliness</span>
+                <v-divider />
+                <v-rating
+                  v-model="review.ratingB"
+                  color="yellow darken-3"
+                  background-color="grey darken-1"
+                  empty-icon="mdi-star-outline"
+                  hover
+                />
+              </v-flex>
+              <v-flex xs12 text-center>
+                <span class="ratings">Cleanliness</span>
+                <v-divider />
+                <v-rating
+                  v-model="review.ratingC"
+                  color="yellow darken-3"
+                  background-color="grey darken-1"
+                  empty-icon="mdi-star-outline"
+                  hover
+                />
+              </v-flex>
+              <v-flex xs12 text-center>
+                <span class="ratings">Budget</span>
+                <v-divider />
+                <v-rating
+                  v-model="review.ratingD"
+                  color="yellow darken-3"
+                  background-color="grey darken-1"
+                  empty-icon="mdi-star-outline"
+                  hover
+                />
+              </v-flex>
+              <v-flex xs12 text-center>
+                <span class="ratings">Reliability</span>
+                <v-divider />
+                <v-rating
+                  v-model="review.ratingE"
+                  color="yellow darken-3"
+                  background-color="grey darken-1"
+                  empty-icon="mdi-star-outline"
+                  hover
+                />
+                <v-divider class="my-2" />
+              </v-flex>
+              <v-flex class="ma-2" xs12>
+                <v-textarea
+                  v-model="review.description"
+                  :rules="descRule"
+                  label="How was your experience ?"
+                  outlined
+                  class="purple-input"
+                  counter="400"
+                />
+              </v-flex>
+              <v-flex class="my-4" text-right>
+                <v-btn
+                  color="orange darken-3"
+                  text
+                  @click="dialogReview = false"
+                >
+                  Cancel
+                </v-btn>
 
-              <v-btn
-                color="green darken-1"
-                text
-                @click="saveReview()"
-              >
-                Save!
-              </v-btn>
-            </v-flex>
-          </v-layout>
+                <v-btn
+                  color="green darken-1"
+                  text
+                  @click="saveReview()"
+                >
+                  Save!
+                </v-btn>
+              </v-flex>
+            </v-layout>
+          </v-form>
         </v-card>
       </v-card>
     </v-dialog>
@@ -388,11 +393,11 @@ export default {
         v => (v || '').length <= 400 || 'Description should be 400 characters or less '
       ],
       review: {
-        ratingA: 0,
-        ratingB: 0,
-        ratingC: 0,
-        ratingD: 0,
-        ratingE: 0,
+        ratingA: 1,
+        ratingB: 1,
+        ratingC: 1,
+        ratingD: 1,
+        ratingE: 1,
         description: ''
       },
       dialogReview: false,
@@ -419,31 +424,34 @@ export default {
       this.dialogReview = true
     },
     saveReview () {
-      this.review.reviewerName = this.$auth.user.name
-      this.review.user = this.currentBid.user
-      this.review.project = this.currentBid.project
-      this.review.bid = this.currentBid.id
-      this.review.projectName = this.currentBid.projectName
-      this.$axios.$post(`review/create`, this.review).then((res) => {
-        // update bids
-        const index = this.bids.indexOf(this.currentBid)
-        const newBids = this.bids
-        newBids.splice(index, 1)
-        newBids.unshift(res)
-        this.$emit('updated:bids', newBids)
-        // bug whitout it because of the watch
-        this.selectedBids = []
-        this.dialogReview = false
-        this.snackbarText = `Successfully reviewed ${this.currentBid.createdBy}`
-        this.snackbar = true
-        this.$store.dispatch('notifications/createNotification',
-          {
-            senderId: this.$auth.user.sub,
-            recipientId: this.currentBid.user,
-            activity: 'Review',
-            activityDesc: `${this.$auth.user.name} left a review for ${this.currentBid.projectName}`
-          })
-      })
+      if (this.$refs.form.validate()) {
+        this.review.reviewerName = this.$auth.user.name
+        this.review.user = this.currentBid.user
+        this.review.project = this.currentBid.project
+        this.review.bid = this.currentBid.id
+        this.review.projectName = this.currentBid.projectName
+        this.$axios.$post(`review/create`, this.review).then((res) => {
+          // update bids
+          const index = this.bids.indexOf(this.currentBid)
+          const newBids = this.bids
+          newBids.splice(index, 1)
+          newBids.unshift(res)
+          this.$emit('updated:bids', newBids)
+          // bug whitout it because of the watch
+          this.selectedBids = []
+          this.dialogReview = false
+          this.snackbarText = `Successfully reviewed ${this.currentBid.createdBy}`
+          this.snackbar = true
+          this.$store.dispatch('notifications/createNotification',
+            {
+              senderId: this.$auth.user.sub,
+              recipientId: this.currentBid.user,
+              activity: 'Review',
+              activityDesc: `${this.$auth.user.name} left a review for ${this.currentBid.projectName}`,
+              link: this.currentBid.id
+            })
+        })
+      }
     },
     profile (id) {
       this.$axios.$get(`account/getProfile/${id}`).then((res) => {

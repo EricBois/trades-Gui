@@ -257,91 +257,96 @@
           <v-divider />
         </v-flex>
         <v-card shaped class="ma-2">
-          <v-layout wrap>
-            <v-flex xs12 text-center>
-              <span class="ratings">Quality of work</span>
-              <v-divider />
-              <v-rating
-                v-model="newReview.ratingA"
-                color="yellow darken-3"
-                background-color="grey darken-1"
-                empty-icon="mdi-star-outline"
-                hover
-              />
-            </v-flex>
-            <v-flex xs12 text-center>
-              <span class="ratings">Timeliness</span>
-              <v-divider />
-              <v-rating
-                v-model="newReview.ratingB"
-                color="yellow darken-3"
-                background-color="grey darken-1"
-                empty-icon="mdi-star-outline"
-                hover
-              />
-            </v-flex>
-            <v-flex xs12 text-center>
-              <span class="ratings">Cleanliness</span>
-              <v-divider />
-              <v-rating
-                v-model="newReview.ratingC"
-                color="yellow darken-3"
-                background-color="grey darken-1"
-                empty-icon="mdi-star-outline"
-                hover
-              />
-            </v-flex>
-            <v-flex xs12 text-center>
-              <span class="ratings">Budget</span>
-              <v-divider />
-              <v-rating
-                v-model="newReview.ratingD"
-                color="yellow darken-3"
-                background-color="grey darken-1"
-                empty-icon="mdi-star-outline"
-                hover
-              />
-            </v-flex>
-            <v-flex xs12 text-center>
-              <span class="ratings">Reliability</span>
-              <v-divider />
-              <v-rating
-                v-model="newReview.ratingE"
-                color="yellow darken-3"
-                background-color="grey darken-1"
-                empty-icon="mdi-star-outline"
-                hover
-              />
-              <v-divider class="my-2" />
-            </v-flex>
-            <v-flex class="ma-2" xs12>
-              <v-textarea
-                v-model="newReview.description"
-                :rules="descRule"
-                label="How was your experience ?"
-                outlined
-                class="purple-input"
-                counter="400"
-              />
-            </v-flex>
-            <v-flex class="my-4" text-right>
-              <v-btn
-                color="orange darken-3"
-                text
-                @click="dialogReview = false"
-              >
-                Cancel
-              </v-btn>
+          <v-form
+            ref="form"
+            lazy-validation
+          >
+            <v-layout wrap>
+              <v-flex xs12 text-center>
+                <span class="ratings">Quality of work</span>
+                <v-divider />
+                <v-rating
+                  v-model="newReview.ratingA"
+                  color="yellow darken-3"
+                  background-color="grey darken-1"
+                  empty-icon="mdi-star-outline"
+                  hover
+                />
+              </v-flex>
+              <v-flex xs12 text-center>
+                <span class="ratings">Timeliness</span>
+                <v-divider />
+                <v-rating
+                  v-model="newReview.ratingB"
+                  color="yellow darken-3"
+                  background-color="grey darken-1"
+                  empty-icon="mdi-star-outline"
+                  hover
+                />
+              </v-flex>
+              <v-flex xs12 text-center>
+                <span class="ratings">Cleanliness</span>
+                <v-divider />
+                <v-rating
+                  v-model="newReview.ratingC"
+                  color="yellow darken-3"
+                  background-color="grey darken-1"
+                  empty-icon="mdi-star-outline"
+                  hover
+                />
+              </v-flex>
+              <v-flex xs12 text-center>
+                <span class="ratings">Budget</span>
+                <v-divider />
+                <v-rating
+                  v-model="newReview.ratingD"
+                  color="yellow darken-3"
+                  background-color="grey darken-1"
+                  empty-icon="mdi-star-outline"
+                  hover
+                />
+              </v-flex>
+              <v-flex xs12 text-center>
+                <span class="ratings">Reliability</span>
+                <v-divider />
+                <v-rating
+                  v-model="newReview.ratingE"
+                  color="yellow darken-3"
+                  background-color="grey darken-1"
+                  empty-icon="mdi-star-outline"
+                  hover
+                />
+                <v-divider class="my-2" />
+              </v-flex>
+              <v-flex class="ma-2" xs12>
+                <v-textarea
+                  v-model="newReview.description"
+                  :rules="descRule"
+                  label="How was your experience ?"
+                  outlined
+                  class="purple-input"
+                  counter="400"
+                />
+              </v-flex>
+              <v-flex class="my-4" text-right>
+                <v-btn
+                  color="orange darken-3"
+                  text
+                  @click="dialogReview = false"
+                >
+                  Cancel
+                </v-btn>
 
-              <v-btn
-                color="green darken-1"
-                text
-                @click="saveReview()"
-              >
-                Save Changes!
-              </v-btn>
-            </v-flex>
-          </v-layout>
+                <v-btn
+                  color="green darken-1"
+                  text
+                  @click="saveReview()"
+                >
+                  Save Changes!
+                </v-btn>
+              </v-flex>
+            </v-layout>
+          </v-form>
         </v-card>
       </v-card>
     </v-dialog>
@@ -617,18 +622,20 @@ export default {
       })
     },
     saveReview () {
-      this.newReview.reviewerName = this.$auth.user.name
-      this.newReview.user = this.currentReview.user
-      this.newReview.project = this.currentReview.project
-      this.newReview.bid = this.currentReview.bid
-      this.newReview.projectName = this.currentReview.projectName
-      this.$axios.$post(`review/edit/${this.currentReview.bid}`, this.newReview).then((res) => {
-        // update review
-        const index = this.reviews.indexOf(this.currentReview)
-        this.reviews.splice(index, 1)
-        this.reviews.unshift(res.review)
-        this.dialogReview = false
-      })
+      if (this.$refs.form.validate()) {
+        this.newReview.reviewerName = this.$auth.user.name
+        this.newReview.user = this.currentReview.user
+        this.newReview.project = this.currentReview.project
+        this.newReview.bid = this.currentReview.bid
+        this.newReview.projectName = this.currentReview.projectName
+        this.$axios.$post(`review/edit/${this.currentReview.bid}`, this.newReview).then((res) => {
+          // update review
+          const index = this.reviews.indexOf(this.currentReview)
+          this.reviews.splice(index, 1)
+          this.reviews.unshift(res.review)
+          this.dialogReview = false
+        })
+      }
     },
     addToTeam () {
       this.$store.commit('team/addMember', {
