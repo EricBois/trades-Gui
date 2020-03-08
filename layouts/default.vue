@@ -345,9 +345,9 @@
               <v-icon>mdi-star-circle</v-icon>
             </v-flex>
             <v-flex class="pl-4 ibm" xs11>
-              <nuxt-link to="/profile/reviews">
+              <span @click="openProfile(review.link)">
                 {{ review.activityDesc }}
-              </nuxt-link>
+              </span>
             </v-flex>
             <v-flex xs12 my-2>
               <v-divider />
@@ -590,6 +590,21 @@
         <contractors-today />
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogProfile" max-width="800">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue darken-3">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Profile
+          </v-toolbar-title>
+          <v-btn icon dark @click="dialogProfile = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <PublicProfile :user="profile" />
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 <style scoped>
@@ -616,6 +631,7 @@ import { mapGetters } from 'vuex'
 export default {
   middleware: ['profile', 'notifications'],
   components: {
+    PublicProfile: () => import('../components/PublicProfile.vue'),
     Register: () => import('../components/Register.vue'),
     CreateProject: () => import('../components/CreateProject.vue'),
     ContractorsToday: () => import('../components/ContractorsToday.vue')
@@ -627,6 +643,7 @@ export default {
     }
   },
   data: () => ({
+    dialogProfile: false,
     dialogLfw: false,
     assistantTitle: 'I want to ..',
     job: false,
@@ -1003,6 +1020,10 @@ export default {
     async redirect (bid) {
       await this.$store.dispatch('notifications/deleteBulkNotification', [bid])
       await this.$router.push(`/job/${bid}`)
+    },
+    async openProfile (bid) {
+      await this.$store.dispatch('notifications/deleteBulkNotification', [bid])
+      this.dialogProfile = true
     }
   }
 }
