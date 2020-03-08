@@ -798,7 +798,7 @@ export default {
       this.barLength = ''
       // Notifications onesignal
       this.$OneSignal.push(() => {
-        this.$OneSignal.showSlidedownPrompt()
+        // this.$OneSignal.showSlidedownPrompt()
         // TODO implement better way for this
         this.$OneSignal.setExternalUserId(this.$auth.user.sub)
         // this.$OneSignal.setEmail(this.$auth.user.email)
