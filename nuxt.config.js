@@ -16,6 +16,7 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600&display=swap' },
+      // { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css' },
       { href:"splashscreens/iphone5_splash.png", media:"(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)", rel:"apple-touch-startup-image" },
       { href:"splashscreens/iphone6_splash.png", media:"(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)", rel:"apple-touch-startup-image" },
       { href:"splashscreens/iphoneplus_splash.png", media:"(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)", rel:"apple-touch-startup-image" },
@@ -85,8 +86,8 @@ export default {
     // 'vue-sweetalert2/nuxt',
     '@nuxtjs/onesignal',
     '@nuxtjs/pwa',
-    'nuxt-clipboard2',
-    'nuxt-material-design-icons'
+    'nuxt-clipboard2'
+    // 'nuxt-material-design-icons'
   ],
   oneSignal: {
     init: {
