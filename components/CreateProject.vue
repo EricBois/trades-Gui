@@ -97,14 +97,6 @@
             <v-flex xs6 md4 pt-4>
               <v-switch v-model="switch1" label="Assign To Team" color="white" inset />
             </v-flex>
-            <v-flex xs6 md5 pt-4>
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on }">
-                  <v-switch v-model="switch2" label="Bid whole project" color="white" inset v-on="on" />
-                </template>
-                <span>Only 1 bid per user will be allowed on whole project.</span>
-              </v-tooltip>
-            </v-flex>
             <v-flex xs12 md6 pt-4 pr-5>
               <v-text-field v-model="info.phone" class="purple-input" label="Contact Phone Number" />
             </v-flex>
@@ -187,11 +179,9 @@ export default {
           url: ''
         },
         jobType: '',
-        oneBid: false,
         createdBy: ''
       },
       switch1: false,
-      switch2: false,
       checkWcb: false,
       checkLiability: false
     }
@@ -211,19 +201,6 @@ export default {
         this.info.private = false
         this.snackbarText = 'The project is now public.'
         this.snackbar = true
-      }
-    },
-    switch2 () {
-      if (this.switch2 && !this.info.oneBid) {
-        this.snackbarText = 'Only 1 bid per user will be allowed.'
-        this.snackbar = true
-        this.info.oneBid = true
-      } else if (this.switch2) {
-        this.info.oneBid = true
-      } else {
-        this.snackbarText = 'Unlimited bids will be allowed.'
-        this.snackbar = true
-        this.info.oneBid = false
       }
     },
     checkWcb () {

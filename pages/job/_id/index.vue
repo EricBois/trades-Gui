@@ -851,7 +851,7 @@ export default {
             currentBids += 1
           }
         })
-        if (this.project.oneBid && currentBids >= 1) {
+        if (currentBids >= 1) {
           this.bids.forEach((bid) => {
             if (bid.user === this.$auth.user.sub) {
               this.snackbarText = 'Sorry 1 bid per user allowed'
