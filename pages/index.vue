@@ -34,7 +34,7 @@
         </h1>
         <v-divider />
         <v-card max-width="400" min-height="100" class="mx-auto" elevation="20" shaped>
-          <v-img class="ma-4" src="https://subhub01.s3.amazonaws.com/app/Logo-03.png" />
+          <v-img class="ma-4" :src="require('../assets/logo.png')" />
         </v-card>
 
         <v-flex v-if="mobile" class="mt-5" xs12 text-center>

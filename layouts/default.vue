@@ -21,7 +21,7 @@
       clipped
     >
       <v-list-item>
-        <v-img src="https://subhub01.s3.amazonaws.com/app/Logo-03.png" />
+        <v-img :src="require('../assets/logo.png')" />
       </v-list-item>
       <v-divider />
       <v-list-item to="/profile">
