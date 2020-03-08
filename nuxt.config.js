@@ -156,7 +156,9 @@ export default {
   ** https://github.com/nuxt-community/vuetify-module
   */
   build: {
-    extractCSS: true,
+    extractCSS: {
+      ignoreOrder: true
+    },
     transpile: [/^vue2-google-maps($|\/)/],
     // extractCSS: true
   },
