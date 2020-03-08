@@ -166,13 +166,18 @@
                   />
                 </v-flex>
 
-                <v-flex xs6 class="justify-center text-center">
+                <v-flex xs6 sm4 class="justify-center text-center">
                   <v-btn class="ma-1" small @click="dialogPhoto = !dialogPhoto">
                     <v-icon>mdi-image</v-icon>&nbsp;
                     Photos
                   </v-btn>
                 </v-flex>
-                <v-flex xs6>
+                <v-flex xs6 sm4 class="justify-center text-center">
+                  <v-btn class="ma-1 ibm justify-center text-center" small color="blue darken-3" @click="dialogProfile = !dialogProfile">
+                    preview profile
+                  </v-btn>
+                </v-flex>
+                <v-flex xs12 sm4 text-center>
                   <v-btn
                     v-if="profile.user_metadata && !profile.user_metadata.profileDone"
                     class="ma-1 ibm justify-center text-center"
@@ -389,6 +394,21 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogProfile" max-width="800">
+      <v-card class="px-3">
+        <v-toolbar dark color="blue darken-3">
+          <v-spacer />
+          <v-toolbar-title class="body-1">
+            Profile
+          </v-toolbar-title>
+          <v-btn icon dark @click="dialogProfile = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <PublicProfile :user="profile" />
+        <v-divider />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <style>
@@ -423,10 +443,12 @@
 import { mapGetters } from 'vuex'
 export default {
   components: {
-    ExpandableImage: () => import('../components/ExpandableImage.vue')
+    PublicProfile: () => import('../../components/PublicProfile.vue'),
+    ExpandableImage: () => import('../../components/ExpandableImage.vue')
   },
   data () {
     return {
+      dialogProfile: false,
       snackbar: false,
       snackbarColor: 'green darken-3',
       snackbarText: '',
