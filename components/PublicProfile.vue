@@ -88,10 +88,24 @@
           {{ user.metadata.description }}
         </p>
       </v-flex>
-      <v-container v-if="user.photos" class="mx-5 photo">
-        <v-layout row wrap class="pa-3">
+      <v-container v-if="user.photos || photos.length >= 1" class="mx-5 photo">
+        <v-layout v-if="user.photos && user.photos.photos.length >= 1" row wrap class="pa-3">
           <v-flex
             v-for="img in user.photos.photos"
+            :key="img.id"
+            xs12
+            sm4
+            md3
+            class="pa-4"
+          >
+            <v-card>
+              <ExpandableImage class="image" :src="img" max-width="400" contain />
+            </v-card>
+          </v-flex>
+        </v-layout>
+        <v-layout v-else row wrap class="pa-3">
+          <v-flex
+            v-for="img in photos"
             :key="img.id"
             xs12
             sm4
@@ -521,6 +535,10 @@ export default {
     user: {
       type: Object,
       required: true
+    },
+    photos: {
+      type: Array,
+      default: () => { return [] }
     }
   },
   data () {

@@ -405,7 +405,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
-        <PublicProfile :user="profile" />
+        <PublicProfile :user="profile" :photos="profilePhotos" />
         <v-divider />
       </v-card>
     </v-dialog>
