@@ -225,18 +225,12 @@ export default {
     jobs: {
       type: Array,
       default: null
-    },
-    cities: {
-      type: Array,
-      default: null
-    },
-    trades: {
-      type: Array,
-      default: null
     }
   },
   data () {
     return {
+      trades: [],
+      cities: [],
       job: '../job/',
       search: '',
       city: [],
@@ -265,10 +259,37 @@ export default {
   watch: {
     filteredList () {
       this.setPages()
+    },
+    jobs () {
+      this.jobs.forEach((job) => {
+        if (job.location.city.length > 0 && !this.cities.includes(job.location.city)) {
+          this.cities.push(job.location.city)
+        }
+        if (job.skills.length > 0) {
+          job.skills.forEach((skill) => {
+            if (!this.trades.includes(skill)) {
+              this.trades.push(skill)
+            }
+          })
+        }
+      })
     }
   },
   created () {
     dayjs.extend(relativeTime)
+    this.setPages()
+    this.jobs.forEach((job) => {
+      if (job.location.city.length > 0 && !this.cities.includes(job.location.city)) {
+        this.cities.push(job.location.city)
+      }
+      if (job.skills.length > 0) {
+        job.skills.forEach((skill) => {
+          if (!this.trades.includes(skill)) {
+            this.trades.push(skill)
+          }
+        })
+      }
+    })
   },
   methods: {
     wonBid (bids) {

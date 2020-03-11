@@ -135,20 +135,17 @@ export default {
       profile: 'profile/getProfile'
     })
   },
+  async asyncData ({ $axios }) {
+    const jobs = await $axios.$get('job/private')
+    const team = await $axios.$get('team/fetch')
+    return {
+      jobs,
+      team: team.team
+    }
+  },
   created () {
     this.$nextTick(() => {
-      this.$nuxt.$loading.start()
       this.tickets = process.env.tickets.split(',')
-      this.$axios.$get('job/private').then((res) => {
-        res.forEach((obj, i) => {
-          this.jobs.push(obj)
-          this.$nuxt.$loading.finish()
-        })
-      }).then(
-        this.$axios.$get('team/fetch').then((res) => {
-          this.team = res.team
-        })
-      )
       if (this.profile.user_metadata && !this.profile.user_metadata.welcomeTeamProjects) {
         this.alertText = process.env.welcomeTeamProjects
         this.alert = true
