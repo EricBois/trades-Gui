@@ -629,7 +629,7 @@ a {
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  middleware: ['profile', 'notifications'],
+  middleware: ['dispatcher'],
   components: {
     PublicProfile: () => import('../components/PublicProfile.vue'),
     Register: () => import('../components/Register.vue'),
@@ -682,7 +682,6 @@ export default {
     sheet: false,
     sheetTitle: 'Welcome to Sub-Hub !',
     welcomeText: '',
-    switchAvailable: false,
     addBtnShow: 'none',
     overflow: true,
     contentClick: true,
@@ -813,7 +812,6 @@ export default {
       this.notifReviews = this.notifications.filter(notification => notification.activity === 'Review')
     },
     profile () {
-      this.switchAvailable = this.profile.user_metadata.available
       if (this.profile && this.profile.app_metadata && this.profile.app_metadata.admin === true) {
         this.admin = true
       }
