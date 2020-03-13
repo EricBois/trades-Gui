@@ -46,7 +46,7 @@
         <v-card flat color="#303030">
           <JobPosting :jobs.sync="jobsOffer" />
           <v-flex v-if="jobsOffer.length < 1" xs12 text-center>
-            <h2>You didn't place any bid yet!</h2>
+            <h2>You didn't post any jobs offer!</h2>
             <span class="ibm">*Once you create a job offer it will appear here.*</span>
           </v-flex>
         </v-card>
