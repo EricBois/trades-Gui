@@ -89,7 +89,7 @@
         </p>
       </v-flex>
       <v-container v-if="user.photos || photos.length >= 1" class="mx-5 photo">
-        <v-layout v-if="user.photos && user.photos.photos.length >= 1" row wrap class="pa-3">
+        <v-layout v-if="user.photos && user.photos.photos && user.photos.photos.length >= 1" row wrap class="pa-3">
           <v-flex
             v-for="img in user.photos.photos"
             :key="img.id"
