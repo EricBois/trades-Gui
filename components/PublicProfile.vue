@@ -586,7 +586,7 @@ export default {
         // Get sum
         this.sum += review.ratingA + review.ratingB + review.ratingC + review.ratingD + review.ratingE
       })
-      if (this.reviews.length >= 1) {
+      if (this.reviews && this.reviews.length >= 1) {
         // calculate average of reviews score
         this.rating = (this.sum / this.reviews.length / 5)
       }
