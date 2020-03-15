@@ -18,8 +18,8 @@
     <v-tabs-items v-model="tab" class="mt-8">
       <v-tab-item>
         <v-card flat color="#303030">
-          <Jobs :jobs="jobs" />
-          <v-flex v-if="jobs.length < 1" xs12 text-center>
+          <Jobs :jobs="yourListing" />
+          <v-flex v-if="yourListing.length < 1" xs12 text-center>
             <h2>You didn't post any projects.</h2>
             <span class="ibm">*Once you post a project it will appear here so you can easily manage it.*</span>
           </v-flex>
@@ -90,7 +90,7 @@ export default {
       alert: false,
       alertInfo: 'info',
       alertText: '',
-      jobs: [],
+      yourListing: [],
       cities: [],
       jobsPrivate: [],
       citiesPrivate: [],
@@ -134,13 +134,12 @@ export default {
     }
   },
   async asyncData ({ $axios, $auth }) {
-    const jobs = await $axios.$get('job/get/user')
-    let jobPrivate = await $axios.$get('job/get/private')
-    let placedBids = await $axios.$get('job/get')
-    jobPrivate = jobPrivate.filter(job => job.user !== $auth.user.sub)
-    placedBids = placedBids.filter(job => job.bids.some(bid => bid.user === $auth.user.sub))
+    const jobs = await $axios.$get('job/get')
+    const yourListing = jobs.filter(job => job.user === $auth.user.sub)
+    const jobPrivate = jobs.filter(job => job.user !== $auth.user.sub && job.allowed.includes($auth.user.sub))
+    const placedBids = jobs.filter(job => job.bids.some(bid => bid.user === $auth.user.sub))
     return {
-      jobs,
+      yourListing,
       jobsPrivate: jobPrivate,
       placedBids
     }

@@ -46,7 +46,7 @@ export default {
   }),
   async asyncData ({ $axios, $auth }) {
     let jobsPublic = await $axios.$get('job/get')
-    jobsPublic = jobsPublic.filter(job => job.user !== $auth.user.sub)
+    jobsPublic = jobsPublic.filter(job => job.user !== $auth.user.sub && !job.private)
     return {
       jobsPublic
     }

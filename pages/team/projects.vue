@@ -135,9 +135,10 @@ export default {
       profile: 'profile/getProfile'
     })
   },
-  async asyncData ({ $axios }) {
-    const jobs = await $axios.$get('job/private')
+  async asyncData ({ $axios, $auth }) {
+    let jobs = await $axios.$get('job/get')
     const team = await $axios.$get('team/fetch')
+    jobs = jobs.filter(job => job.user === $auth.user.sub && job.private)
     return {
       jobs,
       team: team.team
