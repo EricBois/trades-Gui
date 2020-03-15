@@ -86,8 +86,7 @@ export default {
     '@nuxtjs/onesignal',
     '@nuxtjs/pwa',
     'nuxt-clipboard2',
-    'nuxt-material-design-icons',
-    'nuxt-purgecss'
+    'nuxt-material-design-icons'
   ],
   oneSignal: {
     init: {
