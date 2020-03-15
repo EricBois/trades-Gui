@@ -86,7 +86,8 @@ export default {
     '@nuxtjs/onesignal',
     '@nuxtjs/pwa',
     'nuxt-clipboard2',
-    'nuxt-material-design-icons'
+    'nuxt-material-design-icons',
+    'nuxt-purgecss'
   ],
   oneSignal: {
     init: {
@@ -113,7 +114,8 @@ export default {
     },
     manifest: {
       name: 'Sub-Hub',
-      lang: 'en-US'
+      lang: 'en-US',
+      display: 'standalone'
     },
     meta: {
       name: 'Sub-Hub',
