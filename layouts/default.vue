@@ -629,7 +629,6 @@ a {
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  middleware: ['dispatcher'],
   components: {
     PublicProfile: () => import('../components/PublicProfile.vue'),
     Register: () => import('../components/Register.vue'),
@@ -696,7 +695,8 @@ export default {
     notifReviews: [],
     deferredPrompt: '',
     registerDialog: false,
-    mobile: true
+    mobile: true,
+    polling: null
   }),
   computed: {
     ...mapGetters({
@@ -831,6 +831,7 @@ export default {
     }
     this.$vuetify.theme.dark = true
     if (this.$auth.loggedIn) {
+      this.pollData()
       this.barLength = ''
       // Notifications onesignal
       this.$OneSignal.push(() => {
@@ -864,7 +865,21 @@ export default {
       this.picture = this.$auth.user.picture
     }
   },
+  beforeDestroy () {
+    clearInterval(this.polling)
+  },
   methods: {
+    pollData () {
+      // dispatch data
+      this.$store.dispatch('team/getTeam')
+      this.$store.dispatch('profile/getProfile')
+      this.$store.dispatch('notifications/getNotifications')
+      this.$store.dispatch('messages/getMessages')
+      this.polling = setInterval(() => {
+        this.$store.dispatch('messages/getMessages')
+        this.$store.dispatch('notifications/getNotifications')
+      }, 350000)
+    },
     assistant (status) {
       switch (status) {
         // step 1 ( main )
