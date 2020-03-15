@@ -14,7 +14,7 @@
       </v-icon>
     </v-snackbar>
     <v-navigation-drawer
-      v-if="this.$auth.loggedIn"
+      v-if="$auth.loggedIn"
       v-model="drawer"
       app
       floating
@@ -405,36 +405,6 @@
         <nuxt />
       </v-container>
     </v-content>
-    <v-bottom-navigation
-      v-if="this.$auth.loggedIn && !drawer"
-      dark
-      app
-    >
-      <v-btn :to="btn1.link">
-        <span>{{ btn1.name }}</span>
-        <v-icon>{{ btn1.icon }}</v-icon>
-      </v-btn>
-
-      <v-btn v-if="btn2.link" :to="btn2.link">
-        <span>{{ btn2.name }}</span>
-        <v-icon>{{ btn2.icon }}</v-icon>
-      </v-btn>
-
-      <v-btn v-else @click="clicker()">
-        <span>{{ btn2.name }}</span>
-        <v-icon>{{ btn2.icon }}</v-icon>
-      </v-btn>
-
-      <v-btn :to="btn3.link">
-        <span>{{ btn3.name }}</span>
-        <v-icon>{{ btn3.icon }}</v-icon>
-      </v-btn>
-
-      <v-btn @click="dialogAssist = !dialogAssist">
-        <span>{{ btn4.name }}</span>
-        <v-icon>{{ btn4.icon }}</v-icon>
-      </v-btn>
-    </v-bottom-navigation>
     <v-dialog v-model="registerDialog" max-width="800" persistent transition="dialog-bottom-transition">
       <v-card class="px-3">
         <v-toolbar height="50" dark color="blue">
@@ -483,113 +453,6 @@
         <v-divider />
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogAssist" persistent max-width="350">
-      <v-card>
-        <v-toolbar dark color="blue darken-3">
-          <v-spacer />
-          <v-toolbar-title class="body-1">
-            Your Assistant
-          </v-toolbar-title>
-          <v-spacer />
-          <v-btn @click="assistant('home')" icon dark>
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <v-flex class="pa-4" xs12>
-          <h3>{{ assistantTitle }}</h3>
-        </v-flex>
-        <v-flex xs12>
-          <div v-if="step1">
-            <v-btn @click="assistant('find')" class="ma-2 ml-12" color="light-blue darken-3" small>
-              Find contractors for my project
-            </v-btn>
-            <br>
-            <v-btn @click="assistant('hire')" class="ma-2 ml-12" color="cyan darken-3" small>
-              Hire tradesman
-            </v-btn>
-            <br>
-            <v-btn @click="assistant('team')" class="ma-2 ml-12" color="teal darken-3" small>
-              Manage my team
-            </v-btn>
-            <br>
-            <v-btn @click="assistant('job')" class="ma-2 ml-12" color="light-blue darken-3" small>
-              Find a job
-            </v-btn>
-          </div>
-          <div v-if="step2 && contractor">
-            <v-btn @click="create = !create" class="ma-2 ml-12" color="light-blue darken-3" small>
-              Get bids on my project
-            </v-btn>
-            <br>
-            <v-btn @click="dialogLfw = !dialogLfw" class="ma-2 ml-12" color="cyan darken-3" small>
-              I'm out of time i need someone TODAY
-            </v-btn>
-            <br>
-            <v-btn @click="assistant('back')" class="ma-2 ml-12" small>
-              go back
-            </v-btn>
-          </div>
-          <div v-if="step2 && hireTradesman">
-            <v-btn @click="assistant('post')" class="ma-2 ml-12" color="light-blue darken-3" small>
-              post an ads
-            </v-btn>
-            <br>
-            <v-btn @click="dialogLfw = !dialogLfw" class="ma-2 ml-12" color="cyan darken-3" small>
-              see who's available today
-            </v-btn>
-            <br>
-            <v-btn @click="assistant('back')" class="ma-2 ml-12" small>
-              go back
-            </v-btn>
-          </div>
-          <div v-if="step2 && team">
-            <v-btn @click="assistant('members')" class="ma-2 ml-12" color="light-blue darken-3" small>
-              Add or edit members
-            </v-btn>
-            <br>
-            <v-btn @click="assistant('projects')" class="ma-2 ml-12" color="cyan darken-3" small>
-              manage my team projects
-            </v-btn>
-            <br>
-            <v-btn @click="assistant('back')" class="ma-2 ml-12" small>
-              go back
-            </v-btn>
-          </div>
-          <div v-if="step2 && job">
-            <v-btn @click="assistant('bid')" class="ma-2 ml-12" color="cyan darken-3" small>
-              place some bids
-            </v-btn>
-            <v-btn @click="assistant('profile')" class="ma-2 ml-12" color="light-blue darken-3" small>
-              Make myself available to work
-            </v-btn>
-            <br>
-            <v-btn @click="assistant('listings')" class="ma-2 ml-12" color="teal darken-3" small>
-              look at the job listing
-            </v-btn>
-            <br>
-            <v-btn @click="assistant('back')" class="ma-2 ml-12" small>
-              go back
-            </v-btn>
-          </div>
-        </v-flex>
-        <v-divider />
-      </v-card>
-    </v-dialog>
-    <v-dialog v-model="dialogLfw" max-width="600">
-      <v-card class="px-3">
-        <v-toolbar dark color="blue darken-3">
-          <v-spacer />
-          <v-toolbar-title class="body-1">
-            Tradesman available today
-          </v-toolbar-title>
-          <v-spacer />
-          <v-btn @click="dialogLfw = false" icon dark>
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <contractors-today />
-      </v-card>
-    </v-dialog>
     <v-dialog v-model="dialogProfile" max-width="800">
       <v-card class="px-3">
         <v-toolbar dark color="blue darken-3">
@@ -605,6 +468,7 @@
         <v-divider />
       </v-card>
     </v-dialog>
+    <Assistant v-if="$auth.loggedIn" :dialogAssist.sync="dialogAssist" :create.sync="create" />
   </v-app>
 </template>
 <style scoped>
@@ -633,7 +497,7 @@ export default {
     PublicProfile: () => import('../components/PublicProfile.vue'),
     Register: () => import('../components/Register.vue'),
     CreateProject: () => import('../components/CreateProject.vue'),
-    ContractorsToday: () => import('../components/ContractorsToday.vue')
+    Assistant: () => import('../components/Assistant.vue')
   },
   props: {
     source: {
@@ -643,35 +507,7 @@ export default {
   },
   data: () => ({
     dialogProfile: false,
-    dialogLfw: false,
-    assistantTitle: 'I want to ..',
-    job: false,
-    team: false,
-    hireTradesman: false,
-    contractor: false,
-    step1: true,
-    step2: false,
-    step3: false,
     dialogAssist: false,
-    btn1: {
-      name: 'Listings',
-      link: '/projects',
-      icon: 'mdi-post'
-    },
-    btn2: {
-      name: 'Team Projects',
-      link: '/team/projects',
-      icon: 'mdi-account-group'
-    },
-    btn3: {
-      name: 'My Projects',
-      link: '/myprojects',
-      icon: 'mdi-alpha-p-box'
-    },
-    btn4: {
-      name: 'Assistant',
-      icon: 'mdi-auto-fix'
-    },
     create: false,
     admin: false,
     snackbar: false,
@@ -707,92 +543,6 @@ export default {
     })
   },
   watch: {
-    // Dynamic bottom menu
-    $route (to, from) {
-      switch (to.name) {
-        case 'home':
-          this.btn1.icon = 'mdi-post'
-          this.btn1.name = 'Listings'
-          this.btn1.link = '/projects'
-          this.btn2.icon = 'mdi-account-group'
-          this.btn2.name = 'Team'
-          this.btn2.link = '/team/projects'
-          this.btn3.icon = 'mdi-alpha-p-box'
-          this.btn3.name = 'My Projects'
-          this.btn3.link = '/myprojects'
-          break
-        case 'profile':
-          this.btn1.icon = 'mdi-post'
-          this.btn1.name = 'Listings'
-          this.btn1.link = '/projects'
-          this.btn2.icon = 'mdi-account-group'
-          this.btn2.name = 'Team'
-          this.btn2.link = '/team/projects'
-          this.btn3.icon = 'mdi-alpha-p-box'
-          this.btn3.name = 'My Projects'
-          this.btn3.link = '/myprojects'
-          break
-        case 'projects':
-          this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
-          this.btn1.name = 'Back'
-          this.btn1.link = '/home'
-          this.btn2.icon = 'mdi-file-document-box-plus-outline'
-          this.btn2.name = 'Create'
-          this.btn2.link = ''
-          break
-        case 'team-projects':
-          this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
-          this.btn1.name = 'Back'
-          this.btn1.link = '/home'
-          this.btn2.icon = 'mdi-account-group'
-          this.btn2.name = 'Projects'
-          this.btn2.link = '/team/projects'
-          this.btn3.icon = 'mdi-account-multiple-plus'
-          this.btn3.name = 'Manage Team'
-          this.btn3.link = '/team/manage'
-          break
-        case 'job-id':
-          if (from.name !== 'job-id-edit') {
-            this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
-            this.btn1.name = 'Back'
-            this.btn1.link = from.path
-          } else {
-            this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
-            this.btn1.name = 'Back'
-            this.btn1.link = '/projects'
-          }
-
-          this.btn2.icon = 'mdi-account-group'
-          this.btn2.name = 'Team'
-          this.btn2.link = '/team/projects'
-          this.btn3.icon = 'mdi-alpha-p-box'
-          this.btn3.name = 'My Projects'
-          this.btn3.link = '/myprojects'
-          break
-        case 'hiring':
-          this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
-          this.btn1.name = 'Back'
-          this.btn1.link = '/home'
-          this.btn2.icon = 'mdi-account-group'
-          this.btn2.name = 'Team'
-          this.btn2.link = '/team/projects'
-          this.btn3.icon = 'mdi-alpha-p-box'
-          this.btn3.name = 'My Projects'
-          this.btn3.link = '/myprojects'
-          break
-        case 'myprojects':
-          this.btn1.icon = 'mdi-arrow-left-bold-box-outline'
-          this.btn1.name = 'Back'
-          this.btn1.link = '/home'
-          this.btn2.icon = 'mdi-account-group'
-          this.btn2.name = 'Team'
-          this.btn2.link = '/team/projects'
-          this.btn3.icon = 'mdi-alpha-p-box'
-          this.btn3.name = 'My Projects'
-          this.btn3.link = '/myprojects'
-          break
-      }
-    },
     create () {
       // close dialog when create pronect is open
       if (this.dialogAssist === true) {
@@ -880,125 +630,7 @@ export default {
         this.$store.dispatch('notifications/getNotifications')
       }, 350000)
     },
-    assistant (status) {
-      switch (status) {
-        // step 1 ( main )
-        case 'home': {
-          this.assistantTitle = 'I want to ..'
-          this.step1 = true
-          this.step2 = false
-          this.contractor = false
-          this.hireTradesman = false
-          this.team = false
-          this.job = false
-          this.dialogAssist = false
-          break
-        }
-        case 'back': {
-          this.assistantTitle = 'I want to ..'
-          this.step1 = true
-          this.step2 = false
-          this.contractor = false
-          this.hireTradesman = false
-          this.job = false
-          this.team = false
-          break
-        }
-        case 'find': {
-          this.step1 = false
-          this.step2 = true
-          this.contractor = true
-          break
-        }
-        case 'hire': {
-          this.step1 = false
-          this.step2 = true
-          this.hireTradesman = true
-          break
-        }
-        case 'post': {
-          this.$router.push('../hiring')
-          this.step1 = true
-          this.step2 = false
-          this.contractor = false
-          this.hireTradesman = false
-          this.team = false
-          this.job = false
-          this.dialogAssist = false
-          break
-        }
-        case 'team': {
-          this.step1 = false
-          this.step2 = true
-          this.team = true
-          break
-        }
-        case 'members': {
-          this.$router.push('../team/manage')
-          this.step1 = true
-          this.step2 = false
-          this.contractor = false
-          this.hireTradesman = false
-          this.team = false
-          this.job = false
-          this.dialogAssist = false
-          break
-        }
-        case 'projects': {
-          this.$router.push('../team/projects')
-          this.step1 = true
-          this.step2 = false
-          this.contractor = false
-          this.hireTradesman = false
-          this.team = false
-          this.job = false
-          this.dialogAssist = false
-          break
-        }
-        case 'job': {
-          this.step1 = false
-          this.step2 = true
-          this.job = true
-          break
-        }
-        case 'bid': {
-          this.$router.push('../projects')
-          this.step1 = true
-          this.step2 = false
-          this.contractor = false
-          this.hireTradesman = false
-          this.team = false
-          this.job = false
-          this.dialogAssist = false
-          break
-        }
-        case 'listings': {
-          this.$router.push('../hiring')
-          this.step1 = true
-          this.step2 = false
-          this.contractor = false
-          this.hireTradesman = false
-          this.team = false
-          this.job = false
-          this.dialogAssist = false
-          break
-        }
-        case 'profile': {
-          this.$router.push('../profile')
-          this.step1 = true
-          this.step2 = false
-          this.contractor = false
-          this.hireTradesman = false
-          this.team = false
-          this.job = false
-          this.dialogAssist = false
-          this.sheetTitle = 'Get working today !'
-          this.welcomeText = 'Complete your profile and click on the tab labeled "Employment" at the top to make yourself available to companies for 48 hours.'
-          this.sheet = true
-          break
-        }
-      }
-    },
+
     clicker () {
       this.create = true
     },
