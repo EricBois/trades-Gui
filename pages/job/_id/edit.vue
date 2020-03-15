@@ -2,8 +2,8 @@
   <v-container fluid>
     <v-snackbar
       v-model="snackbar"
-      bottom
       :color="snackbarColor"
+      bottom
     >
       {{ snackbarText }}
       <v-icon>
@@ -31,11 +31,11 @@
             </v-flex>
             <v-flex xs12 sm5 pb-5 pl-sm-5>
               <gmap-autocomplete
-                class="gmap v-input__slot v-text-field"
                 :value="info.location.address"
                 :select-first-on-enter="true"
-                placeholder="Project Location"
                 @place_changed="setPlace"
+                class="gmap v-input__slot v-text-field"
+                placeholder="Project Location"
               />
             </v-flex>
             <v-flex xs12>
@@ -87,10 +87,10 @@
             <v-flex xs12 md3 pr-12 pt-4>
               <v-text-field
                 v-model="info.budget"
+                :rules="budgetRule"
                 label="Budget"
                 class="purple-input"
                 prefix="$"
-                :rules="budgetRule"
                 type="text"
               />
             </v-flex>
@@ -104,12 +104,12 @@
               <v-text-field v-model="info.email" class="purple-input" label="Contact Email" />
             </v-flex>
             <v-flex xs6 text-center>
-              <v-btn class="ma-1" outlined :to="job+this.$route.params.id">
+              <v-btn :to="job+this.$route.params.id" class="ma-1" outlined>
                 Back
               </v-btn>
             </v-flex>
             <v-flex xs6 text-center>
-              <v-btn class="ma-1 font-weight-light" color="green darken-3" @click="edit">
+              <v-btn @click="edit" class="ma-1 font-weight-light" color="green darken-3">
                 Save Changes
               </v-btn>
             </v-flex>

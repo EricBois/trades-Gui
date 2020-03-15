@@ -3,12 +3,12 @@
     <v-layout wrap>
       <v-flex xs12 text-center>
         <v-btn
+          @click="create = !create"
           top
           right
           absolute
           color="green darken-3"
           fab
-          @click="create = !create"
         >
           <v-icon large class="mt-n1">
             mdi-newspaper-plus
@@ -27,7 +27,7 @@
             </v-icon> Job Listing
           </v-toolbar-title>
           <v-spacer />
-          <v-btn icon dark @click="create = false">
+          <v-btn @click="create = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -57,25 +57,25 @@
             </v-flex>
             <v-flex class="mb-4" xs12>
               <gmap-autocomplete
-                class="gmap v-input__slot v-text-field"
                 :value="posting.location.address"
                 :select-first-on-enter="true"
-                placeholder="Location"
                 @place_changed="setPlace"
+                class="gmap v-input__slot v-text-field"
+                placeholder="Location"
               />
             </v-flex>
             <v-flex xs12>
               <v-textarea
                 v-model="posting.description"
+                :rules="descRule"
                 label="Job Description"
                 outlined
-                :rules="descRule"
                 class="purple-input"
                 counter="400"
               />
             </v-flex>
             <v-flex xs12 text-center>
-              <v-btn color="green darken-3" @click="post()">
+              <v-btn @click="post()" color="green darken-3">
                 Post Job Offer
               </v-btn>
             </v-flex>

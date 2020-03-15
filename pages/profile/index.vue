@@ -2,8 +2,8 @@
   <v-container fluid>
     <v-snackbar
       v-model="snackbar"
-      top
       :color="snackbarColor"
+      top
       right
     >
       {{ snackbarText }}
@@ -47,12 +47,12 @@
                             :preview="false"
                             :max-width="700"
                             :class-name="['fileinput', { 'fileinput--loaded': hasImage }]"
-                            capture="environment"
                             :debug="1"
-                            do-not-resize="gif"
                             :auto-rotate="true"
-                            output-format="blob"
                             @input="setImageLogo"
+                            capture="environment"
+                            do-not-resize="gif"
+                            output-format="blob"
                           >
                             <label slot="upload-label" for="fileInput" class="label">
                               <v-icon> mdi-camera-plus-outline</v-icon>
@@ -68,7 +68,7 @@
                         </v-btn>
                       </v-flex>
                       <v-flex xs12 md5 offset-md-3 class="pa-2">
-                        <v-chip label class="mb-6" x-large @click="editName">
+                        <v-chip @click="editName" label class="mb-6" x-large>
                           <span class="name">{{ name }}</span>
                           <v-icon right large>
                             mdi-pencil-box-outline
@@ -89,11 +89,11 @@
                 <v-flex xs12 pb-5>
                   <label for="gmap">Address</label>
                   <gmap-autocomplete
-                    class="gmap v-input__slot v-text-field"
                     :value="info.user_metadata.address"
                     :select-first-on-enter="true"
-                    placeholder="Project Location"
                     @place_changed="setPlace"
+                    class="gmap v-input__slot v-text-field"
+                    placeholder="Project Location"
                   />
                 </v-flex>
                 <v-flex xs12 pb-5>
@@ -167,29 +167,29 @@
                 </v-flex>
 
                 <v-flex xs6 sm4 class="justify-center text-center">
-                  <v-btn class="ma-1" small @click="dialogPhoto = !dialogPhoto">
+                  <v-btn @click="dialogPhoto = !dialogPhoto" class="ma-1" small>
                     <v-icon>mdi-image</v-icon>&nbsp;
                     Photos
                   </v-btn>
                 </v-flex>
                 <v-flex xs6 sm4 class="justify-center text-center">
-                  <v-btn class="ma-1 ibm justify-center text-center" small color="blue darken-3" @click="dialogProfile = !dialogProfile">
+                  <v-btn @click="dialogProfile = !dialogProfile" class="ma-1 ibm justify-center text-center" small color="blue darken-3">
                     preview profile
                   </v-btn>
                 </v-flex>
                 <v-flex xs12 sm4 text-center>
                   <v-btn
                     v-if="profile.user_metadata && !profile.user_metadata.profileDone"
+                    @click="edit"
                     class="ma-1 ibm justify-center text-center"
                     color="green"
                     elevation="24"
                     small
-                    @click="edit"
                   >
                     <v-icon>mdi-content-save-outline</v-icon>&nbsp;
                     Save Profile
                   </v-btn>
-                  <v-btn v-else class="ma-1 ibm justify-center text-center" color="green darken-2" small @click="edit">
+                  <v-btn v-else @click="edit" class="ma-1 ibm justify-center text-center" color="green darken-2" small>
                     <v-icon>mdi-content-save-outline</v-icon>&nbsp;
                     Edit Profile
                   </v-btn>
@@ -274,9 +274,9 @@
                 </v-flex>
                 <v-flex xs12 text-center>
                   <v-btn
+                    @click="saveHire()"
                     class="ibm mt-4"
                     color="green darken-3"
-                    @click="saveHire()"
                   >
                     <v-icon>mdi-content-save-outline</v-icon>&nbsp;
                     Save
@@ -304,8 +304,8 @@
                     </v-flex>
                     <v-flex xs12 text-center>
                       <v-btn
-                        class="ibm"
                         @click="edit"
+                        class="ibm"
                       >
                         <v-icon>mdi-content-save-outline</v-icon>&nbsp;
                         Save
@@ -326,7 +326,7 @@
           <v-toolbar-title class="body-1">
             Photos
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogPhoto = false">
+          <v-btn @click="dialogPhoto = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -337,12 +337,12 @@
               :preview="false"
               :max-width="700"
               :class-name="['photos', { 'fileinput--loaded': hasImage }]"
-              accept="image/*"
               :debug="1"
-              do-not-resize="gif"
               :auto-rotate="true"
-              output-format="blob"
               @input="setPhoto"
+              accept="image/*"
+              do-not-resize="gif"
+              output-format="blob"
             >
               <label slot="upload-label" for="photos">
                 <v-icon>mdi-48px mdi-camera-plus-outline</v-icon>
@@ -363,10 +363,10 @@
               class="pa-4"
             >
               <v-card>
-                <v-btn color="orange darken-2" text @click="deleteFile(img)">
+                <v-btn @click="deleteFile(img)" color="orange darken-2" text>
                   <v-icon>mdi-delete-outline</v-icon>
                 </v-btn>
-                <ExpandableImage class="image" :src="img" max-width="400" contain />
+                <ExpandableImage :src="img" class="image" max-width="400" contain />
               </v-card>
             </v-flex>
           </v-layout>
@@ -377,18 +377,18 @@
       <v-card>
         <v-flex xs12>
           <v-alert
+            :type="alertInfo"
             icon="mdi-information-outline"
             prominent
             transition="scale-transition"
             text
-            :type="alertInfo"
           >
             {{ alertText }}
           </v-alert>
         </v-flex>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="green darken-1" text @click="alert = false">
+          <v-btn @click="alert = false" color="green darken-1" text>
             Ok !
           </v-btn>
         </v-card-actions>
@@ -401,7 +401,7 @@
           <v-toolbar-title class="body-1">
             Profile
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogProfile = false">
+          <v-btn @click="dialogProfile = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>

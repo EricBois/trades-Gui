@@ -40,10 +40,10 @@
     <v-card
       v-for="project in filteredList"
       :key="project.id"
+      :to="job+project.id"
       outlined
       ripple
       hover
-      :to="job+project.id"
       max-width="800"
       class="mx-auto mt-5"
     >

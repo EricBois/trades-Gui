@@ -121,7 +121,7 @@
           <v-toolbar-title class="body-1">
             Meeting
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogMeeting = false">
+          <v-btn @click="dialogMeeting = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -133,18 +133,18 @@
       <v-card>
         <v-flex xs12>
           <v-alert
+            :type="alertInfo"
             icon="mdi-information-outline"
             prominent
             transition="scale-transition"
             text
-            :type="alertInfo"
           >
             {{ alertText }}
           </v-alert>
         </v-flex>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="green darken-1" text @click="alert = false">
+          <v-btn @click="alert = false" color="green darken-1" text>
             Ok !
           </v-btn>
         </v-card-actions>

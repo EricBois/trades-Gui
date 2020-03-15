@@ -41,14 +41,14 @@
         </v-data-table>
       </v-flex>
       <v-flex v-if="emails.length > 0 || phones.length > 0" class="mt-3" xs12 text-center>
-        <v-btn v-if="selectedBids.some(bid => !bid.meetingRequested)" color="blue darken-2" class="mt-3 ml-2 mt-sm-0" small @click="dialogMeeting = !dialogMeeting">
+        <v-btn v-if="selectedBids.some(bid => !bid.meetingRequested)" @click="dialogMeeting = !dialogMeeting" color="blue darken-2" class="mt-3 ml-2 mt-sm-0" small>
           <v-icon>mdi-account-group</v-icon>&nbsp; Request Onsite meeting
         </v-btn>
         <v-btn v-else color="blue darken-2" class="mt-3 ml-2 mt-sm-0" small disabled>
           <v-icon>mdi-account-group</v-icon>&nbsp; Request Onsite meeting
         </v-btn>
         <!-- v-if some() to check if any need to be notified -->
-        <v-btn v-if="selectedBids.some(bid => !bid.notified)" color="green darken-3" class="mt-3 ml-2 mt-sm-0" small @click="notify">
+        <v-btn v-if="selectedBids.some(bid => !bid.notified)" @click="notify" color="green darken-3" class="mt-3 ml-2 mt-sm-0" small>
           <v-icon>mdi-check-decagram</v-icon>&nbsp; Approve bid(s)
         </v-btn>
         <v-btn v-else color="green darken-3" class="mt-3 ml-2 mt-sm-0" small disabled>
@@ -65,7 +65,7 @@
           <v-toolbar-title class="body-1">
             Schedule a Meeting
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogMeeting = false">
+          <v-btn @click="dialogMeeting = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -82,10 +82,10 @@
         </v-flex>
         <v-divider />
         <v-flex xs12 text-center>
-          <v-btn color="orange" large class="my-5" @click="meeting.dates = []">
+          <v-btn @click="meeting.dates = []" color="orange" large class="my-5">
             Clear
           </v-btn>
-          <v-btn color="green" large class="my-5" @click="setMeeting">
+          <v-btn @click="setMeeting" color="green" large class="my-5">
             Submit
           </v-btn>
         </v-flex>

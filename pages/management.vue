@@ -3,8 +3,8 @@
     <v-layout wrap>
       <v-snackbar
         v-model="snackbar"
-        bottom
         :color="snackbarColor"
+        bottom
       >
         {{ snackbarText }}
         <v-icon v-if="snackbarColor.includes('red')">
@@ -17,14 +17,14 @@
       <v-flex xs12 text-center>
         <v-card class="mx-auto" max-width="900">
           <v-data-table
-            :headers="headers"
+            :headers="tableHeaders"
             :items="codes"
+            :expanded.sync="expanded"
             sort-by="created[-1]"
             class="elevation-1"
             item-key="code"
             show-expand
             single-expand
-            :expanded.sync="expanded"
           >
             <template v-slot:top>
               <v-toolbar flat color="dark">
@@ -36,7 +36,7 @@
                 />
                 <v-spacer />
                 <template>
-                  <v-btn color="primary" dark class="mb-2" @click="gencode">
+                  <v-btn @click="gencode" color="primary" dark class="mb-2">
                     <v-icon class="mr-2">
                       mdi-sync
                     </v-icon>
@@ -49,7 +49,7 @@
               <v-chip v-if="!item.used" label color="blue darken-3">
                 *****
               </v-chip>
-              <v-chip v-else label color="blue darken-3" @click="copy(item.code)">
+              <v-chip v-else @click="copy(item.code)" label color="blue darken-3">
                 <v-icon class="mr-2">
                   mdi-content-copy
                 </v-icon>
@@ -71,7 +71,7 @@
                 <v-icon>mdi-check-circle-outline</v-icon>
               </v-btn>
             </template>
-            <template v-slot:expanded-item="{ item, headers }">
+            <template v-slot:expanded-item="{ item }">
               <td colspan="2">
                 <v-card v-if="item.note" flat>
                   <v-list-item two-line>
@@ -101,13 +101,13 @@
                 </v-card>
               </td>
               <td colspan="1">
-                <v-btn small color="red darken-3" @click="deleteCode(item.code)">
+                <v-btn @click="deleteCode(item.code)" small color="red darken-3">
                   Delete
                 </v-btn>
               </td>
             </template>
             <template v-slot:item.action="{ item }">
-              <v-chip v-if="!item.used" color="blue-grey darken-2" label @click="makeSure(item.code)">
+              <v-chip v-if="!item.used" @click="makeSure(item.code)" color="blue-grey darken-2" label>
                 <v-icon class="mr-2">
                   mdi-cursor-default-click
                 </v-icon>
@@ -142,17 +142,17 @@
           <v-spacer />
 
           <v-btn
+            @click="dialog = false"
             color="orange darken-3"
             text
-            @click="dialog = false"
           >
             No
           </v-btn>
 
           <v-btn
+            @click="used(currentCode)"
             color="green darken-1"
             text
-            @click="used(currentCode)"
           >
             Yes, i will!
           </v-btn>
@@ -180,7 +180,7 @@ export default {
       note: '',
       userType: '',
       userTypes: ['User', 'Company', 'Ambassador'],
-      headers: [
+      tableHeaders: [
         {
           text: 'Codes',
           align: 'left',

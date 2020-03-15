@@ -2,20 +2,20 @@
   <v-container>
     <v-alert
       v-model="alert"
+      :type="alertInfo"
       icon="mdi-information-outline"
       prominent
       dense
       dismissible
       transition="scale-transition"
       text
-      :type="alertInfo"
     >
       {{ alertText }}
     </v-alert>
     <v-snackbar
       v-model="snackbar"
-      bottom
       :color="snackbarColor"
+      bottom
     >
       {{ snackbarText }}
       <v-icon>
@@ -93,13 +93,13 @@
             My Team
           </h3>
           <v-divider />
-          <draggable v-model="list" class="list-group" group="project" @change="save">
+          <draggable v-model="list" @change="save" class="list-group" group="project">
             <v-card v-for="user in list" :key="user.id" class="bg ma-2">
               {{ user.name }} <v-divider />
             </v-card>
           </draggable>
         </v-card>
-        <v-btn color="blue darken-3" fab small class="mt-n5" @click="addWhole">
+        <v-btn @click="addWhole" color="blue darken-3" fab small class="mt-n5">
           <v-icon large>
             mdi-arrow-right-circle
           </v-icon>
@@ -120,7 +120,7 @@
             Project Team
           </h3>
           <v-divider />
-          <draggable class="list-group" :list="projectTeam" group="project">
+          <draggable :list="projectTeam" class="list-group" group="project">
             <v-card
               v-for="user in projectTeam"
               :key="user.id"
@@ -130,10 +130,10 @@
             </v-card>
           </draggable>
         </v-card>
-        <v-btn color="red darken-3" small width="35" class="mt-n5" @click="reset">
+        <v-btn @click="reset" color="red darken-3" small width="35" class="mt-n5">
           Reset
         </v-btn>
-        <v-btn color="primary" class="mt-n5" small fab @click="dialogMessage = !dialogMessage">
+        <v-btn @click="dialogMessage = !dialogMessage" color="primary" class="mt-n5" small fab>
           <v-icon>mdi-message-text</v-icon>
         </v-btn>
       </v-flex>
@@ -141,10 +141,10 @@
         <v-divider class="my-1" />
         <span class="controls">Controls</span>
         <v-divider class="my-1" />
-        <v-btn color="primary" class="mt-2" :href="job" small>
+        <v-btn :href="job" color="primary" class="mt-2" small>
           Go to Project
         </v-btn>
-        <v-btn v-if="projectTeam.some(user => !user.notified)" class="mt-2" small @click="requestBids">
+        <v-btn v-if="projectTeam.some(user => !user.notified)" @click="requestBids" class="mt-2" small>
           Request for bids
         </v-btn>
         <v-btn v-else small disabled>
@@ -159,7 +159,7 @@
           <v-toolbar-title class="body-1">
             Message Project Team
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogMessage = false">
+          <v-btn @click="dialogMessage = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>

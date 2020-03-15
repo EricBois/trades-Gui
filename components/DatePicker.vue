@@ -2,8 +2,8 @@
   <v-layout row wrap align-center my-4>
     <v-snackbar
       v-model="snackbar"
-      top
       :color="snackbarColor"
+      top
       right
     >
       {{ snackbarText }}
@@ -20,13 +20,13 @@
       </h2>
     </v-flex>
     <v-flex xs12 sm5 text-center justify-center>
-      <v-btn color="deep-orange accent-2" icon @click="changeDate = !changeDate">
+      <v-btn @click="changeDate = !changeDate" color="deep-orange accent-2" icon>
         <v-icon large>
           mdi-calendar-edit
         </v-icon>
       </v-btn>
       <br>
-      <v-date-picker v-if="!changeDate" v-model="date" light :allowed-dates="allowedDates" />
+      <v-date-picker v-if="!changeDate" v-model="date" :allowed-dates="allowedDates" light />
       <v-date-picker v-if="changeDate" v-model="dates" light multiple />
     </v-flex>
     <v-flex xs12 sm7 text-center pr-5>
@@ -61,10 +61,10 @@
           <template v-slot:activator="{ on }">
             <v-text-field
               v-model="meeting.meeting.time"
+              v-on="on"
               label="Pick a time"
               prepend-icon="access_time"
               readonly
-              v-on="on"
             />
           </template>
           <v-time-picker
@@ -73,10 +73,10 @@
             full-width
           >
             <v-spacer />
-            <v-btn text color="primary" @click="dialogTime = false">
+            <v-btn @click="dialogTime = false" text color="primary">
               Cancel
             </v-btn>
-            <v-btn text color="primary" @click="$refs.dialog.save(meeting.meeting.time)">
+            <v-btn @click="$refs.dialog.save(meeting.meeting.time)" text color="primary">
               OK
             </v-btn>
           </v-time-picker>
@@ -113,16 +113,16 @@
       </div>
     </v-flex>
     <v-flex xs12 text-center text-sm-right mt-5 mr-10>
-      <v-btn v-if="$auth.user.sub === selectedMeeting.meeting.host" color="red darken-3" @click="dialogDelMeeting = true">
+      <v-btn v-if="$auth.user.sub === selectedMeeting.meeting.host" @click="dialogDelMeeting = true" color="red darken-3">
         Delete Meeting
       </v-btn>
-      <v-btn v-if="!meeting.confirm.status && selectedMeeting.meeting.host !== $auth.user.sub" color="green" @click="confirmed">
+      <v-btn v-if="!meeting.confirm.status && selectedMeeting.meeting.host !== $auth.user.sub" @click="confirmed" color="green">
         Confirm Meeting
       </v-btn>
-      <v-btn v-else color="orange" @click="confirmed">
+      <v-btn v-else @click="confirmed" color="orange">
         Reschedule meeting
       </v-btn>
-      <v-btn v-if="meeting.change.status && $auth.user.sub !== meeting.change.uid" color="green" @click="confirmed('done')">
+      <v-btn v-if="meeting.change.status && $auth.user.sub !== meeting.change.uid" @click="confirmed('done')" color="green">
         Confirm Changes
       </v-btn>
     </v-flex>
@@ -133,7 +133,7 @@
           <v-toolbar-title class="body-1">
             Confirm Meeting ?
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogConfirm = false">
+          <v-btn @click="dialogConfirm = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -142,13 +142,13 @@
         </v-flex>
         <v-divider />
         <v-flex xs12 text-center>
-          <v-btn color="orange darken-3" @click="dialogConfirm = false">
+          <v-btn @click="dialogConfirm = false" color="orange darken-3">
             Cancel
           </v-btn>
-          <v-btn v-if="!confirmedTrue" color="green darken-3" @click="confirmed('change')">
+          <v-btn v-if="!confirmedTrue" @click="confirmed('change')" color="green darken-3">
             Confirm
           </v-btn>
-          <v-btn v-else color="green darken-3" @click="confirmed('confirm')">
+          <v-btn v-else @click="confirmed('confirm')" color="green darken-3">
             Confirm
           </v-btn>
         </v-flex>
@@ -171,17 +171,17 @@
           <v-spacer />
 
           <v-btn
+            @click="dialogDelMeeting = false"
             color="orange darken-3"
             text
-            @click="dialogDelMeeting = false"
           >
             No
           </v-btn>
 
           <v-btn
+            @click="deleteMeeting()"
             color="green darken-1"
             text
-            @click="deleteMeeting()"
           >
             Yes, Let's Go!
           </v-btn>

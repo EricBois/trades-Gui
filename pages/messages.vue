@@ -2,8 +2,8 @@
   <v-container>
     <v-snackbar
       v-model="snackbar"
-      bottom
       :color="snackbarColor"
+      bottom
     >
       {{ snackbarText }}
       <v-icon>
@@ -22,17 +22,17 @@
         <v-flex class="mb-n5" xs12>
           <v-text-field
             v-model="search"
+            @change="show = true"
             label="Search by Name.."
             class="purple-input center"
             rounded
             clearable
             prepend-inner-icon="mdi-magnify"
             dense
-            @change="show = true"
           />
         </v-flex>
         <v-card subheader dense color="grey darken-3">
-          <v-subheader class="justify-center sub" @click="show = !show">
+          <v-subheader @click="show = !show" class="justify-center sub">
             <v-flex xs1 text-left>
               <v-btn
                 icon
@@ -47,7 +47,7 @@
           <v-expand-transition>
             <div v-show="show">
               <v-flex v-if="selectUser.length >= 1" class=" mb-2">
-                <v-btn v-if="selectUser.length >= 1" color="orange darken-3" small class="mt-n12 ml-2 mb-4" @click="selectUser = []">
+                <v-btn v-if="selectUser.length >= 1" @click="selectUser = []" color="orange darken-3" small class="mt-n12 ml-2 mb-4">
                   <v-icon class="mr-2" small>
                     mdi-autorenew
                   </v-icon>
@@ -55,7 +55,7 @@
                 </v-btn>
               </v-flex>
               <v-flex v-if="selectUser.length >= 1" class="mt-n8 mb-2" text-right>
-                <v-btn color="primary" class="mt-n12 mr-2 mb-4" small @click="dialogMassMessage = !dialogMassMessage">
+                <v-btn @click="dialogMassMessage = !dialogMassMessage" color="primary" class="mt-n12 mr-2 mb-4" small>
                   <v-icon class="mr-2" small>
                     mdi-send
                   </v-icon>
@@ -72,8 +72,8 @@
                   <v-chip
                     v-for="user in filteredList"
                     :key="user.uid"
-                    color="grey darken-1"
                     :value="user"
+                    color="grey darken-1"
                     small
                   >
                     {{ user.name }}
@@ -100,11 +100,11 @@
           >
             <v-list-item>
               <v-list-item-icon>
-                <v-icon color="red" small @click="deleteMessage(item.id)">
+                <v-icon @click="deleteMessage(item.id)" color="red" small>
                   mdi-close-box
                 </v-icon>
               </v-list-item-icon>
-              <v-list-item-content class="ml-n6 ml-sm-0" @click="dialog(item)">
+              <v-list-item-content @click="dialog(item)" class="ml-n6 ml-sm-0">
                 <v-list-item-title>
                   <v-chip color="green lighten-1" outlined small label>
                     {{ item.project_name }}
@@ -137,10 +137,10 @@
             mdi-axis-x-arrow
           </v-icon>
         </h3>
-        <v-btn color="green darken-3" small @click="showRead = !showRead">
+        <v-btn @click="showRead = !showRead" color="green darken-3" small>
           all
         </v-btn>
-        <v-btn color="blue darken-3" small @click="showSent = !showSent">
+        <v-btn @click="showSent = !showSent" color="blue darken-3" small>
           Sent
         </v-btn>
       </v-flex>
@@ -176,11 +176,11 @@
               >
                 <v-list-item>
                   <v-list-item-icon>
-                    <v-icon color="red" @click="deleteMessage(item.id)">
+                    <v-icon @click="deleteMessage(item.id)" color="red">
                       mdi-close-box
                     </v-icon>
                   </v-list-item-icon>
-                  <v-list-item-content class="ml-n6 ml-sm-0" @click="dialog(item)">
+                  <v-list-item-content @click="dialog(item)" class="ml-n6 ml-sm-0">
                     <v-list-item-title>
                       <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined small label>
                         {{ item.project_name }}
@@ -222,11 +222,11 @@
               >
                 <v-list-item>
                   <v-list-item-icon>
-                    <v-icon color="red" @click="deleteMessage(item.id)">
+                    <v-icon @click="deleteMessage(item.id)" color="red">
                       mdi-close-box
                     </v-icon>
                   </v-list-item-icon>
-                  <v-list-item-content class="ml-n6 ml-sm-0" @click="dialog(item)">
+                  <v-list-item-content @click="dialog(item)" class="ml-n6 ml-sm-0">
                     <v-list-item-title>
                       <v-chip v-if="!item.read.includes($auth.user.sub)" color="green lighten-1" outlined small label>
                         {{ item.project_name }}
@@ -260,7 +260,7 @@
           <v-toolbar-title v-if="selectedMessage.names" class="body-1">
             Message(s) with {{ (selectedMessage.names.from === $auth.user.name) ? selectedMessage.names.to : selectedMessage.names.from }}
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogMessage = false">
+          <v-btn @click="dialogMessage = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -300,13 +300,13 @@
           <v-form ref="form" lazy-validation class="mt-5">
             <v-textarea
               v-model="newMessage.text"
+              @keydown.enter="send"
               label="Message"
               solo
               outlined
               clearable
               class="purple-input"
               auto-grow
-              @keydown.enter="send"
             />
             <v-btn @click="send()">
               Send
@@ -323,7 +323,7 @@
           <v-toolbar-title class="body-1">
             Message
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogMassMessage = false">
+          <v-btn @click="dialogMassMessage = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -345,7 +345,7 @@
           />
         </v-form>
         <v-flex text-right class="ma-2">
-          <v-btn color="blue darken-3" @click="massSend">
+          <v-btn @click="massSend" color="blue darken-3">
             Send
           </v-btn>
         </v-flex>
@@ -356,18 +356,18 @@
       <v-card>
         <v-flex xs12>
           <v-alert
+            :type="alertInfo"
             icon="mdi-information-outline"
             prominent
             transition="scale-transition"
             text
-            :type="alertInfo"
           >
             {{ alertText }}
           </v-alert>
         </v-flex>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="green darken-1" text @click="alert = false">
+          <v-btn @click="alert = false" color="green darken-1" text>
             Ok !
           </v-btn>
         </v-card-actions>

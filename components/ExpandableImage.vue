@@ -1,10 +1,10 @@
 <template>
   <div
-    class="expandable-image"
     :class="{
       expanded: expanded
     }"
     @click="expanded = true"
+    class="expandable-image"
   >
     <i
       v-if="expanded"

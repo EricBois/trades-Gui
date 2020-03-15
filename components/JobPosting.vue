@@ -46,7 +46,7 @@
             </v-chip>
           </v-flex>
           <v-flex v-if="job.user === $auth.user.sub" xs3 text-right>
-            <v-btn color="yellow darken-3" small icon @click="askEdit(job)">
+            <v-btn @click="askEdit(job)" color="yellow darken-3" small icon>
               <v-icon>mdi-pencil-outline</v-icon>
             </v-btn>
           </v-flex>
@@ -60,12 +60,12 @@
           </v-flex>
           <v-flex xs12 text-center>
             <v-chip
+              @click="showProfile(job.user)"
               large
               class="mt-1 mr-2"
               color="blue-grey lighten-5"
               outlined
               label
-              @click="showProfile(job.user)"
             >
               <v-icon class="mr-2">
                 mdi-information-outline
@@ -118,10 +118,10 @@
           <v-flex v-if="job.user !== $auth.user.sub" xs12 class="mt-2" text-center>
             <v-btn
               v-if="job.applicants.map(applicant => applicant.uid).includes($auth.user.sub)"
+              @click="askWithdraw(job)"
               class="ma-2"
               small
               color="orange darken-2"
-              @click="askWithdraw(job)"
             >
               <v-icon small class="mr-1">
                 mdi-cancel
@@ -130,10 +130,10 @@
             </v-btn>
             <v-btn
               v-else
+              @click="askApply(job)"
               class="ma-2"
               small
               color="green darken-3"
-              @click="askApply(job)"
             >
               <v-icon small class="mr-1">
                 mdi-account-box
@@ -144,10 +144,10 @@
           <v-flex v-if="job.user === $auth.user.sub" xs12 class="mt-2" text-center>
             <v-btn
               v-if="job.applicants && job.applicants.length >= 1"
+              @click="applications(job)"
               class="ma-2"
               small
               color="blue-grey darken-2"
-              @click="applications(job)"
             >
               <v-icon small class="mr-1">
                 mdi-account-group
@@ -172,7 +172,7 @@
             <span v-if="job.hired">
               {{ job.hired.length }}
             </span>
-            <v-icon v-if="!job.hired.includes($auth.user.sub)" class="mr-2" small color="green" @click="hired(job._id, true)">
+            <v-icon v-if="!job.hired.includes($auth.user.sub)" @click="hired(job._id, true)" class="mr-2" small color="green">
               mdi-thumb-up
             </v-icon>
             <v-icon v-else class="mr-2" small color="green">
@@ -181,7 +181,7 @@
             <span v-if="job.notHired">
               {{ job.notHired.length }}
             </span>
-            <v-icon v-if="!job.notHired.includes($auth.user.sub)" small color="red" @click="hired(job._id, false)">
+            <v-icon v-if="!job.notHired.includes($auth.user.sub)" @click="hired(job._id, false)" small color="red">
               mdi-thumb-down
             </v-icon>
             <v-icon v-else small color="red">
@@ -189,7 +189,7 @@
             </v-icon>
           </v-flex>
           <v-flex v-if="job.user === $auth.user.sub" xs4 text-right>
-            <v-btn color="red darken-3" class="mr-2 mt-2" small @click="askDelete(job._id)">
+            <v-btn @click="askDelete(job._id)" color="red darken-3" class="mr-2 mt-2" small>
               <v-icon class="mr-1" small>
                 mdi-alert
               </v-icon>
@@ -207,7 +207,7 @@
             Applications
           </v-toolbar-title>
           <v-spacer />
-          <v-btn icon dark @click="dialogApplications = false">
+          <v-btn @click="dialogApplications = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -232,7 +232,7 @@
             >
               <v-layout wrap>
                 <v-flex xs8 class="pa-1">
-                  <v-chip small color="blue lighten-3" label outlined @click="showProfile(applicant.uid)">
+                  <v-chip @click="showProfile(applicant.uid)" small color="blue lighten-3" label outlined>
                     <v-icon small class="mr-1">
                       mdi-information-outline
                     </v-icon>
@@ -240,7 +240,7 @@
                   </v-chip>
                 </v-flex>
                 <v-flex xs4 class="pa-1">
-                  <v-btn color="blue lighten-3" outlined small @click="showDetails(applicant)">
+                  <v-btn @click="showDetails(applicant)" color="blue lighten-3" outlined small>
                     Details
                   </v-btn>
                 </v-flex>
@@ -258,13 +258,13 @@
           <v-toolbar-title class="body-1">
             User details
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogApplied = false">
+          <v-btn @click="dialogApplied = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
         <v-layout class="pa-2" wrap>
           <v-flex xs12 text-center>
-            <v-chip large outlined label @click="showProfile(currentUser.uid)">
+            <v-chip @click="showProfile(currentUser.uid)" large outlined label>
               <v-icon color="green accent-2" small class="mr-1">
                 mdi-information-outline
               </v-icon>
@@ -297,7 +297,7 @@
             </v-chip>
           </v-flex>
           <v-flex class="mt-3 ma-1 " xs12 text-right>
-            <v-btn small color="blue-grey darken-2" @click="askInfo(currentUser)">
+            <v-btn @click="askInfo(currentUser)" small color="blue-grey darken-2">
               Contact info
             </v-btn>
           </v-flex>
@@ -311,7 +311,7 @@
           <v-toolbar-title class="body-1">
             Profile
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogProfile = false">
+          <v-btn @click="dialogProfile = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -336,17 +336,17 @@
           <v-spacer />
 
           <v-btn
+            @click="dialogDelete = false"
             color="orange darken-3"
             text
-            @click="dialogDelete = false"
           >
             No
           </v-btn>
 
           <v-btn
+            @click="del(currentId)"
             color="green darken-1"
             text
-            @click="del(currentId)"
           >
             Yes, Let's Go!
           </v-btn>
@@ -361,7 +361,7 @@
           <v-toolbar-title class="body-1">
             Edit Job Posting
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogEdit = false">
+          <v-btn @click="dialogEdit = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -389,25 +389,25 @@
             </v-flex>
             <v-flex class="mb-4" xs12>
               <gmap-autocomplete
-                class="gmap v-input__slot v-text-field"
                 :value="posting.location.address"
                 :select-first-on-enter="true"
-                placeholder="Location"
                 @place_changed="setPlace"
+                class="gmap v-input__slot v-text-field"
+                placeholder="Location"
               />
             </v-flex>
             <v-flex xs12>
               <v-textarea
                 v-model="posting.description"
+                :rules="descRule"
                 label="Job Description"
                 outlined
-                :rules="descRule"
                 class="purple-input"
                 counter="400"
               />
             </v-flex>
             <v-flex xs12 text-center>
-              <v-btn color="green darken-3" @click="edit(currentId)">
+              <v-btn @click="edit(currentId)" color="green darken-3">
                 Edit Job Offer
               </v-btn>
             </v-flex>
@@ -424,7 +424,7 @@
           <v-toolbar-title class="body-1">
             Application Form
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogApply = false">
+          <v-btn @click="dialogApply = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -465,9 +465,9 @@
             <v-flex xs12>
               <v-textarea
                 v-model="application.experience"
+                :rules="descRule"
                 label="What's your experience?"
                 outlined
-                :rules="descRule"
                 class="purple-input"
                 counter="400"
               />
@@ -498,7 +498,7 @@
               />
             </v-flex>
             <v-flex xs12 text-center>
-              <v-btn color="green darken-3" @click="apply(currentId)">
+              <v-btn @click="apply(currentId)" color="green darken-3">
                 Apply
               </v-btn>
             </v-flex>
@@ -524,17 +524,17 @@
           <v-spacer />
 
           <v-btn
+            @click="dialogWithdraw = false"
             color="orange darken-3"
             text
-            @click="dialogWithdraw = false"
           >
             No
           </v-btn>
 
           <v-btn
+            @click="withdraw(currentId)"
             color="green darken-1"
             text
-            @click="withdraw(currentId)"
           >
             Yes!
           </v-btn>
@@ -561,9 +561,9 @@
           <v-spacer />
 
           <v-btn
+            @click="dialogInfo = false"
             color="blue darken-3"
             text
-            @click="dialogInfo = false"
           >
             Ok
           </v-btn>

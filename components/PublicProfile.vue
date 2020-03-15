@@ -2,8 +2,8 @@
   <v-container fill-height fluid grid-list-xl>
     <v-snackbar
       v-model="snackbar"
-      bottom
       :color="snackbarColor"
+      bottom
     >
       {{ snackbarText }}
       <v-icon v-if="snackbarColor.includes('red')">
@@ -16,7 +16,7 @@
     <v-layout justify-center wrap elevation-6>
       <v-flex xs12 text-center>
         <v-avatar v-if="user.picture" size="170">
-          <v-img class="img-circle elevation-6" aspect-ratio="1.4" :src="user.picture" />
+          <v-img :src="user.picture" class="img-circle elevation-6" aspect-ratio="1.4" />
         </v-avatar>
         <div class="name mt-4">
           {{ user.name }}
@@ -24,12 +24,12 @@
         <div class="mt-2">
           <a v-if="user.metadata && user.metadata.facebook" :href="user.metadata.facebook" target="_blank"><v-icon class="circle-icon" color="blue darken-1">mdi-facebook-box mdi-36px</v-icon></a>
           <a v-if="user.metadata && user.metadata.instagram" :href="user.metadata.instagram" target="_blank"><v-icon class="instagram">mdi-instagram mdi-36px</v-icon></a>
-          <v-icon class="circle-icon" color="blue darken-1" @click="dialogMessage = !dialogMessage">
+          <v-icon @click="dialogMessage = !dialogMessage" class="circle-icon" color="blue darken-1">
             mdi-message-text mdi-36px
           </v-icon>
           <a v-if="user.metadata && user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon class="circle-icon" color="green">mdi-web mdi-36px</v-icon></a>
           <a v-if="user.metadata && user.metadata.phone" :href="phone"><v-icon class="circle-icon" color="teal">mdi-phone-classic mdi-36px</v-icon></a>
-          <v-btn v-if="user.uid !== $auth.user.sub && !alreadyInTeam " fab color="blue darken-3" @click="addToTeam()">
+          <v-btn v-if="user.uid !== $auth.user.sub && !alreadyInTeam " @click="addToTeam()" fab color="blue darken-3">
             <v-icon large>
               mdi-account-multiple-plus
             </v-icon>
@@ -99,7 +99,7 @@
             class="pa-4"
           >
             <v-card>
-              <ExpandableImage class="image" :src="img" max-width="400" contain />
+              <ExpandableImage :src="img" class="image" max-width="400" contain />
             </v-card>
           </v-flex>
         </v-layout>
@@ -113,7 +113,7 @@
             class="pa-4"
           >
             <v-card>
-              <ExpandableImage class="image" :src="img" max-width="400" contain />
+              <ExpandableImage :src="img" class="image" max-width="400" contain />
             </v-card>
           </v-flex>
         </v-layout>
@@ -193,10 +193,10 @@
               </v-chip>
             </v-flex>
             <v-flex v-if="review.reviewerUid === $auth.user.sub" class="mt-n12 mb-2" xs12 text-right>
-              <v-btn class="mt-n4" x-small fab color="yellow darken-3" @click="editReview(review)">
+              <v-btn @click="editReview(review)" class="mt-n4" x-small fab color="yellow darken-3">
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
-              <v-btn class="mr-n2 mt-n4" x-small fab color="red darken-4" @click="deleteReview(review)">
+              <v-btn @click="deleteReview(review)" class="mr-n2 mt-n4" x-small fab color="red darken-4">
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
             </v-flex>
@@ -206,7 +206,7 @@
               </v-chip>
               <v-divider />
             </v-flex>
-            <v-flex :class="($vuetify.breakpoint.width <= 600)? 'mt-n4': ''" xs12 sm4 :text-left="($vuetify.breakpoint.width > 600)? true: false">
+            <v-flex :class="($vuetify.breakpoint.width <= 600)? 'mt-n4': ''" :text-left="($vuetify.breakpoint.width > 600)? true: false" xs12 sm4>
               <span>Quality of work</span>
               <v-rating
                 v-model="review.ratingA"
@@ -232,7 +232,7 @@
                 readonly
               />
             </v-flex>
-            <v-flex :class="($vuetify.breakpoint.width <= 600)? 'mt-n4': ''" xs12 sm4 :text-left="($vuetify.breakpoint.width > 600)? true: false">
+            <v-flex :class="($vuetify.breakpoint.width <= 600)? 'mt-n4': ''" :text-left="($vuetify.breakpoint.width > 600)? true: false" xs12 sm4>
               <span>Cleanliness</span>
               <v-rating
                 v-model="review.ratingC"
@@ -258,7 +258,7 @@
                 readonly
               />
             </v-flex>
-            <v-flex :class="($vuetify.breakpoint.width <= 600)? 'mt-n4': ''" xs12 sm4 :text-left="($vuetify.breakpoint.width > 600)? true: false">
+            <v-flex :class="($vuetify.breakpoint.width <= 600)? 'mt-n4': ''" :text-left="($vuetify.breakpoint.width > 600)? true: false" xs12 sm4>
               <span>Reliability</span>
               <v-rating
                 v-model="review.ratingE"
@@ -288,7 +288,7 @@
           <v-toolbar-title class="body-1">
             Messages
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogMessage = false">
+          <v-btn @click="dialogMessage = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -381,17 +381,17 @@
               </v-flex>
               <v-flex class="my-4" text-right>
                 <v-btn
+                  @click="dialogReview = false"
                   color="orange darken-3"
                   text
-                  @click="dialogReview = false"
                 >
                   Cancel
                 </v-btn>
 
                 <v-btn
+                  @click="saveReview()"
                   color="green darken-1"
                   text
-                  @click="saveReview()"
                 >
                   Save Changes!
                 </v-btn>
@@ -421,17 +421,17 @@
           <v-spacer />
 
           <v-btn
+            @click="dialogDelete = false"
             color="orange darken-3"
             text
-            @click="dialogDelete = false"
           >
             No
           </v-btn>
 
           <v-btn
+            @click="confirmDelete()"
             color="green darken-1"
             text
-            @click="confirmDelete()"
           >
             Yes!
           </v-btn>

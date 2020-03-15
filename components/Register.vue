@@ -32,7 +32,7 @@
             </v-flex>
             <v-flex xs12 text-center>
               <span class="caption"><span class="blue--text mr-1 underline">Got an invite code ?</span> Enter it for instant approval!</span>
-              <v-text-field v-model="info.code" class="purple-input" label="Your invite Code" @change="verify()">
+              <v-text-field v-model="info.code" @change="verify()" class="purple-input" label="Your invite Code">
                 <template v-slot:append>
                   <v-btn
                     v-if="validated"
@@ -96,11 +96,11 @@
                 :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="passwordRule"
                 :type="show ? 'text' : 'password'"
+                @click:append="show = !show"
                 name="input-10-1"
                 label="Password"
                 hint="At least 8 characters"
                 counter
-                @click:append="show = !show"
               />
             </v-flex>
             <v-flex v-if="validated" xs12>
@@ -108,22 +108,22 @@
                 v-model="repeatPassword"
                 :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="show ? 'text' : 'password'"
-                name="input-10-1"
                 :rules="verifyPasswd"
+                @click:append="show = !show"
+                name="input-10-1"
                 label="Repeat password"
                 hint="Enter password again"
                 counter
-                @click:append="show = !show"
               />
             </v-flex>
             <v-flex v-if="!validated" class="mb-4 mt-n2" xs12>
               <span class="caption">*Please fill as much information as possible, our representant will get back to you shortly.</span>
             </v-flex>
             <v-flex xs12 text-center>
-              <v-btn v-if="validated" color="green darken-3" @click="register()">
+              <v-btn v-if="validated" @click="register()" color="green darken-3">
                 Register!
               </v-btn>
-              <v-btn v-else color="blue darken-3" @click="register()">
+              <v-btn v-else @click="register()" color="blue darken-3">
                 Apply
               </v-btn>
             </v-flex>

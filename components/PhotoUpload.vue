@@ -2,8 +2,8 @@
   <v-container>
     <v-snackbar
       v-model="snackbar"
-      top
       :color="snackbarColor"
+      top
       right
     >
       {{ snackbarText }}
@@ -17,10 +17,10 @@
         :max-width="700"
         :class-name="['fileinput', { 'fileinput--loaded': hasImage }]"
         :debug="1"
-        do-not-resize="gif"
         :auto-rotate="true"
-        output-format="blob"
         @input="setImage"
+        do-not-resize="gif"
+        output-format="blob"
       >
         <label slot="upload-label" for="fileInput">
           <v-icon>mdi-48px mdi-camera-plus-outline</v-icon>

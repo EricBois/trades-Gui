@@ -2,20 +2,20 @@
   <v-container>
     <v-alert
       v-model="alert"
+      :type="alertInfo"
       icon="mdi-information-outline"
       prominent
       dense
       dismissible
       transition="scale-transition"
       text
-      :type="alertInfo"
     >
       {{ alertText }}
     </v-alert>
     <v-snackbar
       v-model="snackbar"
-      bottom
       :color="snackbarColor"
+      bottom
       right
     >
       {{ snackbarText }}
@@ -45,15 +45,15 @@
             />
             <v-btn
               v-if="search.length > 0 || city.length > 0 || trade.length > 0 || wcb || liability || ticket.length > 0"
+              @click="clearFilters"
               small
               rounded
               class="mt-n12"
               color="orange darken-4"
-              @click="clearFilters"
             >
               Clear filters
             </v-btn>
-            <v-btn rounded color="teal darken-4" small class="mt-n12" @click="searchDialog = !searchDialog">
+            <v-btn @click="searchDialog = !searchDialog" rounded color="teal darken-4" small class="mt-n12">
               Advanced search
             </v-btn>
           </v-card>
@@ -62,7 +62,7 @@
             <v-card v-for="user in filteredTeam" :key="user.id" shaped class="bg ma-2">
               <v-layout wrap>
                 <v-flex xs8 text-left class="pa-1">
-                  <v-chip small color="grey lighten-3" label outlined @click="showProfile(user.uid)">
+                  <v-chip @click="showProfile(user.uid)" small color="grey lighten-3" label outlined>
                     <v-icon color="green accent-2" small class="mr-1">
                       mdi-information-outline
                     </v-icon>
@@ -70,7 +70,7 @@
                   </v-chip>
                 </v-flex>
                 <v-flex class="pa-1" xs2>
-                  <v-btn color="blue-grey lighten-5" fab outlined x-small @click="userSetting(user)">
+                  <v-btn @click="userSetting(user)" color="blue-grey lighten-5" fab outlined x-small>
                     <v-icon>
                       mdi-account-cog-outline
                     </v-icon>
@@ -78,13 +78,13 @@
                 </v-flex>
                 <v-flex class="pa-1" xs2>
                   <v-btn
+                    @click="askDelete(user)"
                     ripple
                     color="red darken-1"
                     class="pa-1"
                     icon
                     outlined
                     x-small
-                    @click="askDelete(user)"
                   >
                     <v-icon large>
                       mdi-delete-circle
@@ -96,10 +96,10 @@
             <!-- </draggable> -->
           </v-card>
           <div :class="(team.length >= 1)? '':'mt-4'">
-            <v-btn small color="green darken-3" fab class="mt-n5" @click="dialogUsers = !dialogUsers">
+            <v-btn @click="dialogUsers = !dialogUsers" small color="green darken-3" fab class="mt-n5">
               <v-icon>mdi-account-multiple-plus</v-icon>
             </v-btn>
-            <v-btn color="primary" class="mt-n5" small fab @click="dialogMessage = !dialogMessage">
+            <v-btn @click="dialogMessage = !dialogMessage" color="primary" class="mt-n5" small fab>
               <v-icon>mdi-message-text</v-icon>
             </v-btn>
           </div>
@@ -114,7 +114,7 @@
             Search Users
           </v-toolbar-title>
           <v-spacer />
-          <v-btn icon dark @click="dialogUsers = false">
+          <v-btn @click="dialogUsers = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -143,15 +143,15 @@
             />
             <v-btn
               v-if="search.length > 0 || city.length > 0 || trade.length > 0 || wcb || liability || ticket.length > 0"
+              @click="clearFilters"
               small
               rounded
               class="mt-n12"
               color="orange darken-4"
-              @click="clearFilters"
             >
               Clear filters
             </v-btn>
-            <v-btn rounded color="teal darken-4" small class="mt-n12" @click="searchDialog = !searchDialog">
+            <v-btn @click="searchDialog = !searchDialog" rounded color="teal darken-4" small class="mt-n12">
               Advanced search
             </v-btn>
           </v-card>
@@ -167,7 +167,7 @@
             >
               <v-layout wrap>
                 <v-flex xs9 text-left class="pa-1">
-                  <v-chip small color="grey lighten-3" label outlined @click="showProfile(user.uid)">
+                  <v-chip @click="showProfile(user.uid)" small color="grey lighten-3" label outlined>
                     <v-icon color="green accent-2" small class="mr-1">
                       mdi-information-outline
                     </v-icon>
@@ -175,7 +175,7 @@
                   </v-chip>
                 </v-flex>
                 <v-flex class="pa-1" xs3>
-                  <v-btn color="blue-grey lighten-4" fab outlined x-small @click="addToTeam(user)">
+                  <v-btn @click="addToTeam(user)" color="blue-grey lighten-4" fab outlined x-small>
                     <v-icon>
                       mdi-account-multiple-plus
                     </v-icon>
@@ -201,7 +201,7 @@
           <v-toolbar-title class="body-1">
             Profile
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogProfile = false">
+          <v-btn @click="dialogProfile = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -216,7 +216,7 @@
           <v-toolbar-title class="body-1">
             Search By
           </v-toolbar-title>
-          <v-btn icon dark @click="searchDialog = false">
+          <v-btn @click="searchDialog = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -272,7 +272,7 @@
           <v-toolbar-title class="body-1">
             Message Team
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogMessage = false">
+          <v-btn @click="dialogMessage = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -310,17 +310,17 @@
           <v-spacer />
 
           <v-btn
+            @click="dialogDelete = false"
             color="orange darken-3"
             text
-            @click="dialogDelete = false"
           >
             No
           </v-btn>
 
           <v-btn
+            @click="deleteMember(currentId)"
             color="green darken-1"
             text
-            @click="deleteMember(currentId)"
           >
             Yes!
           </v-btn>
@@ -335,7 +335,7 @@
             Settings for {{ currentUser.name }}
           </v-toolbar-title>
           <v-spacer />
-          <v-btn icon dark @click="dialogSetting = false">
+          <v-btn @click="dialogSetting = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -363,7 +363,7 @@
             />
           </v-flex>
           <v-flex xs12 text-right class="ma-2">
-            <v-btn large color="blue darken-3" @click="saveUser()">
+            <v-btn @click="saveUser()" large color="blue darken-3">
               save
             </v-btn>
           </v-flex>

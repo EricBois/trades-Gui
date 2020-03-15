@@ -52,7 +52,7 @@
         >
           <v-layout wrap>
             <v-flex xs8 class="pa-1">
-              <v-chip small color="cyan lighten-3" label outlined @click="showProfile(contractor.user)">
+              <v-chip @click="showProfile(contractor.user)" small color="cyan lighten-3" label outlined>
                 <v-icon small class="mr-1">
                   mdi-information-outline
                 </v-icon>
@@ -60,7 +60,7 @@
               </v-chip>
             </v-flex>
             <v-flex xs4 class="pa-1">
-              <v-btn color="cyan lighten-3" outlined small @click="showDetails(contractor)">
+              <v-btn @click="showDetails(contractor)" color="cyan lighten-3" outlined small>
                 Details
               </v-btn>
             </v-flex>
@@ -76,13 +76,13 @@
           <v-toolbar-title class="body-1">
             User details
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogUser = false">
+          <v-btn @click="dialogUser = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
         <v-layout class="pa-2" wrap>
           <v-flex class="pa-1" xs12 text-center>
-            <v-chip large color="teal lighten-3" label outlined @click="showProfile(currentUser.user)">
+            <v-chip @click="showProfile(currentUser.user)" large color="teal lighten-3" label outlined>
               <v-icon small class="mr-1">
                 mdi-information-outline
               </v-icon>
@@ -162,7 +162,7 @@
           <v-toolbar-title class="body-1">
             Profile
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogProfile = false">
+          <v-btn @click="dialogProfile = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>

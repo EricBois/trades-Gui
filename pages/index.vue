@@ -2,8 +2,8 @@
   <v-layout wrap>
     <v-snackbar
       v-model="snackbar"
-      bottom
       :color="snackbarColor"
+      bottom
     >
       {{ snackbarText }}
       <v-icon v-if="snackbarColor.includes('red')">
@@ -16,13 +16,13 @@
     <v-flex xs12>
       <v-alert
         v-model="alert"
+        :type="alertInfo"
         icon="mdi-information-outline"
         prominent
         dense
         dismissible
         transition="scale-transition"
         text
-        :type="alertInfo"
       >
         {{ alertText }}
       </v-alert>
@@ -34,23 +34,23 @@
         </h1>
         <v-divider />
         <v-card max-width="400" min-height="100" class="mx-auto" elevation="20" shaped>
-          <v-img class="ma-4" :src="require('../assets/logo.png')" />
+          <v-img :src="require('../assets/logo.png')" class="ma-4" />
         </v-card>
 
         <v-flex v-if="mobile" class="mt-5" xs12 text-center>
           <v-btn
             v-if="!this.$auth.loggedIn"
+            @click="login"
             color="green"
             x-large
             class="mb-2"
             label
-            @click="login"
           >
             <v-icon>mdi-login</v-icon> Login
           </v-btn>
           <br>
           <v-card ripple class="mx-auto pa-1 mt-4" outlined width="180">
-            <small class="amber--text" color="blue darken-3" @click="registerDialog = !registerDialog"><v-icon class="mr-2 mt-n1">mdi-account-circle</v-icon>Not registered yet ?</small>
+            <small @click="registerDialog = !registerDialog" class="amber--text" color="blue darken-3"><v-icon class="mr-2 mt-n1">mdi-account-circle</v-icon>Not registered yet ?</small>
           </v-card>
 
           <!-- <v-btn v-if="!this.$auth.loggedIn" color="blue darken-3" x-large label @click="registerDialog = !registerDialog">
@@ -66,7 +66,7 @@
           <v-toolbar-title class="body-1">
             Apply for an account
           </v-toolbar-title>
-          <v-btn icon dark @click="registerDialog = false">
+          <v-btn @click="registerDialog = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>

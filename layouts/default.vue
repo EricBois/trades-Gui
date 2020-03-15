@@ -2,8 +2,8 @@
   <v-app id="inspire">
     <v-snackbar
       v-model="snackbar"
-      bottom
       :color="snackbarColor"
+      bottom
     >
       {{ snackbarText }}
       <v-icon v-if="snackbarColor.includes('red')">
@@ -26,7 +26,7 @@
       <v-divider />
       <v-list-item to="/profile">
         <v-list-item-avatar tile size="50">
-          <v-img class="rounded mt-n1" :src="picture" />
+          <v-img :src="picture" class="rounded mt-n1" />
         </v-list-item-avatar>
 
         <v-list-item-title class="ml-n1">
@@ -59,7 +59,7 @@
               mdi-currency-usd
             </v-icon>
           </v-list-item-action>
-          <v-list-item-content class="ml-n4" @click="$router.push('/projects')">
+          <v-list-item-content @click="$router.push('/projects')" class="ml-n4">
             <v-list-item-title>
               <v-chip color="yellow lighten-1" outlined label>
                 Projects Bidding
@@ -215,13 +215,13 @@
           <v-switch v-model="switchAvailable" label="Looking for work" color="green" inset />
         </v-list-item> -->
         <v-list-item class="mt-10 justify-center">
-          <v-btn v-if="this.$auth.loggedIn" text color="amber darken-4" large @click="logout">
+          <v-btn v-if="this.$auth.loggedIn" @click="logout" text color="amber darken-4" large>
             <v-icon class="mr-1">
               mdi-logout
             </v-icon>
             Logout
           </v-btn>
-          <v-btn :style="{'display': addBtnShow}" class="addBtn ml-3" small @click="addToPage">
+          <v-btn :style="{'display': addBtnShow}" @click="addToPage" class="addBtn ml-3" small>
             <v-icon>mdi-tablet-cellphone</v-icon>&nbsp;
             Install App
           </v-btn>
@@ -240,32 +240,32 @@
       <v-app-bar-nav-icon v-if="this.$auth.loggedIn" @click.stop="drawer = !drawer" />
       <v-btn
         v-if="!this.$auth.loggedIn && !mobile"
+        @click="login"
         color="green"
         class="mr-2"
         small
         label
-        @click="login"
       >
         <v-icon>mdi-login</v-icon> Login
       </v-btn>
-      <v-btn v-if="!this.$auth.loggedIn && !mobile" color="blue darken-3" small label @click="registerDialog = !registerDialog">
+      <v-btn v-if="!this.$auth.loggedIn && !mobile" @click="registerDialog = !registerDialog" color="blue darken-3" small label>
         <v-icon>mdi-content-save</v-icon> Register
       </v-btn>
       <v-menu
         v-if="this.$auth.loggedIn"
+        :close-on-content-click="contentClick"
+        :offset-overflow="overflow"
         transition="scale-transition"
         class="mx-1 scroll"
-        :close-on-content-click="contentClick"
         offset-x
-        :offset-overflow="overflow"
         max-height="400"
       >
         <template v-slot:activator="{ on: menu }">
           <v-btn
             :color="notificationColor"
+            v-on="{ ...menu }"
             dark
             x-small
-            v-on="{ ...menu }"
           >
             <v-badge
               :color="notificationColor"
@@ -375,6 +375,7 @@
 
           <v-btn
             v-if="notifications.length > 0"
+            @click="clearNotifications"
             top
             right
             absolute
@@ -382,7 +383,6 @@
             small
             color="red darken-3"
             fab
-            @click="clearNotifications"
           >
             <v-icon large>
               mdi-delete-circle-outline
@@ -442,7 +442,7 @@
           <v-toolbar-title class="body-1">
             Apply for an account
           </v-toolbar-title>
-          <v-btn icon dark @click="registerDialog = false">
+          <v-btn @click="registerDialog = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -457,11 +457,11 @@
           {{ welcomeText }}
         </div>
         <v-btn
+          @click="letsGo()"
           class="mt-6"
           color="blue lighten-3"
           large
           outlined
-          @click="letsGo()"
         >
           Ok !
         </v-btn>
@@ -475,7 +475,7 @@
             Create Project
           </v-toolbar-title>
           <v-spacer />
-          <v-btn icon dark @click="create = false">
+          <v-btn @click="create = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -491,7 +491,7 @@
             Your Assistant
           </v-toolbar-title>
           <v-spacer />
-          <v-btn icon dark @click="assistant('home')">
+          <v-btn @click="assistant('home')" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -500,74 +500,74 @@
         </v-flex>
         <v-flex xs12>
           <div v-if="step1">
-            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="assistant('find')">
+            <v-btn @click="assistant('find')" class="ma-2 ml-12" color="light-blue darken-3" small>
               Find contractors for my project
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" color="cyan darken-3" small @click="assistant('hire')">
+            <v-btn @click="assistant('hire')" class="ma-2 ml-12" color="cyan darken-3" small>
               Hire tradesman
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" color="teal darken-3" small @click="assistant('team')">
+            <v-btn @click="assistant('team')" class="ma-2 ml-12" color="teal darken-3" small>
               Manage my team
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="assistant('job')">
+            <v-btn @click="assistant('job')" class="ma-2 ml-12" color="light-blue darken-3" small>
               Find a job
             </v-btn>
           </div>
           <div v-if="step2 && contractor">
-            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="create = !create">
+            <v-btn @click="create = !create" class="ma-2 ml-12" color="light-blue darken-3" small>
               Get bids on my project
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" color="cyan darken-3" small @click="dialogLfw = !dialogLfw">
+            <v-btn @click="dialogLfw = !dialogLfw" class="ma-2 ml-12" color="cyan darken-3" small>
               I'm out of time i need someone TODAY
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" small @click="assistant('back')">
+            <v-btn @click="assistant('back')" class="ma-2 ml-12" small>
               go back
             </v-btn>
           </div>
           <div v-if="step2 && hireTradesman">
-            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="assistant('post')">
+            <v-btn @click="assistant('post')" class="ma-2 ml-12" color="light-blue darken-3" small>
               post an ads
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" color="cyan darken-3" small @click="dialogLfw = !dialogLfw">
+            <v-btn @click="dialogLfw = !dialogLfw" class="ma-2 ml-12" color="cyan darken-3" small>
               see who's available today
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" small @click="assistant('back')">
+            <v-btn @click="assistant('back')" class="ma-2 ml-12" small>
               go back
             </v-btn>
           </div>
           <div v-if="step2 && team">
-            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="assistant('members')">
+            <v-btn @click="assistant('members')" class="ma-2 ml-12" color="light-blue darken-3" small>
               Add or edit members
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" color="cyan darken-3" small @click="assistant('projects')">
+            <v-btn @click="assistant('projects')" class="ma-2 ml-12" color="cyan darken-3" small>
               manage my team projects
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" small @click="assistant('back')">
+            <v-btn @click="assistant('back')" class="ma-2 ml-12" small>
               go back
             </v-btn>
           </div>
           <div v-if="step2 && job">
-            <v-btn class="ma-2 ml-12" color="cyan darken-3" small @click="assistant('bid')">
+            <v-btn @click="assistant('bid')" class="ma-2 ml-12" color="cyan darken-3" small>
               place some bids
             </v-btn>
-            <v-btn class="ma-2 ml-12" color="light-blue darken-3" small @click="assistant('profile')">
+            <v-btn @click="assistant('profile')" class="ma-2 ml-12" color="light-blue darken-3" small>
               Make myself available to work
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" color="teal darken-3" small @click="assistant('listings')">
+            <v-btn @click="assistant('listings')" class="ma-2 ml-12" color="teal darken-3" small>
               look at the job listing
             </v-btn>
             <br>
-            <v-btn class="ma-2 ml-12" small @click="assistant('back')">
+            <v-btn @click="assistant('back')" class="ma-2 ml-12" small>
               go back
             </v-btn>
           </div>
@@ -583,7 +583,7 @@
             Tradesman available today
           </v-toolbar-title>
           <v-spacer />
-          <v-btn icon dark @click="dialogLfw = false">
+          <v-btn @click="dialogLfw = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -597,7 +597,7 @@
           <v-toolbar-title class="body-1">
             Profile
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogProfile = false">
+          <v-btn @click="dialogProfile = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>

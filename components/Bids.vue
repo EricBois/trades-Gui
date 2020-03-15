@@ -2,8 +2,8 @@
   <v-container>
     <v-snackbar
       v-model="snackbar"
-      bottom
       :color="snackbarColor"
+      bottom
     >
       {{ snackbarText }}
       <v-icon v-if="snackbarColor.includes('red')">
@@ -24,16 +24,16 @@
     >
       <v-layout wrap>
         <v-flex v-if="ownProject" xs1 sm1 class="mt-n5 mb-n6">
-          <v-checkbox v-model="selectedBids" color="white" :value="bid" />
+          <v-checkbox v-model="selectedBids" :value="bid" color="white" />
         </v-flex>
-        <v-flex :xs12="!ownProject" :xs11="ownProject" sm4 class="pl-2" @click.self="open(bid)">
+        <v-flex :xs12="!ownProject" :xs11="ownProject" @click.self="open(bid)" sm4 class="pl-2">
           <v-chip
             :color="(bid.notified && bid.user === $auth.user.sub) ? 'orange accent-1':'grey lighten-4'"
+            @click="profile(bid.user)"
             outlined
             class="my-1"
             small
             label
-            @click="profile(bid.user)"
           >
             <v-icon v-if="bid.notified " class="mr-1" small color="amber darken-1">
               mdi-crown-outline
@@ -44,7 +44,7 @@
             {{ bid.createdBy }}
           </v-chip>
         </v-flex>
-        <v-flex v-if="$vuetify.breakpoint.smAndUp" sm5 text-center @click="open(bid)">
+        <v-flex v-if="$vuetify.breakpoint.smAndUp" @click="open(bid)" sm5 text-center>
           <v-chip
             v-for="item in bid.items"
             :key="item.id"
@@ -57,12 +57,12 @@
             {{ item.trade }}
           </v-chip>
         </v-flex>
-        <v-flex xs12 :class="($vuetify.breakpoint.width >= 375)? 'mt-n8 mr-6' : 'mr-6'" text-right @click="open(bid)">
+        <v-flex :class="($vuetify.breakpoint.width >= 375)? 'mt-n8 mr-6' : 'mr-6'" @click="open(bid)" xs12 text-right>
           <v-chip
 
+            :color="(bid.notified && bid.user === $auth.user.sub) ? 'orange accent-1':'grey lighten-4'"
             small
             class="my-1"
-            :color="(bid.notified && bid.user === $auth.user.sub) ? 'orange accent-1':'grey lighten-4'"
             label
             outlined
           >
@@ -73,11 +73,11 @@
         <v-flex v-if="bid.notified && bid.user !== $auth.user.sub" xs2 offset-10 class="mt-n8" text-right>
           <v-btn
             v-if="!bid.reviewed"
+            @click="askReview(bid)"
             color="orange darken-3"
             fab
             class="mr-n10"
             small
-            @click="askReview(bid)"
           >
             <v-icon large>
               mdi-star-circle
@@ -131,15 +131,15 @@
             <v-divider class="my-2" />
             <span class="ibm"><center>Documents</center></span>
             <div v-for="file in currentBid.files" :key="file">
-              <v-btn class="mb-2" color="blue-grey darken-2" :href="file" small>
+              <v-btn :href="file" class="mb-2" color="blue-grey darken-2" small>
                 <v-icon>mdi-link-box-outline</v-icon>
                 &nbsp;{{ file.split("/").pop() }}
               </v-btn>
               <v-icon
                 v-if="currentBid.user === $auth.user.sub"
+                @click="deleteFile(file, 'file')"
                 class="mb-2"
                 color="red"
-                @click="deleteFile(file, 'file')"
               >
                 mdi-close-box
               </v-icon>
@@ -150,33 +150,33 @@
         <v-card-actions>
           <v-spacer />
           <!-- Can't delete bid if won -->
-          <v-btn v-if="!ownProject && !currentBid.notified" color="red ligthen-3" small text @click="dialogDeleteBid = true">
+          <v-btn v-if="!ownProject && !currentBid.notified" @click="dialogDeleteBid = true" color="red ligthen-3" small text>
             Delete
           </v-btn>
           <v-btn
+            @click="dialog = false"
             color="amber darken-3"
             text
             small
-            @click="dialog = false"
           >
             Close
           </v-btn>
           <div v-if="ownProject">
             <v-btn
               v-if="!selectedBids.some(bid => bid.id === currentBid.id)"
+              @click="selectBid()"
               color="green ligthen-3"
               text
               small
-              @click="selectBid()"
             >
               Select Quote
             </v-btn>
             <v-btn
               v-else
+              @click="unselectBid()"
               color="green darken-1"
               text
               small
-              @click="unselectBid()"
             >
               Unselect
             </v-btn>
@@ -191,7 +191,7 @@
           <v-toolbar-title class="body-1">
             Profile
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogProfile = false">
+          <v-btn @click="dialogProfile = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -216,17 +216,17 @@
           <v-spacer />
 
           <v-btn
+            @click="dialogDeleteBid = false"
             color="orange darken-3"
             text
-            @click="dialogDeleteBid = false"
           >
             No
           </v-btn>
 
           <v-btn
+            @click="deleteBid(currentBid.id)"
             color="green darken-1"
             text
-            @click="deleteBid(currentBid.id)"
           >
             Yes, Let's Go!
           </v-btn>
@@ -318,17 +318,17 @@
               </v-flex>
               <v-flex class="my-4" text-right>
                 <v-btn
+                  @click="dialogReview = false"
                   color="orange darken-3"
                   text
-                  @click="dialogReview = false"
                 >
                   Cancel
                 </v-btn>
 
                 <v-btn
+                  @click="saveReview()"
                   color="green darken-1"
                   text
-                  @click="saveReview()"
                 >
                   Save!
                 </v-btn>

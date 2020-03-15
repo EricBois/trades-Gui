@@ -12,12 +12,12 @@
         <v-flex
           v-for="project in jobs"
           :key="project.id"
+          @click="dialog(project)"
           xs6
           sm6
           md3
           xl2
           class="pr-3"
-          @click="dialog(project)"
         >
           <v-card
             raised
@@ -62,7 +62,7 @@
           <v-toolbar-title class="body-1">
             Project Team
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogTeam = false">
+          <v-btn @click="dialogTeam = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -75,18 +75,18 @@
       <v-card>
         <v-flex xs12>
           <v-alert
+            :type="alertInfo"
             icon="mdi-information-outline"
             prominent
             transition="scale-transition"
             text
-            :type="alertInfo"
           >
             {{ alertText }}
           </v-alert>
         </v-flex>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="green darken-1" text @click="alert = false">
+          <v-btn @click="alert = false" color="green darken-1" text>
             Ok !
           </v-btn>
         </v-card-actions>

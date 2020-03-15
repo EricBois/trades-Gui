@@ -2,8 +2,8 @@
   <v-container>
     <v-snackbar
       v-model="snackbar"
-      top
       :color="snackbarColor"
+      top
       right
     >
       {{ snackbarText }}
@@ -43,12 +43,12 @@
             <div v-if="project.createdBy" class="caption grey--text">
               Project by:
               <v-chip
+                @click="profile(project.user)"
                 color="blue-grey lighten-4"
                 class="ibm"
                 outlined
                 label
                 small
-                @click="profile(project.user)"
               >
                 <v-icon small class="mr-1">
                   mdi-information-outline
@@ -63,11 +63,11 @@
             <!-- if own project different icon -->
             <v-btn
               v-if="ownProject"
+              @click="dialogFile = !dialogFile"
               color="amber lighten-5"
               ripple
               icon
               large
-              @click="dialogFile = !dialogFile"
             >
               <v-icon>
                 mdi-file-document-box-plus-outline
@@ -75,11 +75,11 @@
             </v-btn>
             <v-btn
               v-if="project.files && project.files.length > 0 && !ownProject"
+              @click="dialogFile = !dialogFile"
               color="amber lighten-5"
               ripple
               icon
               large
-              @click="dialogFile = !dialogFile"
             >
               <v-icon>
                 mdi-file-document-box-outline
@@ -88,11 +88,11 @@
             <!-- if own porject different icon -->
             <v-btn
               v-if="ownProject"
+              @click="dialogPhoto = !dialogPhoto"
               color="amber lighten-5"
               icon
               large
               ripple
-              @click="dialogPhoto = !dialogPhoto"
             >
               <v-icon>
                 mdi-camera-plus-outline
@@ -100,11 +100,11 @@
             </v-btn>
             <v-btn
               v-if="project.photos && project.photos.length > 0 && !ownProject"
+              @click="dialogPhoto = !dialogPhoto"
               color="amber lighten-5"
               icon
               large
               ripple
-              @click="dialogPhoto = !dialogPhoto"
             >
               <v-icon>
                 mdi-camera-outline
@@ -182,10 +182,10 @@
       <v-card-actions class="justify-center">
         <v-btn
           v-if="project.user !== this.$auth.user.sub"
+          @click="dialogMessage = !dialogMessage"
           class="ma-1"
           color="blue darken-3"
           small
-          @click="dialogMessage = !dialogMessage"
         >
           <v-icon>
             mdi-android-messages
@@ -193,10 +193,10 @@
         </v-btn>
         <v-btn
           v-if="project.user !== this.$auth.user.sub && bidding"
+          @click="dialogBid = !dialogBid"
           class="ma-1"
           color="green darken-1"
           small
-          @click="dialogBid = !dialogBid"
         >
           <v-icon class="mr-1">
             mdi-domain-plus
@@ -217,19 +217,19 @@
         </v-btn>
         <v-btn
           v-if="project.user === this.$auth.user.sub"
+          :to="job+project.id+edit"
           class="teal darken-2 ma-1"
           icon
           large
-          :to="job+project.id+edit"
         >
           <v-icon>mdi-pencil-outline</v-icon>
         </v-btn>
         <v-btn
           v-if="project.user === this.$auth.user.sub"
+          @click="dialogDeleteProject =!dialogDeleteProject"
           class="red darken-4 ma-1"
           icon
           large
-          @click="dialogDeleteProject =!dialogDeleteProject"
         >
           <v-icon>mdi-delete</v-icon>
         </v-btn>
@@ -250,12 +250,12 @@
       </v-flex>
       <v-flex xs12 class="ml-2">
         <div v-if="ownProject" class="mb-4 mt-n6">
-          <v-btn v-if="bidding" color="green darken-3" small @click="bidsToggle">
+          <v-btn v-if="bidding" @click="bidsToggle" color="green darken-3" small>
             <v-icon left>
               mdi-star-three-points
             </v-icon>Bidding On
           </v-btn>
-          <v-btn v-else color="amber darken-3" small @click="bidsToggle">
+          <v-btn v-else @click="bidsToggle" color="amber darken-3" small>
             <v-icon left>
               mdi-alert
             </v-icon>Bidding Off
@@ -277,12 +277,12 @@
     </v-card>
     <v-card v-else max-width="844" class="mx-auto" raised>
       <div v-if="ownProject" class="mb-4 mt-n6">
-        <v-btn v-if="bidding" color="green darken-3" small @click="bidsToggle">
+        <v-btn v-if="bidding" @click="bidsToggle" color="green darken-3" small>
           <v-icon left>
             mdi-star-three-points
           </v-icon>Bidding On
         </v-btn>
-        <v-btn v-else color="amber darken-3" small @click="bidsToggle">
+        <v-btn v-else @click="bidsToggle" color="amber darken-3" small>
           <v-icon left>
             mdi-alert
           </v-icon>Bidding Off
@@ -302,7 +302,7 @@
             Place a Bid
           </v-toolbar-title>
           <v-spacer />
-          <v-btn icon dark @click="dialogBid = false">
+          <v-btn @click="dialogBid = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -315,8 +315,8 @@
                   <v-combobox
                     v-if="!project.oneBid"
                     v-model="addItem.trade"
-                    placeholder="Name"
                     :items="merged"
+                    placeholder="Name"
                     dense
                     class="mt-3"
                     label="Item"
@@ -342,7 +342,7 @@
                   />
                 </v-flex>
                 <v-flex v-if="addItem.price" xs12 text-right class="mt-n2">
-                  <v-btn color="green darken-3" @click="addToBid()">
+                  <v-btn @click="addToBid()" color="green darken-3">
                     <v-icon class="mr-1">
                       mdi-plus-box
                     </v-icon>
@@ -352,7 +352,7 @@
                 <v-flex v-if="infobid.items.length >= 1" xs12>
                   <v-card v-for="item in infobid.items" :key="item.id" class="mt-2 pa-1" outlined>
                     <v-flex class="mb-n5" xs12 text-right>
-                      <v-icon color="red darken-1" class="mr-n1" @click="removeBid(item)">
+                      <v-icon @click="removeBid(item)" color="red darken-1" class="mr-n1">
                         mdi-delete
                       </v-icon>
                     </v-flex>
@@ -387,7 +387,7 @@
                   />
                 </v-flex>
                 <v-flex xs12 sm6>
-                  <v-file-input v-model="doc" accept="application/pdf" :loading="loading" show-size label="Document Upload" />
+                  <v-file-input v-model="doc" :loading="loading" accept="application/pdf" show-size label="Document Upload" />
                 </v-flex>
                 <v-flex xs12 sm6 class="pl-5">
                   <v-text-field
@@ -405,10 +405,10 @@
         </v-card-text>
         <v-card-actions>
           <div class="flex-grow-1" />
-          <v-btn color="blue darken-1" text @click="dialogBid = false">
+          <v-btn @click="dialogBid = false" color="blue darken-1" text>
             Close
           </v-btn>
-          <v-btn v-if="infobid.items.length >= 1" color="blue darken-1" text @click="postBid()">
+          <v-btn v-if="infobid.items.length >= 1" @click="postBid()" color="blue darken-1" text>
             Save
           </v-btn>
         </v-card-actions>
@@ -423,8 +423,8 @@
           <v-container>
             <v-row v-if="ownProject">
               <v-col cols="12">
-                <v-file-input v-model="doc" accept="application/pdf" :loading="loading" show-size label="Document Upload" />
-                <v-btn v-if="doc && !loading" small @click="upload()">
+                <v-file-input v-model="doc" :loading="loading" accept="application/pdf" show-size label="Document Upload" />
+                <v-btn v-if="doc && !loading" @click="upload()" small>
                   Upload
                 </v-btn>
               </v-col>
@@ -433,15 +433,15 @@
             <v-row>
               <v-col>
                 <div v-for="file in project.files" :key="file">
-                  <v-btn class="mb-2" color="blue-grey darken-2" :href="file" small>
+                  <v-btn :href="file" class="mb-2" color="blue-grey darken-2" small>
                     <v-icon>mdi-link-box-outline</v-icon>
               &nbsp;{{ file.split("/").pop() }}
                   </v-btn>
                   <v-icon
                     v-if="ownProject"
+                    @click="deleteFile(file, 'file')"
                     class="mb-2"
                     color="red"
-                    @click="deleteFile(file, 'file')"
                   >
                     mdi-close-box
                   </v-icon>
@@ -452,7 +452,7 @@
         </v-card-text>
         <v-card-actions>
           <div class="flex-grow-1" />
-          <v-btn color="blue darken-1" text @click="dialogFile = false">
+          <v-btn @click="dialogFile = false" color="blue darken-1" text>
             Close
           </v-btn>
         </v-card-actions>
@@ -461,7 +461,7 @@
     <v-dialog v-model="dialogPhoto" transition="dialog-bottom-transition" max-width="900">
       <v-card class="px-3">
         <v-toolbar dark color="primary">
-          <v-btn icon dark @click="dialogPhoto = false">
+          <v-btn @click="dialogPhoto = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-toolbar-title>Photos</v-toolbar-title>
@@ -484,18 +484,18 @@
               <v-card color="grey darken-2" class="pa-2">
                 <v-btn
                   v-if="ownProject"
+                  @click="deleteFile(img,'image')"
                   color="amber darken-3"
                   class="mb-2"
                   small
                   outlined
-                  @click="deleteFile(img,'image')"
                 >
                   <v-icon>mdi-delete-outline</v-icon>
                 </v-btn>
                 <v-card shaped>
                   <expandable-image
-                    class="image"
                     :src="img"
+                    class="image"
                     max-width="400"
                     contain
                   />
@@ -513,7 +513,7 @@
           <v-toolbar-title class="body-1">
             Select user(s) and option
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogBidApproval = false">
+          <v-btn @click="dialogBidApproval = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -528,7 +528,7 @@
           <v-toolbar-title class="body-1">
             Messages
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogMessage = false">
+          <v-btn @click="dialogMessage = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -543,7 +543,7 @@
           <v-toolbar-title class="body-1">
             Profile
           </v-toolbar-title>
-          <v-btn icon dark @click="dialogProfile = false">
+          <v-btn @click="dialogProfile = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -568,17 +568,17 @@
           <v-spacer />
 
           <v-btn
+            @click="dialogDeleteProject = false"
             color="orange darken-3"
             text
-            @click="dialogDeleteProject = false"
           >
             No
           </v-btn>
 
           <v-btn
+            @click="deleteProject(project.id)"
             color="green darken-1"
             text
-            @click="deleteProject(project.id)"
           >
             Yes, Let's Go!
           </v-btn>
@@ -586,7 +586,7 @@
       </v-card>
     </v-dialog>
     <v-flex v-if="ownProject" xs12 text-center class="mt-5">
-      <v-btn v-if="selected.length > 0" color="light-green darken-3" @click="dialogBidApproval = !dialogBidApproval">
+      <v-btn v-if="selected.length > 0" @click="dialogBidApproval = !dialogBidApproval" color="light-green darken-3">
         Accept Bid(s)
       </v-btn>
     </v-flex>
@@ -594,18 +594,18 @@
       <v-card>
         <v-flex xs12>
           <v-alert
+            :type="alertInfo"
             icon="mdi-information-outline"
             prominent
             transition="scale-transition"
             text
-            :type="alertInfo"
           >
             {{ alertText }}
           </v-alert>
         </v-flex>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="green darken-1" text @click="alert = false">
+          <v-btn @click="alert = false" color="green darken-1" text>
             Ok !
           </v-btn>
         </v-card-actions>
@@ -625,7 +625,7 @@
         </v-flex>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="green darken-1" text @click="alert2 = false">
+          <v-btn @click="alert2 = false" color="green darken-1" text>
             Ok !
           </v-btn>
         </v-card-actions>
