@@ -238,7 +238,9 @@ export default {
           }
         })
       })
-      await this.$store.dispatch('notifications/deleteBulkNotification', this.meetingIds)
+      if (this.meetingNew.length >= 1) {
+        await this.$store.dispatch('notifications/deleteBulkNotification', this.meetingIds)
+      }
     },
     meetingPicker (item) {
       this.selectedMeeting = item
