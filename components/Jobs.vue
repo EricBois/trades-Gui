@@ -125,7 +125,7 @@
           </v-chip>
         </v-flex>
         <v-flex xs12 mt-3 text-center>
-          <span class="font-weight-black ibm2"><u>Requirements</u></span></br>
+          <span class="font-weight-black ibm2"><u>Requirements</u></span><br>
           <v-card class="mb-n2">
             <v-btn v-if="project.wcb" class="ma-1" color="green accent-4" x-small text>
               <v-icon small>
