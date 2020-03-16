@@ -21,7 +21,12 @@
       clipped
     >
       <v-list-item>
-        <v-img :src="require('../assets/logo.png')" />
+        <v-img
+          :src="require('../assets/logo.png')"
+          contain
+          height="100"
+          lazy-src
+        />
       </v-list-item>
       <v-divider />
       <v-list-item to="/profile">

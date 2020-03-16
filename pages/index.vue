@@ -34,7 +34,11 @@
         </h1>
         <v-divider />
         <v-card max-width="400" min-height="100" class="mx-auto" elevation="20" shaped>
-          <v-img :src="require('../assets/logo.png')" class="ma-4" />
+          <v-img
+            :src="require('../assets/logo.png')"
+            lazy-src
+            class="ma-4"
+          />
         </v-card>
 
         <v-flex v-if="mobile" class="mt-5" xs12 text-center>
