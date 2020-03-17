@@ -61,7 +61,7 @@
         <v-list-item v-ripple>
           <v-list-item-action @click="$router.push('/projects')">
             <v-icon color="yellow lighten-1">
-              mdi-currency-usd
+              mdi-gavel
             </v-icon>
           </v-list-item-action>
           <v-list-item-content @click="$router.push('/projects')" class="ml-n4">
@@ -235,11 +235,9 @@
     </v-navigation-drawer>
 
     <v-app-bar
-      :max-width="barLength"
+
       app
-      clipped-left
-      dense
-      collapse
+      height="35"
       elevate-on-scroll
     >
       <v-app-bar-nav-icon v-if="this.$auth.loggedIn" @click.stop="drawer = !drawer" />
@@ -256,6 +254,7 @@
       <v-btn v-if="!this.$auth.loggedIn && !mobile" @click="registerDialog = !registerDialog" color="blue darken-3" small label>
         <v-icon>mdi-content-save</v-icon> Register
       </v-btn>
+      <v-spacer />
       <v-menu
         v-if="this.$auth.loggedIn"
         :close-on-content-click="contentClick"
@@ -403,6 +402,22 @@
           </v-list-item>
         </v-list>
       </v-menu>
+      <template v-slot:extension>
+        <v-tabs height="40" centered>
+          <v-tab to="/projects">
+            <v-icon>mdi-gavel</v-icon>
+          </v-tab>
+          <v-tab to="/myprojects">
+            <v-icon>mdi-alpha-m-box</v-icon>
+          </v-tab>
+          <v-tab to="/team/manage">
+            <v-icon>mdi-account-group</v-icon>
+          </v-tab>
+          <v-tab @click="dialogAssist = !dialogAssist">
+            <v-icon>mdi-auto-fix</v-icon>
+          </v-tab>
+        </v-tabs>
+      </template>
     </v-app-bar>
 
     <v-content>
