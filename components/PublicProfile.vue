@@ -22,12 +22,12 @@
           {{ user.name }}
         </div>
         <div class="mt-2">
-          <a v-if="user.metadata && user.metadata.facebook" :href="user.metadata.facebook" target="_blank"><v-icon class="circle-icon" color="blue darken-1">mdi-facebook-box mdi-36px</v-icon></a>
-          <a v-if="user.metadata && user.metadata.instagram" :href="user.metadata.instagram" target="_blank"><v-icon class="instagram">mdi-instagram mdi-36px</v-icon></a>
+          <a v-if="user.metadata && user.metadata.facebook" :href="user.metadata.facebook" target="_blank" rel="noreferrer"><v-icon class="circle-icon" color="blue darken-1">mdi-facebook mdi-36px</v-icon></a>
+          <a v-if="user.metadata && user.metadata.instagram" :href="user.metadata.instagram" target="_blank" rel="noreferrer"><v-icon class="instagram">mdi-instagram mdi-36px</v-icon></a>
           <v-icon @click="dialogMessage = !dialogMessage" class="circle-icon" color="blue darken-1">
             mdi-message-text mdi-36px
           </v-icon>
-          <a v-if="user.metadata && user.metadata.web" :href="user.metadata.web" target="_blank"><v-icon class="circle-icon" color="green">mdi-web mdi-36px</v-icon></a>
+          <a v-if="user.metadata && user.metadata.web" :href="user.metadata.web" target="_blank" rel="noreferrer"><v-icon class="circle-icon" color="green">mdi-web mdi-36px</v-icon></a>
           <a v-if="user.metadata && user.metadata.phone" :href="phone"><v-icon class="circle-icon" color="teal">mdi-phone-classic mdi-36px</v-icon></a>
           <v-btn v-if="user.uid !== $auth.user.sub && !alreadyInTeam " @click="addToTeam()" fab color="blue darken-3">
             <v-icon large>
