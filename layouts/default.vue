@@ -235,25 +235,13 @@
     </v-navigation-drawer>
 
     <v-app-bar
-
+      v-if="this.$auth.loggedIn"
       app
       height="35"
       elevate-on-scroll
     >
-      <v-app-bar-nav-icon v-if="this.$auth.loggedIn" @click.stop="drawer = !drawer" />
-      <v-btn
-        v-if="!this.$auth.loggedIn && !mobile"
-        @click="login"
-        color="green"
-        class="mr-2"
-        small
-        label
-      >
-        <v-icon>mdi-login</v-icon> Login
-      </v-btn>
-      <v-btn v-if="!this.$auth.loggedIn && !mobile" @click="registerDialog = !registerDialog" color="blue darken-3" small label>
-        <v-icon>mdi-content-save</v-icon> Register
-      </v-btn>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+
       <v-spacer />
       <v-menu
         v-if="this.$auth.loggedIn"
