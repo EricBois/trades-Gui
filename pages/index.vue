@@ -29,38 +29,53 @@
     </v-flex>
     <v-flex xs12 text-center>
       <v-card max-width="450" class="mx-auto pa-6">
-        <h1 class="sub">
-          Welcome to
-        </h1>
-        <v-divider />
-        <v-card max-width="400" min-height="100" class="mx-auto" elevation="20" shaped>
-          <v-img
-            :src="require('../assets/logo.png')"
-            lazy-src
-            class="ma-4"
-          />
-        </v-card>
+        <v-layout wrap>
+          <v-flex xs12 text-left>
+            <h1 class="sub">
+              Welcome to
+            </h1>
+          </v-flex>
+          <v-flex xs12>
+            <v-card max-width="200" min-height="100" class="mx-auto" elevation="20" shaped>
+              <v-img
+                :src="require('../assets/logo.png')"
+                lazy-src
+                class="ma-4"
+              />
+            </v-card>
+            <v-divider />
+          </v-flex>
 
-        <v-flex v-if="mobile" class="mt-5" xs12 text-center>
-          <v-btn
-            v-if="!this.$auth.loggedIn"
-            @click="login"
-            color="green"
-            x-large
-            class="mb-2"
-            label
-          >
-            <v-icon>mdi-login</v-icon> Login
-          </v-btn>
-          <br>
-          <v-card ripple class="mx-auto pa-1 mt-4" outlined width="180">
-            <small @click="registerDialog = !registerDialog" class="amber--text" color="blue darken-3"><v-icon class="mr-2 mt-n1">mdi-account-circle</v-icon>Not registered yet ?</small>
-          </v-card>
-
-          <!-- <v-btn v-if="!this.$auth.loggedIn" color="blue darken-3" x-large label @click="registerDialog = !registerDialog">
-             Register
-          </v-btn> -->
-        </v-flex>
+          <v-flex xs6 class="mt-5">
+            <v-btn
+              v-if="!this.$auth.loggedIn"
+              @click="registerDialog = !registerDialog"
+              color="blue-grey lighten-4"
+              x-large
+              outlined
+              label
+            >
+              <v-icon class="mr-1">
+                mdi-account
+              </v-icon>
+              Register
+            </v-btn>
+          </v-flex>
+          <v-flex class="mt-5" xs6 text-center>
+            <v-btn
+              v-if="!this.$auth.loggedIn"
+              @click="login"
+              color="green darken-3"
+              x-large
+              class="mb-2"
+              label
+            >
+              <v-icon class="mr-1">
+                mdi-login
+              </v-icon> Log-in
+            </v-btn>
+          </v-flex>
+        </v-layout>
       </v-card>
     </v-flex>
     <v-dialog v-model="registerDialog" max-width="800" persistent transition="dialog-bottom-transition">
