@@ -45,11 +45,15 @@
             </v-card>
             <v-divider />
           </v-flex>
-
-          <v-flex xs6 class="mt-5">
+        </v-layout>
+      </v-card>
+      <v-card max-width="450" class="mx-auto mt-8 pa-2">
+        <v-layout wrap>
+          <v-flex xs6 class="my-5">
             <v-btn
               v-if="!this.$auth.loggedIn"
               @click="registerDialog = !registerDialog"
+              class="pa-2"
               color="blue-grey lighten-4"
               x-large
               outlined
@@ -61,13 +65,12 @@
               Register
             </v-btn>
           </v-flex>
-          <v-flex class="mt-5" xs6 text-center>
+          <v-flex class="my-5" xs6 text-center>
             <v-btn
               v-if="!this.$auth.loggedIn"
               @click="login"
-              color="green darken-3"
+              color="cyan darken-3"
               x-large
-              class="mb-2"
               label
             >
               <v-icon class="mr-1">
