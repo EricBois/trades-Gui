@@ -51,7 +51,7 @@
             <v-flex xs12 md6 mr-12>
               <v-checkbox
                 v-model="checkWcb"
-                label="Wcb Required"
+                label="Workers Compensation Required"
                 color="orange darken-3"
               />
             </v-flex>

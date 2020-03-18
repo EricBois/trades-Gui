@@ -158,22 +158,22 @@
           <v-btn v-if="project.wcb" class="ma-1" color="green accent-4" x-small text>
             <v-icon small>
               mdi-check-decagram
-            </v-icon>&nbsp; Wcb
+            </v-icon>&nbsp; Workers Compensation
           </v-btn>
           <v-btn v-else class="ma-1" x-small color="grey" text>
             <v-icon small>
               mdi-checkbox-blank-outline
-            </v-icon>&nbsp; Wcb
+            </v-icon>&nbsp; Workers Compensation
           </v-btn>
           <v-btn v-if="project.liability" class="ma-1" color="green accent-4" x-small text>
             <v-icon small>
               mdi-check-decagram
-            </v-icon>&nbsp;Liability
+            </v-icon>&nbsp;Liability Insurance
           </v-btn>
           <v-btn v-else class="ma-1" color="grey" x-small text>
             <v-icon small>
               mdi-checkbox-blank-outline
-            </v-icon>&nbsp;Liability
+            </v-icon>&nbsp;Liability Insurance
           </v-btn>
         </v-flex>
       </v-layout>
@@ -459,13 +459,14 @@
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogPhoto" transition="dialog-bottom-transition" max-width="900">
-      <v-card class="px-3">
-        <v-toolbar dark color="primary">
+      <v-card>
+        <v-toolbar dark color="blue darken-3">
+          <v-spacer />
+          <v-toolbar-title>Project Photos</v-toolbar-title>
+          <v-spacer />
           <v-btn @click="dialogPhoto = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>Photos</v-toolbar-title>
-          <div class="flex-grow-1" />
         </v-toolbar>
         <v-flex v-if="ownProject" xs12 text-center>
           <photoUpload :project.sync="project" />

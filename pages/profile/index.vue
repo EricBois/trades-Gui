@@ -133,7 +133,7 @@
                   <v-text-field
                     v-model="info.user_metadata.wcb"
                     class="purple-input"
-                    label="Wcb #"
+                    label="Workers Compensation #"
                   />
                 </v-flex>
                 <v-flex xs12 md6 pr-sm-4>
