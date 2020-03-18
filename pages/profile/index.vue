@@ -107,6 +107,7 @@
                 <v-flex xs12 md6 pb-5 pr-sm-4>
                   <v-text-field
                     v-model="info.user_metadata.facebook"
+                    :rules="httpRule"
                     class="purple-input"
                     label="Facebook"
                     prepend-inner-icon="mdi-facebook-box"
@@ -115,6 +116,7 @@
                 <v-flex xs12 md6 pb-5>
                   <v-text-field
                     v-model="info.user_metadata.instagram"
+                    :rules="httpRule"
                     class="purple-input"
                     label="Instagram"
                     prepend-inner-icon="mdi-instagram"
@@ -448,6 +450,9 @@ export default {
   },
   data () {
     return {
+      httpRule: [
+        v => (/\b(http|https)/.test(v) || v === '') || 'Enter your profile url ex: http://www.example.com/subhub'
+      ],
       dialogProfile: false,
       snackbar: false,
       snackbarColor: 'green darken-3',
