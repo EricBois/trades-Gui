@@ -44,19 +44,6 @@
       </v-list-item>
       <v-divider />
       <v-list dense>
-        <v-list-item to="/">
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content class="ml-n4">
-            <v-list-item-title>
-              <v-chip outlined label>
-                Home
-              </v-chip>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-divider class="my-2" />
         <v-list-item v-ripple>
           <v-list-item-action @click="$router.push('/projects')">
             <v-icon color="yellow lighten-1">
