@@ -18,7 +18,6 @@
       v-model="drawer"
       app
       floating
-      clipped
     >
       <v-list-item>
         <v-img
