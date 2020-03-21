@@ -1,22 +1,19 @@
 <template>
   <v-container>
-    <v-layout wrap>
-      <v-flex xs12 text-center>
-        <v-btn
-          @click="create = !create"
-          top
-          right
-          absolute
-          color="green darken-3"
-          fab
-        >
-          <v-icon large class="mt-n1">
-            mdi-newspaper-plus
-          </v-icon>
-        </v-btn>
-      </v-flex>
-    </v-layout>
     <JobPosting :jobs.sync="jobs" />
+    <v-btn
+      @click="create = !create"
+      top
+      right
+      class="ma-6"
+      absolute
+      color="green darken-3"
+      fab
+    >
+      <v-icon large class="mt-n1">
+        mdi-newspaper-plus
+      </v-icon>
+    </v-btn>
     <v-dialog v-model="create" persistent max-width="450">
       <v-card>
         <v-toolbar dark color="blue darken-3">
