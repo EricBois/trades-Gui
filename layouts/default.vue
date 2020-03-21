@@ -259,7 +259,7 @@
           </v-btn>
         </template>
         <v-list v-if="notifications.length > 0" class="pa-4">
-          <v-list-item v-if="notifMessages.length > 0" to="../messages">
+          <v-list-item v-if="notifMessages.length > 0" to="../messages" class="my-2">
             <v-list-item-action>
               <v-badge
                 color="primary"
@@ -277,7 +277,7 @@
           <v-flex v-if="notifMessages.length > 0" xs12 my-2>
             <v-divider />
           </v-flex>
-          <v-list-item v-if="notifMeetings.length > 0" to="../meetings">
+          <v-list-item v-if="notifMeetings.length > 0" to="../meetings" class="my-2">
             <v-list-item-action>
               <v-badge
                 color="primary"
@@ -331,7 +331,7 @@
               <v-divider />
             </v-flex>
           </v-layout>
-          <v-flex v-if="notifBidRequest.length > 0" xs12 class="ibm" text-center>
+          <v-flex v-if="notifBidRequest.length > 0" xs12 class="ibm my-2" text-center>
             <v-chip label>
               Bids Invite
             </v-chip>
@@ -357,7 +357,7 @@
             top
             right
             absolute
-            class="mt-6"
+            class="mt-5 mr-n4"
             small
             color="red darken-3"
             fab
