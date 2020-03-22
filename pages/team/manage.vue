@@ -280,6 +280,14 @@
               class="mt-n2"
             />
           </v-flex>
+          <v-flex xs12 sm6>
+            <v-checkbox
+              v-model="featuredUsers"
+              label="Featured Users Only"
+              background-color="grey darken-2"
+              class="mt-n2"
+            />
+          </v-flex>
           <v-flex xs12 class="mt-4 mb-2" text-right>
             <v-btn @click="searchDialog = false" color="blue darken-3">
               ok
@@ -421,6 +429,7 @@ export default {
   },
   data () {
     return {
+      featuredUsers: false,
       featured: false,
       notes: '',
       dialogSetting: false,
@@ -505,6 +514,9 @@ export default {
       if (this.tag.length > 0) {
         filtered = filtered.filter(user => this.tag.some(el => user.tags && user.tags.includes(el)))
       }
+      if (this.featuredUsers) {
+        filtered = filtered.filter(user => user.featured)
+      }
       if (this.liability) {
         filtered = filtered.filter(user => user.metadata.liability && user.metadata.liability.length > 0)
       }
@@ -542,8 +554,6 @@ export default {
     }
   },
   created () {
-    this.trades = process.env.trades.split(',')
-    this.tickets = process.env.tickets.split(',')
     this.$axios.$get('team/fetch').then((res) => {
       this.team = res.team
       this.$axios
@@ -554,6 +564,20 @@ export default {
           arr.forEach((obj) => {
             if (obj.metadata.city && obj.metadata.city.length > 0) {
               this.cities.push(obj.metadata.city)
+            }
+            if (obj.metadata.skills && obj.metadata.skills.length > 0) {
+              obj.metadata.skills.forEach((skill) => {
+                if (!this.trades.includes(skill)) {
+                  this.trades.push(skill)
+                }
+              })
+            }
+            if (obj.metadata.tickets && obj.metadata.tickets.length > 0) {
+              obj.metadata.tickets.forEach((ticket) => {
+                if (!this.tickets.includes(ticket)) {
+                  this.tickets.push(ticket)
+                }
+              })
             }
           })
         })
