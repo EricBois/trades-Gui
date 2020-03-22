@@ -44,7 +44,7 @@
               dense
             />
             <v-btn
-              v-if="search.length > 0 || city.length > 0 || trade.length > 0 || wcb || liability || ticket.length > 0"
+              v-if="search.length > 0 || city.length > 0 || trade.length > 0 || wcb || liability || ticket.length > 0 || tag.length > 0 || featuredUsers"
               @click="clearFilters"
               small
               rounded
@@ -96,10 +96,10 @@
             <!-- </draggable> -->
           </v-card>
           <div :class="(team.length >= 1)? '':'mt-4'">
-            <v-btn @click="dialogUsers = !dialogUsers" small color="green darken-3" fab class="mt-n5">
+            <v-btn @click="dialogUsers = !dialogUsers" small color="green darken-3" fab class="mt-n1">
               <v-icon>mdi-account-multiple-plus</v-icon>
             </v-btn>
-            <v-btn @click="dialogMessage = !dialogMessage" color="primary" class="mt-n5" small fab>
+            <v-btn @click="dialogMessage = !dialogMessage" color="primary" class="mt-n1" small fab>
               <v-icon>mdi-message-text</v-icon>
             </v-btn>
           </div>
@@ -550,6 +550,13 @@ export default {
             }
           })
         }
+        if (user.metadata.tickets && user.metadata.tickets.length > 0) {
+          user.metadata.tickets.forEach((ticket) => {
+            if (!this.tickets.includes(ticket)) {
+              this.tickets.push(ticket)
+            }
+          })
+        }
       })
     }
   },
@@ -569,13 +576,6 @@ export default {
               obj.metadata.skills.forEach((skill) => {
                 if (!this.trades.includes(skill)) {
                   this.trades.push(skill)
-                }
-              })
-            }
-            if (obj.metadata.tickets && obj.metadata.tickets.length > 0) {
-              obj.metadata.tickets.forEach((ticket) => {
-                if (!this.tickets.includes(ticket)) {
-                  this.tickets.push(ticket)
                 }
               })
             }
@@ -639,6 +639,8 @@ export default {
       this.trade = []
       this.ticket = []
       this.wcb = false
+      this.featuredUsers = false
+      this.tag = []
       this.liability = false
     },
     save () {
