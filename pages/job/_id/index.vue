@@ -157,7 +157,7 @@
           <span class="font-weight-black ibm"><u>Requirements</u></span></br>
           <v-btn v-if="project.wcb" class="ma-1" color="green accent-4" x-small text>
             <v-icon small>
-              mdi-check-decagram
+              mdi-alert-decagram
             </v-icon>&nbsp; Workers Compensation
           </v-btn>
           <v-btn v-else class="ma-1" x-small color="grey" text>
@@ -167,7 +167,7 @@
           </v-btn>
           <v-btn v-if="project.liability" class="ma-1" color="green accent-4" x-small text>
             <v-icon small>
-              mdi-check-decagram
+              mdi-alert-decagram
             </v-icon>&nbsp;Liability Insurance
           </v-btn>
           <v-btn v-else class="ma-1" color="grey" x-small text>
