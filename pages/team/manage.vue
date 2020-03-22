@@ -214,23 +214,25 @@
         <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
-            Search By
+            Filter users
           </v-toolbar-title>
+          <v-spacer />
           <v-btn @click="searchDialog = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
         <v-layout row wrap class="mx-4 mb-5">
-          <v-flex xs6 class="pr-3">
+          <v-flex xs12 sm6>
             <v-select
               v-model="city"
               :items="cities"
+              :class="($vuetify.breakpoint.smAndUp)? 'pr-8': ''"
               label="City"
               multiple
               chips
             />
           </v-flex>
-          <v-flex xs6>
+          <v-flex xs12 sm6>
             <v-select
               v-model="trade"
               :items="trades"
@@ -239,28 +241,49 @@
               chips
             />
           </v-flex>
-          <v-flex xs6>
+          <v-flex xs12 sm6>
             <v-select
               v-model="ticket"
               :items="tickets"
+              :class="($vuetify.breakpoint.smAndUp)? 'pr-8': ''"
               label="Tickets"
-              class="pr-8"
               multiple
               chips
             />
           </v-flex>
-          <v-flex xs6>
+          <v-flex v-if="!dialogUsers" xs12 sm6>
+            <v-select
+              v-model="tag"
+              :items="currentTags"
+
+              label="Tags"
+              multiple
+              chips
+            />
+          </v-flex>
+          <v-flex v-else xs12 sm6 />
+
+          <v-flex xs12 sm6>
             <v-checkbox
               v-model="liability"
-              label="Liability"
+              current-tags
+              label="Liability Insured"
               background-color="grey darken-2"
+              class="mt-n2"
             />
+          </v-flex>
+          <v-flex xs12 sm6>
             <v-checkbox
               v-model="wcb"
-              label="Wcb"
+              label="Worker Compensation insured"
               background-color="grey darken-2"
-              class="mt-n5"
+              class="mt-n2"
             />
+          </v-flex>
+          <v-flex xs12 class="mt-4 mb-2" text-right>
+            <v-btn @click="searchDialog = false" color="blue darken-3">
+              ok
+            </v-btn>
           </v-flex>
         </v-layout>
       </v-card>
@@ -416,7 +439,9 @@ export default {
           name: ''
         }
       },
+      currentTags: [],
       tags: [],
+      tag: [],
       currentUser: {},
       currentId: '',
       snackbar: false,
@@ -477,6 +502,9 @@ export default {
       if (this.wcb) {
         filtered = filtered.filter(user => user.metadata.wcb && user.metadata.wcb.length > 0)
       }
+      if (this.tag.length > 0) {
+        filtered = filtered.filter(user => this.tag.some(el => user.tags && user.tags.includes(el)))
+      }
       if (this.liability) {
         filtered = filtered.filter(user => user.metadata.liability && user.metadata.liability.length > 0)
       }
@@ -499,6 +527,18 @@ export default {
       } else {
         this.featured = false
       }
+    },
+    team () {
+      this.team.forEach((user) => {
+        if (user.tags && user.tags.length >= 1) {
+          user.tags.forEach((tag) => {
+            console.log(tag)
+            if (!this.currentTags.includes(tag)) {
+              this.currentTags.push(tag)
+            }
+          })
+        }
+      })
     }
   },
   created () {
@@ -511,7 +551,7 @@ export default {
           const arr = res
           // filter users and team for duplicates and remove ourself
           this.users = arr.filter(val => !this.team.find(({ uid }) => val.uid === uid) && val.uid !== this.$auth.user.sub)
-          arr.forEach((obj, i) => {
+          arr.forEach((obj) => {
             if (obj.metadata.city && obj.metadata.city.length > 0) {
               this.cities.push(obj.metadata.city)
             }
