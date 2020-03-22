@@ -470,6 +470,7 @@ export default {
     },
     selectBid () {
       this.selectedBids.push(this.currentBid)
+      this.dialog = false
     },
     unselectBid () {
       // TODO polyfill indexOf needed ?
