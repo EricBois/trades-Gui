@@ -529,10 +529,10 @@ export default {
       }
     },
     team () {
+      // get all the current tags and store in currentTags
       this.team.forEach((user) => {
         if (user.tags && user.tags.length >= 1) {
           user.tags.forEach((tag) => {
-            console.log(tag)
             if (!this.currentTags.includes(tag)) {
               this.currentTags.push(tag)
             }
