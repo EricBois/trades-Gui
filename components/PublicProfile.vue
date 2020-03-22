@@ -277,6 +277,28 @@
                 {{ review.description }}
               </v-card>
             </v-flex>
+            <v-flex v-if="user.uid === $auth.user.sub && !review.comment" xs12 text-left>
+              <v-btn @click="openComment(review)" color="blue" x-small text>
+                Leave a comment
+              </v-btn>
+            </v-flex>
+            <v-flex v-else-if="review.comment" class="mt-n2" xs12 text-left>
+              <v-chip outlined small>
+                {{ user.name }}
+              </v-chip>
+              <v-divider class="mb-1" />
+              <small class="ml-6">{{ review.comment }}</small>
+              <v-btn
+                v-if="user.uid === $auth.user.sub"
+                @click="openComment(review)"
+                class="ml-2"
+                outlined
+                color="green"
+                x-small
+              >
+                Edit
+              </v-btn>
+            </v-flex>
           </v-layout>
         </v-card>
       </v-flex>
@@ -416,7 +438,6 @@
             {{ currentReview.projectName }}
           </v-chip>
         </v-card-text>
-
         <v-card-actions>
           <v-spacer />
 
@@ -434,6 +455,43 @@
             text
           >
             Yes!
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="dialogComment"
+      max-width="400"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Leave a comment
+        </v-card-title>
+        <v-textarea
+          v-model="comment"
+          :rules="descRule"
+          label="Leave a comment"
+          outlined
+          class="purple-input"
+          counter="400"
+        />
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            @click="dialogComment = false"
+            color="orange darken-3"
+            text
+          >
+            cancel
+          </v-btn>
+
+          <v-btn
+            @click="leaveComment()"
+            color="green darken-1"
+            text
+          >
+            save
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -543,11 +601,12 @@ export default {
   },
   data () {
     return {
+      dialogComment: false,
+      comment: '',
       snackbar: false,
       snackbarColor: 'green darken-3',
       snackbarText: '',
       descRule: [
-        v => !!v || 'The description is required',
         v => (v || '').length <= 400 || 'Description should be 400 characters or less '
       ],
       sum: 0,
@@ -666,6 +725,23 @@ export default {
     }
   },
   methods: {
+    openComment (review) {
+      this.currentReview = review
+      if (review.comment) {
+        this.comment = review.comment
+      }
+      this.dialogComment = true
+    },
+    leaveComment () {
+      if (this.comment.length > 1 || this.currentReview.comment) {
+        this.$axios.$post(`review/comment/${this.currentReview.bid}`, { comment: this.comment }).then((res) => {
+          const index = this.reviews.indexOf(this.currentReview)
+          this.reviews.splice(index, 1)
+          this.reviews.unshift(res)
+          this.dialogComment = false
+        })
+      }
+    },
     editReview (review) {
       this.currentReview = review
       // set saved data for editing and convert to integer
