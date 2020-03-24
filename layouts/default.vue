@@ -582,7 +582,6 @@ export default {
       this.barLength = ''
       // Notifications onesignal
       this.$OneSignal.push(() => {
-        this.$OneSignal.setExternalUserId(this.$auth.user.sub)
         /* In milliseconds, time to wait before prompting user. This time is relative to right after the user presses <ENTER> on the address bar and navigates to your page */
         const notificationPromptDelay = 30000
         /* Use navigation timing to find out when the page actually loaded instead of using setTimeout() only which can be delayed by script execution */
