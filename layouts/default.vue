@@ -602,7 +602,7 @@ export default {
       })
       this.picture = this.$auth.user.picture
       if (document.referrer.includes('android-app://com.ebapps.subhub')) {
-        location.href = 'intent:#Intent;action=notificationUid;end'
+        location.href = 'intent://scan/#Intent;action=notificationUid;end'
         this.reff = document.referrer
         
       }
