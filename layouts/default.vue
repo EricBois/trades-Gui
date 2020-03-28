@@ -214,9 +214,10 @@
             </v-icon>
             Logout
           </v-btn>
-          <v-btn :style="{'display': addBtnShow}" @click="addToPage" class="addBtn ml-3" small>
-            <v-icon>mdi-tablet-cellphone</v-icon>&nbsp;
-            Install App
+          <br>
+          <v-btn :style="{'display': addBtnShow}" @click="addToPage" color="green darken-3" class="addBtn" small>
+            <v-icon>mdi-cellphone-android</v-icon>&nbsp;
+            Install
           </v-btn>
         </v-list-item>
       </v-list>
