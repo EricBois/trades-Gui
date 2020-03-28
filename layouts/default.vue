@@ -586,6 +586,10 @@ export default {
       this.barLength = ''
       // Notifications onesignal
       this.$OneSignal.push(() => {
+        this.$OneSignal.getUserId(function (userId) {
+          this.reff = userId
+          // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316
+        })
         this.$OneSignal.showSlidedownPrompt()
         // TODO implement better way for this
         this.$OneSignal.setExternalUserId(this.$auth.user.sub)
@@ -603,8 +607,6 @@ export default {
       this.picture = this.$auth.user.picture
       if (document.referrer.includes('android-app://com.ebapps.subhub')) {
         location.href = 'intent://scan/#Intent;action=notificationUid;end'
-        this.reff = document.referrer
-        
       }
     }
   },
