@@ -55,6 +55,7 @@
               <v-chip color="yellow lighten-1" outlined label>
                 Projects Bidding
               </v-chip>
+              {{ reff }}
             </v-list-item-title>
           </v-list-item-content>
           <v-divider class="mr-n2" vertical />
@@ -529,7 +530,8 @@ export default {
     deferredPrompt: '',
     registerDialog: false,
     mobile: true,
-    polling: null
+    polling: null,
+    reff: ''
   }),
   computed: {
     ...mapGetters({
@@ -597,6 +599,10 @@ export default {
         this.addBtnShow = 'block'
       })
       this.picture = this.$auth.user.picture
+      if (document.referrer.includes('android-app://')) {
+        location.href = 'intent:#Intent;action=notificationUid;end'
+        this.reff = document.referrer
+      }
     }
   },
   beforeDestroy () {
