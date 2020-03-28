@@ -55,7 +55,6 @@
               <v-chip color="yellow lighten-1" outlined label>
                 Projects Bidding
               </v-chip>
-              {{ reff }}
             </v-list-item-title>
           </v-list-item-content>
           <v-divider class="mr-n2" vertical />
@@ -202,6 +201,9 @@
               </v-chip>
             </v-list-item-title>
           </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          {{ reff }}
         </v-list-item>
 
         <v-divider class="my-2" />
