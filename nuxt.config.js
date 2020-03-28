@@ -95,6 +95,7 @@ export default {
       welcomeNotification: {
           disable: false
       },
+      autoRegister: true,
       autoResubscribe: true,
       cdn: true,
       notifyButton: {
