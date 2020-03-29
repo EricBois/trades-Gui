@@ -228,6 +228,7 @@
       app
       clipped-left
       height="35"
+      class="pt-2"
       elevate-on-scroll
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
@@ -240,7 +241,9 @@
         transition="scale-transition"
         class="mx-1 scroll"
         offset-x
+        nudge-left
         max-height="400"
+        absolute
       >
         <template v-slot:activator="{ on: menu }">
           <v-btn
