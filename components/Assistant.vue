@@ -1,11 +1,11 @@
 <template>
   <v-container>
-    <v-dialog v-model="dialogAssist" persistent max-width="350">
-      <v-card>
+    <v-dialog v-model="dialogAssist" class="pa-4" persistent max-width="350">
+      <v-card shaped class="pb-4">
         <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
-            Your Assistant
+            Help Assistant
           </v-toolbar-title>
           <v-spacer />
           <v-btn @click="assistant('home')" icon dark>
@@ -17,23 +17,35 @@
         </v-flex>
         <v-flex xs12>
           <div v-if="step1">
-            <v-btn @click="assistant('find')" class="ma-2 ml-12" color="light-blue darken-3" small>
-              Find contractors for my project
+            <v-btn @click="$emit('update:create', true) && assistant('home')" class="ma-2 ml-12" color="blue-grey darken-1" small>
+              <v-icon class="mr-2">
+                mdi-post
+              </v-icon>
+              Post a project
             </v-btn>
             <br>
-            <v-btn @click="assistant('hire')" class="ma-2 ml-12" color="cyan darken-3" small>
+            <v-btn @click="assistant('hire')" class="ma-2 ml-12" color="blue-grey darken-1" small>
+              <v-icon class="mr-2">
+                mdi-account-hard-hat
+              </v-icon>
               Hire tradesman
             </v-btn>
             <br>
-            <v-btn @click="assistant('team')" class="ma-2 ml-12" color="teal darken-3" small>
+            <v-btn @click="assistant('team')" class="ma-2 ml-12" color="blue-grey darken-1" small>
+              <v-icon class="mr-2">
+                mdi-account-group
+              </v-icon>
               Manage my team
             </v-btn>
             <br>
-            <v-btn @click="assistant('job')" class="ma-2 ml-12" color="light-blue darken-3" small>
+            <v-btn @click="assistant('job')" class="ma-2 ml-12" color="blue-grey darken-1" small>
+              <v-icon class="mr-2">
+                mdi-file-find
+              </v-icon>
               Find a job
             </v-btn>
           </div>
-          <div v-if="step2 && contractor">
+          <!-- <div v-if="step2 && contractor">
             <v-btn @click="$emit('update:create', true) && assistant('home')" class="ma-2 ml-12" color="light-blue darken-3" small>
               Get bids on my project
             </v-btn>
@@ -45,51 +57,68 @@
             <v-btn @click="assistant('back')" class="ma-2 ml-12" small>
               go back
             </v-btn>
-          </div>
+          </div> -->
           <div v-if="step2 && hireTradesman">
-            <v-btn @click="assistant('post')" class="ma-2 ml-12" color="light-blue darken-3" small>
-              post an ads
+            <v-btn @click="dialogLfw = !dialogLfw" class="ma-2 ml-12" color="blue-grey darken-1" small>
+              <v-icon class="mr-2">
+                mdi-radar
+              </v-icon>
+              Request Someone today
             </v-btn>
             <br>
-            <v-btn @click="dialogLfw = !dialogLfw" class="ma-2 ml-12" color="cyan darken-3" small>
-              see who's available today
-            </v-btn>
-            <br>
-            <v-btn @click="assistant('back')" class="ma-2 ml-12" small>
-              go back
+            <v-btn @click="assistant('post')" class="ma-2 ml-12" color="blue-grey darken-1" small>
+              <v-icon class="mr-2">
+                mdi-text-box-plus
+              </v-icon>
+              post a job offer
             </v-btn>
           </div>
           <div v-if="step2 && team">
-            <v-btn @click="assistant('members')" class="ma-2 ml-12" color="light-blue darken-3" small>
+            <v-btn @click="assistant('members')" class="ma-2 ml-12" color="blue-grey darken-1" small>
+              <v-icon class="mr-2">
+                mdi-account-multiple-plus
+              </v-icon>
               Add or edit members
             </v-btn>
             <br>
-            <v-btn @click="assistant('projects')" class="ma-2 ml-12" color="cyan darken-3" small>
+            <v-btn @click="assistant('projects')" class="ma-2 ml-12" color="blue-grey darken-1" small>
+              <v-icon class="mr-2">
+                mdi-account-group
+              </v-icon>
               manage my team projects
-            </v-btn>
-            <br>
-            <v-btn @click="assistant('back')" class="ma-2 ml-12" small>
-              go back
             </v-btn>
           </div>
           <div v-if="step2 && job">
-            <v-btn @click="assistant('bid')" class="ma-2 ml-12" color="cyan darken-3" small>
+            <v-btn @click="assistant('bid')" class="ma-2 ml-12" color="blue-grey darken-1" small>
+              <v-icon class="mr-2">
+                mdi-text-box-plus
+              </v-icon>
               place some bids
             </v-btn>
-            <v-btn @click="assistant('profile')" class="ma-2 ml-12" color="light-blue darken-3" small>
+            <v-btn @click="assistant('profile')" class="ma-2 ml-12" color="blue-grey darken-1" small>
+              <v-icon class="mr-2">
+                mdi-account-cog
+              </v-icon>
               Make myself available to work
             </v-btn>
             <br>
-            <v-btn @click="assistant('listings')" class="ma-2 ml-12" color="teal darken-3" small>
-              look at the job listing
-            </v-btn>
-            <br>
-            <v-btn @click="assistant('back')" class="ma-2 ml-12" small>
-              go back
+            <v-btn @click="assistant('listings')" class="ma-2 ml-12" color="blue-grey darken-1" small>
+              <v-icon class="mr-2">
+                mdi-file-eye
+              </v-icon>
+              look at the job listings
             </v-btn>
           </div>
         </v-flex>
-        <v-divider />
+        <v-divider class="my-2" />
+        <v-flex v-if="!step1" text-center>
+          <v-btn @click="assistant('back')">
+            go back
+          </v-btn>
+        </v-flex>
+        <v-flex class="mt-n2 mb-n8">
+          <v-checkbox v-model="startup" class="pl-1" color="green" label="Show on starup" />
+        </v-flex>
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogLfw" max-width="600">
@@ -127,6 +156,7 @@
   </v-container>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   components: {
     ContractorsToday: () => import('../components/ContractorsToday.vue')
@@ -143,6 +173,7 @@ export default {
   },
   data () {
     return {
+      startup: true,
       dialogLfw: false,
       assistantTitle: 'I want to ..',
       job: false,
@@ -155,6 +186,34 @@ export default {
       sheet: false,
       sheetTitle: 'Welcome to Sub-Hub !',
       welcomeText: ''
+    }
+  },
+  computed: {
+    ...mapGetters({
+      profile: 'profile/getProfile'
+    })
+  },
+  watch: {
+    startup () {
+      // if startup false
+      if (!this.startup && this.profile.user_metadata && this.profile.user_metadata.startup) {
+        this.$axios.$post('account/edit', { user_metadata: { startup: false } }).then(() => {
+          this.$store.dispatch('profile/getProfile')
+        })
+        // if starup is true
+      } else if (this.startup && this.profile.user_metadata && !this.profile.user_metadata.startup) {
+        this.$axios.$post('account/edit', { user_metadata: { startup: true } }).then(() => {
+          this.$store.dispatch('profile/getProfile')
+        })
+      }
+    }
+  },
+  mounted () {
+    // if startup isnt in profile yet put it
+    if (this.startup && this.profile.user_metadata && !this.profile.user_metadata.startup) {
+      this.$axios.$post('account/edit', { user_metadata: { startup: true } }).then(() => {
+        this.$store.dispatch('profile/getProfile')
+      })
     }
   },
   methods: {
@@ -180,12 +239,6 @@ export default {
           this.hireTradesman = false
           this.job = false
           this.team = false
-          break
-        }
-        case 'find': {
-          this.step1 = false
-          this.step2 = true
-          this.contractor = true
           break
         }
         case 'hire': {
