@@ -95,7 +95,7 @@
               />
             </v-flex>
             <v-flex xs6 md4 pt-4>
-              <v-switch v-model="switch1" label="Assign To Team" color="white" inset />
+              <v-switch v-model="switch1" label="Assign To Your Team" color="white" inset />
             </v-flex>
             <v-flex xs12 md6 pt-4 pr-5>
               <v-text-field v-model="info.phone" class="purple-input" label="Contact Phone Number" />
