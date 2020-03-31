@@ -188,26 +188,19 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider class="my-2" />
-        <v-list-item @click="dialogAssist = !dialogAssist">
-          <v-list-item-action>
-            <v-icon color="blue lighten-3">
-              mdi-auto-fix
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-content class="ml-n4">
-            <v-list-item-title>
-              <v-chip color="blue lighten-3" outlined label>
-                Your Assistant
-              </v-chip>
-            </v-list-item-title>
-          </v-list-item-content>
+        <v-list-item>
+          <v-flex class="mt-2" text-center>
+            <v-btn @click="dialogAssist = !dialogAssist" color="teal" fab>
+              <v-icon large color="white">
+                mdi-auto-fix
+              </v-icon>
+            </v-btn>
+          </v-flex>
         </v-list-item>
-
-        <v-divider class="my-2" />
         <!-- <v-list-item class=" mt-5 justify-center">
           <v-switch v-model="switchAvailable" label="Looking for work" color="green" inset />
         </v-list-item> -->
-        <v-list-item class="mt-10 justify-center">
+        <v-list-item class="mt-8 justify-center">
           <v-btn v-if="this.$auth.loggedIn" @click="logout" text color="amber darken-4" large>
             <v-icon class="mr-1">
               mdi-logout
@@ -438,12 +431,12 @@
         </v-btn>
       </v-sheet>
     </v-bottom-sheet>
-    <v-dialog v-model="create" persistent fullscreen max-width="850">
+    <v-dialog v-model="create" :fullscreen="($vuetify.breakpoint.smAndUp)? false : true" persistent max-width="850">
       <v-card>
         <v-toolbar dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
-            Create Project
+            Post a Project
           </v-toolbar-title>
           <v-spacer />
           <v-btn @click="create = false" icon dark>
