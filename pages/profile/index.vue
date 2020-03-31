@@ -605,7 +605,10 @@ export default {
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeProfile) {
       this.alertText = process.env.welcomeProfile
       this.alert = true
-      this.$axios.$post('account/edit', { user_metadata: { welcomeProfile: true } })
+      this.$axios.$post('account/edit', { user_metadata: { welcomeProfile: true } }).then((res) => {
+        this.$store.commit('profile/updateProfile', res) // for the profile store
+        this.$auth.fetchUser()
+      })
     }
     this.itemSkills = process.env.trades.split(',')
     this.itemTickets = process.env.tickets.split(',')

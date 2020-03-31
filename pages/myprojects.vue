@@ -148,7 +148,10 @@ export default {
     if (this.profile.user_metadata && !this.profile.user_metadata.ownPosting) {
       this.alertText = process.env.ownPosting
       this.alert = true
-      this.$axios.$post('account/edit', { user_metadata: { ownPosting: true } })
+      this.$axios.$post('account/edit', { user_metadata: { ownPosting: true } }).then((res) => {
+        this.$store.commit('profile/updateProfile', res) // for the profile store
+        this.$auth.fetchUser()
+      })
     }
   }
 }

@@ -55,7 +55,10 @@ export default {
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeJobs) {
       this.alertText = process.env.welcomeJobs
       this.alert = true
-      this.$axios.$post('account/edit', { user_metadata: { welcomeJobs: true } })
+      this.$axios.$post('account/edit', { user_metadata: { welcomeJobs: true } }).then((res) => {
+        this.$store.commit('profile/updateProfile', res) // for the profile store
+        this.$auth.fetchUser()
+      })
     }
   }
 }

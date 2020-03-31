@@ -280,7 +280,10 @@ export default {
     if (this.profile.user_metadata && !this.profile.user_metadata.projectTeam) {
       this.alertText = process.env.projectTeam
       this.alert = true
-      return this.$axios.$post('account/edit', { user_metadata: { projectTeam: true } })
+      return this.$axios.$post('account/edit', { user_metadata: { projectTeam: true } }).then((res) => {
+        this.$store.commit('profile/updateProfile', res) // for the profile store
+        this.$auth.fetchUser()
+      })
     }
   },
   methods: {

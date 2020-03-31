@@ -215,7 +215,10 @@ export default {
     if (this.profile.user_metadata && !this.profile.user_metadata.welcomeMeeting) {
       this.alertText = process.env.welcomeMeeting
       this.alert = true
-      this.$axios.$post('account/edit', { user_metadata: { welcomeMeeting: true } })
+      this.$axios.$post('account/edit', { user_metadata: { welcomeMeeting: true } }).then((res) => {
+        this.$store.commit('profile/updateProfile', res) // for the profile store
+        this.$auth.fetchUser()
+      })
     }
   },
   methods: {

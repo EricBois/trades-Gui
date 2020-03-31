@@ -45,19 +45,6 @@
               Find a job
             </v-btn>
           </div>
-          <!-- <div v-if="step2 && contractor">
-            <v-btn @click="$emit('update:create', true) && assistant('home')" class="ma-2 ml-12" color="light-blue darken-3" small>
-              Get bids on my project
-            </v-btn>
-            <br>
-            <v-btn @click="dialogLfw = !dialogLfw" class="ma-2 ml-12" color="cyan darken-3" small>
-              I'm out of time i need someone TODAY
-            </v-btn>
-            <br>
-            <v-btn @click="assistant('back')" class="ma-2 ml-12" small>
-              go back
-            </v-btn>
-          </div> -->
           <div v-if="step2 && hireTradesman">
             <v-btn @click="dialogLfw = !dialogLfw" class="ma-2 ml-12" color="blue-grey darken-1" small>
               <v-icon class="mr-2">
@@ -116,9 +103,6 @@
             go back
           </v-btn>
         </v-flex>
-        <v-flex class="mt-n2 mb-n8">
-          <v-checkbox v-model="startup" class="pl-1" color="green" label="Show on starup" />
-        </v-flex>
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogLfw" max-width="600">
@@ -173,7 +157,6 @@ export default {
   },
   data () {
     return {
-      startup: true,
       dialogLfw: false,
       assistantTitle: 'I want to ..',
       job: false,
@@ -192,29 +175,6 @@ export default {
     ...mapGetters({
       profile: 'profile/getProfile'
     })
-  },
-  watch: {
-    startup () {
-      // if startup false
-      if (!this.startup && this.profile.user_metadata && this.profile.user_metadata.startup) {
-        this.$axios.$post('account/edit', { user_metadata: { startup: false } }).then(() => {
-          this.$store.dispatch('profile/getProfile')
-        })
-        // if starup is true
-      } else if (this.startup && this.profile.user_metadata && !this.profile.user_metadata.startup) {
-        this.$axios.$post('account/edit', { user_metadata: { startup: true } }).then(() => {
-          this.$store.dispatch('profile/getProfile')
-        })
-      }
-    }
-  },
-  mounted () {
-    // if startup isnt in profile yet put it
-    if (this.startup && this.profile.user_metadata && !this.profile.user_metadata.startup) {
-      this.$axios.$post('account/edit', { user_metadata: { startup: true } }).then(() => {
-        this.$store.dispatch('profile/getProfile')
-      })
-    }
   },
   methods: {
     assistant (status) {
