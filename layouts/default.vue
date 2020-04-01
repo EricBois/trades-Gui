@@ -500,6 +500,7 @@ export default {
     }
   },
   data: () => ({
+    assignGuard: false,
     dialogProfile: false,
     dialogAssist: false,
     create: false,
@@ -556,6 +557,11 @@ export default {
       this.notifReviews = this.notifications.filter(notification => notification.activity === 'Review')
     },
     profile () {
+      // make sure dialog assist is only open on first load
+      if (this.profile.user_metadata && this.profile.user_metadata.startup && this.profile.user_metadata.welcome && !this.assignGuard) {
+        this.dialogAssist = true
+      }
+      this.assignGuard = true
       if (this.profile && this.profile.app_metadata && this.profile.app_metadata.admin === true) {
         this.admin = true
       }
