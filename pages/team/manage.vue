@@ -106,7 +106,7 @@
         </v-flex>
       </v-layout>
     </v-card>
-    <v-dialog v-model="dialogUsers" fullscreen>
+    <v-dialog v-model="dialogUsers" max-width="450">
       <v-card class="px-3" color="grey darken-4">
         <v-toolbar dark color="blue darken-3">
           <v-spacer />
@@ -118,22 +118,12 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
-        <v-flex xs12 text-center>
-          <v-divider class="mb-5" />
-          <v-icon>mdi-axis-x-arrow</v-icon>
-          <span class="mainTitle">Search Users</span>
-          <v-icon>mdi-axis-y-arrow</v-icon>
-          <v-divider class="my-5" />
-        </v-flex>
         <v-flex
           xs12
-          class="mt-5"
+          class="mt-2"
           text-center
         >
-          <v-card max-width="400" class="mx-auto mb-n4" color="blue-grey darken-1">
-            <v-divider />
-            <h3>Users</h3>
-            <v-divider />
+          <v-card max-width="400" class="mx-auto mb-n4 ma-2" color="blue-grey darken-1">
             <v-text-field
               v-model="search"
               placeholder="Search by Name.."
@@ -155,7 +145,7 @@
               Advanced search
             </v-btn>
           </v-card>
-          <v-card v-if="users.length > 0" max-width="400" class="pb-3 mx-auto scroll mb-5">
+          <v-card v-if="filteredList.length > 0" max-width="400" class="pb-3 mx-auto scroll mb-5">
             <!-- <draggable class="list-group" :list="users" group="team" @change="save"> -->
             <v-card
               v-for="user in filteredList"
@@ -185,9 +175,8 @@
             </v-card>
             <!-- </draggable> -->
           </v-card>
-          <v-card v-else max-width="400" class="mb-5" max-height="800">
-            <!-- <draggable class="list-group" :list="users" group="team" @change="save" /> -->
-            No users available
+          <v-card v-else max-width="400" class="mb-5 py-2 mx-auto" max-height="800">
+            No users found with your search criteria
           </v-card>
         </v-flex>
         <v-divider />
@@ -479,26 +468,27 @@ export default {
       profile: 'profile/getProfile'
     }),
     filteredList () {
-      let filtered = this.users
+      const filtered = this.users
+      let users = []
       if (this.search.length > 0) {
-        filtered = this.users.filter(user => user.name.toLowerCase().includes(this.search))
+        users = filtered.filter(user => user.name.toLowerCase().includes(this.search))
       }
       if (this.city.length > 0) {
-        filtered = filtered.filter(user => this.city.includes(user.metadata.city))
+        users = filtered.filter(user => this.city.includes(user.metadata.city))
       }
       if (this.wcb) {
-        filtered = filtered.filter(user => user.metadata.wcb && user.metadata.wcb.length > 0)
+        users = filtered.filter(user => user.metadata.wcb && user.metadata.wcb.length > 0)
       }
       if (this.liability) {
-        filtered = filtered.filter(user => user.metadata.liability && user.metadata.liability.length > 0)
+        users = filtered.filter(user => user.metadata.liability && user.metadata.liability.length > 0)
       }
       if (this.trade.length > 0) {
-        filtered = filtered.filter(user => this.trade.some(el => user.metadata.skills && user.metadata.skills.includes(el)))
+        users = filtered.filter(user => this.trade.some(el => user.metadata.skills && user.metadata.skills.includes(el)))
       }
       if (this.ticket.length > 0) {
-        filtered = filtered.filter(user => this.ticket.some(el => user.metadata.tickets && user.metadata.tickets.includes(el)))
+        users = filtered.filter(user => this.ticket.some(el => user.metadata.tickets && user.metadata.tickets.includes(el)))
       }
-      return filtered
+      return users
     },
     filteredTeam () {
       let filtered = this.team
