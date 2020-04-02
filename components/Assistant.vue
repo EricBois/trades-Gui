@@ -2,7 +2,7 @@
   <v-container>
     <v-dialog v-model="dialogAssist" class="pa-4" persistent max-width="350">
       <v-card shaped class="pb-4">
-        <v-toolbar dark color="blue darken-3">
+        <v-toolbar height="30" dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Help Assistant
@@ -122,8 +122,8 @@
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogLfw" max-width="600">
-      <v-card class="px-3">
-        <v-toolbar dark color="blue darken-3">
+      <v-card>
+        <v-toolbar height="30" dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Tradesman available today

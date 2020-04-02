@@ -97,7 +97,7 @@
           </v-card>
           <div :class="(team.length >= 1)? '':'mt-4'">
             <v-btn @click="dialogUsers = !dialogUsers" small color="green darken-3" fab class="mt-n1">
-              <v-icon>mdi-account-multiple-plus</v-icon>
+              <v-icon>mdi-account-search</v-icon>
             </v-btn>
             <v-btn @click="dialogMessage = !dialogMessage" color="primary" class="mt-n1" small fab>
               <v-icon>mdi-message-text</v-icon>
@@ -107,11 +107,11 @@
       </v-layout>
     </v-card>
     <v-dialog v-model="dialogUsers" max-width="450">
-      <v-card class="px-3" color="grey darken-4">
-        <v-toolbar dark color="blue darken-3">
+      <v-card color="grey darken-4">
+        <v-toolbar height="30" dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
-            Search Users
+            Search Available Users
           </v-toolbar-title>
           <v-spacer />
           <v-btn @click="dialogUsers = false" icon dark>
@@ -120,7 +120,6 @@
         </v-toolbar>
         <v-flex
           xs12
-          class="mt-2"
           text-center
         >
           <v-card max-width="400" class="mx-auto mb-n4 ma-2" color="blue-grey darken-1">
@@ -184,12 +183,13 @@
     </v-dialog>
 
     <v-dialog v-model="dialogProfile" max-width="800">
-      <v-card class="px-3">
-        <v-toolbar dark color="blue darken-3">
+      <v-card>
+        <v-toolbar height="30" dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Profile
           </v-toolbar-title>
+          <v-spacer />
           <v-btn @click="dialogProfile = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -200,7 +200,7 @@
     </v-dialog>
     <v-dialog v-model="searchDialog" max-width="600">
       <v-card class="px-3">
-        <v-toolbar dark color="blue darken-3">
+        <v-toolbar height="30" dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Filter users
@@ -286,12 +286,13 @@
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogMessage" max-width="600">
-      <v-card class="px-3">
-        <v-toolbar dark color="blue darken-3">
+      <v-card>
+        <v-toolbar height="30" dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Message Team
           </v-toolbar-title>
+          <v-spacer />
           <v-btn @click="dialogMessage = false" icon dark>
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -348,8 +349,8 @@
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogSetting" max-width="500">
-      <v-card class="px-3">
-        <v-toolbar dark color="blue darken-3">
+      <v-card>
+        <v-toolbar height="30" dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Settings for {{ currentUser.name }}

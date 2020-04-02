@@ -433,7 +433,7 @@
     </v-bottom-sheet>
     <v-dialog v-model="create" :fullscreen="($vuetify.breakpoint.smAndUp)? false : true" persistent max-width="850">
       <v-card>
-        <v-toolbar dark color="blue darken-3">
+        <v-toolbar height="30" dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Post a Project
@@ -448,8 +448,8 @@
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogProfile" max-width="800">
-      <v-card class="px-3">
-        <v-toolbar dark color="blue darken-3">
+      <v-card>
+        <v-toolbar height="30" dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
             Profile

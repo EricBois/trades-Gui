@@ -16,7 +16,7 @@
     </v-btn>
     <v-dialog v-model="create" persistent max-width="450">
       <v-card>
-        <v-toolbar dark color="blue darken-3">
+        <v-toolbar height="30" dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title>
             <v-icon large>
