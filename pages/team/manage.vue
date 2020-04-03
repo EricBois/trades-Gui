@@ -472,7 +472,7 @@ export default {
       const filtered = this.users
       let users = []
       if (this.search.length > 0) {
-        users = filtered.filter(user => user.name.toLowerCase().includes(this.search))
+        users = filtered.filter(user => user.name.toLowerCase().includes(this.search.toLowerCase()))
       }
       if (this.city.length > 0) {
         users = filtered.filter(user => this.city.includes(user.metadata.city))
@@ -494,7 +494,7 @@ export default {
     filteredTeam () {
       let filtered = this.team
       if (this.search.length > 0) {
-        filtered = this.team.filter(user => user.name.toLowerCase().includes(this.search))
+        filtered = this.team.filter(user => user.name.toLowerCase().includes(this.search.toLowerCase()))
       }
       if (this.city.length > 0) {
         filtered = filtered.filter(user => this.city.includes(user.metadata.city))
