@@ -194,28 +194,29 @@ export default {
     })
   },
   watch: {
+    profile () {
+      if (this.profile.user_metadata && this.profile.user_metadata.startup) {
+        this.startup = true
+      } else {
+        this.startup = false
+      }
+    },
     startup () {
       // if startup
       if (!this.startup && this.profile.user_metadata && this.profile.user_metadata.startup) {
         this.$axios.$post('account/edit', { user_metadata: { startup: false } }).then((res) => {
           this.$store.commit('profile/updateProfile', res) // for the profile store
           this.$auth.fetchUser()
+          this.startup = false
         })
         // if starup is true
       } else if (this.startup && this.profile.user_metadata && !this.profile.user_metadata.startup) {
         this.$axios.$post('account/edit', { user_metadata: { startup: true } }).then((res) => {
           this.$store.commit('profile/updateProfile', res) // for the profile store
           this.$auth.fetchUser()
+          this.startup = true
         })
       }
-    }
-  },
-  mounted () {
-    // if startup isnt in profile yet put it
-    if (this.profile.user_metadata && !this.profile.user_metadata.startup) {
-      this.startup = false
-    } else {
-      this.startup = true
     }
   },
   methods: {
