@@ -462,7 +462,7 @@
         <v-divider />
       </v-card>
     </v-dialog>
-    <Assistant v-if="$auth.loggedIn" :dialogAssist.sync="dialogAssist" :create.sync="create" />
+    <Assistant v-if="$auth.loggedIn" :startup.sync="startup" :dialogAssist.sync="dialogAssist" :create.sync="create" />
   </v-app>
 </template>
 <style scoped>
@@ -527,7 +527,8 @@ export default {
     deferredPrompt: '',
     registerDialog: false,
     mobile: true,
-    polling: null
+    polling: null,
+    startup: true
   }),
   computed: {
     ...mapGetters({
@@ -538,10 +539,22 @@ export default {
     })
   },
   watch: {
-    create () {
-      // close dialog when create pronect is open
-      if (this.dialogAssist === true) {
-        this.dialogAssist = false
+
+    startup () {
+      // if startup
+      if (!this.startup && this.profile.user_metadata && this.profile.user_metadata.startup) {
+        this.$axios.$post('account/edit', { user_metadata: { startup: false } }).then((res) => {
+          this.$store.commit('profile/updateProfile', res) // for the profile store
+          this.$auth.fetchUser()
+          this.startup = false
+        })
+        // if starup is true
+      } else if (this.startup && this.profile.user_metadata && !this.profile.user_metadata.startup) {
+        this.$axios.$post('account/edit', { user_metadata: { startup: true } }).then((res) => {
+          this.$store.commit('profile/updateProfile', res) // for the profile store
+          this.$auth.fetchUser()
+          this.startup = true
+        })
       }
     },
     notifications () {
@@ -557,6 +570,12 @@ export default {
       this.notifReviews = this.notifications.filter(notification => notification.activity === 'Review')
     },
     profile () {
+      // set startup initial
+      if (this.profile.user_metadata && this.profile.user_metadata.startup) {
+        this.startup = true
+      } else {
+        this.startup = false
+      }
       // make sure dialog assist is only open on first load
       if (this.profile.user_metadata && this.profile.user_metadata.startup && this.profile.user_metadata.welcome && !this.assignGuard) {
         this.dialogAssist = true
