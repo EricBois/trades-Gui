@@ -103,12 +103,12 @@
             <v-flex xs12 md6 pt-4>
               <v-text-field v-model="info.email" class="purple-input" label="Contact Email" />
             </v-flex>
-            <v-flex class="mt-6 mb-3" xs6 text-center>
+            <v-flex class="mt-2 mb-3" xs6 text-center>
               <v-btn @click="closeDialog()" class="mx-0 font-weight-light" outlined>
                 Cancel
               </v-btn>
             </v-flex>
-            <v-flex class="mt-6 mb-3" xs6 text-center>
+            <v-flex class="mt-2 mb-3" xs6 text-center>
               <v-btn @click="create" class="mx-0 font-weight-light" color="primary">
                 Create Project
               </v-btn>
