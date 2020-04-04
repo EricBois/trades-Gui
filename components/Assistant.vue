@@ -126,7 +126,7 @@
         <v-toolbar height="30" dark color="blue darken-3">
           <v-spacer />
           <v-toolbar-title class="body-1">
-            Tradesman available today
+            Looking for immediate assistance
           </v-toolbar-title>
           <v-spacer />
           <v-btn @click="dialogLfw = false" icon dark>

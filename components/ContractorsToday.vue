@@ -4,33 +4,41 @@
       <v-card
         class="mt-4"
       >
-        <v-layout wrap class="mx-2 mb-5">
-          <v-flex xs12 text-center class="my-n6">
-            <span class="mainTitle2 grey--text"><u>Filter by</u></span>
-          </v-flex>
-          <v-flex xs6 class="px-3">
-            <v-combobox
-              v-model="city"
-              :items="cities"
-              chips
-              dense
-              label="City"
-              multiple
-              autocomplete
-            />
-          </v-flex>
-          <v-flex xs6>
-            <v-combobox
-              v-model="trade"
-              :items="trades"
-              chips
-              dense
-              label="Skills"
-              multiple
-              autocomplete
-            />
-          </v-flex>
-        </v-layout>
+        <v-container bg fill-height grid-list-md text-xs-center>
+          <v-layout row wrap align-center>
+            <v-flex v-if="!next" xs9>
+              <v-combobox
+                v-model="city"
+                :items="cities"
+                :rules="comboBoxCity"
+                chips
+                dense
+                label="Where are you located?"
+                autocomplete
+              />
+            </v-flex>
+            <v-flex v-if="next" xs9>
+              <v-combobox
+                v-model="trade"
+                :items="trades"
+                :rules="comboBoxSkill"
+                chips
+                dense
+                label="Which service do you need ?"
+                multiple
+                autocomplete
+              />
+            </v-flex>
+            <v-flex xs3 text-center>
+              <v-btn v-if="!next" @click="next = !next " small>
+                next
+              </v-btn>
+              <v-btn v-if="next" @click="next = !next " small>
+                back
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-container>
       </v-card>
       <v-flex xs12 class="mt-4">
         <v-card
@@ -40,7 +48,17 @@
           class="mx-auto mt-2 ma-2"
         >
           <v-flex class="ibm body-2" text-center>
-            No one is looking for work at the moment
+            No one is available at the moment.
+          </v-flex>
+        </v-card>
+        <v-card
+          v-if="filteredList.length < 1 && contractors.length > 1"
+          outlined
+          max-width="800"
+          class="mx-auto mt-2 ma-2"
+        >
+          <v-flex class="ibm body-2" text-center>
+            Please update your search criteria.
           </v-flex>
         </v-card>
         <v-card
@@ -198,6 +216,12 @@ export default {
   },
   data () {
     return {
+      comboBoxCity: [
+        v => !!v || 'Choose an available city'
+      ],
+      comboBoxSkill: [
+        v => !!v || 'Choose a service'
+      ],
       city: '',
       cities: [],
       trade: '',
@@ -209,19 +233,17 @@ export default {
       dialogUser: false,
       currentUser: {},
       profileUser: {},
-      dialogProfile: false
+      dialogProfile: false,
+      next: false
 
     }
   },
   computed: {
     filteredList () {
-      let filtered = this.contractors
-      if (this.city.length > 0) {
-        filtered = filtered.filter(job => this.city.some(el => job.location.includes(el.trim().charAt(0).toUpperCase() + el.slice(1))))
-      }
-      if (this.trade.length > 0) {
-        // filtered = filtered.filter(job => new RegExp(job.skills.join('|')).test(this.trade))
-        filtered = filtered.filter(job => this.trade.some(el => job.skills.includes(el.trim().charAt(0).toUpperCase() + el.slice(1))))
+      let filtered = []
+      if (this.city && this.trade.length > 0) {
+        filtered = this.contractors.filter(job => job.location.includes(this.city.trim().charAt(0).toUpperCase() + this.city.slice(1)))
+        filtered = this.contractors.filter(job => this.trade.some(el => job.skills.includes(el.trim().charAt(0).toUpperCase() + el.slice(1))))
       }
       return this.paginate(filtered)
     }
