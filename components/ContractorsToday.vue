@@ -166,7 +166,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
-        <PublicProfile :user="currentUser" />
+        <PublicProfile :user="profileUser" />
         <v-divider />
       </v-card>
     </v-dialog>
@@ -208,6 +208,7 @@ export default {
       contractors: [],
       dialogUser: false,
       currentUser: {},
+      profileUser: {},
       dialogProfile: false
 
     }
@@ -263,9 +264,9 @@ export default {
     },
     showProfile (id) {
       this.$axios.$get(`account/getProfile/${id}`).then((res) => {
-        this.currentUser = res
-        if (!this.currentUser.photos) {
-          this.currentUser.photos = []
+        this.profileUser = res
+        if (!this.profileUser.photos) {
+          this.profileUser.photos = []
         }
       }).then(() => {
         this.dialogProfile = true
