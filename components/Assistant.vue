@@ -117,7 +117,7 @@
           </v-btn>
         </v-flex>
         <v-flex class="mt-n2 mb-n8">
-          <v-checkbox v-model="startup" class="pl-1" color="green" label="Show on startup" />
+          <v-checkbox v-model="startupEmit" class="pl-1" color="green" label="Show on startup" />
         </v-flex>
       </v-card>
     </v-dialog>
@@ -169,11 +169,14 @@ export default {
     create: {
       type: Boolean,
       default: false
+    },
+    startup: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
     return {
-      startup: true,
       dialogLfw: false,
       assistantTitle: 'I want to ..',
       job: false,
@@ -191,31 +194,14 @@ export default {
   computed: {
     ...mapGetters({
       profile: 'profile/getProfile'
-    })
-  },
-  watch: {
-    profile () {
-      if (this.profile.user_metadata && this.profile.user_metadata.startup) {
-        this.startup = true
-      } else {
-        this.startup = false
-      }
-    },
-    startup () {
-      // if startup
-      if (!this.startup && this.profile.user_metadata && this.profile.user_metadata.startup) {
-        this.$axios.$post('account/edit', { user_metadata: { startup: false } }).then((res) => {
-          this.$store.commit('profile/updateProfile', res) // for the profile store
-          this.$auth.fetchUser()
-          this.startup = false
-        })
-        // if starup is true
-      } else if (this.startup && this.profile.user_metadata && !this.profile.user_metadata.startup) {
-        this.$axios.$post('account/edit', { user_metadata: { startup: true } }).then((res) => {
-          this.$store.commit('profile/updateProfile', res) // for the profile store
-          this.$auth.fetchUser()
-          this.startup = true
-        })
+    }),
+    // get & set the startup value
+    startupEmit: {
+      get () {
+        return this.startup
+      },
+      set (val) {
+        this.$emit('update:startup', val)
       }
     }
   },
