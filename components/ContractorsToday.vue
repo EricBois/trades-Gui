@@ -69,17 +69,22 @@
           class="mx-auto mt-2 ma-2"
         >
           <v-layout wrap>
-            <v-flex xs8 class="pa-1">
-              <v-chip @click="showProfile(contractor.user)" small color="cyan lighten-3" label outlined>
-                <v-icon small class="mr-1">
+            <v-flex xs12 class="pa-1">
+              <v-chip @click="showProfile(contractor.user)" color="amber darken-1" label outlined>
+                <v-icon class="mr-1">
                   mdi-information-outline
                 </v-icon>
                 {{ contractor.name }}
               </v-chip>
             </v-flex>
-            <v-flex xs4 class="pa-1">
-              <v-btn @click="showDetails(contractor)" color="cyan lighten-3" outlined small>
-                Details
+            <v-flex xs12 class="pa-1 mt-n2" text-right>
+              <v-btn @click="showDetails(contractor)" class="ma-1" color="cyan lighten-4" outlined small>
+                <v-icon>mdi-card-account-details-star</v-icon>
+              </v-btn>
+              <v-btn @click="notify(contractor)" class="ma-1" color="cyan lighten-4" outlined small>
+                Request <v-icon class="ml-1" small>
+                  mdi-phone
+                </v-icon>
               </v-btn>
             </v-flex>
           </v-layout>
@@ -274,6 +279,10 @@ export default {
     })
   },
   methods: {
+    notify (user) {
+      // TODO socket io ? notification ? how to handle notification and connect users ?
+      console.log(user)
+    },
     setPages () {
       this.pages = Math.ceil(this.contractors.length / this.perPage)
     },
