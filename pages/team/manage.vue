@@ -473,7 +473,7 @@ export default {
     filteredList () {
       const filtered = this.users
       let users = []
-      if (this.searchUsers.length > 0) {
+      if (this.searchUsers.length > 1) {
         users = filtered.filter(user => user.name.toLowerCase().includes(this.searchUsers.toLowerCase()))
       }
       if (this.city.length > 0) {
