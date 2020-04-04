@@ -57,8 +57,7 @@
               Advanced search
             </v-btn>
           </v-card>
-          <v-card max-width="400" class="scroll mx-auto" max-height="800px">
-            <!-- <draggable class="list-group" :list="team" group="team"> -->
+          <v-card v-if="filteredTeam.length > 0" max-width="400" class="scroll mx-auto" max-height="800px">
             <v-card v-for="user in filteredTeam" :key="user.id" shaped class="bg ma-2">
               <v-layout wrap>
                 <v-flex xs8 text-left class="pa-1">
@@ -93,7 +92,9 @@
                 </v-flex>
               </v-layout>
             </v-card>
-            <!-- </draggable> -->
+          </v-card>
+          <v-card v-else max-width="400" class="mb-5 py-2 mx-auto" max-height="800">
+            No users found with your search criteria
           </v-card>
           <div :class="(team.length >= 1)? '':'mt-4'">
             <v-btn @click="dialogUsers = !dialogUsers" small color="green darken-3" fab class="mt-n1">
@@ -124,7 +125,7 @@
         >
           <v-card max-width="400" class="mx-auto mb-n4 ma-2" color="blue-grey darken-1">
             <v-text-field
-              v-model="search"
+              v-model="searchUsers"
               placeholder="Search by Name.."
               class="purple-input center"
               solo
@@ -451,6 +452,7 @@ export default {
       alertText: '',
       searchDialog: false,
       search: '',
+      searchUsers: '',
       trades: [],
       tickets: [],
       ticket: [],
@@ -471,8 +473,8 @@ export default {
     filteredList () {
       const filtered = this.users
       let users = []
-      if (this.search.length > 0) {
-        users = filtered.filter(user => user.name.toLowerCase().includes(this.search.toLowerCase()))
+      if (this.searchUsers.length > 0) {
+        users = filtered.filter(user => user.name.toLowerCase().includes(this.searchUsers.toLowerCase()))
       }
       if (this.city.length > 0) {
         users = filtered.filter(user => this.city.includes(user.metadata.city))
